@@ -24,14 +24,14 @@ const AI_PROFILES: Record<AiTier, AiConfig> = {
     counterChance: 0.18,
   },
   warrior: {
-    reactionFrames: 16,
-    guardChance: 0.5,
-    aggressiveness: 0.56,
-    comboChance: 0.54,
-    throwChance: 0.34,
-    magicChance: 0.55,
-    wallJumpChance: 0.45,
-    counterChance: 0.42,
+    reactionFrames: 18,
+    guardChance: 0.42,
+    aggressiveness: 0.48,
+    comboChance: 0.46,
+    throwChance: 0.28,
+    magicChance: 0.5,
+    wallJumpChance: 0.42,
+    counterChance: 0.36,
   },
   master: {
     reactionFrames: 10,
@@ -58,6 +58,7 @@ const AI_PROFILES: Record<AiTier, AiConfig> = {
 export class AiController {
   private decisionCooldown = 0;
   private holdGuardFrames = 0;
+  private kdPauseFrames = 0;
   private desiredMoveDir: -1 | 0 | 1 = 0;
   private desiredCrouch = false;
   private comboStepQueued = false;
@@ -65,6 +66,7 @@ export class AiController {
   public reset(): void {
     this.decisionCooldown = 14;
     this.holdGuardFrames = 0;
+    this.kdPauseFrames = 0;
     this.desiredMoveDir = 0;
     this.desiredCrouch = false;
     this.comboStepQueued = false;
@@ -93,6 +95,13 @@ export class AiController {
     ai.input.releaseButton('weapon');
     ai.input.releaseButton('magic');
     ai.input.releaseButton('evade');
+
+    // Give player wake-up breathing room on Novice & Warrior instead of relentless knockdown pinning
+    if (this.kdPauseFrames > 0) {
+      this.kdPauseFrames -= 1;
+      ai.input.setDirection(dist < 155 ? dirAway : 0, 0, currentFrame);
+      return;
+    }
 
     // 1. Grounded Wake-Up Decision
     if (ai.state === 'grounded' && ai.stateFrame >= 27) {
@@ -183,11 +192,18 @@ export class AiController {
       return;
     }
 
-    // Ground Punish (Sucker Kick) when player is grounded
-    if (target.state === 'grounded' && dist < 125 && Math.random() < cfg.aggressiveness) {
-      ai.input.setDirection(0, 1, currentFrame);
-      ai.input.pressButton('kick', currentFrame);
-      return;
+    // Grounded target handling: Novice/Warrior often back off to let the player wake up cleanly
+    if (target.state === 'grounded') {
+      if ((tier === 'novice' || tier === 'warrior') && Math.random() < (tier === 'novice' ? 0.78 : 0.56)) {
+        this.kdPauseFrames = tier === 'novice' ? 30 : 20;
+        ai.input.setDirection(dirAway, 0, currentFrame);
+        return;
+      }
+      if (dist < 125 && Math.random() < cfg.aggressiveness * 0.75) {
+        ai.input.setDirection(0, 1, currentFrame);
+        ai.input.pressButton('kick', currentFrame);
+        return;
+      }
     }
 
     // Cast Signature Elemental Magic when charged
@@ -235,7 +251,7 @@ export class AiController {
         if (Math.random() < 0.65) ai.input.pressButton('weapon', currentFrame);
       } else {
         // Footsie micro-spacing
-        this.desiredMoveDir = Math.random() < 0.5 ? dirAway : dirToTarget;
+        this.desiredMoveDir = Math.random() < 0.58 ? dirAway : dirToTarget;
         ai.input.setDirection(this.desiredMoveDir, 0, currentFrame);
       }
       return;

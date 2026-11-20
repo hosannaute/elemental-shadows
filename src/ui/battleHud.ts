@@ -256,15 +256,17 @@ export class BattleHud {
         .join('');
     }
 
-    // Center Banner
+    // Center / Upper-Third Banner
     if (match.banner) {
       this.bannerEl.classList.remove('hidden');
+      this.bannerEl.classList.toggle('ult-banner', Boolean(match.banner.isUlt));
       this.bannerTitleEl.textContent = match.banner.text;
       this.bannerTitleEl.style.color = match.banner.color;
       this.bannerSubEl.textContent = match.banner.subtext ?? '';
       this.matchOverActionsEl.classList.toggle('hidden', match.screen !== 'match_over');
     } else {
       this.bannerEl.classList.add('hidden');
+      this.bannerEl.classList.remove('ult-banner');
     }
   }
 

@@ -368,11 +368,18 @@ export class FighterSkeletonRig {
       // Crescent tip
       g.poly([0, 102, 16, 114, 0, 122, -6, 108]).fill({ color: rim, alpha: 0.9 });
     } else if (type === 'great_hammer') {
-      g.rect(-3.5, -24, 7, 102).fill({ color: 0x0c0b0a }).stroke({ width: 1.8, color: rim });
-      g.roundRect(-22, 68, 44, 30, 5)
+      // Sculpted octagonal warhammer with pommel spike, collar, beveled head & glowing rune
+      g.rect(-3.5, -24, 7, 94).fill({ color: 0x0c0b0a }).stroke({ width: 1.8, color: rim });
+      g.poly([-5, -24, 5, -24, 0, -34]).fill({ color: 0x0c0b0a }).stroke({ width: 1.5, color: rim });
+      g.roundRect(-7, 58, 14, 10, 2).fill({ color: rim });
+      g.poly([
+        -24, 68, -16, 62, 16, 62, 24, 68,
+        24, 94, 16, 100, -16, 100, -24, 94,
+      ])
         .fill({ color: 0x0a0a0d })
-        .stroke({ width: 2.8, color: rim });
-      g.moveTo(-14, 83).lineTo(14, 83).stroke({ width: 2.5, color: core });
+        .stroke({ width: 2.6, color: rim });
+      g.poly([-8, 81, 0, 72, 8, 81, 0, 90]).fill({ color: core, alpha: 0.92 });
+      g.moveTo(-20, 81).lineTo(-10, 81).moveTo(10, 81).lineTo(20, 81).stroke({ width: 2, color: rim });
     } else if (type === 'twin_sai') {
       g.rect(-2, -12, 4, 16).fill({ color: 0x080c0d });
       g.moveTo(-12, 14).quadraticCurveTo(-12, 2, 0, 2).quadraticCurveTo(12, 2, 12, 14)
@@ -410,14 +417,22 @@ export class FighterSkeletonRig {
     this.root.position.set(fighter.x, fighter.y);
     this.bodyContainer.scale.x = fighter.facing * 1.18;
 
-    // Flash white/gold on impact or invulnerability shimmer
-    if (fighter.flashFrames > 0) {
-      this.bodyContainer.alpha = 0.72 + (fighter.flashFrames % 2) * 0.28;
-    } else if (fighter.isInvulnerable()) {
-      this.bodyContainer.alpha = 0.62 + Math.sin(fighter.stateFrame * 0.9) * 0.25;
-    } else {
-      this.bodyContainer.alpha = 1;
-    }
+    // Preserve solid pitch-black ink silhouette even during hit-flash or i-frames
+    this.bodyContainer.alpha = 1;
+
+    // Track P1/P2 indicator tightly above the fighter's actual head posture
+    const targetMarkerY =
+      fighter.state === 'grounded' || fighter.state === 'ko'
+        ? -78
+        : fighter.state === 'knockdown_air'
+        ? -128
+        : fighter.state === 'crouch' ||
+          fighter.state === 'block_low' ||
+          fighter.state === 'roll_fwd' ||
+          fighter.state === 'roll_back'
+        ? -158
+        : -230;
+    this.markerContainer.y += (targetMarkerY - this.markerContainer.y) * 0.28;
 
     if (!freezeSkeleton) {
       const targetPose = this.computeTargetPose(fighter);
@@ -753,16 +768,18 @@ export class FighterSkeletonRig {
         return {
           ...NEUTRAL_POSE,
           pelvisY: -76,
-          pelvisRot: -1.25,
-          torsoRot: -0.25,
-          fHip: -0.4,
-          fKnee: 0.5,
+          pelvisRot: -1.18,
+          torsoRot: -0.22,
+          fHip: -0.35,
+          fKnee: 0.48,
           bHip: 0.2,
-          bKnee: 0.6,
-          fShoulder: -2.1,
-          fElbow: -0.4,
-          bShoulder: -1.7,
-          bElbow: -0.6,
+          bKnee: 0.56,
+          fShoulder: 0.28,
+          fElbow: -0.65,
+          fWeaponRot: 0.25,
+          bShoulder: 0.55,
+          bElbow: -0.5,
+          bWeaponRot: -0.2,
         };
       case 'grounded':
       case 'ko':
@@ -776,10 +793,12 @@ export class FighterSkeletonRig {
           fKnee: 0.25,
           bHip: 0.12,
           bKnee: 0.18,
-          fShoulder: -1.2,
-          fElbow: -0.4,
-          bShoulder: 0.5,
-          bElbow: -0.3,
+          fShoulder: 0.18,
+          fElbow: -0.32,
+          fWeaponRot: 0.45,
+          bShoulder: 0.35,
+          bElbow: -0.24,
+          bWeaponRot: -0.35,
         };
       case 'victory':
         return {

@@ -9,6 +9,7 @@ export interface BannerEvent {
   color: string;
   remainingFrames: number;
   maxFrames: number;
+  isUlt?: boolean;
 }
 
 export interface CombatCallout {
@@ -61,6 +62,8 @@ export class MatchStateStore {
   public p2Combo = 0;
   public p1ComboTimer = 0;
   public p2ComboTimer = 0;
+  public p1ComboLive = false;
+  public p2ComboLive = false;
   public banner: BannerEvent | null = null;
   public callouts: CombatCallout[] = [];
   private nextCalloutId = 1;
@@ -93,18 +96,27 @@ export class MatchStateStore {
     this.p2Combo = 0;
     this.p1ComboTimer = 0;
     this.p2ComboTimer = 0;
+    this.p1ComboLive = false;
+    this.p2ComboLive = false;
     this.callouts = [];
     this.screen = 'fighting';
     this.showBanner(`ROUND ${this.roundNumber}`, 'PREPARE FOR COMBAT', '#ffd685', 52);
   }
 
-  public showBanner(text: string, subtext: string | undefined, color: string, duration = 75): void {
+  public showBanner(
+    text: string,
+    subtext: string | undefined,
+    color: string,
+    duration = 75,
+    isUlt = false
+  ): void {
     this.banner = {
       text,
       subtext,
       color,
       remainingFrames: duration,
       maxFrames: duration,
+      isUlt,
     };
   }
 
@@ -126,13 +138,29 @@ export class MatchStateStore {
 
   public registerHit(attacker: 'p1' | 'p2'): number {
     if (attacker === 'p1') {
-      this.p1Combo += 1;
-      this.p1ComboTimer = 95;
+      this.p1Combo = this.p1ComboLive ? this.p1Combo + 1 : 1;
+      this.p1ComboLive = true;
+      this.p1ComboTimer = 75;
       return this.p1Combo;
     } else {
-      this.p2Combo += 1;
-      this.p2ComboTimer = 95;
+      this.p2Combo = this.p2ComboLive ? this.p2Combo + 1 : 1;
+      this.p2ComboLive = true;
+      this.p2ComboTimer = 75;
       return this.p2Combo;
+    }
+  }
+
+  public endComboChain(attacker: 'p1' | 'p2'): void {
+    if (attacker === 'p1') {
+      if (this.p1ComboLive) {
+        this.p1ComboLive = false;
+        this.p1ComboTimer = Math.min(this.p1ComboTimer, 28);
+      }
+    } else {
+      if (this.p2ComboLive) {
+        this.p2ComboLive = false;
+        this.p2ComboTimer = Math.min(this.p2ComboTimer, 28);
+      }
     }
   }
 
@@ -162,11 +190,17 @@ export class MatchStateStore {
 
     if (this.p1ComboTimer > 0) {
       this.p1ComboTimer -= 1;
-      if (this.p1ComboTimer === 0) this.p1Combo = 0;
+      if (this.p1ComboTimer === 0) {
+        this.p1Combo = 0;
+        this.p1ComboLive = false;
+      }
     }
     if (this.p2ComboTimer > 0) {
       this.p2ComboTimer -= 1;
-      if (this.p2ComboTimer === 0) this.p2Combo = 0;
+      if (this.p2ComboTimer === 0) {
+        this.p2Combo = 0;
+        this.p2ComboLive = false;
+      }
     }
 
     if (this.screen === 'fighting') {

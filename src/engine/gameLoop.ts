@@ -283,6 +283,14 @@ export class ElementalShadowsEngine {
     this.updateHazards(canFight);
     this.vfx.update(this.projectiles, this.hazards);
 
+    // True combo chain reset once defender recovers out of hitstun/knockdown_air
+    if (this.p2.state !== 'hitstun' && this.p2.state !== 'knockdown_air') {
+      this.match.endComboChain('p1');
+    }
+    if (this.p1.state !== 'hitstun' && this.p1.state !== 'knockdown_air') {
+      this.match.endComboChain('p2');
+    }
+
     // Endless dojo passive recovery when KO'd or normal round resolution
     if (this.match.screen === 'fighting') {
       if (this.p1.hp <= 0 || this.p2.hp <= 0) {
@@ -619,7 +627,7 @@ export class ElementalShadowsEngine {
       attacker.stunFrames = 22;
       this.vfx.triggerShockwave(defender.x, defender.y - 95, 34);
       this.vfx.spawnHitSparks(defender.x, defender.y - 95, 0xffe57f, 0xffffff, 1.8);
-      this.match.showBanner('ENLIGHTENMENT!', 'SECOND WIND +25% HP', '#ffe57f', 70);
+      this.match.showBanner('ENLIGHTENMENT!', 'SECOND WIND +25% HP', '#ffe57f', 70, true);
       this.audio.playGong();
       this.triggerHitStop(5);
       this.slowMoFrames = 26;

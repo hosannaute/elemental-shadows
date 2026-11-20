@@ -334,21 +334,29 @@ export class ElementalVfxSystem {
           .lineTo(p.x - 4, 582)
           .stroke({ width: 4, color: p.coreColor, alpha: 1 });
       } else if (p.style === 'shards') {
-        // Ice Frost Shards cluster
-        const offsets = [
-          { dx: 18, dy: -26, s: 1.0 },
-          { dx: -10, dy: 0, s: 1.25 },
-          { dx: 12, dy: 28, s: 0.95 },
+        // Staggered tapered crystalline ice lances with frost vapor trails
+        const lances = [
+          { dx: 24, dy: -28, s: 0.92 },
+          { dx: 4, dy: -4, s: 1.25 },
+          { dx: -16, dy: 24, s: 1.0 },
         ];
-        for (const o of offsets) {
+        for (const o of lances) {
           const sx = p.x + o.dx * dir;
           const sy = p.y + o.dy;
+          pg.moveTo(sx - dir * 56 * o.s, sy)
+            .lineTo(sx - dir * 14 * o.s, sy)
+            .stroke({ width: 3.5 * o.s, color: p.glowColor, alpha: 0.42 });
           pg.poly([
-            sx + dir * 26 * o.s, sy,
-            sx - dir * 8 * o.s, sy - 11 * o.s,
-            sx - dir * 24 * o.s, sy,
-            sx - dir * 8 * o.s, sy + 11 * o.s,
-          ]).fill({ color: p.color, alpha: 0.9 }).stroke({ width: 2, color: p.coreColor, alpha: 0.98 });
+            sx + dir * 34 * o.s, sy,
+            sx + dir * 4 * o.s, sy - 7.5 * o.s,
+            sx - dir * 24 * o.s, sy - 3 * o.s,
+            sx - dir * 32 * o.s, sy,
+            sx - dir * 24 * o.s, sy + 3 * o.s,
+            sx + dir * 4 * o.s, sy + 7.5 * o.s,
+          ]).fill({ color: p.color, alpha: 0.92 }).stroke({ width: 1.8, color: p.coreColor, alpha: 0.98 });
+          pg.moveTo(sx + dir * 28 * o.s, sy)
+            .lineTo(sx - dir * 20 * o.s, sy)
+            .stroke({ width: 1.6, color: p.coreColor, alpha: 0.95 });
         }
       } else if (p.style === 'tendrils') {
         // Shadow Umbral Tendrils

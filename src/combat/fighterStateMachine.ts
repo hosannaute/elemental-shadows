@@ -169,6 +169,9 @@ export class Fighter {
     if (this.state === 'grounded' || this.state === 'ko') {
       return { x: this.x - 58, y: this.y - 36, w: 116, h: 36 };
     }
+    if (this.state === 'knockdown_air') {
+      return { x: this.x - 54, y: this.y - 98, w: 108, h: 64 };
+    }
     if (this.state === 'roll_fwd' || this.state === 'roll_back') {
       return { x: this.x - 36, y: this.y - 72, w: 72, h: 72 };
     }

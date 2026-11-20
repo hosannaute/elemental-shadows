@@ -446,12 +446,22 @@ body {
   background: radial-gradient(circle at center, rgba(6, 10, 20, 0.45) 0%, transparent 65%);
 }
 
+.round-banner.ult-banner {
+  justify-content: flex-start;
+  padding-top: clamp(72px, 12.5vh, 108px);
+  background: linear-gradient(180deg, rgba(6, 10, 20, 0.52) 0%, rgba(6, 10, 20, 0) 42%);
+}
+
 .round-banner-title {
   font-family: var(--font-display);
   font-size: clamp(32px, 5.2vw, 68px);
   font-weight: 900;
   letter-spacing: 0.14em;
   text-shadow: 0 6px 28px rgba(0, 0, 0, 0.95);
+}
+
+.round-banner.ult-banner .round-banner-title {
+  font-size: clamp(24px, 3.4vw, 44px);
 }
 
 .round-banner-sub {
