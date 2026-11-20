@@ -28,6 +28,7 @@ export type FighterState =
   | 'roll_fwd'
   | 'roll_back'
   | 'shadow_step'
+  | 'grabbed'
   | 'ko'
   | 'victory';
 
@@ -53,7 +54,10 @@ export class Fighter {
   public hp: number;
   public maxHp: number;
   public trailingHp: number;
-  public magic = 35; // Start with partial magic so players feel progression quickly
+  public magic = 55;
+  public artIdx = 0;
+  public castArtIdx = 0;
+  public guardWear = 0;
 
   public state: FighterState = 'idle';
   public stateFrame = 0;
@@ -116,6 +120,7 @@ export class Fighter {
     this.moveHitConnected = false;
     this.afterimageTimer = 0;
     this.flashFrames = 0;
+    this.guardWear = 0;
     this.statuses.clear();
     this.perks.resetForRound();
     this.input.clear();
@@ -302,7 +307,14 @@ export class Fighter {
     const moveSpeed = this.element.moveSpeed * 1.38 * statusTick.moveSpeedMultiplier;
     const jumpImpulse = this.element.jumpForce * 1.22;
 
+    if (this.guardWear > 0 && !this.isBlocking() && currentFrame % 45 === 0) {
+      this.guardWear -= 1;
+    }
+
     // --- STATE MACHINE UPDATE ---
+    if (this.state === 'grabbed') {
+      return events;
+    }
     if (this.state === 'ko' || this.state === 'victory') {
       this.vx *= 0.84;
       this.applyPhysics(false);
@@ -475,6 +487,13 @@ export class Fighter {
       }
 
       if (canControl) {
+        if (this.magic >= 100) {
+          const magicAir = this.input.consumeButton('magic', currentFrame);
+          if (magicAir) {
+            this.triggerBendingCast(magicAir, statusTick.startupMultiplier, events);
+            return events;
+          }
+        }
         const airBtn = this.input.consumeAny(['weapon', 'kick', 'punch'], currentFrame);
         if (airBtn && this.y < GROUND_Y - 30) {
           const moveId: MoveId = airBtn.button === 'weapon' ? 'air_weapon' : 'air_kick';
@@ -498,7 +517,7 @@ export class Fighter {
       return events;
     }
 
-    // 6. ATTACK EXECUTION, COMBO CHAINING & HIT-CONFIRM DASH CANCEL
+    // 6. ATTACK EXECUTION, COMBO CHAINING & HIT-CONFIRM DASH / SUPER CANCEL
     if (this.state === 'attack' && this.currentMove) {
       const move = this.currentMove;
       if (this.stateFrame === move.impulseFrame) {
@@ -522,6 +541,19 @@ export class Fighter {
 
       const totalRecovery = this.moveRecoveryFrames + this.freezeWeaponFrames;
       const totalDuration = this.moveStartupFrames + this.moveActiveFrames + totalRecovery;
+      if (
+        canControl &&
+        move.id !== 'magic_cast' &&
+        this.magic >= 100 &&
+        this.stateFrame >= this.moveStartupFrames &&
+        this.freezeWeaponFrames === 0
+      ) {
+        const superCancel = this.input.consumeButton('magic', currentFrame);
+        if (superCancel) {
+          this.triggerBendingCast(superCancel, statusTick.startupMultiplier, events);
+          return events;
+        }
+      }
       if (
         canControl &&
         move.nextComboMove &&
@@ -596,9 +628,7 @@ export class Fighter {
     const buffered = this.input.consumeAny(['magic', 'evade', 'weapon', 'punch', 'kick'], currentFrame);
     if (buffered) {
       if (buffered.button === 'magic' && this.magic >= 100) {
-        this.magic = 0;
-        this.startMove('magic_cast', statusTick.startupMultiplier);
-        events.moveStarted = 'magic_cast';
+        this.triggerBendingCast(buffered, statusTick.startupMultiplier, events);
         return events;
       }
       if (buffered.button === 'evade') {
@@ -649,6 +679,29 @@ export class Fighter {
 
     this.applyPhysics(false);
     return events;
+  }
+
+  private triggerBendingCast(
+    buffered: BufferedAction,
+    startupScale: number,
+    events: FighterActionEvents
+  ): void {
+    const r = this.input.getRelativeDirection(this.facing, buffered.dir);
+    let artIdx: number;
+    if (r.up) {
+      artIdx = 1; // Elemental Vortex / Tornado
+    } else if (r.down || r.back) {
+      artIdx = 2; // Articulated Elemental Arm Grab & 180° Swing-Slam
+    } else if (r.forward) {
+      artIdx = 0; // Signature Sweeping Assault
+    } else {
+      artIdx = this.artIdx;
+      this.artIdx = (this.artIdx + 1) % 3;
+    }
+    this.castArtIdx = artIdx;
+    this.magic = 0;
+    this.startMove('magic_cast', startupScale);
+    events.moveStarted = 'magic_cast';
   }
 
   private startForwardDash(events: FighterActionEvents): void {

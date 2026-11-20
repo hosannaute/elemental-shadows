@@ -283,11 +283,11 @@ export class ElementalShadowsEngine {
     this.updateHazards(canFight);
     this.vfx.update(this.projectiles, this.hazards);
 
-    // True combo chain reset once defender recovers out of hitstun/knockdown_air
-    if (this.p2.state !== 'hitstun' && this.p2.state !== 'knockdown_air') {
+    // True combo chain reset once defender recovers out of hitstun/knockdown_air/grabbed
+    if (this.p2.state !== 'hitstun' && this.p2.state !== 'knockdown_air' && this.p2.state !== 'grabbed') {
       this.match.endComboChain('p1');
     }
-    if (this.p1.state !== 'hitstun' && this.p1.state !== 'knockdown_air') {
+    if (this.p1.state !== 'hitstun' && this.p1.state !== 'knockdown_air' && this.p1.state !== 'grabbed') {
       this.match.endComboChain('p2');
     }
 
@@ -393,9 +393,87 @@ export class ElementalShadowsEngine {
 
   private spawnElementalMagic(caster: Fighter, target: Fighter): void {
     this.audio.playMagic(caster.element.id);
-    this.camera.addShake(9);
+    this.camera.addShake(11);
     const el = caster.element;
-    this.match.pushCallout(caster.id, el.magicName.toUpperCase(), el.cssGlow, caster.x, caster.y - 188);
+    const art = el.bendingArts[caster.castArtIdx] ?? el.bendingArts[0];
+    this.match.showBanner(
+      art.name,
+      `${el.fighterName} · ${art.mode === 'vortex' ? 'CYCLONE BENDING ART' : art.mode === 'arm_swing' ? 'GRASP & SLAM BENDING ART' : 'AVATAR BENDING ART'}`,
+      el.cssGlow,
+      42,
+      true
+    );
+    this.match.pushCallout(caster.id, art.name, el.cssGlow, caster.x, caster.y - 188);
+
+    // MODE 1: LIFTING ELEMENTAL VORTEX / TORNADO (Multi-hit pull + sky juggle!)
+    if (art.mode === 'vortex') {
+      const vxX = Math.max(ARENA_LEFT + 60, Math.min(ARENA_RIGHT - 60, target.x));
+      this.projectiles.push({
+        id: this.nextProjectileId++,
+        ownerId: caster.id,
+        elementId: el.id,
+        x: vxX,
+        y: GROUND_Y - 175,
+        vx: caster.facing * 2.0,
+        vy: 0,
+        width: 175,
+        height: 350,
+        damage: 62,
+        knockbackX: caster.facing * 5,
+        launchY: -14.5,
+        knockdown: true,
+        remainingFrames: 56,
+        maxFrames: 56,
+        color: el.primaryColor,
+        glowColor: el.glowColor,
+        coreColor: el.coreColor,
+        style: 'vortex',
+        hitAlready: false,
+        hitsLow: false,
+        hitsLeft: 3,
+        hitCooldown: 0,
+      });
+      this.vfx.triggerShockwave(vxX, GROUND_Y - 40, 22);
+      return;
+    }
+
+    // MODE 2: ARTICULATED ELEMENTAL ARM / WHIP GRAB & 180° OVERHEAD SWING-SLAM!
+    if (art.mode === 'arm_swing') {
+      const handX = caster.x + caster.facing * 36;
+      const handY = caster.y - 118;
+      this.projectiles.push({
+        id: this.nextProjectileId++,
+        ownerId: caster.id,
+        elementId: el.id,
+        x: handX,
+        y: handY,
+        vx: caster.facing * 0.01,
+        vy: 0,
+        width: 420,
+        height: 160,
+        damage: 165,
+        knockbackX: -caster.facing * 10.5,
+        launchY: -12.2,
+        knockdown: true,
+        remainingFrames: 44,
+        maxFrames: 44,
+        color: el.primaryColor,
+        glowColor: el.glowColor,
+        coreColor: el.coreColor,
+        style: 'arm_swing',
+        hitAlready: false,
+        hitsLow: false,
+        armPhase: 'reach',
+        armAge: 0,
+        swingFrames: 0,
+        tipX: handX + caster.facing * 42,
+        tipY: handY,
+        grabStartDist: 180,
+        grabbed: false,
+      });
+      this.vfx.triggerShockwave(caster.x, caster.y - 100, 20);
+      return;
+    }
 
     const styleMap: Record<ElementId, ElementalProjectile['style']> = {
       fire: 'arc',
@@ -494,9 +572,11 @@ export class ElementalShadowsEngine {
       this.p1.state === 'roll_fwd' ||
       this.p1.state === 'roll_back' ||
       this.p1.state === 'shadow_step' ||
+      this.p1.state === 'grabbed' ||
       this.p2.state === 'roll_fwd' ||
       this.p2.state === 'roll_back' ||
       this.p2.state === 'shadow_step' ||
+      this.p2.state === 'grabbed' ||
       this.p1.state === 'wall_jump' ||
       this.p2.state === 'wall_jump';
     if (bypass) return;
@@ -519,7 +599,7 @@ export class ElementalShadowsEngine {
   private resolveMeleeHit(attacker: Fighter, defender: Fighter): void {
     const hitbox = attacker.getActiveHitbox();
     if (!hitbox) return;
-    if (defender.isInvulnerable() || defender.state === 'ko') return;
+    if (defender.isInvulnerable() || defender.state === 'ko' || defender.state === 'grabbed') return;
 
     // Grounded opponents can only be hit by Sucker Kick (hitsGrounded)
     if (defender.state === 'grounded' && !attacker.currentMove?.hitsGrounded) {
@@ -541,13 +621,16 @@ export class ElementalShadowsEngine {
     impactX: number,
     impactY: number
   ): void {
-    // Determine if defender is guarding (throws beat guard!)
+    // Authentic SF2 Guard: Active Back/BLK + Neutral Auto-Block for non-low/non-unblockable hits
     const relDef = defender.input.getRelativeDirection(defender.facing);
+    const activeGuard = relDef.back || defender.input.isHeld('block');
+    const autoGuard = defender.state === 'idle' && !hit.unblockable && hit.height !== 'low';
     const holdingGuard =
       !hit.isThrow &&
+      !hit.unblockable &&
       defender.isGroundedOnFloor() &&
       (defender.canActNeutral() || defender.isBlocking()) &&
-      (relDef.back || defender.input.isHeld('block'));
+      (activeGuard || autoGuard);
 
     const guardedCorrectHeight =
       holdingGuard &&
@@ -556,7 +639,24 @@ export class ElementalShadowsEngine {
         (hit.height === 'high' && !relDef.down));
 
     if (guardedCorrectHeight) {
-      const perfectGuard = this.simFrame - defender.guardEnteredFrame <= 9;
+      const perfectGuard = activeGuard && this.simFrame - defender.guardEnteredFrame <= 9;
+      if (!perfectGuard && (hit.critical || hit.damage >= 85)) {
+        defender.guardWear += 1;
+      }
+      if (!perfectGuard && defender.guardWear >= 3 && (hit.critical || hit.damage >= 90)) {
+        defender.guardWear = 0;
+        defender.state = 'hitstun';
+        defender.stateFrame = 0;
+        defender.stunFrames = 32;
+        defender.vx = attacker.facing * 12;
+        this.audio.playHit(true, true);
+        this.triggerHitStop(5);
+        this.camera.addShake(11);
+        this.vfx.spawnHitSparks(impactX, impactY, 0xffd84a, 0xffffff, 1.4);
+        this.match.pushCallout(defender.id, 'GUARD BREAK!', '#ffd84a', defender.x, defender.y - 196);
+        return;
+      }
+
       defender.state = relDef.down ? 'block_low' : 'block_high';
       defender.stateFrame = 0;
       defender.stunFrames = hit.blockstun;
@@ -573,11 +673,10 @@ export class ElementalShadowsEngine {
       this.triggerHitStop(perfectGuard ? 4 : 3);
       this.camera.addShake(perfectGuard ? 6 : 3.5);
 
-      // Mirror perk on clean guard
       const mirrorEvt = defender.perks.onCleanGuard();
       if (perfectGuard) {
+        defender.guardWear = 0;
         this.match.pushCallout(defender.id, mirrorEvt.label, mirrorEvt.color, defender.x, defender.y - 176);
-        // Ice's Permafrost Parry freezes attacker weapon recovery!
         if (defender.element.hasPermafrostParry) {
           attacker.freezeWeaponFrames = 18;
           attacker.statuses.apply('chill', 0.9);
@@ -590,17 +689,26 @@ export class ElementalShadowsEngine {
     // === CLEAN HIT ===
     const outgoing = attacker.perks.computeOutgoingMultiplier();
     const isCritical = hit.critical || outgoing.guaranteedCrit;
+    const isHeadHit =
+      hit.height === 'high' &&
+      defender.state !== 'crouch' &&
+      defender.state !== 'grounded' &&
+      impactY <= defender.y - 110;
     const comboCount = this.match.registerHit(attacker.id);
     const scaling = this.match.getDamageScaling(comboCount);
 
-    let finalDamage = Math.round(hit.damage * outgoing.multiplier * scaling);
+    let finalDamage = Math.round(
+      hit.damage * outgoing.multiplier * (isHeadHit ? 1.35 : 1) * scaling
+    );
+    if (isHeadHit) {
+      this.match.pushCallout(defender.id, 'HEAD HIT!', '#ffe066', defender.x, defender.y - 210);
+    }
     if (outgoing.consumedAvenger) {
       this.match.pushCallout(attacker.id, 'AVENGER CRIT!', '#ffae34', attacker.x, attacker.y - 190);
     } else if (outgoing.consumedMirror) {
       this.match.pushCallout(attacker.id, 'MIRROR COUNTER!', '#80f4ff', attacker.x, attacker.y - 185);
     }
 
-    // Check Rock poise armor on critical hits
     const rock = defender.perks.tryRockArmor(finalDamage, isCritical);
     if (rock.triggered && rock.event) {
       finalDamage = Math.round(finalDamage * 0.45);
@@ -608,15 +716,13 @@ export class ElementalShadowsEngine {
       this.match.pushCallout(defender.id, rock.event.label, rock.event.color, defender.x, defender.y - 188);
     }
 
-    // Check Earth wake-up super armor
     const armored = rock.triggered || defender.superArmorHits > 0;
     if (defender.superArmorHits > 0) {
       defender.superArmorHits -= 1;
       this.match.pushCallout(defender.id, 'POISE ARMOR', '#f2c057', defender.x, defender.y - 178);
     }
 
-    // Apply damage + check Enlightenment (Second Wind)
-    let nextHp = defender.hp - finalDamage;
+    const nextHp = defender.hp - finalDamage;
     const enlighten = defender.perks.tryEnlightenment(nextHp, defender.maxHp);
     if (enlighten.triggered && enlighten.event) {
       defender.hp = enlighten.restoredHp;
@@ -636,20 +742,21 @@ export class ElementalShadowsEngine {
     }
 
     defender.hp = Math.max(0, nextHp);
+    defender.guardWear = 0;
     if (defender.hp <= 0) {
       this.slowMoFrames = 38;
+    } else if (isCritical && isHeadHit) {
+      this.slowMoFrames = Math.max(this.slowMoFrames, 8);
     }
     defender.flashFrames = 7;
     attacker.magic = Math.min(100, attacker.magic + hit.magicGain);
     defender.magic = Math.min(100, defender.magic + Math.round(hit.magicGain * 0.65));
 
-    // Apply elemental status effect
     if (hit.appliesElementStatus) {
       const applied = defender.statuses.apply(attacker.element.statusId);
       this.match.pushCallout(defender.id, applied.label, applied.color, defender.x, defender.y - 165);
     }
 
-    // Throws swap / slam positions cleanly
     if (hit.isThrow) {
       if (hit.throwType === 'back' || hit.throwType === 'suplex') {
         defender.x = Math.max(
@@ -688,10 +795,9 @@ export class ElementalShadowsEngine {
       }
     }
 
-    // Hit-stop, screen shake, shockwave & VFX sparks
-    const isHeavy = isCritical || hit.knockdown || hit.damage >= 90;
+    const isHeavy = isCritical || isHeadHit || hit.knockdown || hit.damage >= 90;
     this.audio.playHit(isHeavy, attacker.currentMove?.isWeapon ?? false);
-    this.triggerHitStop(hit.hitstop);
+    this.triggerHitStop(isHeadHit ? Math.max(hit.hitstop, 5) : hit.hitstop);
     this.camera.addShake(isHeavy ? 13 : 6);
     this.vfx.spawnHitSparks(
       impactX,
@@ -715,20 +821,141 @@ export class ElementalShadowsEngine {
   private updateProjectiles(canFight: boolean): void {
     for (let i = this.projectiles.length - 1; i >= 0; i--) {
       const p = this.projectiles[i];
+      const attacker = p.ownerId === 'p1' ? this.p1 : this.p2;
+      const defender = p.ownerId === 'p1' ? this.p2 : this.p1;
+
+      // 1) Articulated Elemental Arm Grab & 180° Overhead Swing-Slam
+      if (p.style === 'arm_swing') {
+        const dir = p.vx >= 0 ? 1 : -1;
+        p.armAge = (p.armAge ?? 0) + 1;
+        p.remainingFrames -= 1;
+        const handX = attacker.x + dir * 32;
+        const handY = attacker.y - 118;
+        p.x = handX;
+        p.y = handY;
+
+        if (p.armPhase === 'reach') {
+          const prog = Math.min(1, p.armAge / 11);
+          p.tipX = Math.max(ARENA_LEFT + 16, Math.min(ARENA_RIGHT - 16, handX + dir * (45 + prog * 400)));
+          p.tipY = handY + Math.sin(prog * Math.PI * 2) * 26;
+          const tipBox = { x: p.tipX - 58, y: p.tipY - 75, w: 116, h: 150 };
+          if (canFight && !defender.isInvulnerable() && defender.state !== 'ko' && defender.state !== 'grabbed' && rectsIntersect(tipBox, defender.getHurtbox())) {
+            p.armPhase = 'swing';
+            p.swingFrames = 0;
+            p.remainingFrames = 34;
+            p.grabbed = true;
+            p.grabStartDist = Math.max(120, Math.min(245, Math.abs(defender.x - attacker.x)));
+            defender.state = 'grabbed';
+            defender.stateFrame = 0;
+            defender.vx = 0;
+            defender.vy = 0;
+            this.match.pushCallout(attacker.id, 'GRABBED!', attacker.element.cssGlow, defender.x, defender.y - 180);
+          } else if (p.armAge >= 16) {
+            this.projectiles.splice(i, 1);
+            continue;
+          }
+        } else if (p.armPhase === 'swing') {
+          p.swingFrames = (p.swingFrames ?? 0) + 1;
+          const u = Math.min(1, p.swingFrames / 22);
+          const ease = u < 0.5 ? 2 * u * u : 1 - Math.pow(-2 * u + 2, 2) / 2;
+          const ang = ease * Math.PI;
+          const radX = Math.min(220, (p.grabStartDist ?? 180) * 0.9 + 40);
+          p.tipX = Math.max(ARENA_LEFT + 36, Math.min(ARENA_RIGHT - 36, attacker.x + dir * Math.cos(ang) * radX));
+          p.tipY = Math.min(GROUND_Y - 12, attacker.y - 95 - Math.sin(ang) * 230 + u * 65);
+          defender.x = p.tipX;
+          defender.y = Math.min(GROUND_Y, p.tipY + 70);
+          if (p.swingFrames >= 22) {
+            p.armPhase = 'slam';
+            p.remainingFrames = 10;
+            defender.y = GROUND_Y;
+            this.slowMoFrames = 14;
+            this.camera.addShake(20);
+            if (attacker.element.hasMoltenWake) this.spawnFloorHazard(attacker, defender.x);
+            this.applyImpact(
+              attacker,
+              defender,
+              {
+                box: { x: defender.x - 40, y: GROUND_Y - 60, w: 80, h: 60 },
+                height: 'mid',
+                damage: p.damage,
+                chipDamage: 0,
+                hitstun: 36,
+                blockstun: 0,
+                hitstop: 6,
+                knockbackX: 11,
+                launchY: p.launchY,
+                knockdown: true,
+                critical: true,
+                isThrow: false,
+                unblockable: true,
+                appliesElementStatus: true,
+                magicGain: 0,
+                moveId: 'magic_cast',
+              },
+              defender.x,
+              GROUND_Y - 40
+            );
+          }
+        }
+        if (p.remainingFrames <= 0) {
+          if (defender.state === 'grabbed') {
+            defender.state = 'knockdown_air';
+            defender.vy = -8;
+          }
+          this.projectiles.splice(i, 1);
+        }
+        continue;
+      }
+
+      // 2) Multi-Hit Lifting Elemental Vortex / Tornado
+      if (p.style === 'vortex' && (p.hitsLeft ?? 0) > 0) {
+        p.x = Math.max(ARENA_LEFT + 60, Math.min(ARENA_RIGHT - 60, p.x + p.vx));
+        p.remainingFrames -= 1;
+        if ((p.hitCooldown ?? 0) > 0) p.hitCooldown = (p.hitCooldown ?? 1) - 1;
+        const vBox = { x: p.x - p.width * 0.5, y: GROUND_Y - p.height, w: p.width, h: p.height };
+        if (canFight && (p.hitCooldown ?? 0) <= 0 && !defender.isInvulnerable() && defender.state !== 'ko' && rectsIntersect(vBox, defender.getHurtbox())) {
+          p.hitsLeft = (p.hitsLeft ?? 1) - 1;
+          p.hitCooldown = 11;
+          this.applyImpact(
+            attacker,
+            defender,
+            {
+              box: vBox,
+              height: 'mid',
+              damage: p.damage,
+              chipDamage: 14,
+              hitstun: 26,
+              blockstun: 12,
+              hitstop: 4,
+              knockbackX: 4,
+              launchY: p.hitsLeft === 0 ? -15.5 : -11.5,
+              knockdown: true,
+              critical: p.hitsLeft === 0,
+              isThrow: false,
+              appliesElementStatus: true,
+              magicGain: 0,
+              moveId: 'magic_cast',
+            },
+            defender.x,
+            defender.y - 110
+          );
+        }
+        if (p.remainingFrames <= 0) this.projectiles.splice(i, 1);
+        continue;
+      }
+
       p.x += p.vx;
       p.y += p.vy;
       p.remainingFrames -= 1;
 
       if (canFight && !p.hitAlready) {
-        const attacker = p.ownerId === 'p1' ? this.p1 : this.p2;
-        const defender = p.ownerId === 'p1' ? this.p2 : this.p1;
         const pBox = {
           x: p.x - p.width * 0.5,
           y: p.y - p.height * 0.5,
           w: p.width,
           h: p.height,
         };
-        if (!defender.isInvulnerable() && defender.state !== 'ko' && rectsIntersect(pBox, defender.getHurtbox())) {
+        if (!defender.isInvulnerable() && defender.state !== 'ko' && defender.state !== 'grabbed' && rectsIntersect(pBox, defender.getHurtbox())) {
           p.hitAlready = true;
           const hit: ActiveHitbox = {
             box: pBox,

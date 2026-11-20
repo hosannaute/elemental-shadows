@@ -764,6 +764,22 @@ export class FighterSkeletonRig {
           bHip: 0.55,
           bKnee: 0.5,
         };
+      case 'grabbed':
+        return {
+          ...NEUTRAL_POSE,
+          pelvisY: -72,
+          pelvisRot: -0.9 + f * 0.22,
+          torsoRot: -0.35,
+          headRot: 0.22,
+          fShoulder: -0.6,
+          fElbow: -0.9,
+          bShoulder: 0.7,
+          bElbow: -0.8,
+          fHip: -0.5,
+          fKnee: 0.85,
+          bHip: 0.35,
+          bKnee: 0.75,
+        };
       case 'knockdown_air':
         return {
           ...NEUTRAL_POSE,

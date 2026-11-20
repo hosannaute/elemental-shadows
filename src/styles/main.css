@@ -449,7 +449,7 @@ body {
 .round-banner.ult-banner {
   justify-content: flex-start;
   padding-top: clamp(72px, 12.5vh, 108px);
-  background: linear-gradient(180deg, rgba(6, 10, 20, 0.52) 0%, rgba(6, 10, 20, 0) 42%);
+  background: linear-gradient(180deg, rgba(10, 14, 24, 0.28) 0%, rgba(10, 14, 24, 0) 36%);
 }
 
 .round-banner-title {
@@ -462,6 +462,10 @@ body {
 
 .round-banner.ult-banner .round-banner-title {
   font-size: clamp(24px, 3.4vw, 44px);
+  padding: 5px 28px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(10, 14, 24, 0), rgba(10, 14, 24, 0.78) 18%, rgba(10, 14, 24, 0.78) 82%, rgba(10, 14, 24, 0));
+  text-shadow: 0 3px 16px rgba(0, 0, 0, 0.98), 0 0 18px currentColor;
 }
 
 .round-banner-sub {
@@ -471,6 +475,13 @@ body {
   letter-spacing: 0.22em;
   color: #dce7f7;
   text-shadow: 0 2px 12px rgba(0, 0, 0, 0.95);
+}
+
+.round-banner.ult-banner .round-banner-sub {
+  padding: 3px 16px;
+  border-radius: 999px;
+  background: rgba(10, 14, 24, 0.68);
+  color: #f8fafc;
 }
 
 .match-over-actions {

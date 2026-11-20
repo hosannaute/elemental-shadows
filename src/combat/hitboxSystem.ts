@@ -24,6 +24,8 @@ export interface ActiveHitbox {
   appliesElementStatus: boolean;
   magicGain: number;
   moveId: string;
+  headHit?: boolean;
+  unblockable?: boolean;
 }
 
 export interface ElementalProjectile {
@@ -45,9 +47,28 @@ export interface ElementalProjectile {
   color: number;
   glowColor: number;
   coreColor: number;
-  style: 'arc' | 'wave' | 'pillar' | 'vortex' | 'bolt' | 'shards' | 'tendrils' | 'eruption';
+  style:
+    | 'arc'
+    | 'wave'
+    | 'pillar'
+    | 'vortex'
+    | 'bolt'
+    | 'shards'
+    | 'tendrils'
+    | 'eruption'
+    | 'arm_swing';
   hitAlready: boolean;
   hitsLow: boolean;
+  // Multi-hit vortex & articulated elemental arm swing state
+  hitsLeft?: number;
+  hitCooldown?: number;
+  armPhase?: 'reach' | 'swing' | 'slam';
+  armAge?: number;
+  swingFrames?: number;
+  tipX?: number;
+  tipY?: number;
+  grabStartDist?: number;
+  grabbed?: boolean;
 }
 
 export function rectsIntersect(a: RectBox, b: RectBox): boolean {

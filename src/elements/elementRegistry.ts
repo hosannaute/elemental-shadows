@@ -28,6 +28,12 @@ export type StatusEffectId =
   | 'hex'
   | 'scorched';
 
+export interface BendingArtSpec {
+  id: string;
+  name: string;
+  mode: 'assault' | 'vortex' | 'arm_swing';
+}
+
 export interface ElementProfile {
   id: ElementId;
   name: string;
@@ -49,6 +55,7 @@ export interface ElementProfile {
   cssGlow: string;
   magicName: string;
   magicDescription: string;
+  bendingArts: [BendingArtSpec, BendingArtSpec, BendingArtSpec];
   statusId: StatusEffectId;
   statusLabel: string;
   comebackName: string;
@@ -84,8 +91,13 @@ export const ELEMENT_REGISTRY: Record<ElementId, ElementProfile> = {
     coreColor: 0xfff0b8,
     cssPrimary: '#ff5a14',
     cssGlow: '#ffae34',
-    magicName: 'Inferno Arc',
-    magicDescription: 'Launches a blazing crescent wave and point-blank Flame Nova that inflicts Burn.',
+    magicName: "Sozin's Dragon",
+    magicDescription: 'Launches twin dragon fire torrents, Phoenix Pillar vortex, or Flame Whip Slam.',
+    bendingArts: [
+      { id: 'fire_dragon', name: "SOZIN'S DRAGON", mode: 'assault' },
+      { id: 'phoenix_vortex', name: 'PHOENIX PILLAR', mode: 'vortex' },
+      { id: 'flame_whip', name: 'FLAME WHIP SLAM', mode: 'arm_swing' },
+    ],
     statusId: 'burn',
     statusLabel: 'BURN',
     comebackName: 'Ember Wake-Up',
@@ -119,8 +131,13 @@ export const ELEMENT_REGISTRY: Record<ElementId, ElementProfile> = {
     coreColor: 0xdffaff,
     cssPrimary: '#1698ff',
     cssGlow: '#52dcff',
-    magicName: 'Tidal Wave',
-    magicDescription: 'Unleashes a low surging wave and Hydro Whip pull-in that leaves foes Soaked.',
+    magicName: 'Tidal Tsunami',
+    magicDescription: 'Commands Tidal Tsunami, lifting Water Tornado, and Water Arm Swing-Slam.',
+    bendingArts: [
+      { id: 'tsunami', name: 'TIDAL TSUNAMI', mode: 'assault' },
+      { id: 'water_tornado', name: 'WATER TORNADO', mode: 'vortex' },
+      { id: 'water_arm', name: 'WATER ARM SWING', mode: 'arm_swing' },
+    ],
     statusId: 'soaked',
     statusLabel: 'SOAKED',
     comebackName: 'Liquid Slip',
@@ -154,8 +171,13 @@ export const ELEMENT_REGISTRY: Record<ElementId, ElementProfile> = {
     coreColor: 0xfff3cc,
     cssPrimary: '#c9933b',
     cssGlow: '#f2c057',
-    magicName: 'Stone Pillar',
-    magicDescription: 'Shatters the arena floor with a towering Stone Pillar launcher and boulder shock.',
+    magicName: 'Tectonic Fissure',
+    magicDescription: 'Shatters the floor with Tectonic Fissures, Stone Cyclone, or Rock Gauntlet Slam.',
+    bendingArts: [
+      { id: 'earth_fissure', name: 'TECTONIC FISSURE', mode: 'assault' },
+      { id: 'earth_vortex', name: 'STONE CYCLONE', mode: 'vortex' },
+      { id: 'rock_arm', name: 'ROCK GAUNTLET SLAM', mode: 'arm_swing' },
+    ],
     statusId: 'crush',
     statusLabel: 'CRUSH',
     comebackName: 'Earthen Poise',
@@ -189,8 +211,13 @@ export const ELEMENT_REGISTRY: Record<ElementId, ElementProfile> = {
     coreColor: 0xf2fffb,
     cssPrimary: '#3ed9a4',
     cssGlow: '#9cffd9',
-    magicName: 'Cyclone Uppercut',
-    magicDescription: 'Pulls foes into a Gale Vacuum and launches them skyward for aerial juggles.',
+    magicName: 'Tempest Hurricane',
+    magicDescription: 'Unleashes Tempest Hurricane, Sky Cyclone juggle, or Gale Vacuum Throw.',
+    bendingArts: [
+      { id: 'air_hurricane', name: 'TEMPEST HURRICANE', mode: 'assault' },
+      { id: 'air_tornado', name: 'SKY CYCLONE', mode: 'vortex' },
+      { id: 'gale_whip', name: 'GALE VACUUM THROW', mode: 'arm_swing' },
+    ],
     statusId: 'lift',
     statusLabel: 'GALE',
     comebackName: 'Zephyr Vault',
@@ -224,8 +251,13 @@ export const ELEMENT_REGISTRY: Record<ElementId, ElementProfile> = {
     coreColor: 0xffffff,
     cssPrimary: '#f5c82e',
     cssGlow: '#82d0ff',
-    magicName: 'Arc Strike',
-    magicDescription: 'Calls down an instant Thunder Drop bolt that applies Shock Stun.',
+    magicName: "Heaven's Thunder",
+    magicDescription: "Calls down Heaven's Thunder, Plasma Cyclone, or Volt Tether Slam.",
+    bendingArts: [
+      { id: 'thunder_storm', name: "HEAVEN'S THUNDER", mode: 'assault' },
+      { id: 'volt_vortex', name: 'PLASMA CYCLONE', mode: 'vortex' },
+      { id: 'volt_whip', name: 'VOLT TETHER SLAM', mode: 'arm_swing' },
+    ],
     statusId: 'shock',
     statusLabel: 'SHOCK',
     comebackName: 'Volt Dash',
@@ -259,8 +291,13 @@ export const ELEMENT_REGISTRY: Record<ElementId, ElementProfile> = {
     coreColor: 0xffffff,
     cssPrimary: '#30d0f5',
     cssGlow: '#9cf4ff',
-    magicName: 'Glacier Spike',
-    magicDescription: 'Fires crystalline Frost Shards and an erupting ice lance that applies Chill (-30% speed).',
+    magicName: 'Glacier Cataclysm',
+    magicDescription: 'Fires Glacier Cataclysm, Blizzard Vortex, or Frost Spear Slam.',
+    bendingArts: [
+      { id: 'glacier', name: 'GLACIER CATACLYSM', mode: 'assault' },
+      { id: 'blizzard_vortex', name: 'BLIZZARD VORTEX', mode: 'vortex' },
+      { id: 'frost_grasp', name: 'FROST SPEAR SLAM', mode: 'arm_swing' },
+    ],
     statusId: 'chill',
     statusLabel: 'FREEZE',
     comebackName: 'Permafrost Parry',
@@ -294,8 +331,13 @@ export const ELEMENT_REGISTRY: Record<ElementId, ElementProfile> = {
     coreColor: 0xf4f0ff,
     cssPrimary: '#7b6dff',
     cssGlow: '#c2b8ff',
-    magicName: 'Umbral Tendrils',
-    magicDescription: 'Summons creeping shadow spears and a Dark Mirror surge that applies Hex.',
+    magicName: 'Eclipse Tendrils',
+    magicDescription: 'Summons Eclipse Tendrils, Abyssal Vortex, or Umbral Arm Grasp.',
+    bendingArts: [
+      { id: 'shadow_abyss', name: 'ECLIPSE TENDRILS', mode: 'assault' },
+      { id: 'shadow_vortex', name: 'ABYSSAL VORTEX', mode: 'vortex' },
+      { id: 'shadow_arm', name: 'UMBRAL ARM GRASP', mode: 'arm_swing' },
+    ],
     statusId: 'hex',
     statusLabel: 'HEX',
     comebackName: 'Shadow Step',
@@ -329,8 +371,13 @@ export const ELEMENT_REGISTRY: Record<ElementId, ElementProfile> = {
     coreColor: 0xffe478,
     cssPrimary: '#ff3214',
     cssGlow: '#ff7b1a',
-    magicName: 'Eruption Slam',
-    magicDescription: 'Smashes the ground to forge a bubbling Magma Pool hazard and Scorched Guard.',
+    magicName: 'Caldera Eruption',
+    magicDescription: 'Unleashes Caldera Eruption, Magma Cyclone, or Molten Chain Slam.',
+    bendingArts: [
+      { id: 'lava_eruption', name: 'CALDERA ERUPTION', mode: 'assault' },
+      { id: 'lava_vortex', name: 'MAGMA CYCLONE', mode: 'vortex' },
+      { id: 'lava_chain', name: 'MOLTEN CHAIN SLAM', mode: 'arm_swing' },
+    ],
     statusId: 'scorched',
     statusLabel: 'SCORCHED',
     comebackName: 'Molten Wake',
@@ -348,9 +395,9 @@ export const ELEMENT_REGISTRY: Record<ElementId, ElementProfile> = {
 };
 
 export const ELEMENT_ORDER: ElementId[] = [
+  'water',
   'fire',
   'ice',
-  'water',
   'earth',
   'air',
   'lightning',

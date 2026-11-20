@@ -46,8 +46,8 @@ export interface MatchSnapshot {
 
 export class MatchStateStore {
   public screen: ScreenMode = 'fighting';
-  public p1Element: ElementId = 'fire';
-  public p2Element: ElementId = 'ice';
+  public p1Element: ElementId = 'water';
+  public p2Element: ElementId = 'fire';
   public roundNumber = 1;
   public p1Rounds = 0;
   public p2Rounds = 0;

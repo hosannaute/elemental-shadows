@@ -311,13 +311,39 @@ export class ElementalVfxSystem {
           p.x + 28, p.y + 60 - h,
           p.x + 40, p.y + 60,
         ]).fill({ color: 0x161412, alpha: 0.96 }).stroke({ width: 3, color: p.glowColor, alpha: 0.95 });
+      } else if (p.style === 'arm_swing') {
+        // Articulated Elemental Arm / Tentacle Whip Grab & Overhead Swing-Slam!
+        const ox = p.x;
+        const oy = p.y;
+        const tx = p.tipX ?? p.x + dir * 160;
+        const ty = p.tipY ?? p.y;
+        const mx = (ox + tx) * 0.5;
+        const lift = p.armPhase === 'swing' ? -92 : Math.sin(p.remainingFrames * 0.5) * 38;
+        const my = Math.min(560, (oy + ty) * 0.5 + lift);
+        const outerCol = p.elementId === 'shadow' ? 0x0b0618 : p.elementId === 'earth' ? 0x261a10 : p.color;
+        pg.moveTo(ox, oy).quadraticCurveTo(mx, my, tx, ty).stroke({ width: 28, color: outerCol, alpha: 0.92 });
+        pg.moveTo(ox, oy).quadraticCurveTo(mx, my, tx, ty).stroke({ width: 15, color: p.glowColor, alpha: 0.95 });
+        pg.moveTo(ox, oy).quadraticCurveTo(mx, my, tx, ty).stroke({ width: 5, color: p.coreColor, alpha: 1 });
+        pg.circle(tx, ty, p.grabbed ? 30 : 20).fill({ color: outerCol, alpha: 0.92 }).stroke({ width: 3, color: p.coreColor });
+        if (p.armPhase === 'slam') {
+          const sr = (11 - p.remainingFrames) * 24;
+          pg.ellipse(tx, 582, sr, sr * 0.24).stroke({ width: 6, color: p.coreColor, alpha: 0.85 });
+        }
       } else if (p.style === 'vortex') {
-        // Air Cyclone Vortex
-        for (let k = 0; k < 4; k++) {
-          const w = 18 + k * 14;
-          const yOff = 44 - k * 28;
-          pg.ellipse(p.x + Math.sin(p.remainingFrames * 0.4 + k) * 6, p.y + yOff, w, 10)
-            .stroke({ width: 4, color: k % 2 === 0 ? p.glowColor : p.coreColor, alpha: 0.88 });
+        // Towering swirling Elemental Vortex / Tornado
+        const h = p.height;
+        pg.poly([
+          p.x - 32, 584,
+          p.x - 102, 584 - h,
+          p.x + 102, 584 - h,
+          p.x + 32, 584,
+        ]).fill({ color: p.color, alpha: 0.32 });
+        for (let k = 0; k < 10; k++) {
+          const frac = k / 9;
+          const w = 26 + frac * 90;
+          const yPos = 576 - frac * h;
+          pg.ellipse(p.x + Math.sin(p.remainingFrames * 0.42 + k) * 12, yPos, w, 12 + frac * 8)
+            .stroke({ width: 4.5, color: k % 2 === 0 ? p.coreColor : p.glowColor, alpha: 0.9 });
         }
       } else if (p.style === 'bolt') {
         // Lightning Thunder Drop Bolt
