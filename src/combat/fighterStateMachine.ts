@@ -296,20 +296,21 @@ export class Fighter {
     this.stateFrame += 1;
     const rel = this.input.getRelativeDirection(this.facing);
     const dist = Math.abs(opponent.x - this.x);
-    const moveSpeed = this.element.moveSpeed * statusTick.moveSpeedMultiplier;
+    const moveSpeed = this.element.moveSpeed * 1.38 * statusTick.moveSpeedMultiplier;
+    const jumpImpulse = this.element.jumpForce * 1.22;
 
     // --- STATE MACHINE UPDATE ---
     if (this.state === 'ko' || this.state === 'victory') {
-      this.vx *= 0.86;
+      this.vx *= 0.84;
       this.applyPhysics(false);
       return events;
     }
 
     // 1. GROUNDED STATE (Wake-up Sweep, Forward/Back Recovery Rolls)
     if (this.state === 'grounded') {
-      this.vx *= 0.8;
+      this.vx *= 0.78;
       this.applyPhysics(false);
-      if (canControl && this.stateFrame >= this.groundedMinFrames) {
+      if (canControl && this.stateFrame >= 22) {
         const kickAction = this.input.consumeButton('kick', currentFrame);
         const evadeAction = this.input.consumeButton('evade', currentFrame);
         if (kickAction) {
@@ -324,8 +325,8 @@ export class Fighter {
           this.facing = opponent.x >= this.x ? 1 : -1;
           this.state = 'roll_fwd';
           this.stateFrame = 0;
-          this.invulnFrames = 18 + this.element.extraRollIFrames; // 18f (+6 Water)
-          this.vx = this.facing * 9.8;
+          this.invulnFrames = 18 + this.element.extraRollIFrames;
+          this.vx = this.facing * 13.4;
           this.afterimageTimer = 18;
           return events;
         }
@@ -334,12 +335,12 @@ export class Fighter {
           this.state = 'roll_back';
           this.stateFrame = 0;
           this.invulnFrames = 16 + this.element.extraRollIFrames;
-          this.vx = -this.facing * 10.2;
+          this.vx = -this.facing * 13.8;
           this.afterimageTimer = 16;
           return events;
         }
       }
-      if (this.stateFrame >= this.groundedMaxFrames) {
+      if (this.stateFrame >= 74) {
         this.state = 'idle';
         this.stateFrame = 0;
         this.invulnFrames = 10;
@@ -349,19 +350,18 @@ export class Fighter {
 
     // 2. RECOVERY ROLLS (+ Shadow Step Cancel!)
     if (this.state === 'roll_fwd' || this.state === 'roll_back') {
-      // Shadow's Shadow Step: cancel recovery roll into a phase-through teleport behind opponent
       if (
         canControl &&
         this.element.hasShadowStep &&
-        this.stateFrame >= 6 &&
-        this.stateFrame <= 16
+        this.stateFrame >= 5 &&
+        this.stateFrame <= 15
       ) {
         const cancelAction = this.input.consumeAny(['evade', 'punch', 'weapon'], currentFrame);
         if (cancelAction) {
           this.state = 'shadow_step';
           this.stateFrame = 0;
           this.invulnFrames = 14;
-          const behindX = opponent.x + opponent.facing * -86;
+          const behindX = opponent.x + opponent.facing * -88;
           this.x = Math.max(ARENA_LEFT + 30, Math.min(ARENA_RIGHT - 30, behindX));
           this.facing = opponent.x >= this.x ? 1 : -1;
           this.vx = 0;
@@ -371,9 +371,9 @@ export class Fighter {
         }
       }
 
-      this.vx *= 0.94;
+      this.vx *= 0.93;
       this.applyPhysics(false);
-      if (this.stateFrame >= 24) {
+      if (this.stateFrame >= 21) {
         this.state = 'idle';
         this.stateFrame = 0;
         this.facing = opponent.x >= this.x ? 1 : -1;
@@ -384,7 +384,7 @@ export class Fighter {
     if (this.state === 'shadow_step') {
       this.vx = 0;
       this.applyPhysics(false);
-      if (this.stateFrame >= 12) {
+      if (this.stateFrame >= 10) {
         this.state = 'idle';
         this.stateFrame = 0;
         this.facing = opponent.x >= this.x ? 1 : -1;
@@ -394,7 +394,7 @@ export class Fighter {
 
     // 3. HITSTUN / BLOCKSTUN / KNOCKDOWN AIR
     if (this.state === 'hitstun') {
-      this.vx *= 0.88;
+      this.vx *= 0.86;
       this.applyPhysics(true);
       this.stunFrames -= 1;
       if (this.stunFrames <= 0 && this.isGroundedOnFloor()) {
@@ -405,26 +405,25 @@ export class Fighter {
     }
 
     if (this.state === 'block_high' || this.state === 'block_low') {
-      this.vx *= 0.84;
+      this.vx *= 0.82;
       this.applyPhysics(false);
-      this.stunFrames -= 1;
-      if (this.stunFrames <= 0) {
-        if (canControl && rel.back && opponent.state === 'attack') {
-          this.state = rel.down ? 'block_low' : 'block_high';
-        } else {
-          this.state = rel.down ? 'crouch' : 'idle';
-          this.stateFrame = 0;
-        }
+      if (this.stunFrames > 0) {
+        this.stunFrames -= 1;
+      } else if (canControl && (this.input.isHeld('block') || (rel.back && opponent.state === 'attack'))) {
+        this.state = rel.down ? 'block_low' : 'block_high';
+      } else {
+        this.state = rel.down ? 'crouch' : 'idle';
+        this.stateFrame = 0;
       }
       return events;
     }
 
     if (this.state === 'knockdown_air') {
-      this.applyPhysics(true, this.statuses.has('lift') ? 0.72 : 1);
+      this.applyPhysics(true, this.statuses.has('lift') ? 0.68 : 0.92);
       if (this.isGroundedOnFloor() && this.vy >= 0 && this.stateFrame > 6) {
         this.y = GROUND_Y;
         this.vy = 0;
-        this.vx *= 0.45;
+        this.vx *= 0.42;
         if (this.hp <= 0) {
           this.state = 'ko';
           this.stateFrame = 0;
@@ -439,10 +438,10 @@ export class Fighter {
 
     // 4. DASHES & BACK HANDSPRING
     if (this.state === 'dash_fwd' || this.state === 'back_handspring') {
-      this.vx *= 0.92;
+      this.vx *= 0.90;
       this.applyPhysics(false);
-      const duration = this.state === 'dash_fwd' ? 14 : 18;
-      if (canControl && this.stateFrame >= 8 && this.state === 'dash_fwd') {
+      const duration = this.state === 'dash_fwd' ? 12 : 16;
+      if (canControl && this.stateFrame >= 6 && this.state === 'dash_fwd') {
         const atk = this.input.consumeAny(['weapon', 'punch', 'kick'], currentFrame);
         if (atk) {
           this.dispatchGroundedAttack(atk, opponent, dist, statusTick.startupMultiplier, events);
@@ -456,9 +455,8 @@ export class Fighter {
       return events;
     }
 
-    // 5. JUMP & WALL JUMP
+    // 5. JUMP & WALL JUMP (With responsive air drift!)
     if (this.state === 'jump' || this.state === 'wall_jump') {
-      // Allow mid-air Wall Jump if near a wall while rising/peaking
       const wall = this.isNearWall();
       if (
         canControl &&
@@ -475,15 +473,18 @@ export class Fighter {
 
       if (canControl) {
         const airBtn = this.input.consumeAny(['weapon', 'kick', 'punch'], currentFrame);
-        if (airBtn && this.y < GROUND_Y - 35) {
+        if (airBtn && this.y < GROUND_Y - 30) {
           const moveId: MoveId = airBtn.button === 'weapon' ? 'air_weapon' : 'air_kick';
           this.startMove(moveId, statusTick.startupMultiplier);
           events.moveStarted = moveId;
           return events;
         }
+        if (this.input.currentDir.x !== 0) {
+          this.vx += (this.input.currentDir.x * moveSpeed * 1.08 - this.vx) * 0.08;
+        }
       }
 
-      this.applyPhysics(true, this.statuses.has('lift') ? 0.85 : 1);
+      this.applyPhysics(true, this.statuses.has('lift') ? 0.78 : 1);
       if (this.isGroundedOnFloor() && this.vy >= 0) {
         this.y = GROUND_Y;
         this.vy = 0;
@@ -494,11 +495,11 @@ export class Fighter {
       return events;
     }
 
-    // 6. ATTACK EXECUTION & COMBO CANCELING
+    // 6. ATTACK EXECUTION, COMBO CHAINING & HIT-CONFIRM DASH CANCEL
     if (this.state === 'attack' && this.currentMove) {
       const move = this.currentMove;
       if (this.stateFrame === move.impulseFrame) {
-        this.vx += this.facing * move.forwardImpulse;
+        this.vx += this.facing * move.forwardImpulse * 1.25;
       }
       if (move.id === 'magic_cast' && this.stateFrame === this.moveStartupFrames) {
         events.spawnMagic = true;
@@ -512,11 +513,10 @@ export class Fighter {
       }
 
       if (this.isGroundedOnFloor()) {
-        this.vx *= 0.84;
+        this.vx *= 0.80;
       }
       this.applyPhysics(!this.isGroundedOnFloor());
 
-      // Combo chaining from buffered follow-up input
       const totalRecovery = this.moveRecoveryFrames + this.freezeWeaponFrames;
       const totalDuration = this.moveStartupFrames + this.moveActiveFrames + totalRecovery;
       if (
@@ -539,6 +539,21 @@ export class Fighter {
         }
       }
 
+      if (
+        canControl &&
+        this.moveHitConnected &&
+        this.stateFrame >= this.moveStartupFrames + this.moveActiveFrames + 2 &&
+        this.freezeWeaponFrames === 0
+      ) {
+        const evadeCancel = this.input.consumeButton('evade', currentFrame);
+        if (evadeCancel) {
+          const r = this.input.getRelativeDirection(this.facing, evadeCancel.dir);
+          if (r.forward) this.startForwardDash(events);
+          else this.startBackHandspring(events);
+          return events;
+        }
+      }
+
       if (this.stateFrame >= totalDuration) {
         this.currentMove = null;
         this.freezeWeaponFrames = 0;
@@ -549,15 +564,21 @@ export class Fighter {
       return events;
     }
 
-    // 7. NEUTRAL / WALK / CROUCH CONTROL
+    // 7. NEUTRAL / WALK / CROUCH / DEDICATED BLOCK
     if (!canControl) {
-      this.vx *= 0.8;
+      this.vx *= 0.72;
       this.state = 'idle';
       this.applyPhysics(false);
       return events;
     }
 
-    // Check double-tap dashes (Forward, Forward -> Dash / Back, Back -> Back Handspring)
+    if (this.input.isHeld('block')) {
+      this.state = rel.down ? 'block_low' : 'block_high';
+      this.vx *= 0.65;
+      this.applyPhysics(false);
+      return events;
+    }
+
     const doubleTap = this.input.consumeDoubleTap(currentFrame);
     if (doubleTap) {
       if (doubleTap.direction === this.facing) {
@@ -569,7 +590,6 @@ export class Fighter {
       }
     }
 
-    // Check buffered action buttons
     const buffered = this.input.consumeAny(['magic', 'evade', 'weapon', 'punch', 'kick'], currentFrame);
     if (buffered) {
       if (buffered.button === 'magic' && this.magic >= 100) {
@@ -593,7 +613,6 @@ export class Fighter {
       }
     }
 
-    // Jump & Wall Jump from standing
     if (rel.up) {
       const wall = this.isNearWall();
       if (wall !== 0 && ((wall === -1 && this.input.currentDir.x === 1) || (wall === 1 && this.input.currentDir.x === -1))) {
@@ -602,28 +621,27 @@ export class Fighter {
       }
       this.state = 'jump';
       this.stateFrame = 0;
-      this.vy = -this.element.jumpForce;
+      this.vy = -jumpImpulse;
       this.vx = this.input.currentDir.x * moveSpeed * 1.18;
       this.applyPhysics(true);
       return events;
     }
 
-    // Crouch / Walk / Guard posture
     if (rel.down) {
       this.state = 'crouch';
-      this.vx *= 0.72;
+      this.vx *= 0.6;
     } else if (rel.forward) {
       this.state = 'walk_fwd';
-      this.vx = this.facing * moveSpeed;
+      this.vx += (this.facing * moveSpeed - this.vx) * 0.45;
     } else if (rel.back) {
       this.state = 'walk_back';
-      this.vx = -this.facing * moveSpeed * 0.84;
+      this.vx += (-this.facing * moveSpeed * 0.88 - this.vx) * 0.45;
       if (opponent.state === 'attack') {
         this.guardEnteredFrame = currentFrame;
       }
     } else {
       this.state = 'idle';
-      this.vx *= 0.72;
+      this.vx *= 0.58;
     }
 
     this.applyPhysics(false);
@@ -633,10 +651,10 @@ export class Fighter {
   private startForwardDash(events: FighterActionEvents): void {
     this.state = 'dash_fwd';
     this.stateFrame = 0;
-    const bonus = this.element.hasVoltDash ? 1.48 : 1.0;
-    this.vx = this.facing * 12.6 * bonus;
-    this.invulnFrames = this.element.hasVoltDash ? 8 : 4;
-    this.afterimageTimer = this.element.hasVoltDash ? 16 : 10;
+    const bonus = this.element.hasVoltDash ? 1.44 : 1.0;
+    this.vx = this.facing * 16.5 * bonus;
+    this.invulnFrames = this.element.hasVoltDash ? 9 : 5;
+    this.afterimageTimer = this.element.hasVoltDash ? 18 : 13;
     if (this.element.hasVoltDash) events.voltDashTriggered = true;
   }
 
@@ -644,21 +662,21 @@ export class Fighter {
     this.state = 'back_handspring';
     this.stateFrame = 0;
     const bonus = this.element.hasVoltDash ? 1.4 : 1.0;
-    this.vx = -this.facing * 12.2 * bonus;
-    this.invulnFrames = this.element.hasVoltDash ? 12 : 9;
-    this.afterimageTimer = this.element.hasVoltDash ? 18 : 12;
+    this.vx = -this.facing * 16.0 * bonus;
+    this.invulnFrames = this.element.hasVoltDash ? 13 : 10;
+    this.afterimageTimer = this.element.hasVoltDash ? 18 : 13;
     if (this.element.hasVoltDash) events.voltDashTriggered = true;
   }
 
   private triggerWallJump(wall: -1 | 1, events: FighterActionEvents): void {
     this.state = 'wall_jump';
     this.stateFrame = 0;
-    const bonus = this.element.wallJumpBonus; // 1.35x for Air's Zephyr Vault
+    const bonus = this.element.wallJumpBonus;
     this.facing = wall === -1 ? 1 : -1;
-    this.vx = this.facing * 10.6 * bonus;
-    this.vy = -17.4 * bonus;
-    this.invulnFrames = 12;
-    this.afterimageTimer = 20;
+    this.vx = this.facing * 13.8 * bonus;
+    this.vy = -21.2 * bonus;
+    this.invulnFrames = 13;
+    this.afterimageTimer = 22;
     events.wallJumpTriggered = true;
   }
 

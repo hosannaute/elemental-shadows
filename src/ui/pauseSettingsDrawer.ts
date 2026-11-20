@@ -126,6 +126,7 @@ export class PauseSettingsDrawer {
       { action: 'weapon', label: 'Weapon (W)' },
       { action: 'magic', label: 'Elemental Magic' },
       { action: 'evade', label: 'Roll / Back Handspring' },
+      { action: 'block', label: 'Block / Perfect Parry' },
     ];
 
     return `

@@ -55,6 +55,8 @@ export class ElementalShadowsEngine {
 
   private simFrame = 0;
   private hitstopFrames = 0;
+  private slowMoFrames = 0;
+  private slowMoTick = 0;
   private accumulator = 0;
   private lastRafTime = 0;
   private renderAccumulator = 0;
@@ -211,6 +213,13 @@ export class ElementalShadowsEngine {
 
   private stepSimulation(): void {
     this.simFrame += 1;
+
+    if (this.slowMoFrames > 0) {
+      this.slowMoFrames -= 1;
+      this.slowMoTick += 1;
+      this.vfx.update(this.projectiles, this.hazards);
+      if (this.slowMoTick % 3 !== 0) return;
+    }
 
     // Ambient elemental aura particles
     if (this.simFrame % 7 === 0) {
@@ -530,7 +539,7 @@ export class ElementalShadowsEngine {
       !hit.isThrow &&
       defender.isGroundedOnFloor() &&
       (defender.canActNeutral() || defender.isBlocking()) &&
-      relDef.back;
+      (relDef.back || defender.input.isHeld('block'));
 
     const guardedCorrectHeight =
       holdingGuard &&
@@ -613,11 +622,15 @@ export class ElementalShadowsEngine {
       this.match.showBanner('ENLIGHTENMENT!', 'SECOND WIND +25% HP', '#ffe57f', 70);
       this.audio.playGong();
       this.triggerHitStop(5);
+      this.slowMoFrames = 26;
       this.camera.addShake(16);
       return;
     }
 
     defender.hp = Math.max(0, nextHp);
+    if (defender.hp <= 0) {
+      this.slowMoFrames = 38;
+    }
     defender.flashFrames = 7;
     attacker.magic = Math.min(100, attacker.magic + hit.magicGain);
     defender.magic = Math.min(100, defender.magic + Math.round(hit.magicGain * 0.65));

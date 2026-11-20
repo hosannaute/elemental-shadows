@@ -6,6 +6,7 @@ export type ImpactFeedbackLevel = 0 | 0.5 | 1;
 export type MatchFormat = 'bo3' | 'bo5' | 'endless';
 export type AiTier = 'novice' | 'warrior' | 'master' | 'shadow';
 export type FpsMode = 60 | 30;
+export type CombatTempo = 'fast' | 'classic';
 
 export interface KeyBindings {
   left: string;
@@ -17,6 +18,7 @@ export interface KeyBindings {
   weapon: string;
   magic: string;
   evade: string;
+  block: string;
   pause: string;
 }
 
@@ -26,6 +28,7 @@ export interface GameSettings {
   buttonScale: number;
   buttonOpacity: number;
   inputBufferFrames: InputBufferPreset;
+  combatTempo: CombatTempo;
   keyBindings: KeyBindings;
   vfxQuality: VfxQuality;
   impactFeedback: ImpactFeedbackLevel;
@@ -48,6 +51,7 @@ export const DEFAULT_KEY_BINDINGS: KeyBindings = {
   weapon: 'KeyL',
   magic: 'KeyU',
   evade: 'KeyI',
+  block: 'KeyB',
   pause: 'Escape',
 };
 
@@ -55,8 +59,9 @@ export const DEFAULT_SETTINGS: GameSettings = {
   inputMode: 'auto',
   virtualStickMode: 'fixed',
   buttonScale: 1.0,
-  buttonOpacity: 0.82,
+  buttonOpacity: 0.88,
   inputBufferFrames: 8,
+  combatTempo: 'fast',
   keyBindings: { ...DEFAULT_KEY_BINDINGS },
   vfxQuality: 'high',
   impactFeedback: 1,

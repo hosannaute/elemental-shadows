@@ -1,4 +1,4 @@
-export type ActionButton = 'punch' | 'kick' | 'weapon' | 'magic' | 'evade';
+export type ActionButton = 'punch' | 'kick' | 'weapon' | 'magic' | 'evade' | 'block';
 
 export interface DirectionInput {
   x: -1 | 0 | 1; // world X: -1 left, +1 right
