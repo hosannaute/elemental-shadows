@@ -230,63 +230,93 @@ export class FighterSkeletonRig {
 
     // Pelvis joint bridge (seamless hips & martial arts hakama skirt)
     replaceMesh(this.pelvis, (g) => {
-      g.poly([-15, -6, 15, -6, 19, 14, -19, 14]).fill({ color: bodyFill });
+      g.poly([-15, -6, 15, -6, 19, 15, -19, 15]).fill({ color: bodyFill });
     });
 
-    // Torso (unified solid pitch-black muscular martial arts V-taper + shoulder pauldrons)
+    // Torso (realistic Bézier-sculpted athletic human torso, chest, back, neck)
     replaceMesh(this.torso, (g) => {
-      g.poly([
-        -13, 4,
-        -16, -24,
-        -22, -48,
-        -14, -58,
-        14, -58,
-        24, -46,
-        17, -22,
-        13, 4,
-      ]).fill({ color: bodyFill });
-      // Neck bridge
-      g.roundRect(-6, -66, 12, 14, 4).fill({ color: bodyFill });
+      g.moveTo(-12, 4)
+        .bezierCurveTo(-15, -10, -17, -26, -21, -46)
+        .quadraticCurveTo(-22, -57, -10, -60)
+        .lineTo(-6, -68)
+        .lineTo(6, -68)
+        .quadraticCurveTo(17, -60, 21, -48)
+        .bezierCurveTo(23, -34, 17, -18, 13, 4)
+        .closePath()
+        .fill({ color: bodyFill });
     });
 
-    // Head (sculpted ninja cowl + glowing martial arts eyes)
+    // Head (realistic human cranium, brow ridge, nose, chin, jawline, headband knot & eyes)
     replaceMesh(this.head, (g) => {
-      g.ellipse(0, -13, 13.5, 15.5).fill({ color: bodyFill });
-      // Subtle chin/brow contour
-      g.poly([6, -20, 14, -12, 9, -2, 0, -4]).fill({ color: bodyFill });
-      // Glowing elemental eye slit
-      g.poly([4, -15, 12, -14, 7, -11]).fill({ color: core, alpha: 0.98 });
+      g.moveTo(-12, -14)
+        .bezierCurveTo(-13, -27, -4, -31, 4, -29)
+        .quadraticCurveTo(12, -26, 13, -19)
+        .lineTo(15.5, -14)
+        .lineTo(13, -11)
+        .lineTo(13.5, -7)
+        .quadraticCurveTo(8, -2, -2, -3)
+        .quadraticCurveTo(-11, -5, -12, -14)
+        .closePath()
+        .fill({ color: bodyFill });
+      g.ellipse(-12, -21, 3.5, 4.5).fill({ color: bodyFill });
+      g.poly([4, -18.5, 11.5, -17.5, 7, -15]).fill({ color: core, alpha: 0.98 });
     });
 
-    // Seamless overlapping rounded joint limbs (GlowFilter draws the continuous outer rim!)
+    // Realistic muscular arms (deltoid -> curved bicep -> tapered forearm -> sculpted fist)
     const drawArmUpper = (g: Graphics): void => {
-      g.circle(0, 0, 8.5).fill({ color: bodyFill });
-      g.poly([-8, 0, 8.5, 0, 6.5, 33, -6, 33]).fill({ color: bodyFill });
-      g.circle(0, 32, 6.5).fill({ color: bodyFill });
+      g.circle(0, 0, 8.2).fill({ color: bodyFill });
+      g.moveTo(-7.8, 0)
+        .bezierCurveTo(-9.5, 11, -8, 22, -5.8, 32)
+        .lineTo(6.2, 32)
+        .bezierCurveTo(9.5, 20, 9.5, 10, 7.8, 0)
+        .closePath()
+        .fill({ color: bodyFill });
+      g.circle(0, 32, 6).fill({ color: bodyFill });
     };
     const drawArmLower = (g: Graphics): void => {
-      g.circle(0, 0, 6.5).fill({ color: bodyFill });
-      g.poly([-6.5, 0, 6.5, 0, 5, 31, -4.5, 31]).fill({ color: bodyFill });
-      g.circle(0, 31, 6).fill({ color: bodyFill });
+      g.circle(0, 0, 6).fill({ color: bodyFill });
+      g.moveTo(-6, 0)
+        .bezierCurveTo(-7.5, 8, -5.8, 20, -3.8, 30)
+        .lineTo(4.2, 30)
+        .bezierCurveTo(6.8, 18, 7.5, 8, 6, 0)
+        .closePath()
+        .fill({ color: bodyFill });
+      g.ellipse(1, 33, 5.8, 6.6).fill({ color: bodyFill });
     };
     replaceMesh(this.fShoulder, drawArmUpper);
     replaceMesh(this.bShoulder, drawArmUpper);
     replaceMesh(this.fElbow, drawArmLower);
     replaceMesh(this.bElbow, drawArmLower);
 
-    // Legs (wide martial arts hakama thighs + wrapped shins + seamless knees)
+    // Realistic martial arts legs (hakama thighs -> sculpted curved calves -> arched tabi feet)
     const drawThigh = (g: Graphics): void => {
       g.circle(0, 0, 11).fill({ color: bodyFill });
-      g.poly([-12, 0, 13, 0, 11, 43, -9, 43]).fill({ color: bodyFill });
-      g.circle(0, 43, 8.5).fill({ color: bodyFill });
+      g.moveTo(-12.5, 0)
+        .bezierCurveTo(-15.5, 14, -13, 30, -8.5, 43)
+        .lineTo(9.5, 43)
+        .bezierCurveTo(15, 28, 15.5, 14, 12, 0)
+        .closePath()
+        .fill({ color: bodyFill });
+      g.circle(0, 43, 8).fill({ color: bodyFill });
     };
     const drawShin = (g: Graphics): void => {
-      g.circle(0, 0, 8.5).fill({ color: bodyFill });
-      g.poly([-8.5, 0, 8.5, 0, 5.5, 44, -5.5, 44]).fill({ color: bodyFill });
-      g.circle(0, 43, 5.5).fill({ color: bodyFill });
+      g.circle(0, 0, 8).fill({ color: bodyFill });
+      g.moveTo(-7.5, 0)
+        .bezierCurveTo(-11.5, 12, -9.5, 25, -4.5, 43)
+        .lineTo(4.8, 43)
+        .bezierCurveTo(7.2, 26, 8.2, 12, 7.5, 0)
+        .closePath()
+        .fill({ color: bodyFill });
+      g.circle(0, 43, 4.8).fill({ color: bodyFill });
     };
     const drawFoot = (g: Graphics): void => {
-      g.poly([-6, -3, 17, 2, 18, 8, -7, 8]).fill({ color: bodyFill });
+      g.moveTo(-6, -2)
+        .quadraticCurveTo(6, -1, 18, 4)
+        .quadraticCurveTo(21, 7.5, 16, 8.5)
+        .quadraticCurveTo(5, 7, -6.5, 8)
+        .quadraticCurveTo(-8, 4, -6, -2)
+        .closePath()
+        .fill({ color: bodyFill });
     };
     replaceMesh(this.fHip, drawThigh);
     replaceMesh(this.bHip, drawThigh);
