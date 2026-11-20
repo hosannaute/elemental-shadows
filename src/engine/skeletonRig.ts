@@ -7,6 +7,7 @@ import type { VfxQuality } from '../state/settingsStore';
 
 interface RigPose {
   pelvisY: number; // offset from foot ground (negative = higher)
+  pelvisX: number; // horizontal shift in local facing coords
   pelvisRot: number;
   torsoRot: number;
   headRot: number;
@@ -24,10 +25,13 @@ interface RigPose {
   // Back leg
   bHip: number;
   bKnee: number;
+  squashX: number;
+  squashY: number;
 }
 
 const NEUTRAL_POSE: RigPose = {
   pelvisY: -86,
+  pelvisX: 0,
   pelvisRot: 0.04,
   torsoRot: 0.14,
   headRot: -0.08,
@@ -41,35 +45,83 @@ const NEUTRAL_POSE: RigPose = {
   fKnee: 0.46,
   bHip: 0.42,
   bKnee: 0.44,
+  squashX: 1,
+  squashY: 1,
 };
+
+type EaseName = 'lin' | 'io' | 'o' | 'i' | 'snap';
+
+const EASE: Record<EaseName, (t: number) => number> = {
+  lin: (t) => t,
+  io: (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2),
+  o: (t) => 1 - Math.pow(1 - t, 3),
+  i: (t) => t * t * t,
+  snap: (t) => 1 - Math.pow(1 - t, 5),
+};
+
+type KeyframeEntry = [number, Partial<RigPose>, EaseName];
+
+function K(t: number, pose: Partial<RigPose>, ease: EaseName = 'io'): KeyframeEntry {
+  return [t, pose, ease];
+}
 
 function lerp(a: number, b: number, t: number): number {
   return a + (b - a) * t;
 }
 
-function cubicEaseOut(t: number): number {
-  const c = Math.max(0, Math.min(1, t));
-  return 1 - Math.pow(1 - c, 3);
+function mixPose(a: RigPose, b: RigPose, t: number): RigPose {
+  return {
+    pelvisY: lerp(a.pelvisY, b.pelvisY, t),
+    pelvisX: lerp(a.pelvisX, b.pelvisX, t),
+    pelvisRot: lerp(a.pelvisRot, b.pelvisRot, t),
+    torsoRot: lerp(a.torsoRot, b.torsoRot, t),
+    headRot: lerp(a.headRot, b.headRot, t),
+    fShoulder: lerp(a.fShoulder, b.fShoulder, t),
+    fElbow: lerp(a.fElbow, b.fElbow, t),
+    fWeaponRot: lerp(a.fWeaponRot, b.fWeaponRot, t),
+    bShoulder: lerp(a.bShoulder, b.bShoulder, t),
+    bElbow: lerp(a.bElbow, b.bElbow, t),
+    bWeaponRot: lerp(a.bWeaponRot, b.bWeaponRot, t),
+    fHip: lerp(a.fHip, b.fHip, t),
+    fKnee: lerp(a.fKnee, b.fKnee, t),
+    bHip: lerp(a.bHip, b.bHip, t),
+    bKnee: lerp(a.bKnee, b.bKnee, t),
+    squashX: lerp(a.squashX, b.squashX, t),
+    squashY: lerp(a.squashY, b.squashY, t),
+  };
 }
 
-function blendPose(a: RigPose, b: RigPose, t: number): RigPose {
-  const e = cubicEaseOut(t);
-  return {
-    pelvisY: lerp(a.pelvisY, b.pelvisY, e),
-    pelvisRot: lerp(a.pelvisRot, b.pelvisRot, e),
-    torsoRot: lerp(a.torsoRot, b.torsoRot, e),
-    headRot: lerp(a.headRot, b.headRot, e),
-    fShoulder: lerp(a.fShoulder, b.fShoulder, e),
-    fElbow: lerp(a.fElbow, b.fElbow, e),
-    fWeaponRot: lerp(a.fWeaponRot, b.fWeaponRot, e),
-    bShoulder: lerp(a.bShoulder, b.bShoulder, e),
-    bElbow: lerp(a.bElbow, b.bElbow, e),
-    bWeaponRot: lerp(a.bWeaponRot, b.bWeaponRot, e),
-    fHip: lerp(a.fHip, b.fHip, e),
-    fKnee: lerp(a.fKnee, b.fKnee, e),
-    bHip: lerp(a.bHip, b.bHip, e),
-    bKnee: lerp(a.bKnee, b.bKnee, e),
-  };
+function sampleClip(
+  keys: KeyframeEntry[],
+  t: number,
+  from: RigPose,
+  base: RigPose,
+  endT: number
+): RigPose {
+  let prevT = 0;
+  let prevP = from;
+  const all = [...keys, K(endT, {}, 'io')];
+  for (let i = 0; i < all.length; i++) {
+    const [kt, kp, ke] = all[i];
+    if (kt > endT && i < all.length - 1) continue;
+    const target: RigPose = { ...base, ...kp };
+    if (t <= kt) {
+      const u = kt > prevT ? (t - prevT) / (kt - prevT) : 1;
+      const eased = EASE[ke](Math.max(0, Math.min(1, u)));
+      return mixPose(prevP, target, eased);
+    }
+    prevT = kt;
+    prevP = target;
+  }
+  return { ...prevP };
+}
+
+interface FootIKTrack {
+  w: number;
+  wx: number | null;
+  lock: boolean;
+  step: number;
+  rel: number;
 }
 
 interface AfterimageGhost {
@@ -114,6 +166,18 @@ export class FighterSkeletonRig {
   public readonly limbTrail: RibbonTrail;
 
   private currentPose: RigPose = { ...NEUTRAL_POSE };
+  private animKey = '';
+  private animFrom: RigPose = { ...NEUTRAL_POSE };
+  private animSf = 0;
+  private walkPhase = 0;
+  private lastAnimX = 0;
+  private wasInAir = false;
+  private landTimer = 0;
+  private feet: [FootIKTrack, FootIKTrack] = [
+    { w: 0, wx: null, lock: false, step: 0, rel: 0 },
+    { w: 0, wx: null, lock: false, step: 0, rel: 0 },
+  ];
+  private feetFacing: 1 | -1 = 1;
   private ponytailAngle = 0;
   private ponytailVel = 0;
   private sashAngle = 0;
@@ -435,11 +499,20 @@ export class FighterSkeletonRig {
     this.markerContainer.y += (targetMarkerY - this.markerContainer.y) * 0.28;
 
     if (!freezeSkeleton) {
-      const targetPose = this.computeTargetPose(fighter);
-      const blendRate = fighter.state === 'attack' ? 0.56 : 0.32;
-      this.currentPose = blendPose(this.currentPose, targetPose, blendRate);
-      this.applyPose(this.currentPose);
+      const drawPose = this.stepAnimation(fighter);
+      this.applyPose(drawPose, fighter.facing, 0);
       this.updateSecondaryMotion(fighter);
+    } else {
+      const struck =
+        fighter.stateFrame < 3 &&
+        (fighter.state === 'hitstun' ||
+          fighter.state === 'knockdown_air' ||
+          fighter.state === 'block_high' ||
+          fighter.state === 'block_low');
+      const jitterX = struck
+        ? (Math.random() - 0.5) * (fighter.state === 'hitstun' || fighter.state === 'knockdown_air' ? 7 : 4)
+        : 0;
+      this.bodyContainer.x = jitterX;
     }
 
     // Update trailing weapon & limb ribbons
@@ -529,8 +602,225 @@ export class FighterSkeletonRig {
     return { x: pt.x, y: pt.y };
   }
 
-  private applyPose(p: RigPose): void {
-    this.pelvis.position.set(0, p.pelvisY);
+  private stepAnimation(fighter: Fighter): RigPose {
+    const dx = (fighter.x - this.lastAnimX) * fighter.facing;
+    this.lastAnimX = fighter.x;
+    if (fighter.state === 'walk_fwd' || fighter.state === 'walk_back') {
+      this.walkPhase += (Math.abs(dx) * Math.PI * 2) / 116;
+    }
+
+    const key =
+      fighter.state === 'attack'
+        ? `atk:${fighter.currentMove?.id ?? 'jab'}:${fighter.castArtIdx}`
+        : fighter.state;
+    if (key !== this.animKey || fighter.stateFrame < this.animSf) {
+      this.animKey = key;
+      this.animFrom = { ...this.currentPose };
+    }
+    this.animSf = fighter.stateFrame;
+
+    let target: RigPose;
+    let isClip = false;
+    if (fighter.state === 'attack' && fighter.currentMove) {
+      isClip = true;
+      const sf = fighter.stateFrame;
+      const ms = Math.max(1, fighter.moveStartupFrames);
+      const ma = Math.max(1, fighter.moveActiveFrames);
+      const mr = Math.max(1, fighter.moveRecoveryFrames + fighter.freezeWeaponFrames);
+      const phase =
+        sf < ms ? sf / ms : sf < ms + ma ? 1 + (sf - ms) / ma : Math.min(3, 2 + (sf - ms - ma) / mr);
+      const windPose = this.computeAttackPoseForPhase(fighter, 'windup');
+      const strikePose = this.computeAttackPoseForPhase(fighter, 'active');
+      const overshootPose: Partial<RigPose> = {
+        ...strikePose,
+        pelvisX: strikePose.pelvisX + 3,
+        torsoRot: strikePose.torsoRot + (strikePose.torsoRot >= 0 ? 0.05 : -0.05),
+      };
+      const keys: KeyframeEntry[] = [
+        K(0.65, windPose, 'o'),
+        K(1.0, strikePose, 'snap'),
+        K(1.45, overshootPose, 'o'),
+        K(2.0, strikePose, 'io'),
+      ];
+      target = sampleClip(keys, phase, this.animFrom, NEUTRAL_POSE, 3);
+    } else if (fighter.state === 'hitstun') {
+      isClip = true;
+      const dur = Math.max(8, fighter.stunFrames + fighter.stateFrame);
+      const keys: KeyframeEntry[] = [
+        K(2, { pelvisY: -82, pelvisX: -8, torsoRot: -0.58, headRot: -0.65, fShoulder: -0.35, fElbow: -0.7, bShoulder: 0.9 }, 'snap'),
+        K(6, { pelvisX: -10, torsoRot: -0.46, headRot: -0.42 }, 'o'),
+      ];
+      target = sampleClip(keys, fighter.stateFrame, this.animFrom, NEUTRAL_POSE, dur);
+    } else if (fighter.state === 'dash_fwd') {
+      isClip = true;
+      const keys: KeyframeEntry[] = [
+        K(2, { pelvisY: -72, torsoRot: 0.68, headRot: -0.36, fHip: -0.95, fKnee: 0.98, bHip: 0.95, bKnee: 0.3, fShoulder: -0.4, bShoulder: 1.1, squashX: 1.06, squashY: 0.94 }, 'snap'),
+        K(8, { pelvisY: -78, torsoRot: 0.5, headRot: -0.25, fHip: -0.85, fKnee: 0.9, bHip: 0.85, bKnee: 0.35 }, 'o'),
+      ];
+      target = sampleClip(keys, fighter.stateFrame, this.animFrom, NEUTRAL_POSE, 12);
+    } else {
+      target = this.computeTargetPose(fighter);
+    }
+
+    const coreRate = isClip ? 1 : 0.38;
+    this.currentPose = {
+      pelvisY: lerp(this.currentPose.pelvisY, target.pelvisY, coreRate),
+      pelvisX: lerp(this.currentPose.pelvisX, target.pelvisX, coreRate),
+      pelvisRot: lerp(this.currentPose.pelvisRot, target.pelvisRot, coreRate),
+      torsoRot: lerp(this.currentPose.torsoRot, target.torsoRot, coreRate),
+      headRot: lerp(this.currentPose.headRot, target.headRot, isClip ? 0.48 : 0.3),
+      fShoulder: lerp(this.currentPose.fShoulder, target.fShoulder, isClip ? 0.85 : 0.38),
+      fElbow: lerp(this.currentPose.fElbow, target.fElbow, isClip ? 0.85 : 0.38),
+      fWeaponRot: lerp(this.currentPose.fWeaponRot, target.fWeaponRot, isClip ? 0.72 : 0.38),
+      bShoulder: lerp(this.currentPose.bShoulder, target.bShoulder, isClip ? 0.62 : 0.38),
+      bElbow: lerp(this.currentPose.bElbow, target.bElbow, isClip ? 0.62 : 0.38),
+      bWeaponRot: lerp(this.currentPose.bWeaponRot, target.bWeaponRot, isClip ? 0.68 : 0.38),
+      fHip: lerp(this.currentPose.fHip, target.fHip, coreRate),
+      fKnee: lerp(this.currentPose.fKnee, target.fKnee, coreRate),
+      bHip: lerp(this.currentPose.bHip, target.bHip, coreRate),
+      bKnee: lerp(this.currentPose.bKnee, target.bKnee, coreRate),
+      squashX: lerp(this.currentPose.squashX, target.squashX, coreRate),
+      squashY: lerp(this.currentPose.squashY, target.squashY, coreRate),
+    };
+
+    const inAir = !fighter.isGroundedOnFloor();
+    if (
+      this.wasInAir &&
+      !inAir &&
+      fighter.state !== 'knockdown_air' &&
+      fighter.state !== 'grounded' &&
+      fighter.state !== 'ko'
+    ) {
+      this.landTimer = 8;
+    }
+    this.wasInAir = inAir;
+
+    const drawPose: RigPose = { ...this.currentPose };
+    if (this.landTimer > 0) {
+      const w = EASE.o(this.landTimer / 8);
+      this.landTimer -= 1;
+      drawPose.pelvisY += 13 * w;
+      drawPose.torsoRot += 0.11 * w;
+      drawPose.squashY -= 0.06 * w;
+      drawPose.squashX += 0.05 * w;
+    }
+    this.applyFootIK(fighter, drawPose);
+    return drawPose;
+  }
+
+  private applyFootIK(fighter: Fighter, p: RigPose): void {
+    const LEG = 43;
+    const sc = 1.18 * p.squashX;
+    if (this.feetFacing !== fighter.facing) {
+      this.feet = [
+        { w: 0, wx: null, lock: false, step: 0, rel: 0 },
+        { w: 0, wx: null, lock: false, step: 0, rel: 0 },
+      ];
+      this.feetFacing = fighter.facing;
+    }
+    const plantStates = new Set([
+      'idle',
+      'walk_fwd',
+      'walk_back',
+      'crouch',
+      'block_high',
+      'block_low',
+      'hitstun',
+      'victory',
+      'attack',
+      'dash_fwd',
+    ]);
+    const grounded =
+      fighter.isGroundedOnFloor() && plantStates.has(fighter.state) && Math.abs(p.pelvisRot) < 0.5;
+    const moving =
+      fighter.state === 'walk_fwd' ||
+      fighter.state === 'walk_back' ||
+      fighter.state === 'dash_fwd' ||
+      Math.abs(fighter.vx) > 1.6;
+    const toWorld = (lx: number): number => fighter.x + lx * fighter.facing * sc;
+    const toLocal = (wx: number): number => (wx - fighter.x) / (fighter.facing * sc);
+    const legFK = (front: boolean): { hx: number; hy: number; ax: number; ay: number } => {
+      const c = Math.cos(p.pelvisRot);
+      const s = Math.sin(p.pelvisRot);
+      const ox = front ? 5 : -4;
+      const oy = 4;
+      const hx = p.pelvisX + ox * c - oy * s;
+      const hy = p.pelvisY + ox * s + oy * c;
+      const a1 = p.pelvisRot + (front ? p.fHip : p.bHip);
+      const a2 = a1 + (front ? p.fKnee : p.bKnee);
+      return {
+        hx,
+        hy,
+        ax: hx - LEG * Math.sin(a1) - LEG * Math.sin(a2),
+        ay: hy + LEG * Math.cos(a1) + LEG * Math.cos(a2),
+      };
+    };
+    const solveLeg = (front: boolean, tx: number, ty: number): void => {
+      const fk = legFK(front);
+      let dx = tx - fk.hx;
+      let dy = ty - fk.hy;
+      let d = Math.hypot(dx, dy);
+      const maxD = LEG * 2 - 0.4;
+      if (d > maxD) {
+        dx *= maxD / d;
+        dy *= maxD / d;
+        d = maxD;
+      }
+      d = Math.max(10, d);
+      const phi = Math.atan2(-dx, dy);
+      const alpha = Math.acos(Math.min(1, d / (2 * LEG)));
+      if (front) {
+        p.fHip = phi - alpha - p.pelvisRot;
+        p.fKnee = 2 * alpha;
+      } else {
+        p.bHip = phi - alpha - p.pelvisRot;
+        p.bKnee = 2 * alpha;
+      }
+    };
+
+    ([false, true] as const).forEach((front, i) => {
+      const ft = this.feet[i];
+      const fk = legFK(front);
+      const fkWx = toWorld(fk.ax);
+      const eligible = grounded && fk.ay > -14;
+      ft.w += ((eligible ? 1 : 0) - ft.w) * 0.5;
+      if (ft.wx === null) ft.wx = fkWx;
+      if (eligible && !moving) {
+        if (!ft.lock) {
+          ft.lock = true;
+          ft.rel = 0;
+        }
+        const err = fkWx - ft.wx;
+        if (ft.step > 0 || Math.abs(err) > 30) {
+          ft.step = 1;
+          ft.wx += err * 0.42;
+          if (Math.abs(err) < 2) ft.step = 0;
+        }
+      } else {
+        if (ft.lock) {
+          ft.lock = false;
+          ft.rel = 4;
+          ft.step = 0;
+        }
+        if (ft.rel > 0) {
+          ft.rel -= 1;
+          ft.wx += (fkWx - ft.wx) * 0.55;
+        } else {
+          ft.wx = fkWx;
+        }
+      }
+      if (ft.w < 0.02) return;
+      const lift = ft.step > 0 ? -Math.min(10, Math.abs(fkWx - ft.wx) * 0.3) : 0;
+      const tx = toLocal(ft.wx);
+      const ty = eligible ? lift : fk.ay;
+      solveLeg(front, fk.ax + (tx - fk.ax) * ft.w, fk.ay + (ty - fk.ay) * ft.w);
+    });
+  }
+
+  private applyPose(p: RigPose, facing: 1 | -1, jitterX: number): void {
+    this.bodyContainer.x = jitterX;
+    this.bodyContainer.scale.set(facing * 1.18 * p.squashX, 1.18 * p.squashY);
+    this.pelvis.position.set(p.pelvisX, p.pelvisY);
     this.pelvis.rotation = p.pelvisRot;
     this.torso.rotation = p.torsoRot;
     this.head.rotation = p.headRot;
@@ -607,10 +897,10 @@ export class FighterSkeletonRig {
           bShoulder: 0.45 - breath * 0.04,
         };
       case 'walk_fwd': {
-        const cyc = Math.sin(f * 0.24);
+        const cyc = Math.sin(this.walkPhase);
         return {
           ...NEUTRAL_POSE,
-          pelvisY: -85 + Math.abs(cyc) * 4,
+          pelvisY: -85 + Math.abs(Math.cos(this.walkPhase)) * 4,
           torsoRot: 0.24,
           fHip: -0.55 + cyc * 0.48,
           fKnee: 0.42 + Math.max(0, -cyc) * 0.45,
@@ -621,10 +911,10 @@ export class FighterSkeletonRig {
         };
       }
       case 'walk_back': {
-        const cyc = Math.sin(f * 0.22);
+        const cyc = Math.sin(this.walkPhase);
         return {
           ...NEUTRAL_POSE,
-          pelvisY: -86 + Math.abs(cyc) * 3,
+          pelvisY: -86 + Math.abs(Math.cos(this.walkPhase)) * 3,
           torsoRot: 0.05,
           fHip: -0.38 - cyc * 0.42,
           fKnee: 0.44 + Math.max(0, cyc) * 0.35,
@@ -659,6 +949,8 @@ export class FighterSkeletonRig {
           fElbow: -0.8,
           bShoulder: 0.85,
           bElbow: -0.95,
+          squashX: fighter.vy < -5 ? 0.96 : 1,
+          squashY: fighter.vy < -5 ? 1.05 : 1,
         };
       case 'wall_jump':
         return {
@@ -839,13 +1131,19 @@ export class FighterSkeletonRig {
   }
 
   private computeAttackPose(fighter: Fighter): RigPose {
-    const move = fighter.currentMove;
-    if (!move) return NEUTRAL_POSE;
-
     const sf = fighter.stateFrame;
     const isWindup = sf < fighter.moveStartupFrames;
     const isActive = sf >= fighter.moveStartupFrames && sf < fighter.moveStartupFrames + fighter.moveActiveFrames;
     const phase = isWindup ? 'windup' : isActive ? 'active' : 'recover';
+    return this.computeAttackPoseForPhase(fighter, phase);
+  }
+
+  private computeAttackPoseForPhase(
+    fighter: Fighter,
+    phase: 'windup' | 'active' | 'recover'
+  ): RigPose {
+    const move = fighter.currentMove;
+    if (!move) return NEUTRAL_POSE;
 
     switch (move.id) {
       case 'jab':
