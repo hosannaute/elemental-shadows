@@ -1,0 +1,11 @@
+{
+  "name": "Elemental Shadows",
+  "short_name": "Elemental Shadows",
+  "description": "2D Liquid-Silhouette Martial Arts Fighting Game built with PixiJS v8.",
+  "start_url": "/",
+  "display": "fullscreen",
+  "orientation": "landscape",
+  "background_color": "#070a12",
+  "theme_color": "#0b1120",
+  "icons": []
+}
