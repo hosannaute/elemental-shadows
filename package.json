@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "sync:android": "cp mobile/index.html android/app/src/main/assets/www/index.html"
+    "sync:android": "mkdir -p android/app/src/main/assets/www/assets && cp mobile/index.html android/app/src/main/assets/www/index.html && cp -r mobile/assets/* android/app/src/main/assets/www/assets/"
   },
   "devDependencies": {
     "typescript": "~7.0.2",

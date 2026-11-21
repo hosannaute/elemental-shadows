@@ -146,7 +146,7 @@
       color: #f6e0b3; font-size: clamp(13px, 1.3vw, 17px); font-weight: 800;
       display: flex; align-items: center; justify-content: center;
       transition: background 0.14s, border-color 0.14s, transform 0.1s;
-      z-index: 15;
+      z-index: 36;
     }
     .pause-corner:hover { background: rgba(24, 34, 56, 0.92); border-color: var(--gold); transform: scale(1.05); }
 
@@ -164,9 +164,13 @@
     .combo.c2 .n { color: #4be3ff; }
 
     .banner {
-      position: absolute; inset: 0; display: flex; flex-direction: column;
+      position: absolute; inset: 0; display: flex; flex-direction: column; z-index: 20;
       align-items: center; justify-content: center; gap: 8px; pointer-events: none;
       background: radial-gradient(circle at center, rgba(6, 10, 20, 0.48) 0%, transparent 65%);
+    }
+    .banner.has-actions {
+      z-index: 34; pointer-events: auto;
+      background: radial-gradient(circle at center, rgba(6, 10, 20, 0.72) 0%, rgba(6, 10, 20, 0.36) 72%, rgba(6, 10, 20, 0.14) 100%);
     }
     .banner.ult-banner {
       justify-content: flex-start; padding-top: 11%; gap: 4px; background: none;
@@ -190,7 +194,8 @@
       font-size: clamp(9.5px, 0.95vw, 12px); padding: 2px 14px; border-radius: 999px;
       background: rgba(6, 10, 18, 0.62);
     }
-    .match-actions { margin-top: 14px; display: flex; gap: 10px; pointer-events: auto; flex-wrap: wrap; justify-content: center; }
+    .match-actions { margin-top: 14px; display: flex; gap: 10px; pointer-events: auto; flex-wrap: wrap; justify-content: center; position: relative; z-index: 35; }
+    .match-actions .pill { min-height: 44px; min-width: 112px; padding: 10px 18px; touch-action: manipulation; }
 
     /* First-fight temporary control tip (auto-hides permanently after first match) */
     .first-tip {
@@ -206,21 +211,21 @@
     /* ===== CLEAN, DYNAMIC SHADOW FIGHT 2 MOBILE TOUCH CONTROLS ===== */
     .touch-layer {
       position: absolute; inset: 0; pointer-events: none; z-index: 12;
-      transition: opacity 0.2s;
+      transition: opacity 0.18s;
     }
     /* Dynamic Left-Half Touch Zone: joystick spawns wherever the player's thumb lands */
     .stick-field {
-      position: absolute; left: 0; top: 24%; bottom: 0; width: 46%;
+      position: absolute; left: 0; top: 28%; bottom: 0; width: 37%;
       pointer-events: auto; touch-action: none;
     }
     .stick-base {
-      position: absolute; left: clamp(22px, 3.5vw, 48px); bottom: clamp(18px, 3.5vh, 36px);
-      width: clamp(90px, 16.5vh, 118px); height: clamp(90px, 16.5vh, 118px);
+      position: absolute; left: clamp(20px, 3.2vw, 44px); bottom: clamp(16px, 3.2vh, 34px);
+      width: clamp(86px, 16vh, 114px); height: clamp(86px, 16vh, 114px);
       border-radius: 9999px;
       background: radial-gradient(circle, rgba(15, 23, 42, 0.18) 0%, rgba(10, 16, 28, 0.48) 100%);
       border: 2px solid rgba(255, 255, 255, 0.24);
       display: flex; align-items: center; justify-content: center;
-      opacity: 0.38; pointer-events: none;
+      opacity: 0.36; pointer-events: none;
       transition: opacity 0.16s ease;
       transform-origin: center center;
     }
@@ -243,19 +248,20 @@
     }
 
     .action-cluster {
-      position: absolute; right: clamp(14px, 2.4vw, 28px); bottom: clamp(14px, 2.6vh, 26px);
-      pointer-events: auto;
+      position: absolute; right: clamp(12px, 2vw, 24px); bottom: clamp(12px, 2.2vh, 22px);
+      pointer-events: none;
       display: flex; flex-direction: column; align-items: flex-end;
-      gap: clamp(8px, 1.5vh, 12px);
+      gap: clamp(7px, 1.3vh, 11px);
       transform-origin: bottom right;
     }
-    .action-row { display: flex; align-items: center; justify-content: flex-end; gap: clamp(9px, 1.6vw, 15px); }
-    .action-row.top-row { padding-right: 4px; }
+    .action-row { display: flex; align-items: center; justify-content: flex-end; gap: clamp(8px, 1.4vw, 13px); pointer-events: none; }
+    .action-row .cbtn { pointer-events: auto; }
+    .action-row.top-row { padding-right: 2px; }
     .cbtn {
       position: relative; border-radius: 9999px;
       border: 2px solid rgba(255, 255, 255, 0.34);
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.42);
-      color: #ffffff; opacity: 0.74;
+      color: #ffffff; opacity: 0.76;
       font-family: var(--font-head); font-weight: 800;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
       cursor: pointer; touch-action: none;
@@ -272,13 +278,13 @@
     .b-punch { width: clamp(46px, 9.6vh, 62px); height: clamp(46px, 9.6vh, 62px); background: radial-gradient(circle at 35% 30%, rgba(239,68,68,0.88), rgba(153,27,27,0.88)); }
     .b-kick { width: clamp(46px, 9.6vh, 62px); height: clamp(46px, 9.6vh, 62px); background: radial-gradient(circle at 35% 30%, rgba(245,158,11,0.88), rgba(180,83,9,0.88)); }
     .b-weapon { width: clamp(48px, 10vh, 64px); height: clamp(48px, 10vh, 64px); background: radial-gradient(circle at 35% 30%, rgba(14,165,233,0.88), rgba(3,105,161,0.88)); }
-    .b-block { width: clamp(38px, 8vh, 50px); height: clamp(38px, 8vh, 50px); background: radial-gradient(circle at 35% 30%, rgba(100,116,139,0.82), rgba(30,41,59,0.86)); }
-    .b-evade { width: clamp(38px, 8vh, 50px); height: clamp(38px, 8vh, 50px); background: radial-gradient(circle at 35% 30%, rgba(51,65,85,0.82), rgba(15,23,42,0.86)); }
-    .b-grab { width: clamp(38px, 8vh, 50px); height: clamp(38px, 8vh, 50px); background: radial-gradient(circle at 35% 30%, rgba(139,92,246,0.84), rgba(76,29,149,0.88)); }
+    .b-block { width: clamp(36px, 7.6vh, 48px); height: clamp(36px, 7.6vh, 48px); background: radial-gradient(circle at 35% 30%, rgba(100,116,139,0.82), rgba(30,41,59,0.86)); }
+    .b-evade { width: clamp(36px, 7.6vh, 48px); height: clamp(36px, 7.6vh, 48px); background: radial-gradient(circle at 35% 30%, rgba(51,65,85,0.82), rgba(15,23,42,0.86)); }
+    .b-grab { width: clamp(36px, 7.6vh, 48px); height: clamp(36px, 7.6vh, 48px); background: radial-gradient(circle at 35% 30%, rgba(139,92,246,0.84), rgba(76,29,149,0.88)); }
     .b-avatar {
-      width: clamp(36px, 7.6vh, 48px); height: clamp(36px, 7.6vh, 48px);
+      width: clamp(34px, 7vh, 44px); height: clamp(34px, 7vh, 44px);
       background: radial-gradient(circle at 35% 30%, rgba(250,204,21,0.9), rgba(180,83,9,0.92));
-      border-color: #fef08a; color: #160902;
+      border-color: #fef08a; color: #160902; margin-right: 4px;
     }
     .b-evade svg, .b-block svg, .b-grab svg { width: 42%; height: 42%; }
     .b-magic {
@@ -467,12 +473,16 @@
     canvas#map-canvas { width: 100%; height: 100%; display: block; cursor: pointer; }
     .map-detail {
       background: rgba(9, 14, 25, 0.88); border: 1px solid var(--ink-border);
-      border-radius: 12px; padding: 16px; display: flex; flex-direction: column; justify-content: space-between; gap: 12px;
+      border-radius: 12px; padding: 14px 16px; display: flex; flex-direction: column; justify-content: space-between; gap: 10px;
+      min-height: 0; overflow-y: auto; scrollbar-width: thin;
     }
+    .el-strip { display: flex; gap: 6px; align-items: center; overflow-x: auto; flex: 1; min-width: 0; scrollbar-width: none; }
+    .el-strip::-webkit-scrollbar { display: none; }
+    .el-strip .pill { white-space: nowrap; flex-shrink: 0; padding: 4px 10px; font-size: 11px; min-height: 0; }
     .md-crest {
       width: 56px; height: 56px; border-radius: 50%; border: 2px solid var(--accent);
       display: flex; align-items: center; justify-content: center; padding: 10px;
-      background: rgba(6, 10, 18, 0.9); color: var(--accent);
+      background: rgba(6, 10, 18, 0.9); color: var(--accent); flex-shrink: 0;
     }
     .md-crest svg { width: 100%; height: 100%; }
     .md-title { font-family: var(--font-head); font-size: 20px; color: #fff; letter-spacing: 0.1em; }
@@ -576,8 +586,15 @@
       .cname { font-size: 11px; }
       .csub { font-size: 9.5px; }
       .pill { padding: 6px 11px; font-size: 11px; }
-      .map-layout { min-height: 220px; }
-      .map-canvas-wrap { min-height: 210px; }
+      .map-layout { min-height: 0; height: 222px; flex: none; gap: 10px; overflow: hidden; grid-template-columns: 1.38fr 1fr; }
+      .map-canvas-wrap { min-height: 140px; height: 100%; }
+      .map-detail { padding: 8px 11px; gap: 5px; height: 100%; }
+      .md-crest { width: 34px; height: 34px; padding: 6px; }
+      .md-title { font-size: 14px; }
+      .md-sub { font-size: 10px; }
+      .md-stars { font-size: 12px; margin: 2px 0; }
+      .md-desc { font-size: 10.5px; line-height: 1.25; }
+      .md-trial { padding: 5px 8px; font-size: 10px; margin-top: 4px !important; }
       .armory-preview-box { min-height: 170px; }
       canvas#armory-preview { height: 170px; }
       .first-tip { display: none; }
@@ -669,11 +686,13 @@
       </div>
 
       <div class="action-cluster" id="action-cluster">
-        <div class="action-row top-row">
+        <div class="action-row">
           <button class="cbtn b-avatar hidden" id="btn-avatar" title="Avatar Element Shift (Q)">
             <span class="l" style="font-size:13px">✦</span>
             <span class="h" style="color:#160902">SHIFT</span>
           </button>
+        </div>
+        <div class="action-row top-row">
           <button class="cbtn b-grab" data-act="grab" id="btn-grab" title="Throw / Air Throw (G)">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11V6a2 2 0 0 0-4 0v4"/><path d="M14 10V4a2 2 0 0 0-4 0v6"/><path d="M10 10.5V6a2 2 0 0 0-4 0v8"/><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.8-5.9-2.2L3.3 17a2 2 0 0 1 2.8-2.8L8 16"/></svg>
             <span class="h">GRAB</span>
@@ -3389,78 +3408,194 @@
   const bgBuf = document.createElement('canvas'); bgBuf.width = W; bgBuf.height = H;
   const bctx = bgBuf.getContext('2d');
 
-  // ===== HIGH-CONTRAST SHADOW FIGHT 2 LUMINOUS DOJO BACKDROP =====
-  function buildBackdrop() {
-    const th = THEMES[themeIdx], g = bctx;
-    const sky = g.createLinearGradient(0, 0, 0, GROUND_Y);
-    sky.addColorStop(0, th.sky[0]); sky.addColorStop(0.28, th.sky[1]); sky.addColorStop(0.58, th.sky[2]); sky.addColorStop(0.84, th.sky[3]); sky.addColorStop(1, th.sky[4]);
-    g.fillStyle = sky; g.fillRect(0, 0, W, GROUND_Y);
-
-    // Giant radiant sun/moon disc glowing behind the arena center
-    const halo = g.createRadialGradient(W * 0.5, 225, 65, W * 0.5, 225, 440);
-    halo.addColorStop(0, th.moonHalo[0]); halo.addColorStop(0.52, th.moonHalo[1]); halo.addColorStop(1, 'rgba(255,255,255,0)');
-    g.fillStyle = halo; g.beginPath(); g.arc(W * 0.5, 225, 440, 0, Math.PI * 2); g.fill();
-    const moon = g.createRadialGradient(W * 0.48, 200, 14, W * 0.5, 225, 165);
-    moon.addColorStop(0, th.moonDisc[0]); moon.addColorStop(0.72, th.moonDisc[1]); moon.addColorStop(1, th.moonDisc[2]);
-    g.fillStyle = moon; g.beginPath(); g.arc(W * 0.5, 225, 158, 0, Math.PI * 2); g.fill();
-
-    // Soft distant mountain ranges in warm mid-tone atmospheric perspective
-    g.fillStyle = th.mtn;
-    g.beginPath(); g.moveTo(0, GROUND_Y); g.lineTo(130, 392); g.lineTo(350, 456); g.lineTo(640, 412); g.lineTo(930, 382); g.lineTo(1160, 444); g.lineTo(W, GROUND_Y); g.fill();
-    g.fillStyle = th.mtnNear; g.globalAlpha = 0.65;
-    g.beginPath(); g.moveTo(0, GROUND_Y); g.lineTo(220, 468); g.lineTo(520, 495); g.lineTo(840, 454); g.lineTo(1090, 488); g.lineTo(W, GROUND_Y); g.fill();
-    g.globalAlpha = 1;
-
-    function drawPagoda(cx, by, sc, col) {
-      g.fillStyle = col; let y = by;
-      for (let i = 0; i < 3; i++) {
-        const pw = (176 - i * 36) * sc, ph = (52 - i * 8) * sc;
-        g.fillRect(cx - pw * 0.34, y - ph, pw * 0.68, ph);
-        g.beginPath(); g.moveTo(cx - pw * 0.64, y - ph + 6 * sc); g.lineTo(cx - pw * 0.42, y - ph - 18 * sc); g.lineTo(cx, y - ph - 28 * sc); g.lineTo(cx + pw * 0.42, y - ph - 18 * sc); g.lineTo(cx + pw * 0.64, y - ph + 6 * sc); g.closePath(); g.fill();
-        y -= ph + 13 * sc;
-      }
-      g.fillRect(cx - 3 * sc, y - 42 * sc, 6 * sc, 42 * sc);
+  // ===== COHESIVE VISUAL PIPELINE: PRELOADED SUMI-E ARTWORK + RICE-PAPER TEXTURE + 8 REALM ARENAS =====
+  const ART = { dojo: new Image(), worldMap: new Image() };
+  let washiPattern = null;
+  function getWashiPattern() {
+    if (washiPattern) return washiPattern;
+    const pc = document.createElement('canvas'); pc.width = 128; pc.height = 128;
+    const pg = pc.getContext('2d');
+    const img = pg.createImageData(128, 128);
+    let seed = 1337;
+    for (let i = 0; i < img.data.length; i += 4) {
+      seed = (seed * 16807) % 2147483647;
+      const v = (seed & 255);
+      img.data[i] = v > 128 ? 255 : 20;
+      img.data[i + 1] = v > 128 ? 244 : 18;
+      img.data[i + 2] = v > 128 ? 225 : 24;
+      img.data[i + 3] = 10;
     }
-    drawPagoda(270, 558, 0.96, th.pagoda); drawPagoda(105, 566, 0.68, th.pagodaFar);
-    drawPagoda(1010, 558, 0.94, th.pagoda); drawPagoda(1178, 566, 0.78, th.pagodaFar);
+    pg.putImageData(img, 0, 0);
+    washiPattern = bctx.createPattern(pc, 'repeat');
+    return washiPattern;
+  }
+  ART.dojo.onload = () => { if (!match.inMenu || match.inMenu) buildBackdrop(); };
+  ART.worldMap.onload = () => { if (!campaignModal.classList.contains('hidden')) drawWorldMapCanvas(); };
+  ART.dojo.src = 'assets/arena_blazing_dojo.webp';
+  ART.worldMap.src = 'assets/world_map.webp';
 
-    // LUMINOUS ATMOSPHERIC MIST BAND RIGHT BEHIND THE FIGHTING PLANE (10:1 silhouette contrast!)
-    const mist = g.createLinearGradient(0, 290, 0, GROUND_Y);
-    mist.addColorStop(0, th.mistBand[0]); mist.addColorStop(0.55, th.mistBand[1]); mist.addColorStop(1, th.mistBand[2]);
-    g.fillStyle = mist; g.fillRect(0, 290, W, GROUND_Y - 290);
+  function getActiveBiome() {
+    if (match.boss && match.boss.hazardId) return match.boss.hazardId;
+    return themeIdx === 0 ? 'blazing_dojo' : themeIdx === 1 ? 'dew_shrine' : 'eclipse_sanctum';
+  }
 
-    // Backlit Shadow Fight 2 Shoji Paper Screen & Wooden Veranda Rail behind fighters
-    g.fillStyle = th.shojiBg; g.fillRect(0, 514, W, 68);
-    g.strokeStyle = th.shojiFrame; g.lineWidth = 2;
-    g.strokeRect(0, 514, W, 68);
-    for (let x = 0; x <= W; x += 64) { g.beginPath(); g.moveTo(x, 514); g.lineTo(x, GROUND_Y); g.stroke(); }
-    g.beginPath(); g.moveTo(0, 548); g.lineTo(W, 548); g.stroke();
-    g.fillStyle = th.shojiFrame; g.fillRect(0, 510, W, 6);
+  function buildBackdrop() {
+    const th = THEMES[themeIdx], g = bctx, biome = getActiveBiome();
+    const usePaintedDojo = (biome === 'blazing_dojo' || biome === 'ember_updraft') && ART.dojo.complete && ART.dojo.naturalWidth > 0;
 
-    // Graceful bamboo stalks & foliage framing ONLY the outer arena edges so center stays 100% bright!
-    g.fillStyle = th.bamboo;
-    [[24, 9], [56, 7], [84, 5], [W - 26, 9], [W - 60, 7], [W - 88, 5]].forEach(([bx, bw]) => {
-      g.fillRect(bx, 0, bw, GROUND_Y);
-      g.fillStyle = th.mistBand[2];
-      for (let ny = 70; ny < GROUND_Y; ny += 92) g.fillRect(bx - 1, ny, bw + 2, 2.5);
-      g.fillStyle = th.bamboo;
-    });
-    // Hanging dojo eaves & subtle corner foliage silhouettes
-    [[72, 118, 86, 26], [122, 198, 62, 20], [W - 76, 118, 86, 26], [W - 126, 202, 62, 20]].forEach(([cx, cy, rx, ry]) => {
-      [[-0.45, 0.1, 0.45, 0.65], [0, -0.2, 0.55, 0.72], [0.45, 0.12, 0.44, 0.62]].forEach(([dx, dy, srx, sry]) => {
-        g.beginPath(); g.ellipse(cx + dx * rx, cy + dy * ry, srx * rx, sry * ry, 0, 0, Math.PI * 2); g.fill();
+    if (usePaintedDojo) {
+      // Composite hand-painted Shadow Fight 2 Blazing Dojo aligned to GROUND_Y = 582!
+      g.drawImage(ART.dojo, 0, 0, W, H);
+      // Softly boost center-band mist luminance behind fighters for 10:1 silhouette contrast
+      const mistBoost = g.createLinearGradient(0, 310, 0, GROUND_Y);
+      mistBoost.addColorStop(0, 'rgba(255, 240, 200, 0)');
+      mistBoost.addColorStop(0.65, 'rgba(255, 240, 200, 0.16)');
+      mistBoost.addColorStop(1, 'rgba(255, 226, 165, 0.24)');
+      g.fillStyle = mistBoost; g.fillRect(0, 310, W, GROUND_Y - 310);
+      // Crisp floor darkening & warm reflection rim aligned cleanly with combat plane y = GROUND_Y
+      const flShade = g.createLinearGradient(0, GROUND_Y - 6, 0, H);
+      flShade.addColorStop(0, 'rgba(20, 12, 6, 0.08)');
+      flShade.addColorStop(0.25, 'rgba(14, 8, 4, 0.45)');
+      flShade.addColorStop(1, 'rgba(6, 4, 3, 0.88)');
+      g.fillStyle = flShade; g.fillRect(0, GROUND_Y - 6, W, H - GROUND_Y + 6);
+      g.strokeStyle = 'rgba(255, 220, 152, 0.35)'; g.lineWidth = 2;
+      g.beginPath(); g.moveTo(0, GROUND_Y); g.lineTo(W, GROUND_Y); g.stroke();
+    } else {
+      // Bespoke Sumi-e Ink Wash Arenas tailored per elemental realm
+      const pal = biome === 'glacier_floor'
+        ? { sky:['#234c6e','#518cb0','#9fd6eb','#d8f3fa','#effbff'], halo:'rgba(210,250,255,0.88)', mtn:'#649ab8', mtn2:'#4b7c99', floor:'#101e29', rim:'rgba(184,244,255,0.68)', glow:'rgba(98,215,245,0.28)', struct:'#376480' }
+        : biome === 'gale_tailwind'
+        ? { sky:['#366978','#649fa8','#a9dad6','#d9f2ee','#f0fbf8'], halo:'rgba(240,255,250,0.86)', mtn:'#67999c', mtn2:'#4f7f85', floor:'#122124', rim:'rgba(176,245,228,0.62)', glow:'rgba(104,225,195,0.24)', struct:'#39656b' }
+        : biome === 'seismic_tremor'
+        ? { sky:['#5e4526','#9b723b','#d6a85c','#f0d492','#faecc2'], halo:'rgba(255,242,200,0.82)', mtn:'#8c673a', mtn2:'#6e4e2a', floor:'#1c150c', rim:'rgba(245,196,112,0.58)', glow:'rgba(214,155,68,0.24)', struct:'#4d361d' }
+        : biome === 'storm_spire'
+        ? { sky:['#19233d','#324770','#6485b0','#a3c0df','#d4e6f8'], halo:'rgba(195,225,255,0.78)', mtn:'#3b5278', mtn2:'#2a3c5c', floor:'#0c111c', rim:'rgba(160,208,255,0.62)', glow:'rgba(96,158,238,0.26)', struct:'#1e2d47' }
+        : biome === 'obsidian_caldera'
+        ? { sky:['#3b1214','#7d241c','#c95428','#f29446','#ffd080'], halo:'rgba(255,205,120,0.84)', mtn:'#57211a', mtn2:'#3c1512', floor:'#140908', rim:'rgba(255,148,68,0.65)', glow:'rgba(255,88,28,0.34)', struct:'#290e0b' }
+        : biome === 'eclipse_sanctum' || biome === 'avatar_convergence'
+        ? { sky:['#2a0a16','#6e1b2c','#b83b3a','#e88054','#ffc48a'], halo:'rgba(255,165,92,0.82)', mtn:'#5c2026', mtn2:'#3d131a', floor:'#13080b', rim:'rgba(255,166,112,0.60)', glow:'rgba(220,76,56,0.32)', struct:'#2e0f15' }
+        : { sky:th.sky, halo:th.moonHalo[0], mtn:th.mtn, mtn2:th.mtnNear, floor:th.floorBase, rim:th.floorRim, glow:th.floorGlow, struct:th.pagoda };
+
+      const sky = g.createLinearGradient(0, 0, 0, GROUND_Y);
+      sky.addColorStop(0, pal.sky[0]); sky.addColorStop(0.28, pal.sky[1]); sky.addColorStop(0.58, pal.sky[2]); sky.addColorStop(0.84, pal.sky[3]); sky.addColorStop(1, pal.sky[4]);
+      g.fillStyle = sky; g.fillRect(0, 0, W, GROUND_Y);
+
+      // Sun / Moon / ECLIPSE Corona Disc
+      const isEclipse = biome === 'eclipse_sanctum' || biome === 'avatar_convergence';
+      const halo = g.createRadialGradient(W * 0.5, 225, 55, W * 0.5, 225, 440);
+      halo.addColorStop(0, pal.halo); halo.addColorStop(0.5, th.moonHalo[1]); halo.addColorStop(1, 'rgba(0,0,0,0)');
+      g.fillStyle = halo; g.beginPath(); g.arc(W * 0.5, 225, 440, 0, Math.PI * 2); g.fill();
+      if (isEclipse) {
+        g.fillStyle = '#ff6a38'; g.beginPath(); g.arc(W * 0.5, 220, 152, 0, Math.PI * 2); g.fill();
+        g.fillStyle = '#07040a'; g.beginPath(); g.arc(W * 0.5, 220, 138, 0, Math.PI * 2); g.fill();
+      } else {
+        const moon = g.createRadialGradient(W * 0.48, 200, 14, W * 0.5, 225, 165);
+        moon.addColorStop(0, '#fffef8'); moon.addColorStop(0.75, pal.sky[4]); moon.addColorStop(1, pal.sky[3]);
+        g.fillStyle = moon; g.beginPath(); g.arc(W * 0.5, 225, 154, 0, Math.PI * 2); g.fill();
+      }
+
+      // Layered Far & Near Ink Mountains (glacial spires vs soft ridges)
+      g.fillStyle = pal.mtn;
+      g.beginPath(); g.moveTo(0, GROUND_Y);
+      if (biome === 'glacier_floor' || biome === 'storm_spire') {
+        g.lineTo(140, 340); g.lineTo(295, 465); g.lineTo(440, 360); g.lineTo(640, 445); g.lineTo(860, 325); g.lineTo(1060, 455); g.lineTo(1190, 355);
+      } else {
+        g.lineTo(130, 392); g.lineTo(350, 456); g.lineTo(640, 412); g.lineTo(930, 382); g.lineTo(1160, 444);
+      }
+      g.lineTo(W, GROUND_Y); g.closePath(); g.fill();
+
+      g.fillStyle = pal.mtn2; g.globalAlpha = 0.72;
+      g.beginPath(); g.moveTo(0, GROUND_Y); g.lineTo(220, 468); g.lineTo(520, 495); g.lineTo(840, 454); g.lineTo(1090, 488); g.lineTo(W, GROUND_Y); g.closePath(); g.fill();
+      g.globalAlpha = 1;
+
+      // Biome-specific distant landmarks (Waterfalls / Torii / Monoliths / Volcano fissures / Citadel Spires)
+      if (biome === 'dew_shrine') {
+        // Cascading twin ink waterfalls + distant torii gate
+        g.fillStyle = 'rgba(240, 252, 255, 0.56)';
+        [[196, 405, 26], [1048, 398, 28]].forEach(([wx, wy, ww]) => {
+          g.fillRect(wx, wy, ww, GROUND_Y - wy);
+          g.fillStyle = 'rgba(255,255,255,0.42)';
+          g.beginPath(); g.ellipse(wx + ww * 0.5, GROUND_Y - 26, ww * 1.6, 18, 0, 0, Math.PI * 2); g.fill();
+          g.fillStyle = 'rgba(240, 252, 255, 0.56)';
+        });
+        g.fillStyle = pal.struct;
+        g.fillRect(108, 410, 12, 172); g.fillRect(172, 410, 12, 172);
+        g.beginPath(); g.moveTo(86, 414); g.quadraticCurveTo(146, 424, 206, 414); g.lineTo(200, 402); g.quadraticCurveTo(146, 410, 92, 402); g.closePath(); g.fill();
+        g.fillRect(98, 434, 96, 8);
+      } else if (biome === 'obsidian_caldera') {
+        g.strokeStyle = 'rgba(255, 130, 38, 0.55)'; g.lineWidth = 3;
+        [[180, 440, 240, 560], [1050, 420, 990, 565]].forEach(([x1,y1,x2,y2]) => {
+          g.beginPath(); g.moveTo(x1, y1); g.lineTo((x1+x2)*0.5 + 14, (y1+y2)*0.5); g.lineTo(x2, y2); g.stroke();
+        });
+      }
+
+      function drawPagoda(cx, by, sc, col) {
+        g.fillStyle = col; let y = by;
+        for (let i = 0; i < 3; i++) {
+          const pw = (176 - i * 36) * sc, ph = (52 - i * 8) * sc;
+          g.fillRect(cx - pw * 0.34, y - ph, pw * 0.68, ph);
+          g.beginPath(); g.moveTo(cx - pw * 0.64, y - ph + 6 * sc); g.lineTo(cx - pw * 0.42, y - ph - 18 * sc); g.lineTo(cx, y - ph - 28 * sc); g.lineTo(cx + pw * 0.42, y - ph - 18 * sc); g.lineTo(cx + pw * 0.64, y - ph + 6 * sc); g.closePath(); g.fill();
+          y -= ph + 13 * sc;
+        }
+        g.fillRect(cx - 3 * sc, y - 42 * sc, 6 * sc, 42 * sc);
+      }
+      if (biome === 'seismic_tremor') {
+        g.fillStyle = pal.struct;
+        [[155, 340, 46], [285, 385, 34], [960, 375, 36], [1095, 330, 48]].forEach(([mx, my, mw]) => {
+          g.fillRect(mx - mw * 0.5, my, mw, GROUND_Y - my);
+          g.fillRect(mx - mw * 0.65, my - 10, mw * 1.3, 12);
+        });
+      } else {
+        drawPagoda(270, 558, biome === 'storm_spire' ? 1.05 : 0.92, pal.struct);
+        drawPagoda(1010, 558, biome === 'storm_spire' ? 1.05 : 0.90, pal.struct);
+      }
+
+      // Luminous Horizontal Mist Band Behind Fighters (10:1 SF2 Figure-Ground Contrast)
+      const mist = g.createLinearGradient(0, 290, 0, GROUND_Y);
+      mist.addColorStop(0, 'rgba(255,255,255,0)');
+      mist.addColorStop(0.55, pal.sky[4] + 'b8');
+      mist.addColorStop(1, pal.sky[4] + 'e0');
+      g.fillStyle = mist; g.fillRect(0, 290, W, GROUND_Y - 290);
+
+      // Veranda Shoji Rail + Side Timber Posts
+      g.fillStyle = th.shojiBg; g.fillRect(0, 514, W, 68);
+      g.strokeStyle = th.shojiFrame; g.lineWidth = 2; g.strokeRect(0, 514, W, 68);
+      for (let x = 0; x <= W; x += 64) { g.beginPath(); g.moveTo(x, 514); g.lineTo(x, GROUND_Y); g.stroke(); }
+      g.beginPath(); g.moveTo(0, 548); g.lineTo(W, 548); g.stroke();
+      g.fillStyle = th.shojiFrame; g.fillRect(0, 510, W, 6);
+
+      // Framing Bamboo & Pine Eaves ONLY on extreme left/right 8% edges
+      g.fillStyle = pal.struct;
+      [[24, 9], [56, 7], [84, 5], [W - 26, 9], [W - 60, 7], [W - 88, 5]].forEach(([bx, bw]) => {
+        g.fillRect(bx, 0, bw, GROUND_Y);
       });
-    });
 
-    // Crisp dark timber / slate dojo floor with luminous horizon rim edge
-    g.fillStyle = th.floorBase; g.fillRect(0, GROUND_Y, W, H - GROUND_Y);
-    const flGlow = g.createRadialGradient(W * 0.5, GROUND_Y + 18, 40, W * 0.5, GROUND_Y + 18, 580);
-    flGlow.addColorStop(0, th.floorGlow); flGlow.addColorStop(1, 'rgba(0,0,0,0)');
-    g.fillStyle = flGlow; g.fillRect(0, GROUND_Y, W, H - GROUND_Y);
-    g.strokeStyle = th.floorRim; g.lineWidth = 3; g.beginPath(); g.moveTo(0, GROUND_Y); g.lineTo(W, GROUND_Y); g.stroke();
-    g.strokeStyle = 'rgba(0,0,0,0.48)'; g.lineWidth = 1.5;
-    for (let i = -2; i <= 14; i++) { const tx = i * 100; g.beginPath(); g.moveTo(tx, GROUND_Y); g.lineTo(W * 0.5 + (tx - W * 0.5) * 1.45, H + 20); g.stroke(); }
-    [GROUND_Y + 22, GROUND_Y + 50, GROUND_Y + 86].forEach(ry => { g.beginPath(); g.moveTo(0, ry); g.lineTo(W, ry); g.stroke(); });
+      // Frost icicles on Frozen Peak top eaves
+      if (biome === 'glacier_floor') {
+        g.fillStyle = 'rgba(220, 248, 255, 0.55)';
+        for (let ix = 40; ix < W - 40; ix += 48) {
+          const ih = 22 + ((ix * 13) % 28);
+          g.beginPath(); g.moveTo(ix - 8, 0); g.lineTo(ix, ih); g.lineTo(ix + 8, 0); g.closePath(); g.fill();
+        }
+      }
+
+      // Dark Perspective Temple Floor + Horizon Rim Highlight
+      g.fillStyle = pal.floor; g.fillRect(0, GROUND_Y, W, H - GROUND_Y);
+      const flGlow = g.createRadialGradient(W * 0.5, GROUND_Y + 18, 40, W * 0.5, GROUND_Y + 18, 580);
+      flGlow.addColorStop(0, pal.glow); flGlow.addColorStop(1, 'rgba(0,0,0,0)');
+      g.fillStyle = flGlow; g.fillRect(0, GROUND_Y, W, H - GROUND_Y);
+      g.strokeStyle = pal.rim; g.lineWidth = 3; g.beginPath(); g.moveTo(0, GROUND_Y); g.lineTo(W, GROUND_Y); g.stroke();
+      g.strokeStyle = 'rgba(0,0,0,0.48)'; g.lineWidth = 1.5;
+      for (let i = -2; i <= 14; i++) { const tx = i * 100; g.beginPath(); g.moveTo(tx, GROUND_Y); g.lineTo(W * 0.5 + (tx - W * 0.5) * 1.45, H + 20); g.stroke(); }
+      [GROUND_Y + 22, GROUND_Y + 50, GROUND_Y + 86].forEach(ry => { g.beginPath(); g.moveTo(0, ry); g.lineTo(W, ry); g.stroke(); });
+    }
+
+    // Unified Subtle Rice-Paper / Sumi-e Grain + Outer Edge Vignette (ties painted + procedural seamlessly)
+    const wp = getWashiPattern();
+    if (wp) { g.fillStyle = wp; g.fillRect(0, 0, W, H); }
+    const vig = g.createRadialGradient(W * 0.5, H * 0.45, W * 0.34, W * 0.5, H * 0.5, W * 0.72);
+    vig.addColorStop(0, 'rgba(0,0,0,0)'); vig.addColorStop(1, 'rgba(3,5,10,0.38)');
+    g.fillStyle = vig; g.fillRect(0, 0, W, H);
   }
   buildBackdrop();
 
@@ -4534,6 +4669,18 @@
     sctx.restore();
     sctx.restore();
 
+    // Real-Time Floor Reflection on Polished Dojo Stone / Veranda Timber (Shadow Fight 2 ground anchoring)
+    if (f.state !== 'ko' && f.y >= GROUND_Y - 110) {
+      const airFade = Math.max(0.15, 1 - (GROUND_Y - f.y) / 110);
+      ctx.save();
+      ctx.beginPath(); ctx.rect(0, GROUND_Y, W, H - GROUND_Y); ctx.clip();
+      ctx.translate(f.x + jx, GROUND_Y + 2);
+      ctx.scale(1, -0.25);
+      ctx.globalAlpha = 0.17 * airFade * (f.invisible ? 0.25 : 1);
+      ctx.drawImage(silBuf, -240, -(f.y - GROUND_Y + 330));
+      ctx.restore();
+    }
+
     // Solid pitch-black ink silhouette at ALL times (zero shadowBlur in Low VFX mode for 60fps Android boost!)
     ctx.save();
     if (f.invisible) ctx.globalAlpha = 0.16;
@@ -4549,6 +4696,20 @@
     }
     ctx.drawImage(silBuf, f.x + jx - 240, f.y - 330);
     ctx.restore();
+
+    // Sumi-e Brushstroke Ink Slash Arc on Heavy / Finisher / Overhead Weapon Strikes
+    if (f.state === 'attack' && f.move && f.move.wep && (f.move.finisher || f.move.overhead || f.move.crit) && f.sf >= f.ms - 1 && f.sf <= f.ms + f.ma + 4) {
+      const prog = Math.min(1, Math.max(0, (f.sf - f.ms + 1) / (f.ma + 5)));
+      ctx.save();
+      ctx.translate(f.x + f.facing * 52, f.y - 118);
+      ctx.scale(f.facing, 1);
+      ctx.globalAlpha = (1 - prog * 0.7) * 0.85;
+      ctx.strokeStyle = '#05070c'; ctx.lineWidth = 10 * (1 - prog * 0.5);
+      ctx.beginPath(); ctx.arc(-18, 6, 78, -1.15, 0.85); ctx.stroke();
+      ctx.strokeStyle = f.el.glow; ctx.lineWidth = 4.2 * (1 - prog * 0.45);
+      ctx.beginPath(); ctx.arc(-18, 6, 80, -1.10, 0.82); ctx.stroke();
+      ctx.restore();
+    }
 
     // Visual Elemental Status Effects Directly on Silhouette (no floating text words!)
     if (f.state !== 'ko') {
@@ -4635,11 +4796,32 @@
     });
   }
 
-  // ===== UNIQUE STAGE ARENA OVERLAYS & FOREGROUND SILHOUETTE PARALLAX =====
+  // ===== UNIQUE STAGE ARENA OVERLAYS, LIVE BIOME WEATHER & FOREGROUND PARALLAX =====
   function drawStageArenaVisuals() {
-    if (!match.boss) return;
-    const hz = match.boss.hazardId;
+    const hz = getActiveBiome();
     ctx.save();
+    // Live Biome Ambient Weather Motes (kept ultra-light in Low Boost mode)
+    const count = settings.vfx === 'low' ? 6 : 16;
+    for (let i = 0; i < count; i++) {
+      const seed = i * 97.3;
+      if (hz === 'blazing_dojo' || hz === 'ember_updraft' || hz === 'obsidian_caldera') {
+        const ex = (seed * 17 + Math.sin(simFrame * 0.02 + i) * 35) % W;
+        const ey = GROUND_Y - ((simFrame * (1.2 + (i % 3) * 0.4) + seed * 5) % 440);
+        ctx.fillStyle = i % 2 ? '#ffae34' : '#ff5e28'; ctx.globalAlpha = 0.52;
+        ctx.beginPath(); ctx.arc(ex, ey, 1.8 + (i % 2), 0, Math.PI * 2); ctx.fill();
+      } else if (hz === 'glacier_floor') {
+        const sx = (seed * 15 + simFrame * 0.6 + Math.sin(simFrame * 0.03 + i) * 20) % W;
+        const sy = (simFrame * 1.4 + seed * 7) % GROUND_Y;
+        ctx.fillStyle = '#e0faff'; ctx.globalAlpha = 0.55;
+        ctx.beginPath(); ctx.arc(sx, sy, 2.1, 0, Math.PI * 2); ctx.fill();
+      } else if (hz === 'dew_shrine' || hz === 'gale_tailwind') {
+        const px = (seed * 19 + simFrame * (hz === 'gale_tailwind' ? 2.4 : 0.9)) % W;
+        const py = (seed * 8 + simFrame * 0.8 + Math.sin(simFrame * 0.04 + i) * 18) % GROUND_Y;
+        ctx.fillStyle = hz === 'dew_shrine' ? '#e8f8ff' : '#bdfae6'; ctx.globalAlpha = 0.45;
+        ctx.beginPath(); ctx.ellipse(px, py, 4, 2, simFrame * 0.05 + i, 0, Math.PI * 2); ctx.fill();
+      }
+    }
+    ctx.globalAlpha = 1;
     if (hz === 'glacier_floor') {
       ctx.fillStyle = 'rgba(130, 238, 255, 0.22)';
       ctx.fillRect(0, GROUND_Y - 2, W, 18);
@@ -4662,12 +4844,13 @@
   }
 
   function drawForegroundParallax(clampedCamX) {
+    const hz = getActiveBiome();
     const px = (clampedCamX - W * 0.5) * 0.32;
     const sway = Math.sin(simFrame * 0.024) * 8;
     ctx.save();
     ctx.fillStyle = '#03050a';
     ctx.globalAlpha = 0.84;
-    if (themeIdx === 1) {
+    if (hz === 'dew_shrine' || hz === 'gale_tailwind') {
       [[-18 - px, 16, 1], [22 - px, 11, -0.7], [W + 4 - px, 16, -1], [W - 34 - px, 11, 0.8]].forEach(([bx, bw, dir]) => {
         ctx.beginPath();
         ctx.moveTo(bx, H);
@@ -4676,12 +4859,10 @@
         ctx.quadraticCurveTo(bx + bw + sway * dir, H * 0.5, bx + bw, H);
         ctx.closePath(); ctx.fill();
       });
-    } else if (themeIdx === 0) {
+    } else if (hz === 'blazing_dojo' || hz === 'ember_updraft') {
       const lx = -24 - px, rx = W - 18 - px;
       ctx.fillRect(lx, -20, 38, H + 40);
       ctx.fillRect(rx, -20, 38, H + 40);
-      ctx.beginPath(); ctx.moveTo(lx + 38, 95); ctx.lineTo(lx + 92, 62); ctx.lineTo(lx + 38, 128); ctx.closePath(); ctx.fill();
-      ctx.beginPath(); ctx.moveTo(rx, 95); ctx.lineTo(rx - 54, 62); ctx.lineTo(rx, 128); ctx.closePath(); ctx.fill();
     } else {
       const lx = -30 - px, rx = W + 30 - px;
       ctx.beginPath(); ctx.moveTo(lx, H + 10); ctx.lineTo(lx + 68, H - 185); ctx.lineTo(lx + 95, H + 10); ctx.closePath(); ctx.fill();
@@ -4975,21 +5156,24 @@
     if (banKey !== lastBanKey) {
       lastBanKey = banKey;
       if (match.banner) {
+        const hasActs = match.screen === 'match_over';
         elRefs.banner.classList.remove('hidden');
         elRefs.banner.classList.toggle('ult-banner', Boolean(match.banner.isUlt));
+        elRefs.banner.classList.toggle('has-actions', hasActs);
         elRefs.bTitle.textContent = match.banner.text; elRefs.bTitle.style.color = match.banner.color;
         elRefs.bSub.textContent = match.banner.sub || '';
-        elRefs.mActs.classList.toggle('hidden', match.screen !== 'match_over');
-        const canAdvance = match.screen === 'match_over' && match.winner === 'p1' && match.mode === 'campaign' && match.campaignStageIdx >= 0 && match.campaignStageIdx < CAMPAIGN_STAGES.length - 1;
+        elRefs.mActs.classList.toggle('hidden', !hasActs);
+        const canAdvance = hasActs && match.winner === 'p1' && match.mode === 'campaign' && match.campaignStageIdx >= 0 && match.campaignStageIdx < CAMPAIGN_STAGES.length - 1;
         elRefs.btnNextBoss.classList.toggle('hidden', !canAdvance);
       } else {
         elRefs.banner.classList.add('hidden');
-        elRefs.banner.classList.remove('ult-banner');
+        elRefs.banner.classList.remove('ult-banner', 'has-actions');
       }
     }
+    syncTouchVis();
   }
 
-  // ===== CONTROLS & DYNAMIC MOBILE TOUCH JOYSTICK =====
+  // ===== CONTROLS & DYNAMIC MOBILE TOUCH JOYSTICK (Zero Obstruction & Zero Stuck Inputs) =====
   function isTouchDevice() {
     return ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || window.matchMedia('(pointer: coarse)').matches;
   }
@@ -5018,7 +5202,7 @@
     const relA = () => btnAvatar.classList.remove('pressed');
     btnAvatar.addEventListener('pointerup', relA); btnAvatar.addEventListener('pointercancel', relA);
   }
-  const keys = new Set(); let sPtr = null, sOx = 0, sOy = 0, sDx = 0, sDy = 0, kDx = 0, kDy = 0;
+  const keys = new Set(); let sPtr = null, sOx = 0, sOy = 0, sDx = 0, sDy = 0, kDx = 0, kDy = 0, lastTouchVis = null;
   function flushDir() {
     const dx = sDx !== 0 ? sDx : kDx, dy = sDy !== 0 ? sDy : kDy;
     setDir(p1, dx, dy);
@@ -5030,9 +5214,28 @@
       }
     }
   }
+  function resetInputs() {
+    keys.clear();
+    if (sPtr !== null) {
+      try { if (stickZone.hasPointerCapture && stickZone.hasPointerCapture(sPtr)) stickZone.releasePointerCapture(sPtr); } catch {}
+    }
+    sPtr = null; sDx = 0; sDy = 0; kDx = 0; kDy = 0;
+    stickBase.classList.remove('active');
+    stickBase.style.left = ''; stickBase.style.top = ''; stickBase.style.bottom = '';
+    stickKnob.style.transform = 'translate(0,0)';
+    document.querySelectorAll('.cbtn.pressed').forEach(el => el.classList.remove('pressed'));
+    Array.from(p1.held).forEach(b => releaseBtn(p1, b));
+    updateStickArrows(0, 0);
+    setDir(p1, 0, 0);
+    if (bendDirPill) bendDirPill.classList.remove('show');
+  }
   function cycleTheme() { themeIdx = (themeIdx + 1) % THEMES.length; buildBackdrop(); }
   function toggleSfx() { settings.sfxOn = !settings.sfxOn; }
   function toggleBgm() { settings.musicOn = !settings.musicOn; }
+
+  window.addEventListener('blur', resetInputs);
+  document.addEventListener('visibilitychange', () => { if (document.hidden) resetInputs(); });
+  window.addEventListener('contextmenu', e => e.preventDefault());
 
   window.addEventListener('keydown', e => {
     unlockAudio();
@@ -5042,7 +5245,7 @@
       return;
     }
     if (e.code === 'Escape') { e.preventDefault(); if (!match.inMenu) togglePause(); else closeAllModals(); return; }
-    if (match.inMenu || match.paused) return;
+    if (match.inMenu || match.paused || match.screen !== 'fighting') return;
     if (e.code === 'KeyT' && !e.repeat) { cycleTheme(); return; }
     if (e.code === 'KeyQ' && !e.repeat) { triggerAvatarShift(); return; }
     if (e.code === 'KeyM' && !e.repeat) { toggleSfx(); return; }
@@ -5078,8 +5281,11 @@
   // Dynamic Floating Joystick: spawns wherever the player's left thumb lands!
   const stickZone = document.getElementById('stick-zone'), stickBase = document.getElementById('stick-base'), stickKnob = document.getElementById('stick-knob');
   stickZone.addEventListener('pointerdown', e => {
-    unlockAudio(); if (sPtr !== null) return; e.preventDefault();
-    sPtr = e.pointerId; stickZone.setPointerCapture(e.pointerId);
+    unlockAudio();
+    if (match.inMenu || match.paused || match.screen !== 'fighting') return;
+    if (sPtr !== null) return;
+    e.preventDefault();
+    sPtr = e.pointerId; try { stickZone.setPointerCapture(e.pointerId); } catch {}
     const zr = stickZone.getBoundingClientRect();
     const bw = stickBase.offsetWidth, bh = stickBase.offsetHeight;
     const lx = Math.max(bw * 0.5, Math.min(zr.width - bw * 0.5, e.clientX - zr.left));
@@ -5111,18 +5317,42 @@
   }
   document.querySelectorAll('[data-act]').forEach(btn => {
     const act = btn.dataset.act;
-    btn.addEventListener('pointerdown', e => { e.preventDefault(); unlockAudio(); btn.classList.add('pressed'); pressBtn(p1, act); });
+    btn.addEventListener('pointerdown', e => {
+      e.preventDefault(); unlockAudio();
+      if (match.inMenu || match.paused || match.screen !== 'fighting') return;
+      btn.classList.add('pressed'); pressBtn(p1, act);
+    });
     const rel = () => { btn.classList.remove('pressed'); releaseBtn(p1, act); };
     btn.addEventListener('pointerup', rel); btn.addEventListener('pointercancel', rel); btn.addEventListener('pointerleave', rel);
   });
-  function applyTouchUI() {
+  function isAnyModalOpen() {
+    return !storyOverlay.classList.contains('hidden')
+      || !pauseModal.classList.contains('hidden')
+      || !rosterModal.classList.contains('hidden')
+      || !campaignModal.classList.contains('hidden')
+      || !armoryModal.classList.contains('hidden');
+  }
+  function shouldShowTouch() {
+    if (match.inMenu || match.paused || match.screen !== 'fighting' || match.intro > 18) return false;
+    if (isAnyModalOpen()) return false;
+    return settings.inputMode === 'touch' || (settings.inputMode === 'auto' && isTouchDevice());
+  }
+  function syncTouchVis() {
+    const show = shouldShowTouch();
+    if (show === lastTouchVis) return;
+    lastTouchVis = show;
     const tl = document.getElementById('touch-layer');
-    const show = !match.inMenu && (settings.inputMode === 'touch' || (settings.inputMode === 'auto' && isTouchDevice()));
     tl.classList.toggle('hidden', !show);
+    if (!show) resetInputs();
+  }
+  function applyTouchUI() {
+    lastTouchVis = null;
+    const tl = document.getElementById('touch-layer');
     tl.style.opacity = settings.opacity;
     stickBase.style.transform = `scale(${settings.scale})`;
     document.getElementById('action-cluster').style.transform = `scale(${settings.scale})`;
     if (btnAvatar) btnAvatar.classList.toggle('hidden', !(PROG.avatarUnlocked || PROG.sandboxUnlockAll));
+    syncTouchVis();
   }
 
   // Android Hardware Back Button Bridge (called by native Android WebView MainActivity)
@@ -5147,6 +5377,7 @@
   function openMainMenu() {
     closeAllModals();
     match.inMenu = true; match.paused = false; match.boss = null;
+    buildBackdrop();
     document.getElementById('hud').classList.add('hidden');
     document.getElementById('touch-layer').classList.add('hidden');
     document.getElementById('tut-pill')?.classList.add('hidden');
@@ -5161,6 +5392,7 @@
     // Keep live ambient sparring behind menu
     resetFighter(p1, true); resetFighter(p2, true);
     p1.x = 560; p2.x = 860;
+    syncTouchVis();
   }
 
   function openStorySequence(kind, slides, onDone) {
@@ -5168,6 +5400,7 @@
     match.paused = true;
     storyState = { kind, slides, idx: 0, onDone, t: 0 };
     storyOverlay.classList.remove('hidden');
+    syncTouchVis();
     renderStoryStep();
   }
   function renderStoryStep() {
@@ -5268,6 +5501,8 @@
       const heroEl = slide.art === 'hollow' ? null : ELEMENTS.water;
       drawSil(W * 0.5, 515, 1, heroEl, slide.art === 'hollow' ? '#64748b' : accent, 1.5, slide.art === 'avatar' ? 'crown' : PROG.equippedGear || 'none');
     }
+    const wp = getWashiPattern();
+    if (wp) { g.fillStyle = wp; g.fillRect(0, 0, W, H); }
     g.restore();
   }
   function advanceStory() {
@@ -5285,6 +5520,7 @@
     storyOverlay.classList.add('hidden');
     match.paused = false;
     if (cb) cb();
+    syncTouchVis();
   }
   document.getElementById('story-next').onclick = () => { unlockAudio(); advanceStory(); };
   document.getElementById('story-skip').onclick = () => { unlockAudio(); finishStory(); };
@@ -5300,12 +5536,14 @@
     campaignModal.classList.add('hidden'); armoryModal.classList.add('hidden');
     if (armoryPreviewRaf) { cancelAnimationFrame(armoryPreviewRaf); armoryPreviewRaf = null; }
     match.paused = false;
+    syncTouchVis();
   }
   function togglePause() {
     if (!rosterModal.classList.contains('hidden') || !campaignModal.classList.contains('hidden') || !armoryModal.classList.contains('hidden')) {
       closeAllModals(); return;
     }
     match.paused = !match.paused; pauseModal.classList.toggle('hidden', !match.paused);
+    syncTouchVis();
     if (match.paused) renderPause();
   }
 
@@ -5485,16 +5723,16 @@
           <div class="map-canvas-wrap"><canvas id="map-canvas" width="640" height="380"></canvas></div>
           <div class="map-detail">
             <div>
-              <div class="pill-row" style="gap:12px;margin-bottom:10px">
+              <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;flex-wrap:nowrap">
                 <div class="md-crest">${el.svg}</div>
-                <div>
+                <div style="min-width:0;flex:1">
                   <div class="md-title">${st.title}</div>
                   <div class="md-sub">${st.subtitle} · ${st.rank}</div>
                 </div>
               </div>
               <div class="md-stars">${starsStr}</div>
               <p class="md-desc">${st.storyDesc}</p>
-              ${st.trial ? `<div class="md-trial" style="margin-top:12px"><b>REGIONAL TRIAL ${trialDone ? '· COMPLETED ✓' : `· +${st.trial.reward} COINS`}</b>${st.trial.desc}</div>` : ''}
+              ${st.trial ? `<div class="md-trial" style="margin-top:8px"><b>REGIONAL TRIAL ${trialDone ? '· COMPLETED ✓' : `· +${st.trial.reward} COINS`}</b>${st.trial.desc}</div>` : ''}
             </div>
             <div class="pill-row" style="justify-content:space-between">
               <button class="pill" id="c-armory">ARMORY</button>
@@ -5505,12 +5743,12 @@
             </div>
           </div>
         </div>
-        <div class="pill-row" style="justify-content:space-between">
-          <div class="pill-row">
-            <span style="font-size:12px;color:var(--text-muted)">Active Element:</span>
-            ${EL_ORDER.filter(isElUnlocked).map(eid => `<button class="pill ${p1.el.id===eid?'primary':''}" data-p1el="${eid}" style="padding:5px 10px;font-size:11px">${ELEMENTS[eid].name}</button>`).join('')}
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:nowrap">
+          <div class="el-strip">
+            <span style="font-size:11px;color:var(--text-muted);white-space:nowrap">Element:</span>
+            ${EL_ORDER.filter(isElUnlocked).map(eid => `<button class="pill ${p1.el.id===eid?'primary':''}" data-p1el="${eid}">${ELEMENTS[eid].name}</button>`).join('')}
           </div>
-          <button class="pill" id="c-back">CLOSE</button>
+          <button class="pill" id="c-back" style="flex-shrink:0">CLOSE</button>
         </div>
       </section>`;
 
@@ -5544,25 +5782,31 @@
     if (!mc) return;
     const g = mc.getContext('2d'), w = mc.width, h = mc.height;
     g.clearRect(0, 0, w, h);
-    // Warm dark ink scroll parchment background
-    const bg = g.createRadialGradient(w * 0.5, h * 0.48, 30, w * 0.5, h * 0.5, w * 0.65);
-    bg.addColorStop(0, '#1e2536'); bg.addColorStop(0.65, '#111726'); bg.addColorStop(1, '#080c15');
-    g.fillStyle = bg; g.fillRect(0, 0, w, h);
-
-    // Painted landmass silhouette & ink mountain brushstrokes
-    g.fillStyle = 'rgba(235, 210, 165, 0.06)';
-    g.beginPath();
-    g.moveTo(48, 250); g.quadraticCurveTo(140, 80, 320, 62); g.quadraticCurveTo(520, 66, 588, 215);
-    g.quadraticCurveTo(560, 345, 360, 335); g.quadraticCurveTo(140, 340, 48, 250); g.closePath(); g.fill();
-    g.strokeStyle = 'rgba(245, 186, 66, 0.16)'; g.lineWidth = 1.5; g.stroke();
+    if (ART.worldMap.complete && ART.worldMap.naturalWidth > 0) {
+      g.drawImage(ART.worldMap, 0, 0, w, h);
+      const ov = g.createRadialGradient(w * 0.5, h * 0.48, w * 0.25, w * 0.5, h * 0.5, w * 0.65);
+      ov.addColorStop(0, 'rgba(10, 14, 24, 0.14)'); ov.addColorStop(1, 'rgba(6, 9, 18, 0.62)');
+      g.fillStyle = ov; g.fillRect(0, 0, w, h);
+    } else {
+      const bg = g.createRadialGradient(w * 0.5, h * 0.48, 30, w * 0.5, h * 0.5, w * 0.65);
+      bg.addColorStop(0, '#1e2536'); bg.addColorStop(0.65, '#111726'); bg.addColorStop(1, '#080c15');
+      g.fillStyle = bg; g.fillRect(0, 0, w, h);
+      g.fillStyle = 'rgba(235, 210, 165, 0.06)';
+      g.beginPath();
+      g.moveTo(48, 250); g.quadraticCurveTo(140, 80, 320, 62); g.quadraticCurveTo(520, 66, 588, 215);
+      g.quadraticCurveTo(560, 345, 360, 335); g.quadraticCurveTo(140, 340, 48, 250); g.closePath(); g.fill();
+    }
 
     // Ink paths connecting Stages 1 -> 8 -> 9 (Eclipse Citadel)
     g.save();
     for (let i = 0; i < CAMPAIGN_STAGES.length - 1; i++) {
       const a = CAMPAIGN_STAGES[i], b = CAMPAIGN_STAGES[i + 1];
       const lit = PROG.cleared.includes(a.id);
-      g.strokeStyle = lit ? 'rgba(245, 186, 66, 0.72)' : 'rgba(148, 163, 184, 0.22)';
-      g.setLineDash(lit ? [] : [5, 5]); g.lineWidth = lit ? 2.4 : 1.6;
+      g.strokeStyle = 'rgba(0, 0, 0, 0.55)'; g.lineWidth = lit ? 4.4 : 3;
+      g.setLineDash(lit ? [] : [5, 5]);
+      g.beginPath(); g.moveTo(a.mx * w, a.my * h); g.lineTo(b.mx * w, b.my * h); g.stroke();
+      g.strokeStyle = lit ? 'rgba(245, 186, 66, 0.88)' : 'rgba(190, 206, 226, 0.34)';
+      g.lineWidth = lit ? 2.2 : 1.5;
       g.beginPath(); g.moveTo(a.mx * w, a.my * h); g.lineTo(b.mx * w, b.my * h); g.stroke();
     }
     g.restore();
@@ -5574,26 +5818,29 @@
       const cleared = PROG.cleared.includes(s.id);
       const unlocked = PROG.sandboxUnlockAll || s.id <= PROG.cleared.length;
       const selected = s.id === mapSelIdx;
-      const rad = s.isFinal ? 22 : 16;
+      const rad = s.isFinal ? 21 : 15;
 
       g.save();
       if (selected) {
-        g.strokeStyle = '#fde68a'; g.lineWidth = 2.5;
+        g.strokeStyle = '#fde68a'; g.lineWidth = 2.6;
         g.beginPath(); g.arc(x, y, rad + 6, 0, Math.PI * 2); g.stroke();
       }
-      g.fillStyle = cleared ? '#1b261d' : unlocked ? '#131b2e' : '#0b0f18';
-      g.strokeStyle = cleared ? '#38e57d' : unlocked ? el.glow : '#475569';
+      g.fillStyle = cleared ? '#18241b' : unlocked ? '#0e1526' : '#090d16';
+      g.strokeStyle = cleared ? '#38e57d' : unlocked ? el.glow : '#64748b';
       g.lineWidth = selected ? 3 : 2;
       g.beginPath(); g.arc(x, y, rad, 0, Math.PI * 2); g.fill(); g.stroke();
 
-      // Mini Master silhouette inside node
-      g.fillStyle = unlocked ? (cleared ? '#fde68a' : el.glow) : '#475569';
-      g.beginPath(); g.arc(x, y - 4, 4.5, 0, Math.PI * 2); g.fill();
-      g.beginPath(); g.moveTo(x - 7, y + 8); g.quadraticCurveTo(x, y, x + 7, y + 8); g.closePath(); g.fill();
+      g.fillStyle = unlocked ? (cleared ? '#fde68a' : el.glow) : '#64748b';
+      g.beginPath(); g.arc(x, y - 4, 4.2, 0, Math.PI * 2); g.fill();
+      g.beginPath(); g.moveTo(x - 6.5, y + 7.5); g.quadraticCurveTo(x, y, x + 6.5, y + 7.5); g.closePath(); g.fill();
 
+      const lx = Math.max(54, Math.min(w - 54, x));
+      const ly = Math.min(h - 10, y + rad + 13);
       g.font = '700 10px system-ui, sans-serif'; g.textAlign = 'center';
-      g.fillStyle = unlocked ? '#eef4fc' : '#64748b';
-      g.fillText(s.region, x, y + rad + 13);
+      g.strokeStyle = 'rgba(4, 7, 14, 0.92)'; g.lineWidth = 3.5;
+      g.strokeText(s.region, lx, ly);
+      g.fillStyle = unlocked ? '#f6f8fc' : '#94a3b8';
+      g.fillText(s.region, lx, ly);
       g.restore();
     });
   }

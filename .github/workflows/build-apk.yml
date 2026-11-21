@@ -18,10 +18,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Sync latest mobile build into Android assets
+      - name: Sync latest mobile build and art assets into Android assets
         run: |
-          mkdir -p android/app/src/main/assets/www
+          mkdir -p android/app/src/main/assets/www/assets
           cp mobile/index.html android/app/src/main/assets/www/index.html
+          cp -r mobile/assets/* android/app/src/main/assets/www/assets/
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
@@ -51,25 +52,25 @@ jobs:
       - name: Prepare APK deliverable
         run: |
           mkdir -p out
-          cp android/app/build/outputs/apk/release/app-release.apk out/ElementalShadows-v2.0.0-android.apk
-          ls -lh out/ElementalShadows-v2.0.0-android.apk
+          cp android/app/build/outputs/apk/release/app-release.apk out/ElementalShadows-v2.1.0-android.apk
+          ls -lh out/ElementalShadows-v2.1.0-android.apk
 
       - name: Upload APK workflow artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ElementalShadows-v2.0.0-android-apk
-          path: out/ElementalShadows-v2.0.0-android.apk
+          name: ElementalShadows-v2.1.0-android-apk
+          path: out/ElementalShadows-v2.1.0-android.apk
           retention-days: 90
 
       - name: Publish GitHub Release with direct APK download
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          TAG="v2.0.0-android"
+          TAG="v2.1.0-android"
           if gh release view "$TAG" >/dev/null 2>&1; then
-            gh release upload "$TAG" out/ElementalShadows-v2.0.0-android.apk --clobber
+            gh release upload "$TAG" out/ElementalShadows-v2.1.0-android.apk --clobber
           else
-            gh release create "$TAG" out/ElementalShadows-v2.0.0-android.apk \
-              --title "Elemental Shadows v2.0.0 (Android APK)" \
-              --notes "Standalone offline Android APK of **Elemental Shadows — The Hollow Avatar**.\n\n- 8 Elemental Disciplines & 32 Directional Quick-Bends\n- 9 Weapon Movesets, Wave Clashes, Redirection, Wall Splats & Disarming\n- Full 1st–9th Dan Story Campaign, 8-Region World Map, Visual Armory & Guided Dojo Lesson\n- Android-Optimized Low-VFX Boost (zero shadowBlur lag), Floating Joystick, GRAB & Avatar Shift touch controls, Landscape Immersive Fullscreen & Hardware Back support.\n\n**How to install on Android:** Download \`ElementalShadows-v2.0.0-android.apk\`, tap to open, and allow *Install from this source* if prompted."
+            gh release create "$TAG" out/ElementalShadows-v2.1.0-android.apk \
+              --title "Elemental Shadows v2.1.0 (Android APK — Art & Touch Fix)" \
+              --notes "Standalone offline Android APK of **Elemental Shadows — The Hollow Avatar**.\n\n### What's New in v2.1.0\n- **Touch Controls Fix:** Movement joystick & action buttons automatically hide during Round Over / Match Over / Menus and sit beneath the Victory/Rematch overlay so **REMATCH**, **NEXT MASTER**, **ARMORY**, and **MAIN MENU** are never blocked.\n- **Nano Banana Artwork + Zero-Slop Cohesive Visuals:** Painted Blazing Dojo arena, hand-inked World Map parchment scroll, custom Android Adaptive Icon, 8 bespoke realm backdrops with shared rice-paper grain, real-time floor reflections, sumi-e brushstroke slash arcs, and live ambient weather."
           fi
