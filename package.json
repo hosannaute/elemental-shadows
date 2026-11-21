@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "sync:android": "cp mobile/index.html android/app/src/main/assets/www/index.html"
   },
   "devDependencies": {
     "typescript": "~7.0.2",
