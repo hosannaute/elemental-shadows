@@ -5,24 +5,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="theme-color" content="#05080f" />
+  <meta name="theme-color" content="#0b0908" />
   <title>Elemental Shadows — Avatar Bending Martial Arts Arena</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; }
     :root {
       --font-head: 'Palatino Linotype', 'Book Antiqua', Georgia, serif;
       --font-ui: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-      --gold: #f5ba42;
-      --gold-light: #fde68a;
-      --ink-panel: rgba(10, 15, 26, 0.94);
-      --ink-border: rgba(212, 185, 130, 0.28);
-      --text-main: #f3f6fb;
-      --text-muted: #98abc4;
-      --accent: #38d8ff;
+      --gold: #e6a93c;
+      --gold-light: #f8e2b5;
+      --vermilion: #c93b24;
+      --vermilion-hi: #e45632;
+      --ink-void: #0b0908;
+      --ink-panel: rgba(24, 19, 15, 0.96);
+      --ink-card: rgba(18, 14, 11, 0.92);
+      --ink-border: rgba(218, 178, 112, 0.34);
+      --ink-border-soft: rgba(218, 178, 112, 0.18);
+      --text-main: #f4ead8;
+      --text-muted: #b5a38d;
+      --accent: #e6a93c;
     }
     html, body {
       width: 100%; height: 100%; overflow: hidden; overscroll-behavior: none;
-      background: radial-gradient(circle at 50% 25%, #162036 0%, #05080f 82%);
+      background: radial-gradient(circle at 50% 28%, #261c14 0%, #0b0908 82%);
       color: var(--text-main);
       font-family: var(--font-ui);
       touch-action: none;
@@ -38,8 +43,8 @@
       width: min(calc(100vw - env(safe-area-inset-left) - env(safe-area-inset-right)), calc((100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom)) * 16 / 9));
       height: min(calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom)), calc((100vw - env(safe-area-inset-left) - env(safe-area-inset-right)) * 9 / 16));
       overflow: hidden;
-      background: #090d18;
-      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.88);
+      background: #0d0a08;
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.9);
     }
     canvas#game { width: 100%; height: 100%; display: block; touch-action: none; }
     .hidden { display: none !important; }
@@ -57,77 +62,78 @@
     .crest {
       width: clamp(40px, 4.6vw, 60px); height: clamp(40px, 4.6vw, 60px);
       border-radius: 50%; border: 2px solid var(--gold);
-      background: radial-gradient(circle at 35% 30%, rgba(26, 35, 52, 0.94), rgba(6, 9, 16, 0.96));
+      background: radial-gradient(circle at 35% 30%, rgba(36, 27, 20, 0.95), rgba(11, 8, 6, 0.98));
       display: flex; align-items: center; justify-content: center; padding: 8px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.65);
     }
-    .crest svg { width: 100%; height: 100%; filter: drop-shadow(0 0 5px currentColor); }
+    .crest svg { width: 100%; height: 100%; filter: drop-shadow(0 0 4px currentColor); }
     .bars { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; padding-top: 2px; }
     .meta-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
     .fname {
       font-family: var(--font-head);
       font-size: clamp(12px, 1.35vw, 18px); font-weight: 800;
-      letter-spacing: 0.13em; color: #f6f8fc; text-shadow: 0 2px 8px #000;
+      letter-spacing: 0.13em; color: #f8efe0; text-shadow: 0 2px 8px #000;
       white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
     .jewels { display: flex; gap: 6px; align-items: center; flex-shrink: 0; }
     .jewel {
       width: clamp(8px, 0.9vw, 12px); height: clamp(8px, 0.9vw, 12px);
-      transform: rotate(45deg); border: 1.5px solid rgba(212, 224, 244, 0.45);
-      background: rgba(10, 15, 26, 0.8);
+      transform: rotate(45deg); border: 1.5px solid rgba(232, 208, 165, 0.45);
+      background: rgba(18, 13, 10, 0.85);
     }
-    .jewel.won { border-color: #fff; transform: rotate(45deg) scale(1.1); }
+    .jewel.won { border-color: #fff6e0; transform: rotate(45deg) scale(1.1); }
     .hp-frame {
       position: relative; height: clamp(13px, 1.5vw, 19px);
-      background: linear-gradient(180deg, #0b101b 0%, #162033 100%);
-      border: 1.5px solid rgba(220, 230, 245, 0.4);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6); overflow: hidden;
+      background: linear-gradient(180deg, #120d0a 0%, #241a13 100%);
+      border: 1.5px solid rgba(232, 202, 148, 0.48);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.65); overflow: hidden;
       transform: skewX(-16deg);
     }
     .p2 .hp-frame { transform: skewX(16deg); }
     .hp-trail, .hp-fill { position: absolute; top: 0; bottom: 0; }
     .p1 .hp-trail, .p1 .hp-fill { left: 0; }
     .p2 .hp-trail, .p2 .hp-fill { right: 0; }
-    .p1 .hp-trail { background: linear-gradient(90deg, #9c1a1a, #e5392c); }
-    .p2 .hp-trail { background: linear-gradient(270deg, #0e708e, #2ac6e4); }
-    .hp-fill { background: linear-gradient(180deg, #ffe27a 0%, #f5b324 55%, #d68514 100%); }
+    .p1 .hp-trail { background: linear-gradient(90deg, #8e1814, #d93826); }
+    .p2 .hp-trail { background: linear-gradient(270deg, #165e78, #38b6d4); }
+    .hp-fill { background: linear-gradient(180deg, #fae08c 0%, #e8a728 55%, #b86c12 100%); }
     .magic-row { display: flex; align-items: center; gap: 6px; }
     .p2 .magic-row { justify-content: flex-end; }
     .magic-frame {
       position: relative; width: 64%; height: clamp(7px, 0.85vw, 10px);
-      background: rgba(8, 12, 22, 0.88); border: 1px solid rgba(190, 210, 238, 0.36);
+      background: rgba(14, 10, 8, 0.9); border: 1px solid rgba(224, 192, 138, 0.42);
       overflow: hidden; transform: skewX(-16deg);
     }
     .p2 .magic-frame { transform: skewX(16deg); }
     /* 35% Quick-Bend threshold tick mark */
     .magic-frame::after {
       content: ''; position: absolute; top: 0; bottom: 0; width: 1.5px;
-      background: rgba(255, 255, 255, 0.55); z-index: 2;
+      background: rgba(255, 245, 224, 0.65); z-index: 2;
     }
     .p1 .magic-frame::after { left: 35%; }
     .p2 .magic-frame::after { right: 35%; }
     .magic-fill { position: absolute; top: 0; bottom: 0; }
     .p1 .magic-fill { left: 0; }
     .p2 .magic-fill { right: 0; }
-    .magic-frame.ex-ready { border-color: rgba(255, 240, 180, 0.72); }
-    .magic-frame.ready { border-color: #fff; animation: magPulse 0.7s ease-in-out infinite alternate; }
-    @keyframes magPulse { from { box-shadow: 0 0 8px rgba(255, 200, 90, 0.8); } to { box-shadow: 0 0 20px #fff6cc; } }
+    .magic-frame.ex-ready { border-color: rgba(255, 232, 170, 0.78); }
+    .magic-frame.ready { border-color: #fff8e2; animation: magPulse 0.7s ease-in-out infinite alternate; }
+    @keyframes magPulse { from { box-shadow: 0 0 8px rgba(240, 180, 72, 0.8); } to { box-shadow: 0 0 18px #fff2cc; } }
 
-    /* Compact Status Icons (no verbose text clutter) */
+    /* Compact Vector Status Icons */
     .status-icons { display: flex; gap: 5px; min-height: 20px; align-items: center; margin-top: 1px; }
     .p2 .status-icons { justify-content: flex-end; }
     .s-ico {
-      width: 20px; height: 20px; border-radius: 50%;
-      background: rgba(8, 12, 22, 0.86); border: 1.5px solid currentColor;
+      width: 21px; height: 21px; border-radius: 50%;
+      background: rgba(16, 12, 9, 0.9); border: 1.5px solid currentColor;
       display: inline-flex; align-items: center; justify-content: center;
-      font-size: 11px; line-height: 1; box-shadow: 0 2px 6px rgba(0,0,0,0.6);
+      line-height: 1; box-shadow: 0 2px 6px rgba(0,0,0,0.65);
     }
-    .s-ico svg { width: 12px; height: 12px; }
+    .s-ico svg { width: 12px; height: 12px; display: block; }
 
     .hud-center { display: flex; flex-direction: column; align-items: center; }
     .timer-box {
       width: clamp(46px, 5vw, 64px); height: clamp(46px, 5vw, 64px);
-      background: linear-gradient(145deg, #273144 0%, #0e131e 100%);
-      border: 2px solid rgba(232, 205, 148, 0.52);
+      background: linear-gradient(145deg, #2f2319 0%, #120d0a 100%);
+      border: 2px solid rgba(232, 196, 132, 0.6);
       clip-path: polygon(50% 0%, 84% 16%, 100% 50%, 84% 84%, 50% 100%, 16% 84%, 0% 50%, 16% 16%);
       display: flex; align-items: center; justify-content: center;
     }
@@ -137,18 +143,18 @@
       text-shadow: 0 2px 8px #000;
     }
 
-    /* Single unobtrusive Pause button in top-right corner */
+    /* Single unobtrusive Pause / Settings seal in top-right corner */
     .pause-corner {
       position: absolute; top: clamp(10px, 1.5vw, 18px); right: clamp(10px, 1.5vw, 18px);
       width: clamp(32px, 3.2vw, 40px); height: clamp(32px, 3.2vw, 40px);
-      border-radius: 10px; pointer-events: auto; cursor: pointer;
-      background: rgba(10, 15, 26, 0.72); border: 1.5px solid rgba(232, 205, 148, 0.36);
+      border-radius: 7px; pointer-events: auto; cursor: pointer;
+      background: rgba(20, 15, 11, 0.78); border: 1.5px solid rgba(226, 188, 124, 0.44);
       color: #f6e0b3; font-size: clamp(13px, 1.3vw, 17px); font-weight: 800;
       display: flex; align-items: center; justify-content: center;
       transition: background 0.14s, border-color 0.14s, transform 0.1s;
       z-index: 36;
     }
-    .pause-corner:hover { background: rgba(24, 34, 56, 0.92); border-color: var(--gold); transform: scale(1.05); }
+    .pause-corner:hover { background: rgba(42, 31, 22, 0.94); border-color: var(--gold); transform: scale(1.05); }
 
     .combo {
       position: absolute; top: 22%;
@@ -157,20 +163,20 @@
       text-shadow: 0 4px 16px #000;
     }
     .combo.show { opacity: 1; transform: translateY(0) scale(1); }
-    .combo.c1 { left: 3.5%; color: #ffe2a8; }
-    .combo.c2 { right: 3.5%; color: #a8f0ff; }
+    .combo.c1 { left: 3.5%; color: #f9e2b4; }
+    .combo.c2 { right: 3.5%; color: #bceeff; }
     .combo .w { font-size: clamp(12px, 1.35vw, 18px); }
-    .combo .n { font-size: clamp(20px, 2.5vw, 32px); color: #ffae34; }
-    .combo.c2 .n { color: #4be3ff; }
+    .combo .n { font-size: clamp(20px, 2.5vw, 32px); color: #f5aa34; }
+    .combo.c2 .n { color: #56daf5; }
 
     .banner {
       position: absolute; inset: 0; display: flex; flex-direction: column; z-index: 20;
       align-items: center; justify-content: center; gap: 8px; pointer-events: none;
-      background: radial-gradient(circle at center, rgba(6, 10, 20, 0.48) 0%, transparent 65%);
+      background: radial-gradient(circle at center, rgba(12, 9, 7, 0.52) 0%, transparent 66%);
     }
     .banner.has-actions {
       z-index: 34; pointer-events: auto;
-      background: radial-gradient(circle at center, rgba(6, 10, 20, 0.72) 0%, rgba(6, 10, 20, 0.36) 72%, rgba(6, 10, 20, 0.14) 100%);
+      background: radial-gradient(circle at center, rgba(14, 10, 8, 0.78) 0%, rgba(12, 9, 7, 0.45) 72%, rgba(10, 8, 6, 0.18) 100%);
     }
     .banner.ult-banner {
       justify-content: flex-start; padding-top: 11%; gap: 4px; background: none;
@@ -178,31 +184,31 @@
     .banner-title {
       font-family: var(--font-head);
       font-size: clamp(28px, 4.8vw, 60px); font-weight: 900; letter-spacing: 0.14em;
-      text-shadow: 0 4px 16px rgba(0, 0, 0, 0.96), 0 0 6px #000; text-align: center;
+      text-shadow: 0 4px 18px rgba(0, 0, 0, 0.96), 0 0 6px #000; text-align: center;
     }
     .banner.ult-banner .banner-title {
-      font-size: clamp(18px, 2.8vw, 34px); letter-spacing: 0.15em; padding: 4px 22px; border-radius: 999px;
-      background: linear-gradient(90deg, rgba(6, 10, 18, 0), rgba(6, 10, 18, 0.72) 18%, rgba(6, 10, 18, 0.72) 82%, rgba(6, 10, 18, 0));
+      font-size: clamp(18px, 2.8vw, 34px); letter-spacing: 0.15em; padding: 4px 22px; border-radius: 4px;
+      background: linear-gradient(90deg, rgba(14, 10, 8, 0), rgba(14, 10, 8, 0.76) 18%, rgba(14, 10, 8, 0.76) 82%, rgba(14, 10, 8, 0));
       text-shadow: 0 2px 10px rgba(0, 0, 0, 0.98), 0 0 18px currentColor;
     }
     .banner-sub {
       font-family: var(--font-ui);
       font-size: clamp(11px, 1.15vw, 15px); font-weight: 700; letter-spacing: 0.14em;
-      color: #f4f8ff; text-shadow: 0 2px 8px rgba(0, 0, 0, 0.98);
+      color: #f4ead8; text-shadow: 0 2px 8px rgba(0, 0, 0, 0.98);
     }
     .banner.ult-banner .banner-sub {
-      font-size: clamp(9.5px, 0.95vw, 12px); padding: 2px 14px; border-radius: 999px;
-      background: rgba(6, 10, 18, 0.62);
+      font-size: clamp(9.5px, 0.95vw, 12px); padding: 2px 14px; border-radius: 4px;
+      background: rgba(14, 10, 8, 0.68);
     }
     .match-actions { margin-top: 14px; display: flex; gap: 10px; pointer-events: auto; flex-wrap: wrap; justify-content: center; position: relative; z-index: 35; }
     .match-actions .pill { min-height: 44px; min-width: 112px; padding: 10px 18px; touch-action: manipulation; }
 
-    /* First-fight temporary control tip (auto-hides permanently after first match) */
+    /* First-fight temporary control tip */
     .first-tip {
       position: absolute; bottom: clamp(10px, 1.8vh, 18px); left: 50%; transform: translateX(-50%);
-      background: rgba(8, 12, 22, 0.72); border: 1px solid rgba(245, 186, 66, 0.35);
-      color: #e6eefc; font-size: clamp(10px, 1vw, 12px); font-weight: 600;
-      padding: 5px 14px; border-radius: 999px; letter-spacing: 0.04em;
+      background: rgba(18, 13, 10, 0.84); border: 1px solid rgba(230, 178, 96, 0.42);
+      color: #f2e5ce; font-size: clamp(10px, 1vw, 12px); font-weight: 600;
+      padding: 5px 14px; border-radius: 4px; letter-spacing: 0.04em;
       pointer-events: none; z-index: 11; transition: opacity 0.5s ease;
       white-space: nowrap;
     }
@@ -213,7 +219,6 @@
       position: absolute; inset: 0; pointer-events: none; z-index: 12;
       transition: opacity 0.18s;
     }
-    /* Dynamic Left-Half Touch Zone: joystick spawns wherever the player's thumb lands */
     .stick-field {
       position: absolute; left: 0; top: 28%; bottom: 0; width: 37%;
       pointer-events: auto; touch-action: none;
@@ -222,28 +227,28 @@
       position: absolute; left: clamp(20px, 3.2vw, 44px); bottom: clamp(16px, 3.2vh, 34px);
       width: clamp(86px, 16vh, 114px); height: clamp(86px, 16vh, 114px);
       border-radius: 9999px;
-      background: radial-gradient(circle, rgba(15, 23, 42, 0.18) 0%, rgba(10, 16, 28, 0.48) 100%);
-      border: 2px solid rgba(255, 255, 255, 0.24);
+      background: radial-gradient(circle, rgba(28, 20, 14, 0.22) 0%, rgba(14, 10, 8, 0.54) 100%);
+      border: 2px solid rgba(244, 224, 188, 0.28);
       display: flex; align-items: center; justify-content: center;
-      opacity: 0.36; pointer-events: none;
+      opacity: 0.38; pointer-events: none;
       transition: opacity 0.16s ease;
       transform-origin: center center;
     }
-    .stick-base.active { opacity: 0.88; border-color: rgba(253, 224, 71, 0.65); }
+    .stick-base.active { opacity: 0.9; border-color: rgba(242, 188, 86, 0.78); }
     .stick-ring {
       position: absolute; inset: 16%; border-radius: 9999px;
-      border: 1px dashed rgba(255, 255, 255, 0.22); pointer-events: none;
+      border: 1px dashed rgba(244, 224, 188, 0.24); pointer-events: none;
     }
     .s-arr {
       position: absolute; font-size: 9px; font-weight: 900;
-      color: rgba(255, 255, 255, 0.38); pointer-events: none;
+      color: rgba(244, 224, 188, 0.42); pointer-events: none;
     }
-    .s-arr.active { color: #fde047; transform: scale(1.25); }
+    .s-arr.active { color: #f6c95e; transform: scale(1.25); }
     .s-arr.u { top: 5px; } .s-arr.d { bottom: 5px; } .s-arr.l { left: 6px; } .s-arr.r { right: 6px; }
     .stick-knob {
       width: 40%; height: 40%; border-radius: 9999px;
-      background: radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.9), rgba(148, 163, 184, 0.72));
-      border: 2px solid rgba(15, 23, 42, 0.75);
+      background: radial-gradient(circle at 35% 30%, rgba(252, 240, 214, 0.92), rgba(180, 146, 104, 0.74));
+      border: 2px solid rgba(24, 16, 10, 0.8);
       pointer-events: none; will-change: transform;
     }
 
@@ -259,60 +264,61 @@
     .action-row.top-row { padding-right: 2px; }
     .cbtn {
       position: relative; border-radius: 9999px;
-      border: 2px solid rgba(255, 255, 255, 0.34);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.42);
-      color: #ffffff; opacity: 0.76;
+      border: 2px solid rgba(246, 224, 184, 0.36);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.46);
+      color: #fff8eb; opacity: 0.78;
       font-family: var(--font-head); font-weight: 800;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
       cursor: pointer; touch-action: none;
       transition: transform 0.06s ease, opacity 0.08s ease;
     }
     .cbtn > * { pointer-events: none; }
-    .cbtn:active, .cbtn.pressed { transform: scale(0.88); opacity: 1; border-color: #ffffff; }
+    .cbtn:active, .cbtn.pressed { transform: scale(0.88); opacity: 1; border-color: #fff6de; }
     .cbtn.deny { animation: btnDeny 0.22s ease; }
     @keyframes btnDeny { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
     .cbtn .l { font-size: clamp(14px, 2.1vh, 19px); line-height: 1; text-shadow: 0 1px 4px rgba(0,0,0,0.65); }
-    .cbtn .h { font-family: var(--font-ui); font-size: clamp(7.5px, 1.05vh, 9px); font-weight: 700; opacity: 0.85; margin-top: 1px; }
+    .cbtn .h { font-family: var(--font-ui); font-size: clamp(7.5px, 1.05vh, 9px); font-weight: 700; opacity: 0.88; margin-top: 1px; }
     .cbtn .kb-hint { font-family: var(--font-ui); font-size: 8.5px; font-weight: 700; opacity: 0.75; margin-top: 1px; }
     body.is-touch .kb-hint { display: none; }
-    .b-punch { width: clamp(46px, 9.6vh, 62px); height: clamp(46px, 9.6vh, 62px); background: radial-gradient(circle at 35% 30%, rgba(239,68,68,0.88), rgba(153,27,27,0.88)); }
-    .b-kick { width: clamp(46px, 9.6vh, 62px); height: clamp(46px, 9.6vh, 62px); background: radial-gradient(circle at 35% 30%, rgba(245,158,11,0.88), rgba(180,83,9,0.88)); }
-    .b-weapon { width: clamp(48px, 10vh, 64px); height: clamp(48px, 10vh, 64px); background: radial-gradient(circle at 35% 30%, rgba(14,165,233,0.88), rgba(3,105,161,0.88)); }
-    .b-block { width: clamp(36px, 7.6vh, 48px); height: clamp(36px, 7.6vh, 48px); background: radial-gradient(circle at 35% 30%, rgba(100,116,139,0.82), rgba(30,41,59,0.86)); }
-    .b-evade { width: clamp(36px, 7.6vh, 48px); height: clamp(36px, 7.6vh, 48px); background: radial-gradient(circle at 35% 30%, rgba(51,65,85,0.82), rgba(15,23,42,0.86)); }
-    .b-grab { width: clamp(36px, 7.6vh, 48px); height: clamp(36px, 7.6vh, 48px); background: radial-gradient(circle at 35% 30%, rgba(139,92,246,0.84), rgba(76,29,149,0.88)); }
+    .b-punch { width: clamp(46px, 9.6vh, 62px); height: clamp(46px, 9.6vh, 62px); background: radial-gradient(circle at 35% 30%, rgba(214,66,42,0.9), rgba(132,26,18,0.9)); }
+    .b-kick { width: clamp(46px, 9.6vh, 62px); height: clamp(46px, 9.6vh, 62px); background: radial-gradient(circle at 35% 30%, rgba(226,144,32,0.9), rgba(148,74,12,0.9)); }
+    .b-weapon { width: clamp(48px, 10vh, 64px); height: clamp(48px, 10vh, 64px); background: radial-gradient(circle at 35% 30%, rgba(42,148,176,0.9), rgba(16,82,108,0.9)); }
+    .b-block { width: clamp(36px, 7.6vh, 48px); height: clamp(36px, 7.6vh, 48px); background: radial-gradient(circle at 35% 30%, rgba(112,96,78,0.84), rgba(46,37,29,0.88)); }
+    .b-evade { width: clamp(36px, 7.6vh, 48px); height: clamp(36px, 7.6vh, 48px); background: radial-gradient(circle at 35% 30%, rgba(84,72,58,0.84), rgba(32,26,20,0.88)); }
+    .b-grab { width: clamp(36px, 7.6vh, 48px); height: clamp(36px, 7.6vh, 48px); background: radial-gradient(circle at 35% 30%, rgba(146,72,118,0.86), rgba(78,28,62,0.9)); }
     .b-avatar {
       width: clamp(34px, 7vh, 44px); height: clamp(34px, 7vh, 44px);
-      background: radial-gradient(circle at 35% 30%, rgba(250,204,21,0.9), rgba(180,83,9,0.92));
-      border-color: #fef08a; color: #160902; margin-right: 4px;
+      background: radial-gradient(circle at 35% 30%, rgba(246,196,72,0.94), rgba(166,86,14,0.94));
+      border-color: #fde9a8; color: #1b0c04; margin-right: 4px;
     }
     .b-evade svg, .b-block svg, .b-grab svg { width: 42%; height: 42%; }
     .b-magic {
       width: clamp(48px, 10vh, 64px); height: clamp(48px, 10vh, 64px);
-      background: radial-gradient(circle at 35% 30%, rgba(71,85,105,0.82), rgba(30,27,46,0.86));
-      border-color: rgba(255, 255, 255, 0.28); opacity: 0.54; filter: grayscale(0.4);
+      background: radial-gradient(circle at 35% 30%, rgba(78,68,58,0.84), rgba(34,27,22,0.88));
+      border-color: rgba(246, 224, 184, 0.3); opacity: 0.56; filter: grayscale(0.45);
     }
     .b-magic.ex-ready {
-      opacity: 0.88; filter: none; border-color: var(--mg-glow, #38d8ff);
-      background: radial-gradient(circle at 38% 30%, var(--mg-prim, #0c7de8), #141a2e);
+      opacity: 0.9; filter: none; border-color: var(--mg-glow, #56daf5);
+      background: radial-gradient(circle at 38% 30%, var(--mg-prim, #0c7de8), #1d1510);
       box-shadow: 0 0 12px var(--mg-prim, #0c7de8);
     }
     .b-magic.ready {
-      opacity: 1; filter: none; border-color: #fde047;
-      background: radial-gradient(circle at 38% 30%, var(--mg-glow, #ffae34), var(--mg-prim, #ff5a14));
+      opacity: 1; filter: none; border-color: #fae08c;
+      background: radial-gradient(circle at 38% 30%, var(--mg-glow, #f5aa34), var(--mg-prim, #c93b24));
       animation: orbPulse 0.85s ease-in-out infinite alternate;
     }
+    .b-magic.swiping { transform: scale(1.08); opacity: 1; border-color: #fff6dc; }
     @keyframes orbPulse {
-      from { transform: scale(1); box-shadow: 0 0 12px rgba(250, 204, 21, 0.8); }
-      to { transform: scale(1.08); box-shadow: 0 0 24px rgba(250, 204, 21, 1); }
+      from { transform: scale(1); box-shadow: 0 0 12px rgba(245, 188, 66, 0.82); }
+      to { transform: scale(1.08); box-shadow: 0 0 22px rgba(252, 224, 134, 1); }
     }
     .b-magic .mi { width: 42%; height: 42%; color: #fff8dc; }
     .b-magic .mi svg { width: 100%; height: 100%; }
     .b-magic .mt { font-size: clamp(7.5px, 1.05vh, 9px); letter-spacing: 0.08em; margin-top: 1px; }
     .bend-dir-pill {
-      position: absolute; top: -7px; right: -4px;
-      min-width: 18px; height: 18px; padding: 0 4px; border-radius: 999px;
-      background: #0a101e; border: 1.5px solid #fde047; color: #fde047;
+      position: absolute; top: -8px; right: -4px;
+      min-width: 19px; height: 19px; padding: 0 4px; border-radius: 999px;
+      background: #1a130e; border: 1.5px solid #f6d068; color: #f8e2b5;
       font-family: var(--font-ui); font-size: 10px; font-weight: 900;
       display: none; align-items: center; justify-content: center; line-height: 1;
     }
@@ -321,18 +327,18 @@
     /* Guided Dojo Tutorial Objective Pill */
     .tut-pill {
       position: absolute; top: clamp(68px, 11.5vh, 92px); left: 50%; transform: translateX(-50%);
-      background: linear-gradient(180deg, rgba(10, 16, 30, 0.9), rgba(6, 10, 20, 0.94));
-      border: 1.5px solid rgba(245, 186, 66, 0.55); border-radius: 10px;
+      background: linear-gradient(180deg, rgba(26, 20, 15, 0.94), rgba(14, 10, 8, 0.96));
+      border: 1.5px solid rgba(230, 178, 92, 0.55); border-radius: 6px;
       padding: 7px 16px; text-align: center; pointer-events: none; z-index: 11;
-      max-width: min(500px, 86%); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.55);
+      max-width: min(500px, 86%); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
     }
     .tut-pill b { font-family: var(--font-head); font-size: clamp(11px, 1.2vw, 13px); letter-spacing: 0.12em; color: var(--gold-light); display: block; }
-    .tut-pill span { font-size: clamp(11px, 1.15vw, 13px); color: #eef4fc; display: block; margin-top: 2px; }
+    .tut-pill span { font-size: clamp(11px, 1.15vw, 13px); color: #f4ead8; display: block; margin-top: 2px; }
 
-    /* ===== MAIN MENU (SHADOW FIGHT 2 SILHOUETTE TITLE SCREEN) ===== */
+    /* ===== MAIN MENU (HAND-INKED SUMI-E TITLE SCREEN) ===== */
     .main-menu {
       position: absolute; inset: 0; z-index: 25;
-      background: linear-gradient(90deg, rgba(5, 8, 16, 0.88) 0%, rgba(6, 10, 20, 0.56) 44%, rgba(6, 10, 20, 0.14) 100%);
+      background: linear-gradient(90deg, rgba(14, 10, 8, 0.88) 0%, rgba(16, 12, 9, 0.52) 44%, rgba(14, 10, 8, 0.08) 100%);
       display: flex; flex-direction: column; justify-content: space-between;
       padding: clamp(16px, 3.6vw, 44px) clamp(18px, 4.5vw, 56px);
     }
@@ -340,214 +346,293 @@
     .mm-title { min-width: 0; flex: 1; }
     .mm-title h1 {
       font-family: var(--font-head); font-size: clamp(22px, 4.2vw, 56px); font-weight: 900;
-      letter-spacing: 0.12em; color: #f8e2b0;
-      text-shadow: 0 4px 24px rgba(0,0,0,0.92), 0 0 28px rgba(245, 186, 66, 0.25);
+      letter-spacing: 0.12em; color: #f8e2b5;
+      text-shadow: 0 4px 24px rgba(0,0,0,0.94), 0 0 28px rgba(230, 169, 60, 0.25);
       line-height: 1.05; white-space: nowrap;
     }
     .mm-sub {
       font-family: var(--font-ui); font-size: clamp(9.5px, 1.05vw, 14px);
-      letter-spacing: 0.22em; color: #c7d6ec; margin-top: 5px; text-transform: uppercase;
+      letter-spacing: 0.22em; color: #d8c6ac; margin-top: 5px; text-transform: uppercase;
     }
     .mm-status { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
     .coin-badge {
       display: inline-flex; align-items: center; gap: 6px;
-      padding: 5px 12px; border-radius: 999px; font-weight: 700; font-size: 12px;
-      background: rgba(12, 18, 30, 0.86); border: 1px solid rgba(245, 186, 66, 0.5); color: var(--gold-light);
-      white-space: nowrap; flex-shrink: 0;
+      padding: 5px 12px; border-radius: 4px; font-weight: 700; font-size: 12px;
+      background: rgba(24, 18, 13, 0.9); border: 1px solid rgba(230, 178, 92, 0.52); color: var(--gold-light);
+      white-space: nowrap; flex-shrink: 0; letter-spacing: 0.06em;
     }
     .mm-nav {
       display: flex; flex-direction: column; gap: clamp(7px, 1.4vh, 14px);
-      max-width: clamp(220px, 28vw, 320px); margin: auto 0;
+      max-width: clamp(220px, 28vw, 315px); margin: auto 0;
     }
     .mm-btn {
       position: relative; text-align: left; cursor: pointer;
-      padding: clamp(8px, 1.6vh, 16px) clamp(13px, 2vw, 22px);
-      border-radius: 10px; border: 1px solid var(--ink-border);
-      background: linear-gradient(90deg, rgba(14, 21, 36, 0.92), rgba(14, 21, 36, 0.65));
-      color: #f6f8fc; display: flex; align-items: center; justify-content: space-between;
+      padding: clamp(8px, 1.6vh, 15px) clamp(13px, 2vw, 20px);
+      border-radius: 4px; border: 1px solid var(--ink-border);
+      border-left: 3px solid rgba(230, 169, 60, 0.65);
+      background: linear-gradient(90deg, rgba(26, 20, 15, 0.93), rgba(20, 15, 11, 0.68));
+      color: var(--text-main); display: flex; align-items: center; justify-content: space-between;
       transition: transform 0.14s, border-color 0.14s, background 0.14s;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
     }
-    .mm-btn:hover { transform: translateX(6px); border-color: var(--gold); background: rgba(28, 40, 66, 0.94); }
+    .mm-btn:hover { transform: translateX(6px); border-color: var(--gold); background: rgba(42, 31, 22, 0.95); }
     .mm-btn.primary {
-      background: linear-gradient(120deg, rgba(188, 72, 18, 0.94), rgba(226, 138, 34, 0.92));
-      border-color: #ffd782; color: #160902;
+      background: linear-gradient(115deg, rgba(168, 44, 24, 0.95), rgba(212, 112, 32, 0.93));
+      border-color: #f6c978; border-left: 4px solid #fff0c2; color: #fff8eb;
     }
-    .mm-btn.primary:hover { background: linear-gradient(120deg, #dc5c1c, #f5ab35); }
+    .mm-btn.primary:hover { background: linear-gradient(115deg, #c23620, #e0842c); }
     .mm-btn b { font-family: var(--font-head); font-size: clamp(13px, 1.5vw, 19px); letter-spacing: 0.12em; display: block; }
-    .mm-btn small { font-family: var(--font-ui); font-size: clamp(9.5px, 0.95vw, 12px); opacity: 0.78; font-weight: 500; display: block; margin-top: 2px; }
-    .mm-btn .arr { font-size: 18px; opacity: 0.75; }
-    .mm-foot { display: flex; align-items: center; justify-content: space-between; font-size: 11px; color: var(--text-muted); gap: 8px; }
+    .mm-btn small { font-family: var(--font-ui); font-size: clamp(9.5px, 0.95vw, 12px); opacity: 0.82; font-weight: 500; display: block; margin-top: 2px; }
+    .mm-btn .arr { font-size: 18px; opacity: 0.78; }
+    .mm-foot { display: flex; align-items: center; justify-content: space-between; font-size: 11px; color: #c4b299; gap: 8px; }
 
-    /* ===== STORY OVERLAY (INK-SCROLL INTRO / DIALOGUE / MEMORY VIGNETTE) ===== */
+    /* ===== STORY OVERLAY (CINEMATIC LETTERBOX INK-SCROLL & MASTER PORTRAIT) ===== */
     .story-overlay {
       position: absolute; inset: 0; z-index: 38;
-      background: #05070e; display: flex; flex-direction: column;
+      background: #0b0807; display: flex; flex-direction: column;
       align-items: center; justify-content: center;
     }
     canvas#story-canvas { width: 100%; height: 100%; display: block; }
     .story-caption-box {
-      position: absolute; left: 50%; bottom: clamp(20px, 4vh, 38px); transform: translateX(-50%);
-      width: min(760px, 90%);
-      background: linear-gradient(180deg, rgba(8, 12, 22, 0.88), rgba(5, 8, 16, 0.95));
-      border: 1px solid rgba(245, 186, 66, 0.36); border-radius: 12px;
-      padding: clamp(14px, 2.2vh, 22px) clamp(18px, 2.6vw, 28px);
-      display: flex; flex-direction: column; gap: 10px;
+      position: absolute; left: 50%; bottom: clamp(14px, 3.2vh, 32px); transform: translateX(-50%);
+      width: min(760px, 92%);
+      background: linear-gradient(180deg, rgba(24, 18, 14, 0.93), rgba(13, 10, 8, 0.97));
+      border: 1px solid rgba(230, 182, 102, 0.48);
+      border-left: 4px solid var(--vermilion-hi);
+      border-radius: 5px;
+      padding: clamp(11px, 1.9vh, 20px) clamp(14px, 2.4vw, 26px);
+      display: flex; align-items: center; gap: clamp(10px, 1.6vw, 18px);
+      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.78);
     }
+    .story-crest {
+      width: clamp(40px, 5.2vw, 56px); height: clamp(40px, 5.2vw, 56px);
+      border-radius: 50%; flex-shrink: 0;
+      border: 2px solid var(--gold);
+      background: radial-gradient(circle at 35% 30%, rgba(44, 32, 22, 0.95), rgba(14, 10, 8, 0.98));
+      display: flex; align-items: center; justify-content: center; padding: 9px;
+      color: var(--gold-light);
+    }
+    .story-crest svg { width: 100%; height: 100%; }
+    .story-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 7px; }
     .story-speaker {
       font-family: var(--font-head); font-size: clamp(12px, 1.25vw, 15px);
       letter-spacing: 0.16em; color: var(--gold-light); font-weight: 800;
     }
     .story-text {
-      font-family: var(--font-ui); font-size: clamp(13px, 1.35vw, 17px);
-      line-height: 1.5; color: #f1f5fb; font-weight: 500;
+      font-family: var(--font-ui); font-size: clamp(12.5px, 1.3vw, 16px);
+      line-height: 1.46; color: #f4ead8; font-weight: 500;
     }
-    .story-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 4px; }
+    .story-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 2px; }
     .story-dots { display: flex; gap: 6px; }
-    .story-dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,0.22); }
+    .story-dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(244, 234, 216, 0.22); }
     .story-dot.on { background: var(--gold); }
 
-    /* ===== MODALS, PAUSE DRAWER, VISUAL-FIRST WORLD MAP & ARMORY ===== */
+    /* ===== LACQUER MODALS, PAUSE DRAWER, WORLD MAP & 3-COLUMN ARMORY SHOWCASE ===== */
     .backdrop {
-      position: absolute; inset: 0; background: rgba(4, 7, 14, 0.82);
+      position: absolute; inset: 0; background: rgba(10, 7, 5, 0.8);
       z-index: 30; display: flex; justify-content: flex-end;
     }
-    .backdrop.center { justify-content: center; align-items: center; padding: clamp(10px, 1.6vw, 18px); }
+    .backdrop.center { justify-content: center; align-items: center; padding: clamp(8px, 1.4vw, 16px); }
     .drawer {
-      width: min(410px, 92vw); height: 100%; background: var(--ink-panel);
-      border-left: 1px solid var(--ink-border);
+      width: min(410px, 92vw); height: 100%;
+      background: linear-gradient(180deg, rgba(26, 20, 15, 0.98), rgba(14, 10, 8, 0.99));
+      border-left: 1.5px solid var(--ink-border);
       display: flex; flex-direction: column; padding: 18px 20px; gap: 12px;
     }
     .drawer-head { display: flex; justify-content: space-between; align-items: start; }
     .drawer-head h2 { font-family: var(--font-head); font-size: 18px; letter-spacing: 0.12em; color: var(--gold-light); }
     .drawer-head p { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
-    .xbtn { width: 32px; height: 32px; border-radius: 7px; border: 1px solid var(--ink-border); background: rgba(255, 255, 255, 0.06); color: #eef4fc; cursor: pointer; }
+    .xbtn { width: 32px; height: 32px; border-radius: 4px; border: 1px solid var(--ink-border); background: rgba(244, 234, 216, 0.06); color: var(--text-main); cursor: pointer; }
     .pill-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
     .pill {
-      font-family: var(--font-ui); font-size: 12px; font-weight: 700;
-      letter-spacing: 0.06em; padding: 8px 14px; border-radius: 8px;
-      border: 1px solid rgba(190, 210, 236, 0.26); background: rgba(22, 32, 52, 0.9); color: #eef4fc; cursor: pointer;
-      transition: border-color 0.12s, background 0.12s;
+      font-family: var(--font-head); font-size: 12px; font-weight: 700;
+      letter-spacing: 0.08em; padding: 8px 14px; border-radius: 4px;
+      border: 1px solid rgba(218, 178, 112, 0.34); background: rgba(34, 26, 20, 0.94); color: var(--text-main); cursor: pointer;
+      transition: border-color 0.12s, background 0.12s, transform 0.08s;
     }
-    .pill:hover:not(:disabled) { border-color: var(--gold); background: rgba(34, 48, 76, 0.96); }
+    .pill:hover:not(:disabled) { border-color: var(--gold); background: rgba(52, 39, 28, 0.96); }
+    .pill:active:not(:disabled) { transform: scale(0.97); }
     .pill:disabled { opacity: 0.42; cursor: not-allowed; }
-    .pill.primary { background: linear-gradient(135deg, #d95b16, #f09c26); border-color: #ffd07a; color: #160a03; }
-    .tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; background: rgba(7, 10, 18, 0.72); padding: 4px; border-radius: 8px; }
-    .tab { padding: 7px 6px; border: none; border-radius: 6px; background: transparent; color: var(--text-muted); font-size: 12px; font-weight: 600; cursor: pointer; }
-    .tab.active { background: rgba(36, 52, 82, 0.95); color: #fff; }
+    .pill.primary {
+      background: linear-gradient(135deg, #b8331c, #df7f22);
+      border-color: #f6ce82; color: #fff8ec; text-shadow: 0 1px 4px rgba(0,0,0,0.45);
+    }
+    .tabs {
+      display: inline-grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 4px;
+      background: rgba(12, 9, 7, 0.8); padding: 3px; border-radius: 5px;
+      border: 1px solid var(--ink-border-soft);
+    }
+    .tab {
+      padding: 6px 12px; border: none; border-radius: 3px; background: transparent;
+      color: var(--text-muted); font-family: var(--font-head); font-size: 12px; font-weight: 700;
+      letter-spacing: 0.06em; cursor: pointer; white-space: nowrap;
+    }
+    .tab.active {
+      background: linear-gradient(180deg, rgba(168, 56, 28, 0.78), rgba(112, 34, 18, 0.9));
+      color: #fff5e0; box-shadow: inset 0 0 0 1px rgba(246, 204, 128, 0.45);
+    }
     .drawer-body { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 11px; padding-right: 4px; }
     .sgroup { display: flex; flex-direction: column; gap: 6px; }
-    .slabel { display: flex; justify-content: space-between; font-size: 12px; font-weight: 600; color: #dde8f8; }
+    .slabel { display: flex; justify-content: space-between; font-size: 12px; font-weight: 600; color: var(--text-main); }
     .slabel span { color: var(--gold); }
     .seg { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 5px; }
-    .sbtn { padding: 6px 5px; border-radius: 6px; border: 1px solid rgba(168, 194, 224, 0.24); background: rgba(14, 20, 34, 0.85); color: var(--text-muted); font-size: 11px; font-weight: 600; cursor: pointer; }
-    .sbtn.active { background: rgba(245, 186, 66, 0.22); border-color: var(--gold); color: #fff3d1; }
+    .sbtn { padding: 6px 5px; border-radius: 4px; border: 1px solid rgba(218, 178, 112, 0.24); background: rgba(20, 15, 11, 0.88); color: var(--text-muted); font-size: 11px; font-weight: 600; cursor: pointer; }
+    .sbtn.active { background: rgba(214, 140, 44, 0.24); border-color: var(--gold); color: #fff3d6; }
     input[type=range] { width: 100%; accent-color: var(--gold); cursor: pointer; }
-    .trow { display: flex; align-items: center; justify-content: space-between; background: rgba(16, 24, 40, 0.78); padding: 9px 11px; border-radius: 8px; border: 1px solid rgba(168, 194, 224, 0.16); }
-    .tsw { min-width: 52px; padding: 5px 10px; border-radius: 999px; border: 1px solid rgba(168, 194, 224, 0.28); background: rgba(10, 14, 24, 0.9); color: var(--text-muted); font-size: 11px; font-weight: 700; cursor: pointer; }
-    .tsw.on { background: rgba(75, 227, 255, 0.24); border-color: #4be3ff; color: #e2fbff; }
-    .mrow { background: rgba(11, 16, 28, 0.82); border: 1px solid rgba(168, 194, 224, 0.14); border-radius: 7px; padding: 8px 10px; }
+    .trow { display: flex; align-items: center; justify-content: space-between; background: rgba(24, 18, 14, 0.82); padding: 9px 11px; border-radius: 5px; border: 1px solid var(--ink-border-soft); }
+    .tsw { min-width: 52px; padding: 5px 10px; border-radius: 4px; border: 1px solid rgba(218, 178, 112, 0.3); background: rgba(14, 10, 8, 0.92); color: var(--text-muted); font-size: 11px; font-weight: 700; cursor: pointer; }
+    .tsw.on { background: rgba(214, 140, 44, 0.28); border-color: var(--gold); color: #fff3d6; }
+    .mrow { background: rgba(18, 14, 10, 0.86); border: 1px solid var(--ink-border-soft); border-radius: 5px; padding: 8px 10px; }
     .mrow b { font-family: var(--font-head); font-size: 12.5px; color: #f6dcb2; display: block; }
-    .mrow small { color: #6ce5ff; font-weight: 600; font-size: 11px; display: block; margin: 2px 0; }
+    .mrow small { color: #f2aa4c; font-weight: 600; font-size: 11px; display: block; margin: 2px 0; }
     .mrow span { color: var(--text-muted); font-size: 11px; line-height: 1.35; }
 
     .panel-modal {
-      width: min(1020px, 96%); max-height: 94%; overflow-y: auto;
-      scrollbar-width: thin; scrollbar-color: rgba(245, 186, 66, 0.35) rgba(255, 255, 255, 0.04);
-      background: linear-gradient(180deg, rgba(13, 19, 32, 0.97), rgba(8, 12, 22, 0.99));
-      border: 1px solid var(--ink-border); border-radius: 14px;
-      padding: clamp(14px, 2vw, 22px); display: flex; flex-direction: column; gap: 12px;
+      position: relative;
+      width: min(1040px, 97%); max-height: 95%; overflow-y: auto;
+      scrollbar-width: thin; scrollbar-color: rgba(230, 169, 60, 0.42) rgba(255, 255, 255, 0.04);
+      background: linear-gradient(180deg, rgba(28, 22, 17, 0.97), rgba(15, 11, 9, 0.99));
+      border: 1.5px solid var(--ink-border);
+      box-shadow: inset 0 0 0 1px rgba(248, 226, 181, 0.08), 0 22px 64px rgba(0, 0, 0, 0.82);
+      border-radius: 6px;
+      padding: clamp(12px, 1.8vw, 20px); display: flex; flex-direction: column; gap: 11px;
     }
-    .panel-modal::-webkit-scrollbar, .item-strip::-webkit-scrollbar, .drawer-body::-webkit-scrollbar { width: 6px; height: 6px; }
-    .panel-modal::-webkit-scrollbar-track, .item-strip::-webkit-scrollbar-track, .drawer-body::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.04); border-radius: 999px; }
-    .panel-modal::-webkit-scrollbar-thumb, .item-strip::-webkit-scrollbar-thumb, .drawer-body::-webkit-scrollbar-thumb { background: rgba(245, 186, 66, 0.38); border-radius: 999px; }
-    .panel-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
-    .panel-head h1 { font-family: var(--font-head); font-size: clamp(17px, 2vw, 24px); letter-spacing: 0.14em; color: var(--gold-light); }
-    .panel-head p { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+    .panel-modal.armory-modal-panel {
+      height: min(94%, 630px); overflow: hidden;
+    }
+    .panel-modal::-webkit-scrollbar, .armory-list::-webkit-scrollbar, .drawer-body::-webkit-scrollbar { width: 5px; height: 5px; }
+    .panel-modal::-webkit-scrollbar-track, .armory-list::-webkit-scrollbar-track, .drawer-body::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.04); border-radius: 999px; }
+    .panel-modal::-webkit-scrollbar-thumb, .armory-list::-webkit-scrollbar-thumb, .drawer-body::-webkit-scrollbar-thumb { background: rgba(230, 169, 60, 0.44); border-radius: 999px; }
+    .panel-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; flex-shrink: 0; }
+    .panel-head h1 { font-family: var(--font-head); font-size: clamp(16px, 2vw, 23px); letter-spacing: 0.14em; color: var(--gold-light); }
+    .panel-head p { font-size: 11.5px; color: var(--text-muted); margin-top: 2px; }
 
-    /* Visual-First World Map (The Hollow Avatar Campaign) */
-    .map-layout { display: grid; grid-template-columns: 1.55fr 1fr; gap: 14px; min-height: 360px; flex: 1; overflow: hidden; }
+    /* Visual-First World Map */
+    .map-layout { display: grid; grid-template-columns: 1.55fr 1fr; gap: 12px; min-height: 360px; flex: 1; overflow: hidden; }
     .map-canvas-wrap {
-      position: relative; border-radius: 12px; overflow: hidden;
-      border: 1px solid var(--ink-border); background: #0c111d; min-height: 320px;
+      position: relative; border-radius: 5px; overflow: hidden;
+      border: 1px solid var(--ink-border); background: #14100c; min-height: 320px;
     }
     canvas#map-canvas { width: 100%; height: 100%; display: block; cursor: pointer; }
     .map-detail {
-      background: rgba(9, 14, 25, 0.88); border: 1px solid var(--ink-border);
-      border-radius: 12px; padding: 14px 16px; display: flex; flex-direction: column; justify-content: space-between; gap: 10px;
+      background: var(--ink-card); border: 1px solid var(--ink-border);
+      border-radius: 5px; padding: 13px 15px; display: flex; flex-direction: column; justify-content: space-between; gap: 10px;
       min-height: 0; overflow-y: auto; scrollbar-width: thin;
     }
-    .el-strip { display: flex; gap: 6px; align-items: center; overflow-x: auto; flex: 1; min-width: 0; scrollbar-width: none; }
+    .el-strip {
+      display: flex; gap: 6px; align-items: center; overflow-x: auto; flex: 1; min-width: 0;
+      scrollbar-width: none; padding-right: 26px;
+      -webkit-mask-image: linear-gradient(90deg, #000 0%, #000 90%, transparent 100%);
+      mask-image: linear-gradient(90deg, #000 0%, #000 90%, transparent 100%);
+    }
     .el-strip::-webkit-scrollbar { display: none; }
-    .el-strip .pill { white-space: nowrap; flex-shrink: 0; padding: 4px 10px; font-size: 11px; min-height: 0; }
+    .el-strip .pill { white-space: nowrap; flex-shrink: 0; padding: 5px 9px; font-size: 11px; min-height: 0; }
     .md-crest {
-      width: 56px; height: 56px; border-radius: 50%; border: 2px solid var(--accent);
-      display: flex; align-items: center; justify-content: center; padding: 10px;
-      background: rgba(6, 10, 18, 0.9); color: var(--accent); flex-shrink: 0;
+      width: 52px; height: 52px; border-radius: 50%; border: 2px solid var(--accent);
+      display: flex; align-items: center; justify-content: center; padding: 9px;
+      background: rgba(14, 10, 8, 0.94); color: var(--accent); flex-shrink: 0;
     }
     .md-crest svg { width: 100%; height: 100%; }
-    .md-title { font-family: var(--font-head); font-size: 20px; color: #fff; letter-spacing: 0.1em; }
+    .md-title { font-family: var(--font-head); font-size: 19px; color: #fff6e6; letter-spacing: 0.09em; }
     .md-sub { font-size: 12px; color: var(--accent); font-weight: 600; margin-top: 2px; }
-    .md-stars { color: var(--gold); font-size: 16px; letter-spacing: 2px; margin: 6px 0; }
-    .md-desc { font-size: 13px; color: #d4dfef; line-height: 1.48; }
+    .md-stars { color: var(--gold); font-size: 15px; letter-spacing: 2px; margin: 5px 0; }
+    .md-desc { font-size: 12.5px; color: #e2d4be; line-height: 1.45; }
     .md-trial {
-      background: rgba(18, 26, 44, 0.85); border: 1px solid rgba(245, 186, 66, 0.28);
-      border-radius: 8px; padding: 9px 11px; font-size: 12px; color: #e2ecf9;
+      background: rgba(32, 24, 17, 0.88); border: 1px solid rgba(230, 178, 92, 0.34);
+      border-left: 3px solid var(--gold);
+      border-radius: 4px; padding: 8px 10px; font-size: 12px; color: #f2e5ce;
     }
-    .md-trial b { color: var(--gold-light); display: block; font-size: 11px; letter-spacing: 0.08em; margin-bottom: 2px; }
+    .md-trial b { color: var(--gold-light); display: block; font-size: 10.5px; letter-spacing: 0.08em; margin-bottom: 2px; }
 
-    /* Visual-First Armory (Live Fighter Preview + Horizontal Item Strip + Pip Bars) */
-    .armory-layout { display: grid; grid-template-columns: 1.05fr 1.25fr; gap: 14px; align-items: stretch; }
+    /* ===== SHADOW FIGHT 2 3-COLUMN ARMORY SHOWCASE (Zero Squashing, Auto-Fit Full Weapon!) ===== */
+    .armory-head {
+      display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-shrink: 0;
+      border-bottom: 1px solid var(--ink-border-soft); padding-bottom: 8px;
+    }
+    .armory-head-left { display: flex; align-items: center; gap: 12px; min-width: 0; }
+    .armory-head h1 { font-family: var(--font-head); font-size: clamp(15px, 1.8vw, 21px); letter-spacing: 0.14em; color: var(--gold-light); white-space: nowrap; }
+    .armory-showcase {
+      flex: 1; min-height: 0;
+      display: grid; grid-template-columns: minmax(175px, 0.92fr) 1.4fr minmax(185px, 0.92fr);
+      gap: 11px; align-items: stretch;
+    }
+    .armory-list {
+      min-height: 0; overflow-y: auto; -webkit-overflow-scrolling: touch;
+      display: flex; flex-direction: column; gap: 6px; padding-right: 4px;
+      scrollbar-width: thin; scrollbar-color: rgba(230, 169, 60, 0.42) transparent;
+    }
+    .item-row {
+      flex-shrink: 0; display: flex; align-items: center; gap: 9px;
+      padding: 8px 9px; border-radius: 4px; cursor: pointer; text-align: left;
+      background: rgba(20, 15, 11, 0.92); border: 1px solid var(--ink-border-soft);
+      color: var(--text-main); transition: border-color 0.12s, background 0.12s, transform 0.08s;
+    }
+    .item-row:hover { border-color: rgba(230, 169, 60, 0.65); background: rgba(34, 25, 18, 0.96); }
+    .item-row.selected {
+      border-color: var(--gold); border-left: 3px solid var(--vermilion-hi);
+      background: linear-gradient(90deg, rgba(58, 36, 22, 0.96), rgba(30, 22, 16, 0.94));
+    }
+    .item-row.equipped { border-color: rgba(114, 216, 146, 0.62); }
+    .item-row.selected.equipped { border-color: var(--gold); }
+    .ir-ico {
+      width: 32px; height: 32px; border-radius: 4px; flex-shrink: 0;
+      background: rgba(12, 9, 7, 0.85); border: 1px solid rgba(218, 178, 112, 0.24);
+      display: flex; align-items: center; justify-content: center; padding: 5px;
+      color: var(--gold-light);
+    }
+    .ir-ico svg { width: 100%; height: 100%; display: block; }
+    .item-row.selected .ir-ico { border-color: var(--gold); color: #fff6dc; background: rgba(168, 52, 24, 0.28); }
+    .ir-meta { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+    .ir-nm { font-family: var(--font-head); font-size: 12px; font-weight: 700; color: #f6ead6; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .ir-st { font-size: 10px; font-weight: 700; color: var(--gold); letter-spacing: 0.05em; }
+    .item-row.equipped .ir-st { color: #7ce69e; }
+
     .armory-preview-box {
-      position: relative; border-radius: 12px; overflow: hidden;
-      border: 1px solid var(--ink-border); background: #0c1220;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      min-height: 280px;
+      position: relative; border-radius: 5px; overflow: hidden;
+      border: 1.5px solid var(--ink-border); background: #140f0b;
+      min-height: 0; display: flex; cursor: pointer;
     }
-    canvas#armory-preview { width: 100%; height: 280px; display: block; }
+    canvas#armory-preview { width: 100%; height: 100%; display: block; }
+    .armory-tap-hint {
+      position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%);
+      font-family: var(--font-head); font-size: 10px; letter-spacing: 0.14em;
+      color: rgba(248, 226, 181, 0.78); background: rgba(14, 10, 8, 0.72);
+      border: 1px solid rgba(218, 178, 112, 0.28); padding: 3px 10px; border-radius: 3px;
+      pointer-events: none; white-space: nowrap;
+    }
+
     .armory-info {
-      background: rgba(9, 14, 25, 0.88); border: 1px solid var(--ink-border);
-      border-radius: 12px; padding: 16px; display: flex; flex-direction: column; justify-content: space-between; gap: 12px;
+      background: var(--ink-card); border: 1px solid var(--ink-border);
+      border-radius: 5px; padding: 13px 14px; display: flex; flex-direction: column;
+      justify-content: space-between; gap: 10px; min-height: 0; overflow-y: auto;
     }
-    .ai-name { font-family: var(--font-head); font-size: 20px; color: #fff; letter-spacing: 0.08em; }
-    .ai-desc { font-size: 13px; color: #cdd9ea; line-height: 1.45; margin-top: 4px; }
-    .pip-list { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
-    .pip-row { display: flex; align-items: center; justify-content: space-between; font-size: 12px; color: var(--text-muted); font-weight: 600; }
-    .pips { display: flex; gap: 5px; }
-    .pip { width: 22px; height: 7px; border-radius: 3px; background: rgba(255, 255, 255, 0.12); }
-    .pip.on { background: var(--gold); box-shadow: 0 0 8px rgba(245, 186, 66, 0.45); }
-    .item-strip {
-      display: flex; gap: 9px; overflow-x: auto; padding: 4px 2px 8px;
-      scrollbar-width: thin; scrollbar-color: rgba(245, 186, 66, 0.38) rgba(255, 255, 255, 0.04);
-    }
-    .item-tile {
-      flex: 0 0 112px; padding: 10px 8px; border-radius: 10px; cursor: pointer;
-      background: rgba(12, 19, 34, 0.9); border: 1.5px solid rgba(185, 208, 236, 0.2);
-      color: #eef5ff; display: flex; flex-direction: column; align-items: center; gap: 6px;
-      text-align: center; transition: transform 0.12s, border-color 0.12s;
-    }
-    .item-tile:hover { transform: translateY(-2px); border-color: var(--gold); }
-    .item-tile.selected { border-color: var(--gold); background: rgba(28, 39, 64, 0.96); }
-    .item-tile.equipped { border-color: #38e57d; }
-    .item-tile .it-ico { font-size: 22px; line-height: 1; }
-    .item-tile .it-nm { font-size: 11px; font-weight: 700; line-height: 1.2; }
-    .item-tile .it-st { font-size: 10px; color: var(--gold-light); font-weight: 600; }
+    .ai-tag { font-size: 10px; font-weight: 800; letter-spacing: 0.14em; color: var(--vermilion-hi); text-transform: uppercase; }
+    .ai-name { font-family: var(--font-head); font-size: clamp(15px, 1.7vw, 20px); color: #fff6e6; letter-spacing: 0.07em; margin-top: 2px; line-height: 1.15; }
+    .ai-desc { font-size: 12px; color: #d8c6ac; line-height: 1.4; margin-top: 5px; }
+    .pip-list { display: flex; flex-direction: column; gap: 7px; margin-top: 10px; }
+    .pip-row { display: flex; align-items: center; justify-content: space-between; font-size: 11.5px; color: var(--text-muted); font-weight: 600; gap: 8px; }
+    .pips { display: flex; gap: 4px; }
+    .pip { width: 18px; height: 6px; border-radius: 2px; background: rgba(244, 234, 216, 0.12); }
+    .pip.on { background: linear-gradient(90deg, #d87a20, #f5c654); box-shadow: 0 0 6px rgba(230, 169, 60, 0.45); }
+    .armory-actions { display: flex; flex-direction: column; gap: 7px; margin-top: auto; }
+    .armory-actions .pill { width: 100%; text-align: center; padding: 9px 10px; }
 
     /* Clean Quick Duel Fighter Picker */
     .ecards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 9px; }
     .ecard {
-      position: relative; background: rgba(11, 17, 30, 0.9);
-      border: 1.5px solid rgba(168, 194, 224, 0.22); border-radius: 10px;
+      position: relative; background: rgba(20, 15, 11, 0.92);
+      border: 1.5px solid rgba(218, 178, 112, 0.24); border-radius: 5px;
       padding: 11px 8px; display: flex; flex-direction: column; align-items: center; gap: 5px;
-      cursor: pointer; color: #eef4fc; transition: transform 0.12s, border-color 0.12s;
+      cursor: pointer; color: var(--text-main); transition: transform 0.12s, border-color 0.12s;
     }
     .ecard:hover:not(:disabled) { border-color: var(--cg); transform: translateY(-2px); }
     .ecard:disabled { opacity: 0.36; cursor: not-allowed; filter: grayscale(0.8); }
-    .ecard.sp1 { border-color: #ffae34; box-shadow: 0 0 14px rgba(255, 106, 26, 0.38); }
-    .ecard.sp2 { border-color: #4be3ff; box-shadow: 0 0 14px rgba(48, 208, 245, 0.38); }
+    .ecard.sp1 { border-color: #f0a030; box-shadow: 0 0 14px rgba(224, 112, 30, 0.36); }
+    .ecard.sp2 { border-color: #4be3ff; box-shadow: 0 0 14px rgba(48, 208, 245, 0.36); }
     .ctags { position: absolute; top: 5px; right: 5px; display: flex; gap: 3px; }
-    .ctag { font-size: 9px; font-weight: 800; padding: 2px 5px; border-radius: 3px; }
-    .ctag.p1 { background: #ff6a1a; color: #160902; }
-    .ctag.p2 { background: #4be3ff; color: #03151d; }
+    .ctag { font-size: 9px; font-weight: 800; padding: 2px 5px; border-radius: 2px; }
+    .ctag.p1 { background: #d95a1a; color: #fff8eb; }
+    .ctag.p2 { background: #38c8e8; color: #0b141a; }
     .ccrest { width: 34px; height: 34px; color: var(--cc); }
     .ccrest svg { width: 100%; height: 100%; }
     .cname { font-family: var(--font-head); font-size: 13px; font-weight: 800; letter-spacing: 0.08em; }
@@ -555,15 +640,16 @@
 
     .portrait-tip {
       display: none; position: fixed; bottom: 8px; left: 50%; transform: translateX(-50%);
-      z-index: 45; background: rgba(12, 18, 32, 0.92); border: 1px solid rgba(250, 204, 21, 0.55);
-      color: #fde68a; font-size: 11px; font-weight: 700; padding: 5px 12px; border-radius: 999px;
+      z-index: 45; background: rgba(24, 18, 14, 0.94); border: 1px solid rgba(230, 178, 92, 0.55);
+      color: var(--gold-light); font-size: 11px; font-weight: 700; padding: 5px 12px; border-radius: 4px;
       align-items: center; gap: 8px;
     }
     .portrait-tip button { background: none; border: none; color: #fff; font-weight: 800; cursor: pointer; }
     @media (orientation: portrait) and (max-width: 767px) { .portrait-tip { display: flex; } }
 
-    @media (max-width: 760px) {
-      .map-layout, .armory-layout { grid-template-columns: 1fr; }
+    @media (max-width: 700px) and (orientation: portrait) {
+      .map-layout { grid-template-columns: 1fr; }
+      .armory-showcase { grid-template-columns: 1fr; grid-template-rows: 160px auto 1fr; }
       .ecards { grid-template-columns: repeat(2, 1fr); }
       .first-tip { display: none; }
     }
@@ -573,20 +659,22 @@
       .mm-sub { font-size: 9px; letter-spacing: 0.14em; margin-top: 3px; }
       .coin-badge { padding: 4px 9px; font-size: 10.5px; }
       .mm-nav { gap: 6px; max-width: 225px; }
-      .mm-btn { padding: 7px 12px; border-radius: 8px; }
+      .mm-btn { padding: 7px 12px; }
       .mm-btn b { font-size: 12.5px; }
       .mm-btn small { font-size: 9px; margin-top: 1px; }
       .mm-foot { font-size: 9.5px; }
-      .panel-modal { padding: 10px 14px; gap: 8px; max-height: 96%; }
-      .panel-head h1 { font-size: 16px; }
+      .panel-modal { padding: 9px 12px; gap: 7px; max-height: 96%; }
+      .panel-modal.armory-modal-panel { height: 96%; }
+      .panel-head h1 { font-size: 15px; }
       .panel-head p { display: none; }
       .ecards { gap: 6px; }
       .ecard { padding: 7px 6px; gap: 3px; }
       .ccrest { width: 24px; height: 24px; }
       .cname { font-size: 11px; }
       .csub { font-size: 9.5px; }
-      .pill { padding: 6px 11px; font-size: 11px; }
-      .map-layout { min-height: 0; height: 222px; flex: none; gap: 10px; overflow: hidden; grid-template-columns: 1.38fr 1fr; }
+      .pill { padding: 6px 10px; font-size: 11px; }
+      .tab { padding: 5px 9px; font-size: 11px; }
+      .map-layout { min-height: 0; height: 226px; flex: none; gap: 10px; overflow: hidden; grid-template-columns: 1.38fr 1fr; }
       .map-canvas-wrap { min-height: 140px; height: 100%; }
       .map-detail { padding: 8px 11px; gap: 5px; height: 100%; }
       .md-crest { width: 34px; height: 34px; padding: 6px; }
@@ -595,8 +683,23 @@
       .md-stars { font-size: 12px; margin: 2px 0; }
       .md-desc { font-size: 10.5px; line-height: 1.25; }
       .md-trial { padding: 5px 8px; font-size: 10px; margin-top: 4px !important; }
-      .armory-preview-box { min-height: 170px; }
-      canvas#armory-preview { height: 170px; }
+      .armory-head { padding-bottom: 6px; }
+      .armory-head h1 { font-size: 14px; }
+      .armory-showcase { grid-template-columns: minmax(156px, 0.92fr) 1.38fr minmax(168px, 0.92fr); gap: 8px; }
+      .item-row { padding: 6px 7px; gap: 7px; }
+      .ir-ico { width: 26px; height: 26px; padding: 4px; }
+      .ir-nm { font-size: 11px; }
+      .ir-st { font-size: 9.5px; }
+      .armory-info { padding: 9px 10px; gap: 6px; }
+      .ai-name { font-size: 14.5px; }
+      .ai-desc { font-size: 10.5px; line-height: 1.3; margin-top: 3px; }
+      .pip-list { gap: 5px; margin-top: 6px; }
+      .pip-row { font-size: 10.5px; }
+      .pip { width: 14px; height: 5px; }
+      .armory-actions { gap: 5px; }
+      .armory-actions .pill { padding: 7px 8px; font-size: 10.5px; }
+      .story-caption-box { bottom: 10px; padding: 9px 14px; gap: 10px; }
+      .story-text { font-size: 12.5px; line-height: 1.35; }
       .first-tip { display: none; }
     }
   </style>
@@ -747,13 +850,16 @@
     <div class="story-overlay hidden" id="story-overlay">
       <canvas id="story-canvas" width="1280" height="720"></canvas>
       <div class="story-caption-box">
-        <div class="story-speaker" id="story-speaker">CHRONICLE</div>
-        <div class="story-text" id="story-text"></div>
-        <div class="story-actions">
-          <div class="story-dots" id="story-dots"></div>
-          <div class="pill-row">
-            <button class="pill" id="story-skip">SKIP</button>
-            <button class="pill primary" id="story-next">CONTINUE</button>
+        <div class="story-crest" id="story-crest"></div>
+        <div class="story-body">
+          <div class="story-speaker" id="story-speaker">CHRONICLE</div>
+          <div class="story-text" id="story-text"></div>
+          <div class="story-actions">
+            <div class="story-dots" id="story-dots"></div>
+            <div class="pill-row">
+              <button class="pill" id="story-skip">SKIP</button>
+              <button class="pill primary" id="story-next">CONTINUE</button>
+            </div>
           </div>
         </div>
       </div>
@@ -944,8 +1050,24 @@
   const settings = {
     inputMode: 'auto', stickMode: 'fixed', scale: 1.0, opacity: 0.88,
     buffer: 8, tempo: 'fast', vfx: _initTouch ? 'low' : 'high', feedback: 1, fps: 60, format: 'bo3',
-    aiTier: 'warrior', debug: false, volume: 0.72, sfxOn: true, musicOn: true
+    aiTier: 'warrior', debug: false, volume: 0.72, sfxOn: true, musicOn: true, hapticsOn: true
   };
+  let lastHapticAt = 0;
+  function haptic(kind = 'light') {
+    if (!settings.hapticsOn || settings.feedback <= 0) return;
+    const now = performance.now();
+    if (now - lastHapticAt < 28) return;
+    lastHapticAt = now;
+    const cfg = kind === 'ko' ? [95, 255] : kind === 'heavy' ? [36, 220] : kind === 'parry' ? [26, 200] : kind === 'medium' ? [20, 150] : [12, 95];
+    const ms = Math.max(8, Math.round(cfg[0] * settings.feedback));
+    try {
+      if (window.AndroidHaptics && typeof window.AndroidHaptics.pulse === 'function') {
+        window.AndroidHaptics.pulse(ms, cfg[1]);
+      } else if (navigator.vibrate) {
+        navigator.vibrate(ms);
+      }
+    } catch {}
+  }
 
   // ===== WEB AUDIO SFX + ADAPTIVE REGIONAL EASTERN COMBAT SOUNDTRACK (Voice-Capped & Zero-Leak) =====
   let audioCtx = null, activeVoices = 0, bgmVoices = 0, bgmStep = 0, bgmTick = 0;
@@ -1114,28 +1236,47 @@
 
   // ===== VISUAL-FIRST ARMORY CATALOGS (Clean 1-sentence descriptions + Pip Bars!) =====
   const SAVE_KEY = 'elemental_shadows_save_v2';
+  const SVG_ICONS = {
+    edge: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19L19 5"/><path d="M14 5h5v5"/><path d="M8 12l4 4"/><path d="M4 20l2-2"/></svg>`,
+    body: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 5-3.2 8.6-7 10-3.8-1.4-7-5-7-10V6l7-3z"/><path d="M12 7v10"/></svg>`,
+    flow: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a9 9 0 1 0 9 9"/><path d="M12 7a5 5 0 1 0 5 5"/><circle cx="12" cy="12" r="1.8" fill="currentColor"/></svg>`,
+    default: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="8.5"/><path d="M12 3.5a4.25 4.25 0 0 1 0 8.5 4.25 4.25 0 0 0 0 8.5"/><circle cx="12" cy="7.7" r="1.2" fill="currentColor"/><circle cx="12" cy="16.3" r="1.2" fill="currentColor"/></svg>`,
+    twin_sai: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 19L18 7"/><path d="M11 8l5 5"/><path d="M13 6c1.5 1.5 1.5 3.5 0 5"/><path d="M18 11c-1.5 1.5-3.5 1.5-5 0"/><path d="M4 20l2-1"/></svg>`,
+    dual_katana: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19c4-3 10-9 16-15"/><path d="M20 19c-4-3-10-9-16-15"/><path d="M6 15l3 3"/><path d="M18 15l-3 3"/></svg>`,
+    liquid_staff: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20L17 7"/><path d="M15 5c2.5-1.5 5 0 4.5 2.5-.5 2-2.5 2.5-3.5 1.5"/><path d="M9 13l2 2"/></svg>`,
+    nunchaku: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="3.5" height="10" rx="1" transform="rotate(-14 5.7 15)"/><rect x="16.5" y="10" width="3.5" height="10" rx="1" transform="rotate(14 18.2 15)"/><path d="M7.5 10c1-4 8-4 9 0" stroke-dasharray="2.2 2"/></svg>`,
+    shadow_sickles: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 20l3-9"/><path d="M9 12c2-6 8-8 11-5-3 1-5 3-6 6"/><path d="M6 19c-2 0-2-3 0-4"/></svg>`,
+    naginata: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l10-10"/><path d="M13 9c2-2 5-4 7-5-1 3-3 6-5 7z" fill="currentColor" fill-opacity="0.25"/><path d="M12 10l2 2"/></svg>`,
+    heavy_cleaver: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l4-4"/><path d="M7 15l9-10 4 4-8 10z" fill="currentColor" fill-opacity="0.24"/><circle cx="4" cy="20" r="1.4"/></svg>`,
+    great_hammer: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19l9-9"/><path d="M10 6l4-2 6 6-2 4-8-8z" fill="currentColor" fill-opacity="0.26"/></svg>`,
+    none: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 11c3-2 11-2 14 0"/><path d="M5 14c3-1.8 11-1.8 14 0"/><path d="M17 12.5c2 1 3.5 3 4 5.5"/><path d="M16 14c1.5 1.5 2.2 3.2 2.2 5.2"/></svg>`,
+    kasa: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 15L12 7l10 8c-6-1.6-14-1.6-20 0z" fill="currentColor" fill-opacity="0.24"/><path d="M7 15.5c2 1.8 8 1.8 10 0"/></svg>`,
+    kabuto: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17a7 7 0 0 1 14 0H5z" fill="currentColor" fill-opacity="0.24"/><path d="M12 10L6 4"/><path d="M12 10l6-6"/><path d="M4 17h16"/></svg>`,
+    cloak: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 5c2 1.2 6 1.2 8 0l4 15-8-2.5L4 20 8 5z" fill="currentColor" fill-opacity="0.22"/><path d="M9 5l3 4 3-4"/></svg>`,
+    crown: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="7" rx="7.5" ry="2.2"/><path d="M5 18l1.5-6 3.5 3 2-5 2 5 3.5-3L19 18z" fill="currentColor" fill-opacity="0.26"/></svg>`
+  };
   const UPGRADE_SPECS = [
-    { id: 'edge', name: 'Martial Edge', ico: '⚔️', max: 5, baseCost: 90, stepCost: 75, desc: 'Sharpens your strikes and weapons for heavier damage.' },
-    { id: 'body', name: 'Iron Spirit', ico: '🛡️', max: 5, baseCost: 90, stepCost: 75, desc: 'Hardens your vitality to endure Master-rank combos.' },
-    { id: 'flow', name: 'Bending Flow', ico: '✦', max: 5, baseCost: 100, stepCost: 85, desc: 'Deepens your elemental flow for faster energy and stronger Arts.' }
+    { id: 'edge', name: 'Martial Edge', ico: SVG_ICONS.edge, max: 5, baseCost: 90, stepCost: 75, desc: 'Sharpens strikes and blades for heavier damage.' },
+    { id: 'body', name: 'Iron Spirit', ico: SVG_ICONS.body, max: 5, baseCost: 90, stepCost: 75, desc: 'Hardens vitality to withstand Master combos.' },
+    { id: 'flow', name: 'Bending Flow', ico: SVG_ICONS.flow, max: 5, baseCost: 100, stepCost: 85, desc: 'Accelerates energy gain and Arts power.' }
   ];
   const WEAPON_CATALOG = [
-    { id: 'default', name: 'Element Signature', ico: '☯', wType: 'default', cost: 0, reach: 0, speedMod: 1.0, dmgMod: 1.0, speed: 3, power: 3, reachPip: 3, bonus: 'Channels the native weapon of your active elemental discipline.' },
-    { id: 'twin_sai', name: 'Shinobi Twin Sai', ico: '🔱', wType: 'twin_sai', cost: 130, reach: 136, speedMod: 0.76, dmgMod: 1.02, speed: 5, power: 2, reachPip: 2, bonus: 'Lightning-fast dual daggers that build bending energy rapidly.', perk: 'sai_flow' },
-    { id: 'dual_katana', name: 'Twin Blazing Katanas', ico: '⚔', wType: 'dual_katana', cost: 165, reach: 150, speedMod: 0.86, dmgMod: 1.10, speed: 4, power: 4, reachPip: 3, bonus: 'Alternating twin blades that excel at punishing counter-hits.', perk: 'katana_counter' },
-    { id: 'liquid_staff', name: 'Imperial Bo Staff', ico: '🥢', wType: 'liquid_staff', cost: 195, reach: 168, speedMod: 0.90, dmgMod: 1.06, speed: 3, power: 3, reachPip: 5, bonus: 'Two-handed spinning polearm built to control spacing and pole-vault.', perk: 'staff_push' },
-    { id: 'nunchaku', name: 'Dragon Nunchaku', ico: '⛓', wType: 'nunchaku', cost: 230, reach: 142, speedMod: 0.78, dmgMod: 1.07, speed: 5, power: 3, reachPip: 2, bonus: 'Whirling figure-eight flurries that strike twice with every swing.', perk: 'nunchaku_stun' },
-    { id: 'shadow_sickles', name: 'Eclipse Kusarigama', ico: '🌙', wType: 'shadow_sickles', cost: 275, reach: 148, speedMod: 0.83, dmgMod: 1.11, speed: 4, power: 4, reachPip: 3, bonus: 'Curved twin reaping hooks that siphon bending energy on contact.', perk: 'sickle_drain' },
-    { id: 'naginata', name: 'Sovereign Naginata', ico: '🗡', wType: 'naginata', cost: 325, reach: 176, speedMod: 0.93, dmgMod: 1.15, speed: 3, power: 4, reachPip: 5, bonus: 'Sweeping glaive with unmatched reach that slices through guards.', perk: 'naginata_chip' },
-    { id: 'heavy_cleaver', name: 'Volcanic Dadao', ico: '🪓', wType: 'heavy_cleaver', cost: 380, reach: 160, speedMod: 1.00, dmgMod: 1.22, speed: 2, power: 5, reachPip: 4, bonus: 'Unstoppable heavy blade whose slams shatter guards and shake the floor.', perk: 'cleaver_crush' },
-    { id: 'great_hammer', name: 'Titan Warhammer', ico: '🔨', wType: 'great_hammer', cost: 450, reach: 164, speedMod: 1.04, dmgMod: 1.32, speed: 1, power: 5, reachPip: 4, bonus: 'Colossal earth-shaker with armored wind-ups and ground shockwaves.', perk: 'hammer_armor' }
+    { id: 'default', name: 'Element Signature', ico: SVG_ICONS.default, wType: 'default', cost: 0, reach: 0, speedMod: 1.0, dmgMod: 1.0, speed: 3, power: 3, reachPip: 3, bonus: 'Native weapon of your active elemental style.' },
+    { id: 'twin_sai', name: 'Shinobi Twin Sai', ico: SVG_ICONS.twin_sai, wType: 'twin_sai', cost: 130, reach: 136, speedMod: 0.76, dmgMod: 1.02, speed: 5, power: 2, reachPip: 2, bonus: 'Rapid dual daggers that charge bending fast.', perk: 'sai_flow' },
+    { id: 'dual_katana', name: 'Twin Blazing Katanas', ico: SVG_ICONS.dual_katana, wType: 'dual_katana', cost: 165, reach: 150, speedMod: 0.86, dmgMod: 1.10, speed: 4, power: 4, reachPip: 3, bonus: 'Alternating blades built for lethal counter-hits.', perk: 'katana_counter' },
+    { id: 'liquid_staff', name: 'Imperial Bo Staff', ico: SVG_ICONS.liquid_staff, wType: 'liquid_staff', cost: 195, reach: 168, speedMod: 0.90, dmgMod: 1.06, speed: 3, power: 3, reachPip: 5, bonus: 'Long spinning polearm for spacing and vaults.', perk: 'staff_push' },
+    { id: 'nunchaku', name: 'Dragon Nunchaku', ico: SVG_ICONS.nunchaku, wType: 'nunchaku', cost: 230, reach: 142, speedMod: 0.78, dmgMod: 1.07, speed: 5, power: 3, reachPip: 2, bonus: 'Whirling figure-eight flurries with double hits.', perk: 'nunchaku_stun' },
+    { id: 'shadow_sickles', name: 'Eclipse Kusarigama', ico: SVG_ICONS.shadow_sickles, wType: 'shadow_sickles', cost: 275, reach: 148, speedMod: 0.83, dmgMod: 1.11, speed: 4, power: 4, reachPip: 3, bonus: 'Curved reaping hooks that siphon energy on hit.', perk: 'sickle_drain' },
+    { id: 'naginata', name: 'Sovereign Naginata', ico: SVG_ICONS.naginata, wType: 'naginata', cost: 325, reach: 176, speedMod: 0.93, dmgMod: 1.15, speed: 3, power: 4, reachPip: 5, bonus: 'Sweeping pole-glaive that cleaves through guards.', perk: 'naginata_chip' },
+    { id: 'heavy_cleaver', name: 'Volcanic Dadao', ico: SVG_ICONS.heavy_cleaver, wType: 'heavy_cleaver', cost: 380, reach: 160, speedMod: 1.00, dmgMod: 1.22, speed: 2, power: 5, reachPip: 4, bonus: 'Heavy war-blade whose slams crush guard poise.', perk: 'cleaver_crush' },
+    { id: 'great_hammer', name: 'Titan Warhammer', ico: SVG_ICONS.great_hammer, wType: 'great_hammer', cost: 450, reach: 164, speedMod: 1.04, dmgMod: 1.32, speed: 1, power: 5, reachPip: 4, bonus: 'Armored colossal slams with ground shockwaves.', perk: 'hammer_armor' }
   ];
   const GEAR_CATALOG = [
-    { id: 'none', name: 'Shinobi Headband', ico: '🎀', cost: 0, speed: 3, power: 3, reachPip: 3, bonus: 'The tattered band of a nameless warrior seeking lost balance.', stat: '' },
-    { id: 'kasa', name: 'Ronin Bamboo Kasa', ico: '👒', cost: 150, speed: 3, power: 3, reachPip: 4, bonus: 'Woven traveler hat that steadies your guard against heavy blows.', stat: 'guard' },
-    { id: 'kabuto', name: 'Oni Horned Kabuto', ico: '👹', cost: 280, speed: 3, power: 5, reachPip: 3, bonus: 'Fierce horned war helm that empowers critical head strikes.', stat: 'crit' },
-    { id: 'cloak', name: 'Shadow Master Cloak', ico: '🧥', cost: 420, speed: 5, power: 3, reachPip: 3, bonus: 'Flowing midnight mantle that accelerates dashes and footwork.', stat: 'speed' },
-    { id: 'crown', name: 'Avatar Eclipse Crown', ico: '👑', cost: 650, speed: 4, power: 5, reachPip: 5, bonus: 'Radiant halo reclaimed from the Eclipse, amplifying every Bending Art.', stat: 'bend' }
+    { id: 'none', name: 'Shinobi Headband', ico: SVG_ICONS.none, cost: 0, speed: 3, power: 3, reachPip: 3, bonus: 'Tattered cloth of a wandering shadow.', stat: '' },
+    { id: 'kasa', name: 'Ronin Bamboo Kasa', ico: SVG_ICONS.kasa, cost: 150, speed: 3, power: 3, reachPip: 4, bonus: 'Steadies guard posture against heavy strikes.', stat: 'guard' },
+    { id: 'kabuto', name: 'Oni Horned Kabuto', ico: SVG_ICONS.kabuto, cost: 280, speed: 3, power: 5, reachPip: 3, bonus: 'Empowers critical head hits and guard crushes.', stat: 'crit' },
+    { id: 'cloak', name: 'Shadow Master Cloak', ico: SVG_ICONS.cloak, cost: 420, speed: 5, power: 3, reachPip: 3, bonus: 'Accelerates dashes, rolls, and footwork.', stat: 'speed' },
+    { id: 'crown', name: 'Avatar Eclipse Crown', ico: SVG_ICONS.crown, cost: 650, speed: 4, power: 5, reachPip: 5, bonus: 'Amplifies every Elemental Bending Art.', stat: 'bend' }
   ];
 
   // ===== STORY: 'THE HOLLOW AVATAR' — 5 INK-SCROLL INTRO PANELS =====
@@ -1483,7 +1624,7 @@
   function startCampaignStage(stageIdx, skipDialogue = false) {
     const st = CAMPAIGN_STAGES[Math.max(0, Math.min(CAMPAIGN_STAGES.length - 1, stageIdx))];
     if (!skipDialogue && st.preDialogue && st.preDialogue.length) {
-      openStorySequence('dialogue', st.preDialogue.map(d => ({ speaker: d.who, text: d.line, art: st.el, gear: st.gear || 'none', accent: ELEMENTS[st.el].glow })), () => {
+      openStorySequence('dialogue', st.preDialogue.map(d => ({ speaker: d.who, text: d.line, art: st.el, gear: st.gear || 'none', biome: st.hazardId, region: st.region, accent: ELEMENTS[st.el].glow })), () => {
         startMatch(p1.el.id, st.el, st, { mode: 'campaign' });
       });
     } else {
@@ -2387,7 +2528,7 @@
         def.guardWear = 0;
         def.state = 'hitstun'; def.sf = 0; def.stun = 34; def.vx = atk.facing * 12;
         if (atk.id === 'p1') match.p1WallSplats++;
-        sfx.headHit(); hitstop = 5; shake = Math.max(shake, 12 * settings.feedback);
+        sfx.headHit(); haptic('heavy'); hitstop = 5; shake = Math.max(shake, 12 * settings.feedback);
         spawnSparks(ix, iy, '#ffd84a', '#ffffff', 1.5);
         pushCallout('GUARD BREAK!', '#ffd84a', def.x, def.y - 196);
         return;
@@ -2403,6 +2544,7 @@
       sfx.guard(perf);
       spawnSparks(ix, iy, perf ? def.el.glow : '#d8ecff', '#ffffff', perf ? 1.3 : 0.9, perf);
       hitstop = Math.max(hitstop, Math.round((perf ? 4 : 3) * settings.feedback));
+      haptic(perf ? 'parry' : 'light');
       shake = Math.max(shake, (perf ? 7 : 3.5) * settings.feedback);
       def.mirrorF = 95;
       if (perf) {
@@ -2603,6 +2745,7 @@
     const heavy = crit || m.kd || isHeadHit || dmg >= 88;
     sfx.hit(heavy, !!m.wep, atk.el.id);
     hitstop = Math.max(hitstop, Math.round((isHeadHit ? Math.max(m.stop, 5) : m.stop) * settings.feedback));
+    haptic(heavy || isHeadHit ? 'heavy' : (m.dmg >= 75 ? 'medium' : 'light'));
     shake = Math.max(shake, (heavy ? 14 : 6.5) * settings.feedback);
     if (def.hp <= 0) {
       slowMoFrames = 40; dramaticZoom = 0.14;
@@ -2896,7 +3039,7 @@
     const cx = (b1.x + b2.x) * 0.5, cy = Math.min(GROUND_Y - 50, (b1.y + b2.y) * 0.5);
     const pair = [b1.el.id, b2.el.id].sort().join('+');
     match.p1Clashes++;
-    sfx.slam(); hitstop = Math.max(hitstop, 5); shake = Math.max(shake, 16 * settings.feedback);
+    sfx.slam(); haptic('heavy'); hitstop = Math.max(hitstop, 5); shake = Math.max(shake, 16 * settings.feedback);
     let label = 'ELEMENTAL CLASH!', col = '#fde68a', push = 10, splashDmg = 0;
     if (pair === 'fire+water') {
       label = 'STEAM BURST!'; col = '#e2f4ff'; push = 14;
@@ -3383,13 +3526,16 @@
               speaker: ms.memory.title,
               text: ms.memory.text,
               art: ms.isFinal ? 'avatar' : ms.el,
+              biome: ms.hazardId,
               accent: ms.isFinal ? '#fde68a' : ELEMENTS[ms.el].glow
             }], () => { /* Return to victory banner */ });
           }
         }, 1200);
       }
+      haptic('ko');
     } else {
       match.screen = 'round_over'; match.over = 104;
+      haptic('ko');
       showBanner(w === 'draw' ? 'DOUBLE K.O.' : 'K.O.', w === 'p1' ? 'ROUND WON' : 'ROUND LOST', w === 'p1' ? '#ff7d29' : '#4be3ff', 100);
     }
   }
@@ -3400,16 +3546,55 @@
     }
   }
 
-  // ===== CANVAS RENDERER (REALISTIC HUMAN ANATOMY + AVATAR BENDING SPECTACLE) =====
+  // ===== CANVAS RENDERER (HIGH-DPI SHARP + UNIFIED SILHOUETTE/RIM BUFFERS + 8 PAINTED SUMI-E REALMS) =====
   const canvas = document.getElementById('game');
   const ctx = canvas.getContext('2d');
+  let gameDpr = 1;
+  function syncGameCanvasDpr() {
+    gameDpr = Math.min(2, Math.max(1, window.devicePixelRatio || 1));
+    const tw = Math.round(W * gameDpr), th = Math.round(H * gameDpr);
+    if (canvas.width !== tw || canvas.height !== th) {
+      canvas.width = tw; canvas.height = th;
+    }
+  }
+  syncGameCanvasDpr();
+  window.addEventListener('resize', syncGameCanvasDpr);
+
   const silBuf = document.createElement('canvas'); silBuf.width = 480; silBuf.height = 440;
   const sctx = silBuf.getContext('2d');
+  const rimBuf = document.createElement('canvas'); rimBuf.width = 480; rimBuf.height = 440;
+  const rctx = rimBuf.getContext('2d');
   const bgBuf = document.createElement('canvas'); bgBuf.width = W; bgBuf.height = H;
   const bctx = bgBuf.getContext('2d');
+  let lastBackdropPainted = false;
 
-  // ===== COHESIVE VISUAL PIPELINE: PRELOADED SUMI-E ARTWORK + RICE-PAPER TEXTURE + 8 REALM ARENAS =====
-  const ART = { dojo: new Image(), worldMap: new Image() };
+  // Stamp a crisp zero-blur elemental rim outline from silBuf (60fps on Android without shadowBlur lag!)
+  function drawTintedRim(targetCtx, x, y, rimColor, spread = 2.2, alpha = 0.72) {
+    rctx.save();
+    rctx.globalCompositeOperation = 'source-over';
+    rctx.clearRect(0, 0, rimBuf.width, rimBuf.height);
+    rctx.drawImage(silBuf, 0, 0);
+    rctx.globalCompositeOperation = 'source-in';
+    rctx.fillStyle = rimColor;
+    rctx.fillRect(0, 0, rimBuf.width, rimBuf.height);
+    rctx.restore();
+    targetCtx.save();
+    targetCtx.globalAlpha = alpha;
+    targetCtx.drawImage(rimBuf, x - spread, y);
+    targetCtx.drawImage(rimBuf, x + spread, y);
+    targetCtx.drawImage(rimBuf, x, y - spread);
+    targetCtx.drawImage(rimBuf, x, y + spread * 0.65);
+    targetCtx.restore();
+  }
+
+  // ===== COHESIVE VISUAL PIPELINE: 4 HAND-PAINTED SUMI-E MASTER CANVASES + 8 ELEMENTAL REALMS =====
+  const ART = {
+    dojo: new Image(),
+    tidal: new Image(),
+    sky: new Image(),
+    frozen: new Image(),
+    worldMap: new Image()
+  };
   let washiPattern = null;
   function getWashiPattern() {
     if (washiPattern) return washiPattern;
@@ -3420,182 +3605,173 @@
     for (let i = 0; i < img.data.length; i += 4) {
       seed = (seed * 16807) % 2147483647;
       const v = (seed & 255);
-      img.data[i] = v > 128 ? 255 : 20;
-      img.data[i + 1] = v > 128 ? 244 : 18;
-      img.data[i + 2] = v > 128 ? 225 : 24;
+      img.data[i] = v > 128 ? 255 : 22;
+      img.data[i + 1] = v > 128 ? 242 : 17;
+      img.data[i + 2] = v > 128 ? 220 : 14;
       img.data[i + 3] = 10;
     }
     pg.putImageData(img, 0, 0);
     washiPattern = bctx.createPattern(pc, 'repeat');
     return washiPattern;
   }
-  ART.dojo.onload = () => { if (!match.inMenu || match.inMenu) buildBackdrop(); };
+  const onArenaImgLoad = () => {
+    buildBackdrop();
+    if (storyState && !storyOverlay.classList.contains('hidden')) renderStoryStep();
+  };
+  ['dojo', 'tidal', 'sky', 'frozen'].forEach(k => { ART[k].onload = onArenaImgLoad; });
   ART.worldMap.onload = () => { if (!campaignModal.classList.contains('hidden')) drawWorldMapCanvas(); };
   ART.dojo.src = 'assets/arena_blazing_dojo.webp';
+  ART.tidal.src = 'assets/arena_tidal_shrine.webp';
+  ART.sky.src = 'assets/arena_sky_monastery.webp';
+  ART.frozen.src = 'assets/arena_frozen_peak.webp';
   ART.worldMap.src = 'assets/world_map.webp';
 
   function getActiveBiome() {
     if (match.boss && match.boss.hazardId) return match.boss.hazardId;
     return themeIdx === 0 ? 'blazing_dojo' : themeIdx === 1 ? 'dew_shrine' : 'eclipse_sanctum';
   }
+  function getBiomeForElement(elId) {
+    if (elId === 'water') return 'dew_shrine';
+    if (elId === 'fire') return 'blazing_dojo';
+    if (elId === 'air') return 'gale_tailwind';
+    if (elId === 'ice') return 'glacier_floor';
+    if (elId === 'earth') return 'seismic_tremor';
+    if (elId === 'lightning') return 'storm_spire';
+    if (elId === 'lava') return 'obsidian_caldera';
+    return 'eclipse_sanctum';
+  }
 
-  function buildBackdrop() {
-    const th = THEMES[themeIdx], g = bctx, biome = getActiveBiome();
-    const usePaintedDojo = (biome === 'blazing_dojo' || biome === 'ember_updraft') && ART.dojo.complete && ART.dojo.naturalWidth > 0;
+  function getPaintedSpec(biome) {
+    if (biome === 'blazing_dojo' || biome === 'ember_updraft') {
+      return { img: ART.dojo, flip: false, mist: 'rgba(255,236,192,0.22)', rim: 'rgba(255,216,144,0.38)', floorTint: 'rgba(18,10,5,0.46)' };
+    }
+    if (biome === 'dew_shrine') {
+      return { img: ART.tidal, flip: false, mist: 'rgba(232,250,248,0.20)', rim: 'rgba(196,242,240,0.42)', floorTint: 'rgba(10,16,18,0.44)' };
+    }
+    if (biome === 'gale_tailwind') {
+      return { img: ART.sky, flip: false, mist: 'rgba(242,252,244,0.20)', rim: 'rgba(208,242,226,0.40)', floorTint: 'rgba(12,17,15,0.42)' };
+    }
+    if (biome === 'glacier_floor') {
+      return { img: ART.frozen, flip: false, mist: 'rgba(232,248,255,0.22)', rim: 'rgba(190,238,255,0.48)', floorTint: 'rgba(10,16,22,0.45)' };
+    }
+    if (biome === 'seismic_tremor') {
+      return {
+        img: ART.sky, flip: true,
+        glaze: ['rgba(176,112,42,0.42)', 'rgba(232,174,88,0.28)', 'rgba(122,74,28,0.34)'],
+        mist: 'rgba(252,228,176,0.26)', rim: 'rgba(244,196,116,0.48)', floorTint: 'rgba(24,15,8,0.52)', kind: 'earth'
+      };
+    }
+    if (biome === 'storm_spire') {
+      return {
+        img: ART.frozen, flip: true,
+        glaze: ['rgba(30,46,78,0.52)', 'rgba(84,122,172,0.24)', 'rgba(22,34,58,0.44)'],
+        mist: 'rgba(204,228,252,0.28)', rim: 'rgba(164,212,255,0.48)', floorTint: 'rgba(10,14,22,0.54)', kind: 'storm'
+      };
+    }
+    if (biome === 'obsidian_caldera') {
+      return {
+        img: ART.dojo, flip: true,
+        glaze: ['rgba(128,26,18,0.46)', 'rgba(234,92,28,0.26)', 'rgba(54,14,10,0.45)'],
+        mist: 'rgba(255,198,128,0.24)', rim: 'rgba(255,134,54,0.52)', floorTint: 'rgba(22,8,6,0.56)', kind: 'lava'
+      };
+    }
+    // eclipse_sanctum / avatar_convergence
+    return {
+      img: ART.dojo, flip: false,
+      glaze: ['rgba(94,16,32,0.48)', 'rgba(210,74,56,0.24)', 'rgba(34,10,18,0.46)'],
+      mist: 'rgba(255,212,174,0.22)', rim: 'rgba(255,148,104,0.48)', floorTint: 'rgba(18,8,10,0.54)', kind: 'eclipse'
+    };
+  }
 
-    if (usePaintedDojo) {
-      // Composite hand-painted Shadow Fight 2 Blazing Dojo aligned to GROUND_Y = 582!
-      g.drawImage(ART.dojo, 0, 0, W, H);
-      // Softly boost center-band mist luminance behind fighters for 10:1 silhouette contrast
-      const mistBoost = g.createLinearGradient(0, 310, 0, GROUND_Y);
-      mistBoost.addColorStop(0, 'rgba(255, 240, 200, 0)');
-      mistBoost.addColorStop(0.65, 'rgba(255, 240, 200, 0.16)');
-      mistBoost.addColorStop(1, 'rgba(255, 226, 165, 0.24)');
-      g.fillStyle = mistBoost; g.fillRect(0, 310, W, GROUND_Y - 310);
-      // Crisp floor darkening & warm reflection rim aligned cleanly with combat plane y = GROUND_Y
-      const flShade = g.createLinearGradient(0, GROUND_Y - 6, 0, H);
-      flShade.addColorStop(0, 'rgba(20, 12, 6, 0.08)');
-      flShade.addColorStop(0.25, 'rgba(14, 8, 4, 0.45)');
-      flShade.addColorStop(1, 'rgba(6, 4, 3, 0.88)');
-      g.fillStyle = flShade; g.fillRect(0, GROUND_Y - 6, W, H - GROUND_Y + 6);
-      g.strokeStyle = 'rgba(255, 220, 152, 0.35)'; g.lineWidth = 2;
+  function renderBiomeBackdrop(g, biome) {
+    const th = THEMES[themeIdx];
+    const spec = getPaintedSpec(biome);
+    const hasImg = spec && spec.img && spec.img.complete && spec.img.naturalWidth > 0;
+
+    if (hasImg) {
+      g.save();
+      if (spec.flip) { g.translate(W, 0); g.scale(-1, 1); }
+      g.drawImage(spec.img, 0, 0, W, H);
+      g.restore();
+
+      // Painterly atmospheric color glaze for Iron Mountain, Storm Spire, Caldera, Eclipse Citadel
+      if (spec.glaze) {
+        g.save();
+        g.globalCompositeOperation = 'multiply';
+        const gl = g.createLinearGradient(0, 0, 0, H);
+        gl.addColorStop(0, spec.glaze[0]); gl.addColorStop(0.58, spec.glaze[1]); gl.addColorStop(1, spec.glaze[2]);
+        g.fillStyle = gl; g.fillRect(0, 0, W, H);
+        g.restore();
+      }
+
+      // Bespoke painted celestial/landmark accents integrated seamlessly into the sky opening
+      if (spec.kind === 'eclipse') {
+        g.save();
+        const cor = g.createRadialGradient(W * 0.5, 295, 76, W * 0.5, 295, 240);
+        cor.addColorStop(0, 'rgba(255, 134, 62, 0.85)'); cor.addColorStop(0.45, 'rgba(220, 56, 46, 0.35)'); cor.addColorStop(1, 'rgba(0,0,0,0)');
+        g.fillStyle = cor; g.beginPath(); g.arc(W * 0.5, 295, 240, 0, Math.PI * 2); g.fill();
+        g.strokeStyle = '#ff9852'; g.lineWidth = 6;
+        g.beginPath(); g.arc(W * 0.5, 295, 92, 0, Math.PI * 2); g.stroke();
+        g.fillStyle = '#0d070a'; g.beginPath(); g.arc(W * 0.5, 295, 88, 0, Math.PI * 2); g.fill();
+        g.restore();
+      } else if (spec.kind === 'storm') {
+        g.save();
+        const rift = g.createRadialGradient(W * 0.5, 290, 24, W * 0.5, 310, 320);
+        rift.addColorStop(0, 'rgba(226, 244, 255, 0.58)'); rift.addColorStop(0.55, 'rgba(130, 178, 228, 0.22)'); rift.addColorStop(1, 'rgba(0,0,0,0)');
+        g.fillStyle = rift; g.fillRect(180, 90, W - 360, GROUND_Y - 90);
+        g.restore();
+      } else if (spec.kind === 'lava') {
+        g.save();
+        const glow = g.createLinearGradient(0, 340, 0, GROUND_Y);
+        glow.addColorStop(0, 'rgba(255,100,24,0)'); glow.addColorStop(0.75, 'rgba(255,112,32,0.22)'); glow.addColorStop(1, 'rgba(255,152,58,0.34)');
+        g.fillStyle = glow; g.fillRect(0, 340, W, GROUND_Y - 340);
+        g.restore();
+      }
+
+      // Soft center-band mist luminance behind fighters for 10:1 Shadow Fight 2 contrast
+      const mistBoost = g.createLinearGradient(0, 300, 0, GROUND_Y);
+      mistBoost.addColorStop(0, 'rgba(255,248,232,0)');
+      mistBoost.addColorStop(0.62, spec.mist);
+      mistBoost.addColorStop(1, spec.mist);
+      g.fillStyle = mistBoost; g.fillRect(0, 300, W, GROUND_Y - 300);
+
+      // Grounding floor shade & horizon rim aligned cleanly with GROUND_Y = 582
+      const flShade = g.createLinearGradient(0, GROUND_Y - 5, 0, H);
+      flShade.addColorStop(0, 'rgba(14, 10, 6, 0.08)');
+      flShade.addColorStop(0.28, spec.floorTint);
+      flShade.addColorStop(1, 'rgba(8, 6, 4, 0.88)');
+      g.fillStyle = flShade; g.fillRect(0, GROUND_Y - 5, W, H - GROUND_Y + 5);
+      g.strokeStyle = spec.rim; g.lineWidth = 2;
       g.beginPath(); g.moveTo(0, GROUND_Y); g.lineTo(W, GROUND_Y); g.stroke();
     } else {
-      // Bespoke Sumi-e Ink Wash Arenas tailored per elemental realm
-      const pal = biome === 'glacier_floor'
-        ? { sky:['#234c6e','#518cb0','#9fd6eb','#d8f3fa','#effbff'], halo:'rgba(210,250,255,0.88)', mtn:'#649ab8', mtn2:'#4b7c99', floor:'#101e29', rim:'rgba(184,244,255,0.68)', glow:'rgba(98,215,245,0.28)', struct:'#376480' }
-        : biome === 'gale_tailwind'
-        ? { sky:['#366978','#649fa8','#a9dad6','#d9f2ee','#f0fbf8'], halo:'rgba(240,255,250,0.86)', mtn:'#67999c', mtn2:'#4f7f85', floor:'#122124', rim:'rgba(176,245,228,0.62)', glow:'rgba(104,225,195,0.24)', struct:'#39656b' }
-        : biome === 'seismic_tremor'
-        ? { sky:['#5e4526','#9b723b','#d6a85c','#f0d492','#faecc2'], halo:'rgba(255,242,200,0.82)', mtn:'#8c673a', mtn2:'#6e4e2a', floor:'#1c150c', rim:'rgba(245,196,112,0.58)', glow:'rgba(214,155,68,0.24)', struct:'#4d361d' }
-        : biome === 'storm_spire'
-        ? { sky:['#19233d','#324770','#6485b0','#a3c0df','#d4e6f8'], halo:'rgba(195,225,255,0.78)', mtn:'#3b5278', mtn2:'#2a3c5c', floor:'#0c111c', rim:'rgba(160,208,255,0.62)', glow:'rgba(96,158,238,0.26)', struct:'#1e2d47' }
-        : biome === 'obsidian_caldera'
-        ? { sky:['#3b1214','#7d241c','#c95428','#f29446','#ffd080'], halo:'rgba(255,205,120,0.84)', mtn:'#57211a', mtn2:'#3c1512', floor:'#140908', rim:'rgba(255,148,68,0.65)', glow:'rgba(255,88,28,0.34)', struct:'#290e0b' }
-        : biome === 'eclipse_sanctum' || biome === 'avatar_convergence'
-        ? { sky:['#2a0a16','#6e1b2c','#b83b3a','#e88054','#ffc48a'], halo:'rgba(255,165,92,0.82)', mtn:'#5c2026', mtn2:'#3d131a', floor:'#13080b', rim:'rgba(255,166,112,0.60)', glow:'rgba(220,76,56,0.32)', struct:'#2e0f15' }
-        : { sky:th.sky, halo:th.moonHalo[0], mtn:th.mtn, mtn2:th.mtnNear, floor:th.floorBase, rim:th.floorRim, glow:th.floorGlow, struct:th.pagoda };
-
+      // Smooth organic sumi-e ink-wash fallback (used only during initial image decode)
       const sky = g.createLinearGradient(0, 0, 0, GROUND_Y);
-      sky.addColorStop(0, pal.sky[0]); sky.addColorStop(0.28, pal.sky[1]); sky.addColorStop(0.58, pal.sky[2]); sky.addColorStop(0.84, pal.sky[3]); sky.addColorStop(1, pal.sky[4]);
+      sky.addColorStop(0, th.sky[0]); sky.addColorStop(0.35, th.sky[1]); sky.addColorStop(0.7, th.sky[3]); sky.addColorStop(1, th.sky[4]);
       g.fillStyle = sky; g.fillRect(0, 0, W, GROUND_Y);
-
-      // Sun / Moon / ECLIPSE Corona Disc
-      const isEclipse = biome === 'eclipse_sanctum' || biome === 'avatar_convergence';
-      const halo = g.createRadialGradient(W * 0.5, 225, 55, W * 0.5, 225, 440);
-      halo.addColorStop(0, pal.halo); halo.addColorStop(0.5, th.moonHalo[1]); halo.addColorStop(1, 'rgba(0,0,0,0)');
-      g.fillStyle = halo; g.beginPath(); g.arc(W * 0.5, 225, 440, 0, Math.PI * 2); g.fill();
-      if (isEclipse) {
-        g.fillStyle = '#ff6a38'; g.beginPath(); g.arc(W * 0.5, 220, 152, 0, Math.PI * 2); g.fill();
-        g.fillStyle = '#07040a'; g.beginPath(); g.arc(W * 0.5, 220, 138, 0, Math.PI * 2); g.fill();
-      } else {
-        const moon = g.createRadialGradient(W * 0.48, 200, 14, W * 0.5, 225, 165);
-        moon.addColorStop(0, '#fffef8'); moon.addColorStop(0.75, pal.sky[4]); moon.addColorStop(1, pal.sky[3]);
-        g.fillStyle = moon; g.beginPath(); g.arc(W * 0.5, 225, 154, 0, Math.PI * 2); g.fill();
-      }
-
-      // Layered Far & Near Ink Mountains (glacial spires vs soft ridges)
-      g.fillStyle = pal.mtn;
+      const sun = g.createRadialGradient(W * 0.5, 250, 20, W * 0.5, 250, 260);
+      sun.addColorStop(0, '#fff9e6'); sun.addColorStop(0.55, th.moonHalo[0]); sun.addColorStop(1, 'rgba(0,0,0,0)');
+      g.fillStyle = sun; g.beginPath(); g.arc(W * 0.5, 250, 260, 0, Math.PI * 2); g.fill();
+      g.fillStyle = th.mtn;
       g.beginPath(); g.moveTo(0, GROUND_Y);
-      if (biome === 'glacier_floor' || biome === 'storm_spire') {
-        g.lineTo(140, 340); g.lineTo(295, 465); g.lineTo(440, 360); g.lineTo(640, 445); g.lineTo(860, 325); g.lineTo(1060, 455); g.lineTo(1190, 355);
-      } else {
-        g.lineTo(130, 392); g.lineTo(350, 456); g.lineTo(640, 412); g.lineTo(930, 382); g.lineTo(1160, 444);
-      }
+      g.bezierCurveTo(180, 360, 340, 440, 540, 415);
+      g.bezierCurveTo(760, 390, 960, 345, 1140, 415);
+      g.quadraticCurveTo(1220, 440, W, 395);
       g.lineTo(W, GROUND_Y); g.closePath(); g.fill();
-
-      g.fillStyle = pal.mtn2; g.globalAlpha = 0.72;
-      g.beginPath(); g.moveTo(0, GROUND_Y); g.lineTo(220, 468); g.lineTo(520, 495); g.lineTo(840, 454); g.lineTo(1090, 488); g.lineTo(W, GROUND_Y); g.closePath(); g.fill();
-      g.globalAlpha = 1;
-
-      // Biome-specific distant landmarks (Waterfalls / Torii / Monoliths / Volcano fissures / Citadel Spires)
-      if (biome === 'dew_shrine') {
-        // Cascading twin ink waterfalls + distant torii gate
-        g.fillStyle = 'rgba(240, 252, 255, 0.56)';
-        [[196, 405, 26], [1048, 398, 28]].forEach(([wx, wy, ww]) => {
-          g.fillRect(wx, wy, ww, GROUND_Y - wy);
-          g.fillStyle = 'rgba(255,255,255,0.42)';
-          g.beginPath(); g.ellipse(wx + ww * 0.5, GROUND_Y - 26, ww * 1.6, 18, 0, 0, Math.PI * 2); g.fill();
-          g.fillStyle = 'rgba(240, 252, 255, 0.56)';
-        });
-        g.fillStyle = pal.struct;
-        g.fillRect(108, 410, 12, 172); g.fillRect(172, 410, 12, 172);
-        g.beginPath(); g.moveTo(86, 414); g.quadraticCurveTo(146, 424, 206, 414); g.lineTo(200, 402); g.quadraticCurveTo(146, 410, 92, 402); g.closePath(); g.fill();
-        g.fillRect(98, 434, 96, 8);
-      } else if (biome === 'obsidian_caldera') {
-        g.strokeStyle = 'rgba(255, 130, 38, 0.55)'; g.lineWidth = 3;
-        [[180, 440, 240, 560], [1050, 420, 990, 565]].forEach(([x1,y1,x2,y2]) => {
-          g.beginPath(); g.moveTo(x1, y1); g.lineTo((x1+x2)*0.5 + 14, (y1+y2)*0.5); g.lineTo(x2, y2); g.stroke();
-        });
-      }
-
-      function drawPagoda(cx, by, sc, col) {
-        g.fillStyle = col; let y = by;
-        for (let i = 0; i < 3; i++) {
-          const pw = (176 - i * 36) * sc, ph = (52 - i * 8) * sc;
-          g.fillRect(cx - pw * 0.34, y - ph, pw * 0.68, ph);
-          g.beginPath(); g.moveTo(cx - pw * 0.64, y - ph + 6 * sc); g.lineTo(cx - pw * 0.42, y - ph - 18 * sc); g.lineTo(cx, y - ph - 28 * sc); g.lineTo(cx + pw * 0.42, y - ph - 18 * sc); g.lineTo(cx + pw * 0.64, y - ph + 6 * sc); g.closePath(); g.fill();
-          y -= ph + 13 * sc;
-        }
-        g.fillRect(cx - 3 * sc, y - 42 * sc, 6 * sc, 42 * sc);
-      }
-      if (biome === 'seismic_tremor') {
-        g.fillStyle = pal.struct;
-        [[155, 340, 46], [285, 385, 34], [960, 375, 36], [1095, 330, 48]].forEach(([mx, my, mw]) => {
-          g.fillRect(mx - mw * 0.5, my, mw, GROUND_Y - my);
-          g.fillRect(mx - mw * 0.65, my - 10, mw * 1.3, 12);
-        });
-      } else {
-        drawPagoda(270, 558, biome === 'storm_spire' ? 1.05 : 0.92, pal.struct);
-        drawPagoda(1010, 558, biome === 'storm_spire' ? 1.05 : 0.90, pal.struct);
-      }
-
-      // Luminous Horizontal Mist Band Behind Fighters (10:1 SF2 Figure-Ground Contrast)
-      const mist = g.createLinearGradient(0, 290, 0, GROUND_Y);
-      mist.addColorStop(0, 'rgba(255,255,255,0)');
-      mist.addColorStop(0.55, pal.sky[4] + 'b8');
-      mist.addColorStop(1, pal.sky[4] + 'e0');
-      g.fillStyle = mist; g.fillRect(0, 290, W, GROUND_Y - 290);
-
-      // Veranda Shoji Rail + Side Timber Posts
-      g.fillStyle = th.shojiBg; g.fillRect(0, 514, W, 68);
-      g.strokeStyle = th.shojiFrame; g.lineWidth = 2; g.strokeRect(0, 514, W, 68);
-      for (let x = 0; x <= W; x += 64) { g.beginPath(); g.moveTo(x, 514); g.lineTo(x, GROUND_Y); g.stroke(); }
-      g.beginPath(); g.moveTo(0, 548); g.lineTo(W, 548); g.stroke();
-      g.fillStyle = th.shojiFrame; g.fillRect(0, 510, W, 6);
-
-      // Framing Bamboo & Pine Eaves ONLY on extreme left/right 8% edges
-      g.fillStyle = pal.struct;
-      [[24, 9], [56, 7], [84, 5], [W - 26, 9], [W - 60, 7], [W - 88, 5]].forEach(([bx, bw]) => {
-        g.fillRect(bx, 0, bw, GROUND_Y);
-      });
-
-      // Frost icicles on Frozen Peak top eaves
-      if (biome === 'glacier_floor') {
-        g.fillStyle = 'rgba(220, 248, 255, 0.55)';
-        for (let ix = 40; ix < W - 40; ix += 48) {
-          const ih = 22 + ((ix * 13) % 28);
-          g.beginPath(); g.moveTo(ix - 8, 0); g.lineTo(ix, ih); g.lineTo(ix + 8, 0); g.closePath(); g.fill();
-        }
-      }
-
-      // Dark Perspective Temple Floor + Horizon Rim Highlight
-      g.fillStyle = pal.floor; g.fillRect(0, GROUND_Y, W, H - GROUND_Y);
-      const flGlow = g.createRadialGradient(W * 0.5, GROUND_Y + 18, 40, W * 0.5, GROUND_Y + 18, 580);
-      flGlow.addColorStop(0, pal.glow); flGlow.addColorStop(1, 'rgba(0,0,0,0)');
-      g.fillStyle = flGlow; g.fillRect(0, GROUND_Y, W, H - GROUND_Y);
-      g.strokeStyle = pal.rim; g.lineWidth = 3; g.beginPath(); g.moveTo(0, GROUND_Y); g.lineTo(W, GROUND_Y); g.stroke();
-      g.strokeStyle = 'rgba(0,0,0,0.48)'; g.lineWidth = 1.5;
-      for (let i = -2; i <= 14; i++) { const tx = i * 100; g.beginPath(); g.moveTo(tx, GROUND_Y); g.lineTo(W * 0.5 + (tx - W * 0.5) * 1.45, H + 20); g.stroke(); }
-      [GROUND_Y + 22, GROUND_Y + 50, GROUND_Y + 86].forEach(ry => { g.beginPath(); g.moveTo(0, ry); g.lineTo(W, ry); g.stroke(); });
+      g.fillStyle = th.floorBase; g.fillRect(0, GROUND_Y, W, H - GROUND_Y);
+      g.strokeStyle = th.floorRim; g.lineWidth = 2; g.beginPath(); g.moveTo(0, GROUND_Y); g.lineTo(W, GROUND_Y); g.stroke();
     }
 
-    // Unified Subtle Rice-Paper / Sumi-e Grain + Outer Edge Vignette (ties painted + procedural seamlessly)
+    // Unified Subtle Rice-Paper Grain + Warm Sumi Vignette
     const wp = getWashiPattern();
     if (wp) { g.fillStyle = wp; g.fillRect(0, 0, W, H); }
     const vig = g.createRadialGradient(W * 0.5, H * 0.45, W * 0.34, W * 0.5, H * 0.5, W * 0.72);
-    vig.addColorStop(0, 'rgba(0,0,0,0)'); vig.addColorStop(1, 'rgba(3,5,10,0.38)');
+    vig.addColorStop(0, 'rgba(0,0,0,0)'); vig.addColorStop(1, 'rgba(10,7,5,0.36)');
     g.fillStyle = vig; g.fillRect(0, 0, W, H);
+    return hasImg;
+  }
+
+  function buildBackdrop() {
+    lastBackdropPainted = renderBiomeBackdrop(bctx, getActiveBiome());
   }
   buildBackdrop();
 
@@ -4141,57 +4317,165 @@
     if (!type || type === 'bare') return;
     const dual = type === 'dual_katana' || type === 'twin_sai' || type === 'shadow_sickles';
     if (!isMain && !dual) return;
-    g.fillStyle = '#07090f'; g.strokeStyle = rim; g.lineWidth = 2.2;
+    g.save();
+    g.lineCap = 'round'; g.lineJoin = 'round';
+    g.fillStyle = '#070608'; g.strokeStyle = rim; g.lineWidth = 2.0;
+
     if (type === 'dual_katana') {
-      g.fillRect(-2.5, -16, 5, 20); g.fillStyle = rim; g.fillRect(-8, -1, 16, 4);
-      g.fillStyle = '#090a10'; g.beginPath(); g.moveTo(0, 2); g.quadraticCurveTo(8, 44, 15, 92); g.lineTo(8, 86); g.quadraticCurveTo(2, 42, -3.5, 2); g.closePath(); g.fill(); g.stroke();
-      g.strokeStyle = core; g.lineWidth = 1.6; g.beginPath(); g.moveTo(1.5, 5); g.quadraticCurveTo(7.5, 44, 13.5, 89); g.stroke();
-    } else if (type === 'naginata') {
-      g.fillRect(-3, -42, 6, 114); g.strokeRect(-3, -42, 6, 114);
-      g.beginPath(); g.moveTo(-3, 70); g.lineTo(5, 70); g.lineTo(14, 104); g.lineTo(4, 126); g.lineTo(-4, 100); g.closePath(); g.fill(); g.stroke();
-      g.strokeStyle = core; g.beginPath(); g.moveTo(2, 74); g.lineTo(11, 104); g.lineTo(4, 122); g.stroke();
-    } else if (type === 'liquid_staff') {
-      g.fillRect(-3.5, -48, 7, 154); g.strokeRect(-3.5, -48, 7, 154);
-      g.fillStyle = rim; g.beginPath(); g.moveTo(0, 102); g.lineTo(16, 114); g.lineTo(0, 122); g.lineTo(-6, 108); g.closePath(); g.fill();
-    } else if (type === 'great_hammer') {
-      g.fillRect(-3.5, -28, 7, 106); g.strokeRect(-3.5, -28, 7, 106);
-      // Pommel spike
-      g.beginPath(); g.moveTo(-6, -28); g.lineTo(0, -39); g.lineTo(6, -28); g.closePath(); g.fill(); g.stroke();
-      // Faceted octagonal stone-iron warhammer head
+      // Wrapped tsuka grip + pommel cap + oval tsuba guard + graceful curved sori blade
+      g.beginPath(); g.moveTo(-2.6, -18); g.lineTo(2.6, -18); g.lineTo(2.2, 2); g.lineTo(-2.2, 2); g.closePath(); g.fill();
+      g.strokeStyle = rim; g.lineWidth = 1.4;
+      for (let ty = -14; ty <= -4; ty += 5) { g.beginPath(); g.moveTo(-2.4, ty); g.lineTo(2.4, ty + 2); g.stroke(); }
+      g.fillStyle = rim;
+      g.beginPath(); g.ellipse(0, 1.5, 8.5, 2.6, 0, 0, Math.PI * 2); g.fill();
+      g.fillStyle = '#070608'; g.strokeStyle = rim; g.lineWidth = 1.9;
       g.beginPath();
-      g.moveTo(-26, 70); g.lineTo(-18, 62); g.lineTo(18, 62); g.lineTo(26, 70);
-      g.lineTo(26, 92); g.lineTo(18, 100); g.lineTo(-18, 100); g.lineTo(-26, 92);
+      g.moveTo(-2.6, 3);
+      g.quadraticCurveTo(3.5, 44, 14.5, 92);
+      g.lineTo(9.2, 86);
+      g.quadraticCurveTo(0.8, 44, -3.8, 3);
       g.closePath(); g.fill(); g.stroke();
-      // Top impact spike & glowing seismic earth rune
-      g.beginPath(); g.moveTo(-8, 100); g.lineTo(0, 112); g.lineTo(8, 100); g.closePath(); g.fill(); g.stroke();
-      g.strokeStyle = core; g.lineWidth = 2.2;
-      g.beginPath(); g.moveTo(-13, 81); g.lineTo(-4, 72); g.lineTo(4, 90); g.lineTo(13, 81); g.stroke();
+      g.strokeStyle = core; g.lineWidth = 1.4;
+      g.beginPath(); g.moveTo(0.6, 7); g.quadraticCurveTo(6.2, 46, 13.4, 89); g.stroke();
+    } else if (type === 'naginata') {
+      // Tapered lacquered polearm shaft + brass habaki collar + fluttering tassel + curved fuller glaive blade
+      g.beginPath();
+      g.moveTo(-2.2, -46); g.lineTo(2.2, -46); g.lineTo(3.4, 70); g.lineTo(-3.4, 70); g.closePath();
+      g.fill(); g.stroke();
+      // Butt ferrule & guard rings
+      g.fillStyle = rim;
+      g.beginPath(); g.moveTo(-3.6, -46); g.lineTo(0, -54); g.lineTo(3.6, -46); g.closePath(); g.fill();
+      g.beginPath(); g.ellipse(0, 68, 7.2, 2.8, 0, 0, Math.PI * 2); g.fill();
+      // Flowing silk tassel
+      g.strokeStyle = core; g.lineWidth = 1.6;
+      g.beginPath(); g.moveTo(-5, 67); g.quadraticCurveTo(-15, 58, -11, 44); g.stroke();
+      g.beginPath(); g.moveTo(-5, 68); g.quadraticCurveTo(-18, 63, -15, 51); g.stroke();
+      // Sweeping curved naginata blade
+      g.fillStyle = '#070608'; g.strokeStyle = rim; g.lineWidth = 2.0;
+      g.beginPath();
+      g.moveTo(-3.2, 70); g.lineTo(3.6, 70);
+      g.quadraticCurveTo(10, 92, 16, 108);
+      g.quadraticCurveTo(12, 121, 3, 129);
+      g.quadraticCurveTo(-3, 112, -4.6, 94);
+      g.closePath(); g.fill(); g.stroke();
+      g.strokeStyle = core; g.lineWidth = 1.6;
+      g.beginPath(); g.moveTo(2.5, 74); g.quadraticCurveTo(9, 95, 14.2, 108); g.quadraticCurveTo(10.5, 118, 3.8, 126); g.stroke();
+    } else if (type === 'liquid_staff') {
+      // Sculpted ceremonial bamboo/dragon bo staff with wrapped joints, coiling energy ribbon & crescent wave finial
+      g.beginPath();
+      g.moveTo(-2.6, -50); g.lineTo(2.6, -50);
+      g.lineTo(3.4, 26); g.lineTo(2.8, 98); g.lineTo(-2.8, 98); g.lineTo(-3.4, 26);
+      g.closePath(); g.fill(); g.stroke();
+      // Bamboo grip bands
+      g.strokeStyle = core; g.lineWidth = 1.5;
+      [-26, -6, 16, 42, 70].forEach(ny => { g.beginPath(); g.moveTo(-3.8, ny); g.lineTo(3.8, ny); g.stroke(); });
+      // Flowing water-dragon coiling ribbon along upper staff
+      g.strokeStyle = rim; g.lineWidth = 2.0;
+      g.beginPath();
+      g.moveTo(-5, 32); g.bezierCurveTo(10, 48, -10, 66, 8, 84); g.quadraticCurveTo(12, 92, 2, 98);
+      g.stroke();
+      // Pommel ring & sleek monk's ceremonial spear-finial with twin collar rings
+      g.fillStyle = rim;
+      g.beginPath(); g.arc(0, -53, 3.8, 0, Math.PI * 2); g.fill();
+      g.beginPath(); g.ellipse(0, 96, 6.2, 2.4, 0, 0, Math.PI * 2); g.fill();
+      g.fillStyle = '#070608'; g.strokeStyle = core; g.lineWidth = 1.8;
+      // Sleek tapered double-edged jade leaf spearhead + tiny swirling wave guard
+      g.beginPath();
+      g.moveTo(0, 96);
+      g.quadraticCurveTo(9, 105, 0, 126);
+      g.quadraticCurveTo(-9, 105, 0, 96);
+      g.closePath(); g.fill(); g.stroke();
+      g.strokeStyle = rim; g.lineWidth = 1.6;
+      g.beginPath(); g.arc(-6.5, 99, 3.2, 0, Math.PI * 2); g.stroke();
+      g.beginPath(); g.arc(6.5, 99, 3.2, 0, Math.PI * 2); g.stroke();
+    } else if (type === 'great_hammer') {
+      // Tapered iron-bound war-haft + pommel spike + beveled octagonal warhammer head + carved glowing seal
+      g.beginPath();
+      g.moveTo(-2.6, -30); g.lineTo(2.6, -30); g.lineTo(4.0, 66); g.lineTo(-4.0, 66); g.closePath();
+      g.fill(); g.stroke();
+      g.beginPath(); g.moveTo(-5.5, -30); g.lineTo(0, -42); g.lineTo(5.5, -30); g.closePath(); g.fill(); g.stroke();
+      // Collar wrap
+      g.fillStyle = rim; g.fillRect(-5.5, 56, 11, 6);
+      // Beveled octagonal stone-iron head
+      g.fillStyle = '#070608'; g.strokeStyle = rim; g.lineWidth = 2.2;
+      g.beginPath();
+      g.moveTo(-26, 70); g.lineTo(-17, 62); g.lineTo(17, 62); g.lineTo(26, 70);
+      g.lineTo(26, 92); g.lineTo(17, 100); g.lineTo(-17, 100); g.lineTo(-26, 92);
+      g.closePath(); g.fill(); g.stroke();
+      // Chamfer bevel lines + top impact spike + glowing seismic rune
+      g.beginPath(); g.moveTo(-7, 100); g.lineTo(0, 113); g.lineTo(7, 100); g.closePath(); g.fill(); g.stroke();
+      g.strokeStyle = core; g.lineWidth = 2.0;
+      g.beginPath(); g.moveTo(-14, 81); g.lineTo(-4, 72); g.lineTo(4, 90); g.lineTo(14, 81); g.stroke();
     } else if (type === 'twin_sai') {
-      g.beginPath(); g.moveTo(-12, 14); g.quadraticCurveTo(-12, 2, 0, 2); g.quadraticCurveTo(12, 2, 12, 14); g.stroke();
-      g.beginPath(); g.moveTo(-3, 2); g.lineTo(3, 2); g.lineTo(0, 64); g.closePath(); g.fill(); g.strokeStyle = core; g.stroke();
+      // Wrapped hilt + curved trident yoku guards + needle central blade
+      g.beginPath(); g.moveTo(-2.4, -14); g.lineTo(2.4, -14); g.lineTo(2.0, 4); g.lineTo(-2.0, 4); g.closePath(); g.fill(); g.stroke();
+      g.fillStyle = rim; g.beginPath(); g.arc(0, -15, 3.6, 0, Math.PI * 2); g.fill();
+      g.strokeStyle = rim; g.lineWidth = 2.4;
+      g.beginPath(); g.moveTo(-13, 19); g.quadraticCurveTo(-13, 3, 0, 3); g.quadraticCurveTo(13, 3, 13, 19); g.stroke();
+      g.fillStyle = '#070608';
+      g.beginPath(); g.moveTo(-3.2, 3); g.lineTo(3.2, 3); g.lineTo(0, 68); g.closePath(); g.fill();
+      g.strokeStyle = core; g.lineWidth = 1.6; g.stroke();
     } else if (type === 'nunchaku') {
-      g.fillRect(-3.5, 0, 7, 34); g.strokeRect(-3.5, 0, 7, 34);
-      g.strokeStyle = core; g.beginPath(); g.moveTo(0, 34); g.lineTo(6, 48); g.lineTo(-2, 58); g.stroke();
-      g.strokeStyle = rim; g.fillRect(-5, 56, 7, 36); g.strokeRect(-5, 56, 7, 36);
+      // Tapered octagonal batons with brass ferrules + articulated chain links
+      g.beginPath(); g.moveTo(-2.6, -2); g.lineTo(2.6, -2); g.lineTo(3.6, 33); g.lineTo(-3.6, 33); g.closePath(); g.fill(); g.stroke();
+      g.fillStyle = rim; g.fillRect(-3.6, 28, 7.2, 4);
+      // Individual chain links
+      g.strokeStyle = core; g.lineWidth = 1.8;
+      [[1, 38, 0.2], [4, 46, -0.3], [1, 54, 0.25]].forEach(([cx, cy, ang]) => {
+        g.beginPath(); g.ellipse(cx, cy, 3.2, 5.2, ang, 0, Math.PI * 2); g.stroke();
+      });
+      // Lower swinging baton
+      g.fillStyle = '#070608'; g.strokeStyle = rim; g.lineWidth = 2.0;
+      g.beginPath(); g.moveTo(-4.5, 58); g.lineTo(2.5, 58); g.lineTo(1.2, 95); g.lineTo(-5.8, 95); g.closePath(); g.fill(); g.stroke();
+      g.fillStyle = rim; g.fillRect(-5.6, 89, 7, 4);
     } else if (type === 'shadow_sickles') {
-      g.fillRect(-2.5, -10, 5, 36); g.beginPath(); g.moveTo(0, 24); g.quadraticCurveTo(38, 30, 44, 62); g.quadraticCurveTo(22, 48, -2, 34); g.closePath(); g.fill(); g.stroke();
+      // Wrapped kusarigama grip + weighted chain ring + curved crescent reaping hook
+      g.beginPath(); g.moveTo(-2.4, -12); g.lineTo(2.4, -12); g.lineTo(2.8, 28); g.lineTo(-2.8, 28); g.closePath(); g.fill(); g.stroke();
+      g.strokeStyle = core; g.lineWidth = 1.6;
+      g.beginPath(); g.moveTo(0, -12); g.quadraticCurveTo(-12, -24, -4, -34); g.stroke();
+      g.fillStyle = rim; g.beginPath(); g.arc(-4, -35, 3.8, 0, Math.PI * 2); g.fill();
+      g.fillStyle = '#070608'; g.strokeStyle = rim; g.lineWidth = 2.0;
+      g.beginPath();
+      g.moveTo(-2, 24);
+      g.quadraticCurveTo(34, 24, 48, 60);
+      g.quadraticCurveTo(26, 44, 16, 44);
+      g.lineTo(14, 38);
+      g.quadraticCurveTo(6, 36, -2, 34);
+      g.closePath(); g.fill(); g.stroke();
+      g.strokeStyle = core; g.lineWidth = 1.4;
+      g.beginPath(); g.moveTo(4, 27); g.quadraticCurveTo(32, 30, 45, 57); g.stroke();
     } else {
-      g.fillRect(-3.5, -18, 7, 30); g.beginPath(); g.moveTo(-4, 10); g.lineTo(14, 14); g.lineTo(24, 86); g.lineTo(6, 102); g.lineTo(-6, 94); g.closePath(); g.fill(); g.stroke();
-      g.strokeStyle = core; g.beginPath(); g.moveTo(12, 16); g.lineTo(22, 85); g.lineTo(7, 98); g.stroke();
+      // Heavy Volcanic Dadao: ringed pommel + flared spine + broad forged war-blade
+      g.beginPath(); g.moveTo(-2.8, -20); g.lineTo(2.8, -20); g.lineTo(3.2, 10); g.lineTo(-3.2, 10); g.closePath(); g.fill(); g.stroke();
+      g.strokeStyle = rim; g.lineWidth = 2.0;
+      g.beginPath(); g.arc(0, -24, 5.2, 0, Math.PI * 2); g.stroke();
+      g.fillStyle = rim; g.beginPath(); g.ellipse(0, 10, 9.5, 3, 0, 0, Math.PI * 2); g.fill();
+      g.fillStyle = '#070608'; g.strokeStyle = rim; g.lineWidth = 2.2;
+      g.beginPath();
+      g.moveTo(-4, 11); g.lineTo(9, 13);
+      g.quadraticCurveTo(22, 46, 25, 86);
+      g.quadraticCurveTo(18, 99, 6, 104);
+      g.lineTo(-6, 93);
+      g.quadraticCurveTo(-4, 52, -4, 11);
+      g.closePath(); g.fill(); g.stroke();
+      g.strokeStyle = core; g.lineWidth = 1.8;
+      g.beginPath(); g.moveTo(8, 17); g.quadraticCurveTo(19, 48, 22, 85); g.quadraticCurveTo(16, 95, 7, 100); g.stroke();
     }
+    g.restore();
   }
 
-  // ===== LIVING AMBIENT ELEMENTAL BENDING AURAS AROUND EACH FIGHTER (ZERO-BLUR FAST PATH) =====
+  // ===== LIVING AMBIENT ELEMENTAL BENDING AURAS AROUND EACH FIGHTER (ZERO-BLUR FAST PATH — ACTIVE ON ANDROID!) =====
   function drawAmbientBendingAura(f) {
-    if (settings.vfx === 'low' || f.state === 'ko' || f.invisible) return;
+    if (f.state === 'ko' || f.invisible) return;
+    const isLow = settings.vfx === 'low';
     const t = simFrame * 0.08, el = f.el, cx = f.x, cy = f.y - 102;
     const charged = f.magic >= 100;
     ctx.save();
 
     if (el.id === 'fire') {
-      // Smooth lush Northern Shaolin firebending flame tongues (two-tone vector fill, zero per-frame gradient allocation!)
-      for (let k = 0; k < 4; k++) {
-        const a = t * 1.6 + (k * Math.PI) / 2;
+      const n = isLow ? 2 : 4;
+      for (let k = 0; k < n; k++) {
+        const a = t * 1.6 + (k * Math.PI * 2) / n;
         const fx = cx + Math.cos(a) * (46 + Math.sin(t * 2 + k) * 10);
         const fy = cy + 12 + Math.sin(a) * 52;
         const fh = (charged ? 32 : 22) + Math.sin(t * 4 + k * 2) * 7;
@@ -4201,43 +4485,45 @@
         ctx.quadraticCurveTo(fx - fh * 0.25, fy - fh * 0.55, fx + Math.sin(t * 5 + k) * 6, fy - fh);
         ctx.quadraticCurveTo(fx + fh * 0.28, fy - fh * 0.5, fx + fh * 0.36, fy + 6);
         ctx.closePath(); ctx.fill();
-        ctx.fillStyle = el.core; ctx.globalAlpha = charged ? 0.78 : 0.55;
-        ctx.beginPath();
-        ctx.moveTo(fx - fh * 0.18, fy + 4);
-        ctx.quadraticCurveTo(fx, fy - fh * 0.4, fx + Math.sin(t * 5 + k) * 3, fy - fh * 0.65);
-        ctx.quadraticCurveTo(fx + fh * 0.18, fy - fh * 0.35, fx + fh * 0.18, fy + 4);
-        ctx.closePath(); ctx.fill();
+        if (!isLow) {
+          ctx.fillStyle = el.core; ctx.globalAlpha = charged ? 0.78 : 0.55;
+          ctx.beginPath();
+          ctx.moveTo(fx - fh * 0.18, fy + 4);
+          ctx.quadraticCurveTo(fx, fy - fh * 0.4, fx + Math.sin(t * 5 + k) * 3, fy - fh * 0.65);
+          ctx.quadraticCurveTo(fx + fh * 0.18, fy - fh * 0.35, fx + fh * 0.18, fy + 4);
+          ctx.closePath(); ctx.fill();
+        }
       }
     } else if (el.id === 'water') {
-      // Iconic Katara-style floating water ribbon orbiting Mizu!
-      ctx.strokeStyle = el.glow; ctx.lineWidth = charged ? 6.5 : 4.2; ctx.globalAlpha = 0.68;
+      const steps = isLow ? 8 : 12;
+      ctx.strokeStyle = el.glow; ctx.lineWidth = charged ? 6.2 : 4.0; ctx.globalAlpha = 0.68;
       ctx.beginPath();
-      for (let s = 0; s <= 12; s++) {
-        const ang = t * 1.15 + s * 0.28;
+      for (let s = 0; s <= steps; s++) {
+        const ang = t * 1.15 + s * (3.36 / steps);
         const px = cx + Math.cos(ang) * 66, py = cy + Math.sin(ang * 1.3) * 44;
         s === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
       }
       ctx.stroke();
     } else if (el.id === 'earth') {
-      // Orbiting levitating rock fragments around Terra!
-      for (let k = 0; k < 4; k++) {
-        const a = t * 0.85 + (k * Math.PI) / 2;
+      const n = isLow ? 2 : 4;
+      for (let k = 0; k < n; k++) {
+        const a = t * 0.85 + (k * Math.PI * 2) / n;
         const rx = cx + Math.cos(a) * 64, ry = cy + 16 + Math.sin(a) * 24;
         ctx.fillStyle = '#181410'; ctx.strokeStyle = el.glow; ctx.lineWidth = 2; ctx.globalAlpha = 0.85;
         ctx.beginPath(); ctx.moveTo(rx, ry - 9); ctx.lineTo(rx + 9, ry); ctx.lineTo(rx + 2, ry + 8); ctx.lineTo(rx - 8, ry + 2); ctx.closePath(); ctx.fill(); ctx.stroke();
       }
     } else if (el.id === 'air') {
-      // Swirling Baguazhang wind rings & air-scooter breeze under Zephyr!
-      ctx.strokeStyle = el.core; ctx.lineWidth = 2.5; ctx.globalAlpha = 0.55;
-      for (let k = 0; k < 3; k++) {
+      const n = isLow ? 2 : 3;
+      ctx.strokeStyle = el.core; ctx.lineWidth = 2.4; ctx.globalAlpha = 0.56;
+      for (let k = 0; k < n; k++) {
         const yOff = 78 - k * 58, r = 52 - k * 6;
         ctx.beginPath(); ctx.ellipse(cx, cy + yOff, r, 11, Math.sin(t + k) * 0.14, t + k * 2, t + k * 2 + Math.PI * 1.35); ctx.stroke();
       }
     } else if (el.id === 'lightning') {
-      // Crackling electric bolts snapping around Volt!
-      if (simFrame % 3 === 0 || charged) {
+      if (simFrame % (isLow ? 5 : 3) === 0 || charged) {
         ctx.strokeStyle = el.core; ctx.lineWidth = 2.2; ctx.globalAlpha = 0.85;
-        for (let k = 0; k < 2; k++) {
+        const n = isLow ? 1 : 2;
+        for (let k = 0; k < n; k++) {
           let lx = cx + (Math.random() - 0.5) * 60, ly = cy - 60 + Math.random() * 100;
           ctx.beginPath(); ctx.moveTo(lx, ly);
           for (let s = 0; s < 4; s++) { lx += (Math.random() - 0.5) * 44; ly += (Math.random() - 0.5) * 34; ctx.lineTo(lx, ly); }
@@ -4245,23 +4531,21 @@
         }
       }
     } else if (el.id === 'ice') {
-      // Orbiting hexagonal crystal ice shards around Frost!
-      for (let k = 0; k < 4; k++) {
-        const a = -t * 0.95 + (k * Math.PI) / 2;
+      const n = isLow ? 2 : 4;
+      for (let k = 0; k < n; k++) {
+        const a = -t * 0.95 + (k * Math.PI * 2) / n;
         const sx = cx + Math.cos(a) * 62, sy = cy - 10 + Math.sin(a) * 36;
         ctx.fillStyle = el.primary; ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 1.5; ctx.globalAlpha = 0.8;
         ctx.beginPath(); ctx.moveTo(sx, sy - 11); ctx.lineTo(sx + 6, sy); ctx.lineTo(sx, sy + 11); ctx.lineTo(sx - 6, sy); ctx.closePath(); ctx.fill(); ctx.stroke();
       }
     } else if (el.id === 'shadow') {
-      // Billowing dark eclipse wisps rising off Umbra!
-      ctx.strokeStyle = el.glow; ctx.lineWidth = 4; ctx.globalAlpha = 0.52;
-      for (let k = -1; k <= 1; k++) {
+      ctx.strokeStyle = el.glow; ctx.lineWidth = 3.8; ctx.globalAlpha = 0.52;
+      for (let k = -1; k <= 1; k += (isLow ? 2 : 1)) {
         ctx.beginPath(); ctx.moveTo(cx + k * 24, f.y - 10);
         ctx.quadraticCurveTo(cx + k * 42 + Math.sin(t + k) * 14, cy, cx + k * 18, cy - 82);
         ctx.stroke();
       }
     } else {
-      // Glowing volcanic magma cracks & rising embers beneath Magma!
       ctx.strokeStyle = el.glow; ctx.lineWidth = 2.6; ctx.globalAlpha = 0.72;
       ctx.beginPath(); ctx.moveTo(cx - 58, GROUND_Y + 2); ctx.lineTo(cx - 22, GROUND_Y - 2); ctx.lineTo(cx + 12, GROUND_Y + 4); ctx.lineTo(cx + 56, GROUND_Y + 1); ctx.stroke();
     }
@@ -4419,37 +4703,76 @@
       }
       ctx.stroke();
     } else if (b.kind === 'fire_arc') {
+      // Calligraphic ink-rimmed fire crescent with licking flame tongues
+      ctx.fillStyle = '#180704';
+      ctx.beginPath(); ctx.moveTo(b.x - d * 46, b.y - b.h * 0.58); ctx.quadraticCurveTo(b.x + d * 74, b.y, b.x - d * 46, b.y + b.h * 0.58); ctx.quadraticCurveTo(b.x + d * 18, b.y, b.x - d * 46, b.y - b.h * 0.58); ctx.fill();
       ctx.fillStyle = el.primary;
-      ctx.beginPath(); ctx.moveTo(b.x - d * 42, b.y - b.h * 0.55); ctx.quadraticCurveTo(b.x + d * 68, b.y, b.x - d * 42, b.y + b.h * 0.55); ctx.quadraticCurveTo(b.x + d * 24, b.y, b.x - d * 42, b.y - b.h * 0.55); ctx.fill();
+      ctx.beginPath(); ctx.moveTo(b.x - d * 42, b.y - b.h * 0.54); ctx.quadraticCurveTo(b.x + d * 68, b.y, b.x - d * 42, b.y + b.h * 0.54); ctx.quadraticCurveTo(b.x + d * 24, b.y, b.x - d * 42, b.y - b.h * 0.54); ctx.fill();
       ctx.fillStyle = el.core;
-      ctx.beginPath(); ctx.moveTo(b.x - d * 20, b.y - b.h * 0.36); ctx.quadraticCurveTo(b.x + d * 44, b.y, b.x - d * 20, b.y + b.h * 0.36); ctx.quadraticCurveTo(b.x + d * 14, b.y, b.x - d * 20, b.y - b.h * 0.36); ctx.fill();
+      ctx.beginPath(); ctx.moveTo(b.x - d * 20, b.y - b.h * 0.35); ctx.quadraticCurveTo(b.x + d * 46, b.y, b.x - d * 20, b.y + b.h * 0.35); ctx.quadraticCurveTo(b.x + d * 14, b.y, b.x - d * 20, b.y - b.h * 0.35); ctx.fill();
     } else if (b.kind === 'ult_tsunami' || b.kind === 'water_whip') {
+      // Hokusai Great Wave sumi-e ink wave with clawing foam fingers & airborne droplets
       const h = b.h, w = b.w;
-      const wg = ctx.createLinearGradient(b.x, b.y + h * 0.5, b.x, b.y - h * 0.5);
-      wg.addColorStop(0, '#094ea8'); wg.addColorStop(0.55, '#19a8ff'); wg.addColorStop(1, '#e6fcff');
-      ctx.fillStyle = wg; ctx.globalAlpha = 0.9;
+      const wg = ctx.createLinearGradient(b.x, b.y + h * 0.5, b.x, b.y - h * 0.55);
+      wg.addColorStop(0, '#0a3366'); wg.addColorStop(0.52, '#1684c8'); wg.addColorStop(0.88, '#8be8fa'); wg.addColorStop(1, '#f4fdff');
+      ctx.fillStyle = wg; ctx.strokeStyle = '#071c36'; ctx.lineWidth = 3.2; ctx.globalAlpha = 0.94;
       ctx.beginPath();
-      ctx.moveTo(b.x - d * w * 0.6, GROUND_Y + 6);
-      ctx.bezierCurveTo(b.x - d * w * 0.2, b.y - h * 0.65, b.x + d * w * 0.35, b.y - h * 0.65, b.x + d * w * 0.55, b.y - h * 0.18);
-      ctx.quadraticCurveTo(b.x + d * w * 0.1, b.y - h * 0.08, b.x + d * w * 0.38, GROUND_Y + 6);
-      ctx.closePath(); ctx.fill();
-      // White ocean foam crest
-      ctx.strokeStyle = '#ffffff'; ctx.lineWidth = b.ult ? 7 : 4;
-      ctx.beginPath(); ctx.moveTo(b.x - d * w * 0.35, GROUND_Y - 12); ctx.quadraticCurveTo(b.x + d * w * 0.1, b.y - h * 0.55, b.x + d * w * 0.52, b.y - h * 0.16); ctx.stroke();
+      ctx.moveTo(b.x - d * w * 0.62, GROUND_Y + 6);
+      ctx.bezierCurveTo(b.x - d * w * 0.24, b.y - h * 0.72, b.x + d * w * 0.36, b.y - h * 0.70, b.x + d * w * 0.58, b.y - h * 0.20);
+      ctx.quadraticCurveTo(b.x + d * w * 0.14, b.y - h * 0.08, b.x + d * w * 0.38, GROUND_Y + 6);
+      ctx.closePath(); ctx.fill(); ctx.stroke();
+      // Internal wave contour striations (woodblock lines)
+      ctx.strokeStyle = 'rgba(225, 252, 255, 0.52)'; ctx.lineWidth = 2;
+      for (let s = 1; s <= 3; s++) {
+        const f = s * 0.22;
+        ctx.beginPath();
+        ctx.moveTo(b.x - d * w * (0.48 - f * 0.4), GROUND_Y - 4);
+        ctx.quadraticCurveTo(b.x + d * w * (0.04 + f * 0.2), b.y - h * (0.44 - f * 0.2), b.x + d * w * (0.36 + f * 0.12), b.y - h * (0.14 - f * 0.08));
+        ctx.stroke();
+      }
+      // Hokusai clawing foam crest fingers + mist droplets
+      ctx.fillStyle = '#f5fdff'; ctx.strokeStyle = '#0c3058'; ctx.lineWidth = 1.6;
+      const claws = b.ult ? 5 : 3;
+      for (let c = 0; c < claws; c++) {
+        const cf = c / (claws - 1 || 1);
+        const cx = b.x + d * (w * (0.12 + cf * 0.44));
+        const cy = b.y - h * (0.46 - cf * 0.26) + Math.sin(simFrame * 0.35 + c * 1.4) * 5;
+        ctx.beginPath();
+        ctx.moveTo(cx - d * 12, cy + 8);
+        ctx.quadraticCurveTo(cx + d * 8, cy - 14, cx + d * 20, cy + 4);
+        ctx.quadraticCurveTo(cx + d * 6, cy + 2, cx - d * 12, cy + 8);
+        ctx.closePath(); ctx.fill(); ctx.stroke();
+        ctx.beginPath(); ctx.arc(cx + d * 24, cy - 8 - (c % 2) * 8, b.ult ? 4.2 : 2.8, 0, Math.PI * 2); ctx.fill();
+      }
     } else if (b.kind === 'earth_spike' || b.kind === 'ult_earth_pillar') {
       const rise = Math.min(1, t * 4.2) * (b.f < 8 ? b.f / 8 : 1);
       const curH = b.h * rise;
-      ctx.fillStyle = '#1b1611'; ctx.strokeStyle = el.glow; ctx.lineWidth = b.ult ? 4 : 3;
+      // Layered ink-shaded basalt spire with dark shadow face & carved glowing fissure
+      ctx.fillStyle = '#1b1510'; ctx.strokeStyle = '#090706'; ctx.lineWidth = 3.2;
       ctx.beginPath();
-      ctx.moveTo(b.x - b.w * 0.52, GROUND_Y + 4);
-      ctx.lineTo(b.x - b.w * 0.34, GROUND_Y - curH * 0.85);
+      ctx.moveTo(b.x - b.w * 0.54, GROUND_Y + 4);
+      ctx.lineTo(b.x - b.w * 0.36, GROUND_Y - curH * 0.84);
       ctx.lineTo(b.x + d * 8, GROUND_Y - curH);
       ctx.lineTo(b.x + b.w * 0.38, GROUND_Y - curH * 0.78);
-      ctx.lineTo(b.x + b.w * 0.52, GROUND_Y + 4);
+      ctx.lineTo(b.x + b.w * 0.54, GROUND_Y + 4);
       ctx.closePath(); ctx.fill(); ctx.stroke();
-      // Glowing seismic fracture vein
+      // Lit right chisel plane
+      ctx.fillStyle = '#33261a';
+      ctx.beginPath();
+      ctx.moveTo(b.x + d * 8, GROUND_Y - curH);
+      ctx.lineTo(b.x + b.w * 0.38, GROUND_Y - curH * 0.78);
+      ctx.lineTo(b.x + b.w * 0.52, GROUND_Y + 4);
+      ctx.lineTo(b.x + 2, GROUND_Y + 4);
+      ctx.closePath(); ctx.fill();
+      // Rim + glowing seismic fracture vein + airborne rock chips
+      ctx.strokeStyle = el.glow; ctx.lineWidth = b.ult ? 3.2 : 2.2;
+      ctx.beginPath(); ctx.moveTo(b.x - b.w * 0.36, GROUND_Y - curH * 0.84); ctx.lineTo(b.x + d * 8, GROUND_Y - curH); ctx.lineTo(b.x + b.w * 0.38, GROUND_Y - curH * 0.78); ctx.stroke();
       ctx.strokeStyle = el.core; ctx.lineWidth = 2;
       ctx.beginPath(); ctx.moveTo(b.x, GROUND_Y - curH * 0.9); ctx.lineTo(b.x - 10, GROUND_Y - curH * 0.45); ctx.lineTo(b.x + 8, GROUND_Y - 8); ctx.stroke();
+      ctx.fillStyle = '#241b12'; ctx.strokeStyle = el.glow; ctx.lineWidth = 1.4;
+      [[-32, -curH * 0.45, 7], [30, -curH * 0.62, 6]].forEach(([ox, oy, sr]) => {
+        ctx.beginPath(); ctx.moveTo(b.x + ox, GROUND_Y + oy - sr); ctx.lineTo(b.x + ox + sr, GROUND_Y + oy); ctx.lineTo(b.x + ox - sr * 0.7, GROUND_Y + oy + sr * 0.8); ctx.closePath(); ctx.fill(); ctx.stroke();
+      });
     } else if (b.kind === 'ult_hurricane' || b.kind === 'air_gust') {
       const rings = b.ult ? 10 : 4;
       for (let k = 0; k < rings; k++) {
@@ -4681,20 +5004,24 @@
       ctx.restore();
     }
 
-    // Solid pitch-black ink silhouette at ALL times (zero shadowBlur in Low VFX mode for 60fps Android boost!)
+    // Solid pitch-black ink silhouette at ALL times (fast zero-blur colored rim stamp on Android Low Boost!)
     ctx.save();
     if (f.invisible) ctx.globalAlpha = 0.16;
     const isInvuln = f.inv > 0;
     const invPulse = isInvuln ? 1.0 + Math.abs(Math.sin(f.sf * 0.7)) * 0.65 : 1.0;
     const soulGlow = f.id === 'p1' ? (0.45 + Math.min(8, PROG.unlockedElements.length) * 0.11 + (PROG.avatarUnlocked ? 0.35 : 0)) : 1.0;
     const boost = (f.avatarFlash > 0 || f.magic >= 100 ? 1.38 : 1.0) * invPulse * soulGlow;
+    const rimCol = (f.flash > 0 || f.avatarFlash > 0 || (isInvuln && f.sf % 4 < 2)) ? '#ffffff' : (isInvuln ? '#8ef5ff' : (f.rockArmorF > 0 ? '#f5ba42' : f.el.glow));
     if (settings.vfx !== 'low') {
-      ctx.shadowColor = (f.flash > 0 || f.avatarFlash > 0 || (isInvuln && f.sf % 4 < 2)) ? '#ffffff' : (isInvuln ? '#8ef5ff' : (f.rockArmorF > 0 ? '#f5ba42' : f.el.glow));
+      ctx.shadowColor = rimCol;
       ctx.shadowBlur = (settings.vfx === 'high' ? 11 : 6) * boost;
+      ctx.drawImage(silBuf, f.x + jx - 240, f.y - 330);
     } else {
       ctx.shadowBlur = 0;
+      const rimAlpha = (f.invisible ? 0.16 : 0.74) * Math.min(1, 0.75 + boost * 0.25);
+      drawTintedRim(ctx, f.x + jx - 240, f.y - 330, rimCol, boost > 1.2 ? 2.6 : 2.0, rimAlpha);
+      ctx.drawImage(silBuf, f.x + jx - 240, f.y - 330);
     }
-    ctx.drawImage(silBuf, f.x + jx - 240, f.y - 330);
     ctx.restore();
 
     // Sumi-e Brushstroke Ink Slash Arc on Heavy / Finisher / Overhead Weapon Strikes
@@ -4769,6 +5096,65 @@
     }
   }
 
+  // Shared seamless silhouette renderer (routes through silBuf so Armory & Story have ZERO glowing puppet joint circles!)
+  function renderStaticSilhouetteToBuf({ st, dir = 1, sc = 1.15, wType = null, rim = '#e6a93c', core = '#fff4d6', gearId = 'none', glowingEyes = false, br = 0, swingAmt = 0 }) {
+    sctx.clearRect(0, 0, silBuf.width, silBuf.height);
+    sctx.save();
+    sctx.translate(240, 330);
+    sctx.scale(dir * sc, sc);
+    sctx.fillStyle = '#050609';
+    sctx.shadowBlur = 0;
+    sctx.translate(0, st.py + br * 2.4);
+    sctx.rotate(st.pr || 0);
+    // Back leg
+    sctx.save(); sctx.translate(-4, 4); sctx.rotate(st.bh); drawHumanThigh(sctx);
+    sctx.translate(0, 43); sctx.rotate(st.bk); drawHumanShin(sctx);
+    sctx.translate(0, 43); sctx.rotate(-(st.bh + st.bk) * 0.85); drawHumanFoot(sctx); sctx.restore();
+    // Hips + flowing obi sash
+    sctx.beginPath(); sctx.moveTo(-15,-6); sctx.lineTo(15,-6); sctx.lineTo(19,15); sctx.lineTo(-19,15); sctx.fill();
+    sctx.beginPath(); sctx.moveTo(-10, -2); sctx.quadraticCurveTo(-34, 14 + br * 5, -52, 34 + br * 6); sctx.lineTo(-36, 38 + br * 5); sctx.quadraticCurveTo(-20, 20, -2, 8); sctx.closePath(); sctx.fill();
+    // Torso
+    sctx.save(); sctx.translate(0, -4); sctx.rotate(st.tr + br * 0.025 + swingAmt * 0.14);
+    if (gearId === 'cloak') {
+      sctx.beginPath(); sctx.moveTo(-12, -56); sctx.quadraticCurveTo(-44, -14 + br * 6, -58, 30 + br * 5); sctx.lineTo(-36, 40); sctx.quadraticCurveTo(-22, -2, -6, -42); sctx.closePath(); sctx.fill();
+    }
+    // Back arm
+    sctx.save(); sctx.translate(-5, -52); sctx.rotate(st.bs - swingAmt * 0.35); drawHumanUpperArm(sctx);
+    sctx.translate(0, 32); sctx.rotate(st.be); drawHumanForearm(sctx);
+    sctx.translate(0, 32); sctx.rotate(-0.4); if (wType) drawWeaponShape(sctx, wType, rim, core, false); sctx.restore();
+    sctx.fillStyle = '#050609'; drawHumanTorso(sctx);
+    // Head + billowing headband + Master headgear
+    sctx.save(); sctx.translate(2, -64); drawHumanHead(sctx, core, glowingEyes);
+    sctx.fillStyle = '#050609';
+    sctx.beginPath(); sctx.moveTo(-12, -14); sctx.quadraticCurveTo(-46, -24 + br * 4, -70, -5 + br * 6); sctx.lineTo(-62, 3 + br * 5); sctx.quadraticCurveTo(-40, -12, -12, -6); sctx.closePath(); sctx.fill();
+    if (gearId === 'kasa') {
+      sctx.beginPath(); sctx.moveTo(-34, -22); sctx.quadraticCurveTo(0, -45, 36, -20); sctx.quadraticCurveTo(2, -26, -34, -22); sctx.closePath(); sctx.fill();
+    } else if (gearId === 'kabuto') {
+      sctx.beginPath(); sctx.moveTo(-16, -24); sctx.quadraticCurveTo(-18, -36, 0, -34); sctx.quadraticCurveTo(16, -34, 15, -22); sctx.closePath(); sctx.fill();
+      sctx.beginPath(); sctx.moveTo(6, -30); sctx.quadraticCurveTo(18, -46, 24, -52); sctx.lineTo(13, -34); sctx.closePath(); sctx.fill();
+      sctx.beginPath(); sctx.moveTo(-4, -31); sctx.quadraticCurveTo(-16, -45, -20, -49); sctx.lineTo(-10, -33); sctx.closePath(); sctx.fill();
+    } else if (gearId === 'crown') {
+      sctx.strokeStyle = core; sctx.lineWidth = 2.6;
+      sctx.beginPath(); sctx.ellipse(0, -41 + br * 2, 19, 4.5, 0, 0, Math.PI * 2); sctx.stroke();
+      sctx.beginPath(); sctx.moveTo(-10, -29); sctx.lineTo(-14, -44); sctx.lineTo(-4, -33); sctx.lineTo(2, -48); sctx.lineTo(8, -33); sctx.lineTo(16, -42); sctx.lineTo(12, -28); sctx.closePath(); sctx.fill();
+    }
+    sctx.restore();
+    // Front arm + main weapon (supports slow showcase swing!)
+    sctx.fillStyle = '#050609';
+    sctx.save(); sctx.translate(7, -52); sctx.rotate(st.fs + br * 0.045 - swingAmt * 0.85); drawHumanUpperArm(sctx);
+    sctx.translate(0, 32); sctx.rotate(st.fe + swingAmt * 0.55); drawHumanForearm(sctx);
+    sctx.translate(0, 32); sctx.rotate((st.fw || 0) + swingAmt * 0.65);
+    if (wType) drawWeaponShape(sctx, wType, rim, core, true);
+    sctx.restore();
+    sctx.restore();
+    // Front leg
+    sctx.fillStyle = '#050609';
+    sctx.save(); sctx.translate(5, 4); sctx.rotate(st.fh); drawHumanThigh(sctx);
+    sctx.translate(0, 43); sctx.rotate(st.fk); drawHumanShin(sctx);
+    sctx.translate(0, 43); sctx.rotate(-(st.fh + st.fk) * 0.85); drawHumanFoot(sctx); sctx.restore();
+    sctx.restore();
+  }
+
   function computeWeaponTip(p, facing, sc) {
     let x = p.px || 0, y = p.py;
     const rot = (dx, dy, a) => ({ x: dx * Math.cos(a) - dy * Math.sin(a), y: dx * Math.sin(a) + dy * Math.cos(a) });
@@ -4780,8 +5166,11 @@
     return { x: x * facing * sc, y: y * sc };
   }
   function drawRibbon(samples, prim, glow, core) {
-    if (settings.vfx === 'low' || samples.length < 2) return;
-    [[1.6, prim, 0.44], [0.95, glow, 0.78], [0.4, core, 0.96]].forEach(([ws, col, al]) => {
+    if (samples.length < 2) return;
+    const layers = settings.vfx === 'low'
+      ? [[1.25, prim, 0.42], [0.65, glow, 0.78]]
+      : [[1.6, prim, 0.44], [0.95, glow, 0.78], [0.4, core, 0.96]];
+    layers.forEach(([ws, col, al]) => {
       if (ws < 0.5 && settings.vfx !== 'high') return;
       const lp = [], rp = [];
       for (let i = 0; i < samples.length; i++) {
@@ -4801,31 +5190,47 @@
     const hz = getActiveBiome();
     ctx.save();
     // Live Biome Ambient Weather Motes (kept ultra-light in Low Boost mode)
-    const count = settings.vfx === 'low' ? 6 : 16;
+    const count = settings.vfx === 'low' ? 7 : 18;
     for (let i = 0; i < count; i++) {
       const seed = i * 97.3;
       if (hz === 'blazing_dojo' || hz === 'ember_updraft' || hz === 'obsidian_caldera') {
         const ex = (seed * 17 + Math.sin(simFrame * 0.02 + i) * 35) % W;
         const ey = GROUND_Y - ((simFrame * (1.2 + (i % 3) * 0.4) + seed * 5) % 440);
-        ctx.fillStyle = i % 2 ? '#ffae34' : '#ff5e28'; ctx.globalAlpha = 0.52;
+        ctx.fillStyle = i % 2 ? '#ffae34' : '#ff5e28'; ctx.globalAlpha = 0.54;
         ctx.beginPath(); ctx.arc(ex, ey, 1.8 + (i % 2), 0, Math.PI * 2); ctx.fill();
       } else if (hz === 'glacier_floor') {
         const sx = (seed * 15 + simFrame * 0.6 + Math.sin(simFrame * 0.03 + i) * 20) % W;
         const sy = (simFrame * 1.4 + seed * 7) % GROUND_Y;
-        ctx.fillStyle = '#e0faff'; ctx.globalAlpha = 0.55;
+        ctx.fillStyle = '#e0faff'; ctx.globalAlpha = 0.58;
         ctx.beginPath(); ctx.arc(sx, sy, 2.1, 0, Math.PI * 2); ctx.fill();
       } else if (hz === 'dew_shrine' || hz === 'gale_tailwind') {
         const px = (seed * 19 + simFrame * (hz === 'gale_tailwind' ? 2.4 : 0.9)) % W;
         const py = (seed * 8 + simFrame * 0.8 + Math.sin(simFrame * 0.04 + i) * 18) % GROUND_Y;
-        ctx.fillStyle = hz === 'dew_shrine' ? '#e8f8ff' : '#bdfae6'; ctx.globalAlpha = 0.45;
+        ctx.fillStyle = hz === 'dew_shrine' ? '#e8f8ff' : '#bdfae6'; ctx.globalAlpha = 0.48;
         ctx.beginPath(); ctx.ellipse(px, py, 4, 2, simFrame * 0.05 + i, 0, Math.PI * 2); ctx.fill();
+      } else if (hz === 'seismic_tremor') {
+        const dx = (seed * 21 + simFrame * 0.7) % W;
+        const dy = GROUND_Y - 25 - ((seed * 11 + Math.sin(simFrame * 0.025 + i) * 22) % 340);
+        ctx.fillStyle = '#f2cc84'; ctx.globalAlpha = 0.42;
+        ctx.beginPath(); ctx.arc(dx, dy, 1.9, 0, Math.PI * 2); ctx.fill();
+      } else if (hz === 'storm_spire') {
+        const rx = (seed * 23 - simFrame * 4.5 + W * 8) % W;
+        const ry = (seed * 13 + simFrame * 9.5) % GROUND_Y;
+        ctx.strokeStyle = 'rgba(202, 232, 255, 0.36)'; ctx.lineWidth = 1.2;
+        ctx.beginPath(); ctx.moveTo(rx, ry); ctx.lineTo(rx - 6, ry + 18); ctx.stroke();
+      } else {
+        // Eclipse Sanctum / Convergence drifting crimson ink ash
+        const ex = (seed * 17 + Math.sin(simFrame * 0.018 + i) * 40) % W;
+        const ey = GROUND_Y - ((simFrame * 0.95 + seed * 6) % 450);
+        ctx.fillStyle = i % 3 === 0 ? '#ff6a42' : '#1a0c10'; ctx.globalAlpha = 0.56;
+        ctx.beginPath(); ctx.ellipse(ex, ey, 3.6, 1.8, simFrame * 0.04 + i, 0, Math.PI * 2); ctx.fill();
       }
     }
     ctx.globalAlpha = 1;
     if (hz === 'glacier_floor') {
-      ctx.fillStyle = 'rgba(130, 238, 255, 0.22)';
-      ctx.fillRect(0, GROUND_Y - 2, W, 18);
-      ctx.strokeStyle = '#b8f7ff'; ctx.lineWidth = 2.5;
+      ctx.fillStyle = 'rgba(130, 238, 255, 0.16)';
+      ctx.fillRect(0, GROUND_Y - 2, W, 14);
+      ctx.strokeStyle = '#b8f7ff'; ctx.lineWidth = 2.2;
       ctx.beginPath(); ctx.moveTo(ARENA_L, GROUND_Y); ctx.lineTo(ARENA_R, GROUND_Y); ctx.stroke();
     } else if (hz === 'gale_tailwind' && (simFrame % 240 < 90)) {
       ctx.strokeStyle = 'rgba(170, 255, 228, 0.35)'; ctx.lineWidth = 2;
@@ -4844,6 +5249,8 @@
   }
 
   function drawForegroundParallax(clampedCamX) {
+    // Painted sumi-e arenas already include hand-painted framing timber pillars & willow/pine eaves
+    if (lastBackdropPainted) return;
     const hz = getActiveBiome();
     const px = (clampedCamX - W * 0.5) * 0.32;
     const sway = Math.sin(simFrame * 0.024) * 8;
@@ -4859,10 +5266,6 @@
         ctx.quadraticCurveTo(bx + bw + sway * dir, H * 0.5, bx + bw, H);
         ctx.closePath(); ctx.fill();
       });
-    } else if (hz === 'blazing_dojo' || hz === 'ember_updraft') {
-      const lx = -24 - px, rx = W - 18 - px;
-      ctx.fillRect(lx, -20, 38, H + 40);
-      ctx.fillRect(rx, -20, 38, H + 40);
     } else {
       const lx = -30 - px, rx = W + 30 - px;
       ctx.beginPath(); ctx.moveTo(lx, H + 10); ctx.lineTo(lx + 68, H - 185); ctx.lineTo(lx + 95, H + 10); ctx.closePath(); ctx.fill();
@@ -4872,6 +5275,7 @@
   }
 
   function renderScene() {
+    ctx.setTransform(gameDpr, 0, 0, gameDpr, 0, 0);
     ctx.clearRect(0, 0, W, H);
     const midX = (p1.x + p2.x) * 0.5, dist = Math.abs(p1.x - p2.x);
     const tz = Math.max(1.05, Math.min(1.22, 1.18 - dist / 2600 + dramaticZoom));
@@ -4899,8 +5303,10 @@
 
     ctx.drawImage(bgBuf, 0, 0);
     drawStageArenaVisuals();
-    drawLantern(60, 290, 0.96, 0);
-    drawLantern(W - 56, 290, 0.96, 3.2);
+    if (!lastBackdropPainted) {
+      drawLantern(60, 290, 0.96, 0);
+      drawLantern(W - 56, 290, 0.96, 3.2);
+    }
 
     if (ultDimFrames > 0) {
       ctx.save();
@@ -5052,15 +5458,17 @@
   // ===== HUD SYNC (100% Dirty-Checked — Zero Unnecessary DOM Writes or Reflows) =====
   // ===== MINIMALIST HUD SYNC (Health, Bending, Timer, Compact Status Icons, Corner Pause ONLY) =====
   const STATUS_ICONS = {
-    burn:     { sym: '🔥', col: '#ff6a1a' },
-    scorched: { sym: '🌋', col: '#ff4b1f' },
-    chill:    { sym: '❄', col: '#78eeff' },
-    rooted:   { sym: '⛓', col: '#78eeff' },
-    soaked:   { sym: '💧', col: '#38d8ff' },
-    shock:    { sym: '⚡', col: '#ffe04a' },
-    crush:    { sym: '🪨', col: '#e8b038' },
-    lift:     { sym: '🌪', col: '#5effc8' },
-    hex:      { sym: '☾', col: '#b49cff' }
+    burn:     { sym: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c2 4 6 6.2 6 11a6 6 0 1 1-12 0c0-2.7 1.4-5 3-6.6-.2 2.2 1 3.6 2.5 3.6 0-3 .5-5.8.5-8z"/></svg>`, col: '#ff7a2e' },
+    scorched: { sym: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 20l4-10h8l4 10z"/><path d="M9 6c1-2 5-2 6 0"/></svg>`, col: '#ff4b1f' },
+    chill:    { sym: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 3v18M4.2 7.5l15.6 9M19.8 7.5L4.2 16.5"/></svg>`, col: '#78eeff' },
+    rooted:   { sym: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="4" y="9" width="7" height="6" rx="3"/><rect x="13" y="9" width="7" height="6" rx="3"/><path d="M10 12h4"/></svg>`, col: '#78eeff' },
+    soaked:   { sym: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3s6.5 7.4 6.5 11.8a6.5 6.5 0 1 1-13 0C5.5 10.4 12 3 12 3z"/></svg>`, col: '#38d8ff' },
+    shock:    { sym: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L4 14h6l-1 8 9-12h-6z"/></svg>`, col: '#ffe04a' },
+    crush:    { sym: `<svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12,3 20,9 17,20 7,20 4,9"/></svg>`, col: '#e8b038' },
+    lift:     { sym: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 8h13a3 3 0 1 0-3-3"/><path d="M4 13h16a2.5 2.5 0 1 1-2.5 2.5"/><path d="M6 18h8"/></svg>`, col: '#5effc8' },
+    hex:      { sym: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 4a8 8 0 1 0 4 14.9A6.5 6.5 0 1 1 16 4z"/></svg>`, col: '#b49cff' },
+    armor:    { sym: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 3l7 3v5c0 5-3.2 8.4-7 10-3.8-1.6-7-5-7-10V6l7-3z"/></svg>`, col: '#f5ba42' },
+    disarm:   { sym: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 19L19 5M7 7l10 10"/></svg>`, col: '#fb7185' }
   };
   const elRefs = {
     p1Crest: document.getElementById('p1-crest'), p2Crest: document.getElementById('p2-crest'),
@@ -5131,11 +5539,11 @@
       elRefs.p1Jewels.innerHTML = mk(match.p1W, p1.el.glow); elRefs.p2Jewels.innerHTML = mk(match.p2W, p2.el.glow);
     }
 
-    // Compact status icons only (no wordy badges!)
+    // Compact vector status icons (no emojis or wordy badges)
     const mkIcons = (f) => {
       const icons = Object.keys(f.statuses).map(k => STATUS_ICONS[k]).filter(Boolean);
-      if (f.rockArmorF > 0) icons.push({ sym: '🛡', col: '#f5ba42' });
-      if (f.disarmed) icons.push({ sym: '✊', col: '#fb7185' });
+      if (f.rockArmorF > 0) icons.push(STATUS_ICONS.armor);
+      if (f.disarmed) icons.push(STATUS_ICONS.disarm);
       return icons.map(ic => `<span class="s-ico" style="color:${ic.col}">${ic.sym}</span>`).join('');
     };
     const b1 = mkIcons(p1); if (b1 !== lastB1) { lastB1 = b1; elRefs.p1Badges.innerHTML = b1; }
@@ -5315,8 +5723,59 @@
     }
     flushDir();
   }
+  let bendSwipePtr = null, bendStartX = 0, bendStartY = 0, bendSwDx = 0, bendSwDy = 0, bendSwMoved = false;
   document.querySelectorAll('[data-act]').forEach(btn => {
     const act = btn.dataset.act;
+    if (act === 'magic') {
+      btn.addEventListener('pointerdown', e => {
+        e.preventDefault(); unlockAudio();
+        if (match.inMenu || match.paused || match.screen !== 'fighting') return;
+        btn.classList.add('pressed');
+        bendSwipePtr = e.pointerId; bendStartX = e.clientX; bendStartY = e.clientY;
+        bendSwDx = 0; bendSwDy = 0; bendSwMoved = false;
+        try { btn.setPointerCapture(e.pointerId); } catch {}
+        // Lightning supports hold-to-charge immediately; other elements support tap OR directional swipe on release
+        if (p1.el.id === 'lightning' && p1.magic >= 35) pressBtn(p1, 'magic');
+      });
+      btn.addEventListener('pointermove', e => {
+        if (e.pointerId !== bendSwipePtr) return;
+        const dx = e.clientX - bendStartX, dy = e.clientY - bendStartY;
+        if (Math.hypot(dx, dy) >= 18) {
+          bendSwMoved = true;
+          btn.classList.add('swiping');
+          if (Math.abs(dy) >= Math.abs(dx)) { bendSwDx = 0; bendSwDy = dy < 0 ? -1 : 1; }
+          else { bendSwDx = dx > 0 ? 1 : -1; bendSwDy = 0; }
+          if (bendDirPill && p1.magic >= 35) {
+            bendDirPill.classList.add('show');
+            bendDirPill.textContent = bendSwDy === -1 ? '↑' : bendSwDy === 1 ? '↓' : (bendSwDx === p1.facing ? '→' : '←');
+          }
+        }
+      });
+      const finishBend = e => {
+        if (e.pointerId !== bendSwipePtr) return;
+        bendSwipePtr = null;
+        btn.classList.remove('pressed', 'swiping');
+        if (p1.el.id === 'lightning' && p1.held.has('magic')) {
+          releaseBtn(p1, 'magic');
+          return;
+        }
+        if (match.inMenu || match.paused || match.screen !== 'fighting') return;
+        if (bendSwMoved) {
+          const prevX = p1.dir.x, prevY = p1.dir.y;
+          p1.dir = { x: bendSwDx, y: bendSwDy };
+          pressBtn(p1, 'magic');
+          releaseBtn(p1, 'magic');
+          p1.dir = { x: prevX, y: prevY };
+          flushDir();
+        } else {
+          pressBtn(p1, 'magic');
+          releaseBtn(p1, 'magic');
+        }
+      };
+      btn.addEventListener('pointerup', finishBend);
+      btn.addEventListener('pointercancel', finishBend);
+      return;
+    }
     btn.addEventListener('pointerdown', e => {
       e.preventDefault(); unlockAudio();
       if (match.inMenu || match.paused || match.screen !== 'fighting') return;
@@ -5410,99 +5869,90 @@
     document.getElementById('story-text').textContent = s.text || '';
     document.getElementById('story-next').textContent = storyState.idx === storyState.slides.length - 1 ? (storyState.kind === 'dialogue' ? 'BEGIN DUEL' : 'CONTINUE') : 'NEXT';
     document.getElementById('story-dots').innerHTML = storyState.slides.map((_, i) => `<span class="story-dot ${i === storyState.idx ? 'on' : ''}"></span>`).join('');
+    const crestEl = document.getElementById('story-crest');
+    if (crestEl) {
+      const isPlayerSpeak = (s.speaker || '').includes('HOLLOW SHADOW');
+      const elObj = isPlayerSpeak ? p1.el : (ELEMENTS[s.art] || null);
+      const col = elObj ? elObj.glow : (s.accent || '#e6a93c');
+      crestEl.style.borderColor = col;
+      crestEl.style.color = col;
+      crestEl.innerHTML = elObj ? elObj.svg : SVG_ICONS.default;
+    }
     drawStoryArtwork(s);
   }
   function drawStoryArtwork(slide) {
-    const g = stCtx;
-    g.clearRect(0, 0, W, H);
-    const accent = slide.accent || '#f5ba42';
-    // Atmospheric sumi-e ink parchment/night backdrop
-    const bg = g.createRadialGradient(W * 0.5, 250, 40, W * 0.5, 320, 680);
-    bg.addColorStop(0, slide.art === 'eclipse' ? '#3d1020' : (slide.art === 'hollow' ? '#121828' : '#2a221c'));
-    bg.addColorStop(0.55, '#0c101c'); bg.addColorStop(1, '#04060c');
-    g.fillStyle = bg; g.fillRect(0, 0, W, H);
-
-    // Painted Sun / Eclipse Disc
-    g.save();
-    if (slide.art === 'eclipse') {
-      g.fillStyle = '#ff5e3a'; g.beginPath(); g.arc(W * 0.5, 250, 145, 0, Math.PI * 2); g.fill();
-      g.fillStyle = '#04050a'; g.beginPath(); g.arc(W * 0.5, 250, 132, 0, Math.PI * 2); g.fill();
-    } else {
-      const sun = g.createRadialGradient(W * 0.5, 250, 15, W * 0.5, 250, 175);
-      sun.addColorStop(0, '#fff7d6'); sun.addColorStop(0.55, accent + '66'); sun.addColorStop(1, 'rgba(0,0,0,0)');
-      g.fillStyle = sun; g.beginPath(); g.arc(W * 0.5, 250, 175, 0, Math.PI * 2); g.fill();
+    const dpr = Math.min(2, Math.max(1, window.devicePixelRatio || 1));
+    if (storyCanvas.width !== Math.round(W * dpr) || storyCanvas.height !== Math.round(H * dpr)) {
+      storyCanvas.width = Math.round(W * dpr); storyCanvas.height = Math.round(H * dpr);
     }
-    // Distant ink mountain horizon
-    g.fillStyle = '#090d17';
-    g.beginPath(); g.moveTo(0, 560); g.lineTo(240, 380); g.lineTo(520, 460); g.lineTo(840, 365); g.lineTo(1120, 445); g.lineTo(W, 560); g.lineTo(W, H); g.lineTo(0, H); g.closePath(); g.fill();
+    const g = stCtx;
+    g.setTransform(dpr, 0, 0, dpr, 0, 0);
+    g.clearRect(0, 0, W, H);
+    const accent = slide.accent || '#e6a93c';
+
+    // Composite the active realm's painted sumi-e arena backdrop behind dialogues, memories & chronicle panels!
+    const sceneBiome = slide.biome
+      || (ELEMENTS[slide.art] ? getBiomeForElement(slide.art) : null)
+      || (slide.art === 'eclipse' || slide.art === 'hollow' ? 'eclipse_sanctum' : (slide.art === 'balance' ? 'dew_shrine' : 'blazing_dojo'));
+    renderBiomeBackdrop(g, sceneBiome);
+
+    // Warm moody ink-scroll vignette + subtle contrast veil for cinematic focus
+    g.save();
+    const mood = g.createRadialGradient(W * 0.5, 290, 60, W * 0.5, 360, 740);
+    mood.addColorStop(0, slide.art === 'eclipse' ? 'rgba(60,12,18,0.18)' : 'rgba(20,14,10,0.08)');
+    mood.addColorStop(0.65, 'rgba(14,10,8,0.44)');
+    mood.addColorStop(1, 'rgba(8,6,5,0.82)');
+    g.fillStyle = mood; g.fillRect(0, 0, W, H);
 
     // 8 Elemental Orbiting Orbs for Balance / Avatar / Hollow panels
     if (slide.art === 'balance' || slide.art === 'avatar' || slide.art === 'hollow') {
       EL_ORDER.forEach((eid, idx) => {
         const ang = (idx / 8) * Math.PI * 2 - Math.PI * 0.5;
-        const dist = slide.art === 'hollow' ? 270 : 165;
-        const ox = W * 0.5 + Math.cos(ang) * dist, oy = 270 + Math.sin(ang) * (dist * 0.62);
+        const dist = slide.art === 'hollow' ? 285 : 175;
+        const ox = W * 0.5 + Math.cos(ang) * dist, oy = 290 + Math.sin(ang) * (dist * 0.56);
         g.fillStyle = ELEMENTS[eid].glow;
-        g.globalAlpha = slide.art === 'hollow' ? 0.55 : 0.92;
-        g.beginPath(); g.arc(ox, oy, slide.art === 'hollow' ? 8 : 13, 0, Math.PI * 2); g.fill();
+        g.strokeStyle = '#120d09'; g.lineWidth = 2;
+        g.globalAlpha = slide.art === 'hollow' ? 0.58 : 0.92;
+        g.beginPath(); g.arc(ox, oy, slide.art === 'hollow' ? 8 : 12, 0, Math.PI * 2); g.fill(); g.stroke();
       });
       g.globalAlpha = 1;
     }
 
-    // Center Ink Warrior Silhouette(s) with distinct Master headgear/cloak/crown & signature weapon
-    const drawSil = (cx, by, dir, elObj, glowCol, sc = 1.42, gearId = 'none') => {
+    // Draw seamless pitch-black ink silhouettes routed through silBuf (ZERO puppet joint circles!)
+    const drawStorySil = (cx, by, dir, elObj, glowCol, sc = 1.24, gearId = 'none') => {
       const st = (elObj && elObj.stance) ? elObj.stance : ELEMENTS.water.stance;
-      g.save(); g.translate(cx, by); g.scale(dir * sc, sc);
-      g.shadowColor = glowCol; g.shadowBlur = settings.vfx === 'low' ? 0 : 22; g.fillStyle = '#03050a';
-      g.translate(0, st.py);
-      g.rotate(st.pr || 0);
-      // Legs
-      g.save(); g.translate(-4, 4); g.rotate(st.bh); drawHumanThigh(g); g.translate(0, 43); g.rotate(st.bk); drawHumanShin(g); g.translate(0, 43); g.rotate(-(st.bh + st.bk) * 0.85); drawHumanFoot(g); g.restore();
-      g.save(); g.translate(5, 4); g.rotate(st.fh); drawHumanThigh(g); g.translate(0, 43); g.rotate(st.fk); drawHumanShin(g); g.translate(0, 43); g.rotate(-(st.fh + st.fk) * 0.85); drawHumanFoot(g); g.restore();
-      g.beginPath(); g.moveTo(-15,-6); g.lineTo(15,-6); g.lineTo(19,15); g.lineTo(-19,15); g.fill();
-      g.save(); g.translate(0, -4); g.rotate(st.tr);
-      if (gearId === 'cloak') {
-        g.beginPath(); g.moveTo(-12, -56); g.quadraticCurveTo(-44, -14, -58, 30); g.lineTo(-36, 40); g.quadraticCurveTo(-22, -2, -6, -42); g.closePath(); g.fill();
-      }
-      // Flowing martial sash tail
-      g.beginPath(); g.moveTo(-10, -2); g.quadraticCurveTo(-34, 18, -50, 38); g.lineTo(-34, 42); g.quadraticCurveTo(-20, 22, -2, 8); g.closePath(); g.fill();
-      // Back arm
-      g.save(); g.translate(-5, -52); g.rotate(st.bs); drawHumanUpperArm(g); g.translate(0, 32); g.rotate(st.be); drawHumanForearm(g); g.restore();
-      drawHumanTorso(g);
-      // Head + billowing headband + Master signature headgear
-      g.save(); g.translate(2, -64); drawHumanHead(g, glowCol, slide.art === 'avatar' || gearId === 'crown');
-      g.fillStyle = '#03050a';
-      g.beginPath(); g.moveTo(-12, -14); g.quadraticCurveTo(-50, -24, -76, -4); g.lineTo(-68, 4); g.quadraticCurveTo(-44, -12, -12, -6); g.closePath(); g.fill();
-      if (gearId === 'kasa') {
-        g.beginPath(); g.moveTo(-34, -22); g.quadraticCurveTo(0, -45, 36, -20); g.quadraticCurveTo(2, -26, -34, -22); g.closePath(); g.fill();
-      } else if (gearId === 'kabuto') {
-        g.beginPath(); g.moveTo(-16, -24); g.quadraticCurveTo(-18, -36, 0, -34); g.quadraticCurveTo(16, -34, 15, -22); g.closePath(); g.fill();
-        g.beginPath(); g.moveTo(6, -30); g.quadraticCurveTo(18, -46, 24, -52); g.lineTo(13, -34); g.closePath(); g.fill();
-        g.beginPath(); g.moveTo(-4, -31); g.quadraticCurveTo(-16, -45, -20, -49); g.lineTo(-10, -33); g.closePath(); g.fill();
-      } else if (gearId === 'crown') {
-        g.strokeStyle = glowCol; g.lineWidth = 2.6;
-        g.beginPath(); g.ellipse(0, -42, 19, 4.5, 0, 0, Math.PI * 2); g.stroke();
-        g.beginPath(); g.moveTo(-10, -29); g.lineTo(-14, -44); g.lineTo(-4, -33); g.lineTo(2, -48); g.lineTo(8, -33); g.lineTo(16, -42); g.lineTo(12, -28); g.closePath(); g.fill();
-      }
+      const wType = elObj ? elObj.wType : null;
+      const coreCol = (elObj && elObj.core) ? elObj.core : '#fff4d6';
+      renderStaticSilhouetteToBuf({
+        st, dir, sc, wType, rim: glowCol, core: coreCol, gearId,
+        glowingEyes: slide.art === 'avatar' || gearId === 'crown'
+      });
+      // Soft floor reflection on veranda planks
+      g.save();
+      g.beginPath(); g.rect(0, by, W, H - by); g.clip();
+      g.translate(cx, by + 2); g.scale(1, -0.24); g.globalAlpha = 0.2;
+      g.drawImage(silBuf, -240, -330);
       g.restore();
-      // Front arm + signature weapon
-      g.fillStyle = '#03050a';
-      g.save(); g.translate(7, -52); g.rotate(st.fs); drawHumanUpperArm(g); g.translate(0, 32); g.rotate(st.fe); drawHumanForearm(g); g.translate(0, 32); g.rotate(st.fw || 0);
-      if (elObj) drawWeaponShape(g, elObj.wType, glowCol, elObj.core || '#ffffff', true);
-      g.restore();
-      g.restore();
-      g.restore();
+      // Unified outer elemental rim + solid pitch-black silhouette
+      drawTintedRim(g, cx - 240, by - 330, glowCol, 2.4, 0.78);
+      g.drawImage(silBuf, cx - 240, by - 330);
     };
+
     if (storyState.kind === 'dialogue') {
       const foeEl = ELEMENTS[slide.art] || Object.values(ELEMENTS).find(e => e.glow === accent) || p2.el;
-      drawSil(420, 505, 1, p1.el, p1.el.glow, 1.38, PROG.equippedGear || 'none');
-      drawSil(860, 505, -1, foeEl, accent, 1.44, slide.gear || 'none');
+      drawStorySil(400, GROUND_Y - 12, 1, p1.el, p1.el.glow, 1.24, PROG.equippedGear || 'none');
+      drawStorySil(880, GROUND_Y - 12, -1, foeEl, accent, 1.28, slide.gear || 'none');
     } else {
-      const heroEl = slide.art === 'hollow' ? null : ELEMENTS.water;
-      drawSil(W * 0.5, 515, 1, heroEl, slide.art === 'hollow' ? '#64748b' : accent, 1.5, slide.art === 'avatar' ? 'crown' : PROG.equippedGear || 'none');
+      const heroEl = slide.art === 'hollow' ? null : (ELEMENTS[slide.art] || ELEMENTS.water);
+      drawStorySil(W * 0.5, GROUND_Y - 14, 1, heroEl, slide.art === 'hollow' ? '#9e8f7b' : accent, 1.32, slide.art === 'avatar' ? 'crown' : PROG.equippedGear || 'none');
     }
-    const wp = getWashiPattern();
-    if (wp) { g.fillStyle = wp; g.fillRect(0, 0, W, H); }
+
+    // Cinematic 2.35:1 sumi-e letterbox bars with hairline gold rule
+    g.fillStyle = '#090706';
+    g.fillRect(0, 0, W, 42);
+    g.fillRect(0, H - 42, W, 42);
+    g.strokeStyle = 'rgba(230, 178, 96, 0.35)'; g.lineWidth = 1.2;
+    g.beginPath(); g.moveTo(0, 42); g.lineTo(W, 42); g.moveTo(0, H - 42); g.lineTo(W, H - 42); g.stroke();
     g.restore();
   }
   function advanceStory() {
@@ -5565,13 +6015,14 @@
         <div class="sgroup"><div class="slabel">Quick Duel AI</div>${seg('aiTier',[['novice','Novice'],['warrior','Warrior'],['master','Master'],['shadow','Shadow']])}</div>
         <div class="trow"><div><div class="slabel">Music (BGM)</div></div><button class="tsw ${settings.musicOn?'on':''}" id="t-bgm">${settings.musicOn?'ON':'OFF'}</button></div>
         <div class="trow"><div><div class="slabel">Sound Effects (SFX)</div></div><button class="tsw ${settings.sfxOn?'on':''}" id="t-sfx">${settings.sfxOn?'ON':'OFF'}</button></div>
+        <div class="trow"><div><div class="slabel">Haptic Vibration</div></div><button class="tsw ${settings.hapticsOn?'on':''}" id="t-hap">${settings.hapticsOn?'ON':'OFF'}</button></div>
         <div class="trow"><div><div class="slabel">Unlock All Elements (Sandbox)</div></div><button class="tsw ${PROG.sandboxUnlockAll?'on':''}" id="t-sbx">${PROG.sandboxUnlockAll?'ON':'OFF'}</button></div>
         <div class="trow"><div><div class="slabel">Hitbox Debug Overlay</div></div><button class="tsw ${settings.debug?'on':''}" id="t-dbg">${settings.debug?'ON':'OFF'}</button></div>
         <div class="sgroup"><div class="slabel">Audio Volume <span>${Math.round(settings.volume*100)}%</span></div><input type="range" id="r-vol" min="0" max="1" step="0.05" value="${settings.volume}"></div>
       `;
     } else {
       const mvs = [
-        ['35% Quick-Bend Techniques', 'Direction + BEND (U / Space) at 35%+', 'Every element has 3–4 directional moves: Water Whip Pull/Heal, Fire Jet Kick/Breath, Earth Rock Wall/Pillar, Air Scooter/Vacuum, Lightning Charged Bolt/Teleport, Ice Floor/Feet Trap, Shadow Clone/Sink, Lava Geyser/Armor.'],
+        ['35% Quick-Bend Techniques', 'Direction + BEND (or Swipe BEND on touch) at 35%+', 'Every element has 3–4 directional moves: Water Whip Pull/Heal, Fire Jet Kick/Breath, Earth Rock Wall/Pillar, Air Scooter/Vacuum, Lightning Charged Bolt/Teleport, Ice Floor/Feet Trap, Shadow Clone/Sink, Lava Geyser/Armor.'],
         ['100% Avatar Bending Arts', 'BEND at 100% (Neutral / ↑ Vortex / ↓ Arm Slam)', 'Full-screen signature arts that overpower normal bending waves.'],
         ['Elemental Clashes & Redirection', 'Wave vs Wave · Timed Block (B) / Super Slash', 'Opposing waves explode on contact (Steam, Crystal, Plasma). Perfect Parry or Super Slash deflects enemy projectiles back!'],
         ['Elemental Status Combos', 'Shatter · Electro-Charge · Combustion', 'Heavy vs Frozen/Crushed = Shatter (+30%); Lightning vs Soaked = Stun; Launcher vs Burning = Super-Launch!'],
@@ -5614,6 +6065,7 @@
     const tdbg = pauseModal.querySelector('#t-dbg'); if (tdbg) tdbg.onclick = () => { settings.debug = !settings.debug; renderPause(); };
     const tbgm = pauseModal.querySelector('#t-bgm'); if (tbgm) tbgm.onclick = () => { toggleBgm(); renderPause(); };
     const tsfx = pauseModal.querySelector('#t-sfx'); if (tsfx) tsfx.onclick = () => { toggleSfx(); renderPause(); };
+    const thap = pauseModal.querySelector('#t-hap'); if (thap) thap.onclick = () => { settings.hapticsOn = !settings.hapticsOn; if (settings.hapticsOn) haptic('medium'); renderPause(); };
     const tsbx = pauseModal.querySelector('#t-sbx'); if (tsbx) tsbx.onclick = () => { PROG.sandboxUnlockAll = !PROG.sandboxUnlockAll; saveProg(); renderPause(); };
   }
 
@@ -5777,21 +6229,71 @@
     campaignModal.querySelector('#c-back').onclick = closeAllModals;
   }
 
+  function drawMapCrestSymbol(g, elId, x, y, r, isFinal) {
+    g.save();
+    g.translate(x, y);
+    g.lineWidth = 1.7; g.lineCap = 'round'; g.lineJoin = 'round';
+    if (isFinal) {
+      // Eclipse Citadel sun-ring + 8 rays
+      g.beginPath(); g.arc(0, 0, r * 0.54, 0, Math.PI * 2); g.stroke();
+      for (let i = 0; i < 8; i++) {
+        const a = (i / 8) * Math.PI * 2;
+        g.beginPath(); g.moveTo(Math.cos(a) * r * 0.68, Math.sin(a) * r * 0.68);
+        g.lineTo(Math.cos(a) * r * 0.98, Math.sin(a) * r * 0.98); g.stroke();
+      }
+    } else if (elId === 'water') {
+      g.beginPath(); g.moveTo(-r * 0.65, r * 0.25); g.quadraticCurveTo(-r * 0.2, -r * 0.55, r * 0.35, -r * 0.2);
+      g.quadraticCurveTo(r * 0.65, 0, r * 0.35, r * 0.35); g.quadraticCurveTo(0, r * 0.55, -r * 0.65, r * 0.25); g.stroke();
+    } else if (elId === 'fire') {
+      g.beginPath(); g.moveTo(0, -r * 0.72); g.quadraticCurveTo(r * 0.62, -r * 0.05, r * 0.38, r * 0.58);
+      g.quadraticCurveTo(0, r * 0.8, -r * 0.38, r * 0.58); g.quadraticCurveTo(-r * 0.62, -r * 0.05, 0, -r * 0.72); g.fill();
+    } else if (elId === 'air') {
+      g.beginPath(); g.arc(-r * 0.15, -r * 0.1, r * 0.45, Math.PI * 0.2, Math.PI * 1.75); g.stroke();
+      g.beginPath(); g.moveTo(-r * 0.65, r * 0.38); g.quadraticCurveTo(0, r * 0.12, r * 0.62, r * 0.36); g.stroke();
+    } else if (elId === 'ice') {
+      for (let i = 0; i < 3; i++) {
+        const a = (i / 3) * Math.PI;
+        g.beginPath(); g.moveTo(-Math.cos(a) * r * 0.68, -Math.sin(a) * r * 0.68);
+        g.lineTo(Math.cos(a) * r * 0.68, Math.sin(a) * r * 0.68); g.stroke();
+      }
+    } else if (elId === 'earth') {
+      g.beginPath(); g.moveTo(-r * 0.72, r * 0.52); g.lineTo(-r * 0.12, -r * 0.58); g.lineTo(r * 0.2, r * 0.06);
+      g.lineTo(r * 0.44, -r * 0.24); g.lineTo(r * 0.74, r * 0.52); g.closePath(); g.stroke();
+    } else if (elId === 'lightning') {
+      g.beginPath(); g.moveTo(r * 0.18, -r * 0.72); g.lineTo(-r * 0.35, r * 0.06); g.lineTo(r * 0.08, r * 0.06);
+      g.lineTo(-r * 0.18, r * 0.72); g.lineTo(r * 0.4, -r * 0.08); g.lineTo(-r * 0.04, -r * 0.08); g.closePath(); g.fill();
+    } else if (elId === 'shadow') {
+      g.beginPath(); g.arc(0, 0, r * 0.56, 0.4, Math.PI * 1.82);
+      g.quadraticCurveTo(r * 0.05, 0, Math.cos(0.4) * r * 0.56, Math.sin(0.4) * r * 0.56); g.fill();
+    } else {
+      // Lava caldera spire
+      g.beginPath(); g.moveTo(-r * 0.68, r * 0.56); g.lineTo(-r * 0.26, -r * 0.42); g.lineTo(r * 0.26, -r * 0.42); g.lineTo(r * 0.68, r * 0.56); g.closePath(); g.stroke();
+      g.beginPath(); g.arc(0, -r * 0.56, r * 0.18, 0, Math.PI * 2); g.fill();
+    }
+    g.restore();
+  }
+
   function drawWorldMapCanvas() {
     const mc = document.getElementById('map-canvas');
     if (!mc) return;
-    const g = mc.getContext('2d'), w = mc.width, h = mc.height;
+    const dpr = Math.min(2, Math.max(1, window.devicePixelRatio || 1));
+    const w = 640, h = 380;
+    if (mc.width !== Math.round(w * dpr) || mc.height !== Math.round(h * dpr)) {
+      mc.width = Math.round(w * dpr); mc.height = Math.round(h * dpr);
+    }
+    const g = mc.getContext('2d');
+    g.setTransform(dpr, 0, 0, dpr, 0, 0);
     g.clearRect(0, 0, w, h);
     if (ART.worldMap.complete && ART.worldMap.naturalWidth > 0) {
       g.drawImage(ART.worldMap, 0, 0, w, h);
       const ov = g.createRadialGradient(w * 0.5, h * 0.48, w * 0.25, w * 0.5, h * 0.5, w * 0.65);
-      ov.addColorStop(0, 'rgba(10, 14, 24, 0.14)'); ov.addColorStop(1, 'rgba(6, 9, 18, 0.62)');
+      ov.addColorStop(0, 'rgba(18, 12, 8, 0.12)'); ov.addColorStop(1, 'rgba(10, 7, 5, 0.62)');
       g.fillStyle = ov; g.fillRect(0, 0, w, h);
     } else {
       const bg = g.createRadialGradient(w * 0.5, h * 0.48, 30, w * 0.5, h * 0.5, w * 0.65);
-      bg.addColorStop(0, '#1e2536'); bg.addColorStop(0.65, '#111726'); bg.addColorStop(1, '#080c15');
+      bg.addColorStop(0, '#2c2218'); bg.addColorStop(0.65, '#19130e'); bg.addColorStop(1, '#0d0a08');
       g.fillStyle = bg; g.fillRect(0, 0, w, h);
-      g.fillStyle = 'rgba(235, 210, 165, 0.06)';
+      g.fillStyle = 'rgba(235, 210, 165, 0.08)';
       g.beginPath();
       g.moveTo(48, 250); g.quadraticCurveTo(140, 80, 320, 62); g.quadraticCurveTo(520, 66, 588, 215);
       g.quadraticCurveTo(560, 345, 360, 335); g.quadraticCurveTo(140, 340, 48, 250); g.closePath(); g.fill();
@@ -5802,53 +6304,55 @@
     for (let i = 0; i < CAMPAIGN_STAGES.length - 1; i++) {
       const a = CAMPAIGN_STAGES[i], b = CAMPAIGN_STAGES[i + 1];
       const lit = PROG.cleared.includes(a.id);
-      g.strokeStyle = 'rgba(0, 0, 0, 0.55)'; g.lineWidth = lit ? 4.4 : 3;
+      g.strokeStyle = 'rgba(12, 8, 6, 0.65)'; g.lineWidth = lit ? 4.4 : 3;
       g.setLineDash(lit ? [] : [5, 5]);
       g.beginPath(); g.moveTo(a.mx * w, a.my * h); g.lineTo(b.mx * w, b.my * h); g.stroke();
-      g.strokeStyle = lit ? 'rgba(245, 186, 66, 0.88)' : 'rgba(190, 206, 226, 0.34)';
+      g.strokeStyle = lit ? 'rgba(240, 182, 74, 0.92)' : 'rgba(218, 198, 168, 0.34)';
       g.lineWidth = lit ? 2.2 : 1.5;
       g.beginPath(); g.moveTo(a.mx * w, a.my * h); g.lineTo(b.mx * w, b.my * h); g.stroke();
     }
     g.restore();
 
-    // Stage Master Nodes (silhouettes, locked greyed out, cleared glowing gold!)
+    // Stage Master Seals with bespoke elemental crest emblems (zero generic stick-person dots!)
     CAMPAIGN_STAGES.forEach(s => {
       const x = s.mx * w, y = s.my * h;
       const el = ELEMENTS[s.el];
       const cleared = PROG.cleared.includes(s.id);
       const unlocked = PROG.sandboxUnlockAll || s.id <= PROG.cleared.length;
       const selected = s.id === mapSelIdx;
-      const rad = s.isFinal ? 21 : 15;
+      const rad = s.isFinal ? 21 : 16;
 
       g.save();
       if (selected) {
-        g.strokeStyle = '#fde68a'; g.lineWidth = 2.6;
-        g.beginPath(); g.arc(x, y, rad + 6, 0, Math.PI * 2); g.stroke();
+        g.strokeStyle = '#f8e2b5'; g.lineWidth = 2.6;
+        g.beginPath(); g.arc(x, y, rad + 5.5, 0, Math.PI * 2); g.stroke();
       }
-      g.fillStyle = cleared ? '#18241b' : unlocked ? '#0e1526' : '#090d16';
-      g.strokeStyle = cleared ? '#38e57d' : unlocked ? el.glow : '#64748b';
+      g.fillStyle = cleared ? '#1e281a' : unlocked ? '#1b140f' : '#120f0d';
+      g.strokeStyle = cleared ? '#6be28e' : unlocked ? el.glow : '#786c5e';
       g.lineWidth = selected ? 3 : 2;
       g.beginPath(); g.arc(x, y, rad, 0, Math.PI * 2); g.fill(); g.stroke();
 
-      g.fillStyle = unlocked ? (cleared ? '#fde68a' : el.glow) : '#64748b';
-      g.beginPath(); g.arc(x, y - 4, 4.2, 0, Math.PI * 2); g.fill();
-      g.beginPath(); g.moveTo(x - 6.5, y + 7.5); g.quadraticCurveTo(x, y, x + 6.5, y + 7.5); g.closePath(); g.fill();
+      const symCol = unlocked ? (cleared ? '#f8e2b5' : el.glow) : '#786c5e';
+      g.fillStyle = symCol; g.strokeStyle = symCol;
+      drawMapCrestSymbol(g, s.el, x, y, rad * 0.72, Boolean(s.isFinal));
 
       const lx = Math.max(54, Math.min(w - 54, x));
-      const ly = Math.min(h - 10, y + rad + 13);
-      g.font = '700 10px system-ui, sans-serif'; g.textAlign = 'center';
-      g.strokeStyle = 'rgba(4, 7, 14, 0.92)'; g.lineWidth = 3.5;
+      const ly = Math.min(h - 9, y + rad + 13);
+      g.font = '700 10.5px "Palatino Linotype", Georgia, serif'; g.textAlign = 'center';
+      g.strokeStyle = 'rgba(10, 7, 5, 0.94)'; g.lineWidth = 3.5;
       g.strokeText(s.region, lx, ly);
-      g.fillStyle = unlocked ? '#f6f8fc' : '#94a3b8';
+      g.fillStyle = unlocked ? '#f8efe0' : '#9c8e7c';
       g.fillText(s.region, lx, ly);
       g.restore();
     });
   }
 
-  // ===== VISUAL-FIRST ARMORY (Live Animated Fighter Preview + Horizontal Strip + Clean Pip Bars) =====
+  // ===== SHADOW FIGHT 2 3-COLUMN ARMORY SHOWCASE (Scrollable Left List + Auto-Fit Center Preview + Compact Right Stats) =====
+  let armorySwingAt = 0;
   function openArmory() {
     closeAllModals(); match.paused = true;
     armorySelId = armoryTab === 'weapons' ? (PROG.equippedWeapon || 'default') : armoryTab === 'gear' ? (PROG.equippedGear || 'none') : 'edge';
+    armorySwingAt = performance.now();
     armoryModal.classList.remove('hidden');
     renderArmory();
   }
@@ -5862,39 +6366,65 @@
     let sel = items.find(x => x.id === armorySelId) || items[0];
     armorySelId = sel.id;
 
-    let actionBtn = '';
+    let actionBtn = '', catLabel = armoryTab === 'weapons' ? 'WEAPON CLASS' : armoryTab === 'gear' ? 'SILHOUETTE GEAR' : 'DOJO MASTERY';
     if (armoryTab === 'weapons') {
       const owned = PROG.ownedWeapons.includes(sel.id), eq = PROG.equippedWeapon === sel.id;
-      actionBtn = `<button class="pill ${eq ? '' : 'primary'}" id="arm-act" ${!owned && PROG.coins < sel.cost ? 'disabled' : ''}>${eq ? 'EQUIPPED' : owned ? 'EQUIP WEAPON' : `BUY · ${sel.cost} COINS`}</button>`;
+      actionBtn = `<button class="pill ${eq ? '' : 'primary'}" id="arm-act" ${!owned && PROG.coins < sel.cost ? 'disabled' : ''}>${eq ? 'EQUIPPED ✓' : owned ? 'EQUIP' : `BUY · ${sel.cost}`}</button>`;
     } else if (armoryTab === 'gear') {
       const owned = PROG.ownedGear.includes(sel.id), eq = PROG.equippedGear === sel.id;
-      actionBtn = `<button class="pill ${eq ? '' : 'primary'}" id="arm-act" ${!owned && PROG.coins < sel.cost ? 'disabled' : ''}>${eq ? 'EQUIPPED' : owned ? 'EQUIP GEAR' : `BUY · ${sel.cost} COINS`}</button>`;
+      actionBtn = `<button class="pill ${eq ? '' : 'primary'}" id="arm-act" ${!owned && PROG.coins < sel.cost ? 'disabled' : ''}>${eq ? 'EQUIPPED ✓' : owned ? 'EQUIP' : `BUY · ${sel.cost}`}</button>`;
     } else {
       const lv = PROG.upgrades[sel.id] || 0, maxed = lv >= sel.max, cost = sel.baseCost + lv * sel.stepCost;
-      actionBtn = `<button class="pill ${maxed ? '' : 'primary'}" id="arm-act" ${maxed || PROG.coins < cost ? 'disabled' : ''}>${maxed ? 'MASTERED' : `TRAIN · ${cost} COINS`}</button>`;
+      actionBtn = `<button class="pill ${maxed ? '' : 'primary'}" id="arm-act" ${maxed || PROG.coins < cost ? 'disabled' : ''}>${maxed ? 'MASTERED ✓' : `TRAIN · ${cost}`}</button>`;
     }
 
     armoryModal.innerHTML = `
-      <section class="panel-modal">
-        <div class="panel-head">
-          <div>
-            <h1>DOJO ARMORY</h1>
-            <p>Inspect and equip weapons, headgear, and mastery training.</p>
+      <section class="panel-modal armory-modal-panel">
+        <div class="armory-head">
+          <div class="armory-head-left">
+            <h1>ARMORY</h1>
+            <div class="tabs">
+              <button class="tab ${armoryTab==='weapons'?'active':''}" data-at="weapons">Weapons</button>
+              <button class="tab ${armoryTab==='gear'?'active':''}" data-at="gear">Gear</button>
+              <button class="tab ${armoryTab==='mastery'?'active':''}" data-at="mastery">Mastery</button>
+            </div>
           </div>
           <div class="pill-row">
             <span class="coin-badge">COINS · ${PROG.coins}</span>
             <button class="pill" id="a-close">DONE</button>
           </div>
         </div>
-        <div class="tabs">
-          <button class="tab ${armoryTab==='weapons'?'active':''}" data-at="weapons">Weapons</button>
-          <button class="tab ${armoryTab==='gear'?'active':''}" data-at="gear">Silhouette Gear</button>
-          <button class="tab ${armoryTab==='mastery'?'active':''}" data-at="mastery">Mastery</button>
-        </div>
-        <div class="armory-layout">
-          <div class="armory-preview-box"><canvas id="armory-preview" width="420" height="280"></canvas></div>
+        <div class="armory-showcase">
+          <div class="armory-list" id="armory-list">
+            ${items.map(it => {
+              const isSel = it.id === sel.id;
+              let statusTxt = '', isEq = false;
+              if (armoryTab === 'weapons') {
+                isEq = PROG.equippedWeapon === it.id;
+                statusTxt = isEq ? 'EQUIPPED' : PROG.ownedWeapons.includes(it.id) ? 'OWNED' : `${it.cost} COINS`;
+              } else if (armoryTab === 'gear') {
+                isEq = PROG.equippedGear === it.id;
+                statusTxt = isEq ? 'EQUIPPED' : PROG.ownedGear.includes(it.id) ? 'OWNED' : `${it.cost} COINS`;
+              } else {
+                const lv = PROG.upgrades[it.id] || 0;
+                statusTxt = `LV ${lv} / ${it.max}`;
+              }
+              return `<button class="item-row ${isSel?'selected':''} ${isEq?'equipped':''}" data-aid="${it.id}">
+                <span class="ir-ico">${it.ico || SVG_ICONS.default}</span>
+                <span class="ir-meta">
+                  <span class="ir-nm">${it.name}</span>
+                  <span class="ir-st">${statusTxt}</span>
+                </span>
+              </button>`;
+            }).join('')}
+          </div>
+          <div class="armory-preview-box" id="armory-preview-box">
+            <canvas id="armory-preview"></canvas>
+            <span class="armory-tap-hint">${armoryTab === 'weapons' ? 'TAP TO TEST SWING' : p1.el.fighter}</span>
+          </div>
           <div class="armory-info">
             <div>
+              <div class="ai-tag">${catLabel}</div>
               <div class="ai-name">${sel.name}</div>
               <p class="ai-desc">${sel.bonus || sel.desc}</p>
               ${armoryTab !== 'mastery' ? `
@@ -5904,65 +6434,51 @@
                   <div class="pip-row"><span>Reach</span>${renderPips(sel.reachPip || 3)}</div>
                 </div>` : `
                 <div class="pip-list">
-                  <div class="pip-row"><span>Training Level</span>${renderPips(PROG.upgrades[sel.id] || 0)}</div>
+                  <div class="pip-row"><span>Rank</span>${renderPips(PROG.upgrades[sel.id] || 0)}</div>
                 </div>`}
             </div>
-            <div class="pill-row" style="justify-content:space-between">
-              <button class="pill" id="a-camp">WORLD MAP</button>
+            <div class="armory-actions">
               ${actionBtn}
+              <button class="pill" id="a-camp">WORLD MAP</button>
             </div>
           </div>
-        </div>
-        <div class="item-strip">
-          ${items.map(it => {
-            const isSel = it.id === sel.id;
-            let statusTxt = '', isEq = false;
-            if (armoryTab === 'weapons') {
-              isEq = PROG.equippedWeapon === it.id;
-              statusTxt = isEq ? 'Active' : PROG.ownedWeapons.includes(it.id) ? 'Owned' : `${it.cost}`;
-            } else if (armoryTab === 'gear') {
-              isEq = PROG.equippedGear === it.id;
-              statusTxt = isEq ? 'Active' : PROG.ownedGear.includes(it.id) ? 'Owned' : `${it.cost}`;
-            } else {
-              const lv = PROG.upgrades[it.id] || 0;
-              statusTxt = `Lv ${lv}/${it.max}`;
-            }
-            return `<button class="item-tile ${isSel?'selected':''} ${isEq?'equipped':''}" data-aid="${it.id}">
-              <span class="it-ico">${it.ico || '⚔'}</span>
-              <span class="it-nm">${it.name}</span>
-              <span class="it-st">${statusTxt}</span>
-            </button>`;
-          }).join('')}
         </div>
       </section>`;
 
     armoryModal.querySelectorAll('[data-at]').forEach(b => b.onclick = () => {
       armoryTab = b.dataset.at;
       armorySelId = armoryTab === 'weapons' ? (PROG.equippedWeapon || 'default') : armoryTab === 'gear' ? (PROG.equippedGear || 'none') : 'edge';
+      armorySwingAt = performance.now();
       renderArmory();
     });
     armoryModal.querySelectorAll('[data-aid]').forEach(b => b.onclick = () => {
-      armorySelId = b.dataset.aid; sfx.bend(); renderArmory();
+      armorySelId = b.dataset.aid; armorySwingAt = performance.now(); sfx.bend(); renderArmory();
     });
+    const pBox = armoryModal.querySelector('#armory-preview-box');
+    if (pBox) pBox.onclick = () => { armorySwingAt = performance.now(); sfx.whoosh(true); };
     armoryModal.querySelector('#arm-act').onclick = () => {
       if (armoryTab === 'weapons') {
-        if (PROG.ownedWeapons.includes(sel.id)) { PROG.equippedWeapon = sel.id; saveProg(); sfx.elemBend(p1.el.id); }
-        else if (PROG.coins >= sel.cost) { PROG.coins -= sel.cost; PROG.ownedWeapons.push(sel.id); PROG.equippedWeapon = sel.id; saveProg(); sfx.gong(); }
+        if (PROG.ownedWeapons.includes(sel.id)) { PROG.equippedWeapon = sel.id; saveProg(); sfx.elemBend(p1.el.id); haptic('light'); }
+        else if (PROG.coins >= sel.cost) { PROG.coins -= sel.cost; PROG.ownedWeapons.push(sel.id); PROG.equippedWeapon = sel.id; saveProg(); sfx.gong(); haptic('medium'); }
       } else if (armoryTab === 'gear') {
-        if (PROG.ownedGear.includes(sel.id)) { PROG.equippedGear = sel.id; saveProg(); sfx.bend(); }
-        else if (PROG.coins >= sel.cost) { PROG.coins -= sel.cost; PROG.ownedGear.push(sel.id); PROG.equippedGear = sel.id; saveProg(); sfx.gong(); }
+        if (PROG.ownedGear.includes(sel.id)) { PROG.equippedGear = sel.id; saveProg(); sfx.bend(); haptic('light'); }
+        else if (PROG.coins >= sel.cost) { PROG.coins -= sel.cost; PROG.ownedGear.push(sel.id); PROG.equippedGear = sel.id; saveProg(); sfx.gong(); haptic('medium'); }
       } else {
         const lv = PROG.upgrades[sel.id] || 0, cost = sel.baseCost + lv * sel.stepCost;
         if (lv < sel.max && PROG.coins >= cost) {
           PROG.coins -= cost; PROG.upgrades[sel.id] = lv + 1; saveProg();
           if (sel.id === 'body') { p1.maxHp += 65; p1.hp += 65; p1.trailHp += 65; }
-          sfx.bend();
+          sfx.bend(); haptic('medium');
         }
       }
+      armorySwingAt = performance.now();
       renderArmory();
     };
     armoryModal.querySelector('#a-camp').onclick = openCampaign;
     armoryModal.querySelector('#a-close').onclick = () => { closeAllModals(); if (match.inMenu) openMainMenu(); };
+    // Keep selected item comfortably scrolled into view
+    const selRow = armoryModal.querySelector('.item-row.selected');
+    if (selRow) selRow.scrollIntoView({ block: 'nearest' });
     startArmoryPreview();
   }
 
@@ -5971,50 +6487,117 @@
     const drawPrev = () => {
       const pc = document.getElementById('armory-preview');
       if (!pc || armoryModal.classList.contains('hidden')) return;
-      const g = pc.getContext('2d'), w = pc.width, h = pc.height;
-      g.clearRect(0, 0, w, h);
-      const el = p1.el;
-      const bg = g.createRadialGradient(w * 0.5, h * 0.45, 20, w * 0.5, h * 0.5, 210);
-      bg.addColorStop(0, el.glow + '55'); bg.addColorStop(0.55, '#192236'); bg.addColorStop(1, '#090e1a');
-      g.fillStyle = bg; g.fillRect(0, 0, w, h);
-      g.fillStyle = '#070a12'; g.fillRect(0, h - 38, w, 38);
-      g.strokeStyle = el.glow + '88'; g.lineWidth = 2; g.beginPath(); g.moveTo(0, h - 38); g.lineTo(w, h - 38); g.stroke();
+      const rect = pc.getBoundingClientRect();
+      const cw = Math.max(160, Math.round(rect.width || 320));
+      const ch = Math.max(150, Math.round(rect.height || 260));
+      const dpr = Math.min(2, Math.max(1, window.devicePixelRatio || 1));
+      const tw = Math.round(cw * dpr), th = Math.round(ch * dpr);
+      if (pc.width !== tw || pc.height !== th) { pc.width = tw; pc.height = th; }
 
-      // Render live animated shadow fighter wearing the previewed weapon & gear!
+      const g = pc.getContext('2d');
+      g.setTransform(dpr, 0, 0, dpr, 0, 0);
+      g.clearRect(0, 0, cw, ch);
+
+      const el = p1.el;
+      const floorY = ch * 0.84;
+
+      // Painted Warm Dojo Alcove Backdrop (eliminates dark-navy HTML look!)
+      const dojoImg = (ART.dojo.complete && ART.dojo.naturalWidth > 0) ? ART.dojo : null;
+      if (dojoImg) {
+        const imgAspect = 16 / 9, boxAspect = cw / ch;
+        let sx = 0, sy = 0, sw = dojoImg.naturalWidth, sh = dojoImg.naturalHeight;
+        if (boxAspect < imgAspect) {
+          sw = sh * boxAspect; sx = (dojoImg.naturalWidth - sw) * 0.5;
+        } else {
+          sh = sw / boxAspect; sy = (dojoImg.naturalHeight - sh) * 0.5;
+        }
+        g.drawImage(dojoImg, sx, sy, sw, sh, 0, 0, cw, ch);
+        const veil = g.createRadialGradient(cw * 0.5, ch * 0.44, 18, cw * 0.5, ch * 0.5, Math.max(cw, ch) * 0.68);
+        veil.addColorStop(0, el.glow + '24');
+        veil.addColorStop(0.55, 'rgba(20, 14, 10, 0.32)');
+        veil.addColorStop(1, 'rgba(10, 7, 5, 0.78)');
+        g.fillStyle = veil; g.fillRect(0, 0, cw, ch);
+      } else {
+        const bg = g.createRadialGradient(cw * 0.5, ch * 0.45, 20, cw * 0.5, ch * 0.5, Math.max(cw, ch) * 0.65);
+        bg.addColorStop(0, '#4c3420'); bg.addColorStop(0.6, '#221710'); bg.addColorStop(1, '#100b08');
+        g.fillStyle = bg; g.fillRect(0, 0, cw, ch);
+      }
+
+      // Grounded veranda plank line + soft element glow under feet
+      const fl = g.createLinearGradient(0, floorY, 0, ch);
+      fl.addColorStop(0, 'rgba(18, 12, 8, 0.78)'); fl.addColorStop(1, 'rgba(8, 6, 4, 0.96)');
+      g.fillStyle = fl; g.fillRect(0, floorY, cw, ch - floorY);
+      g.strokeStyle = 'rgba(232, 192, 124, 0.48)'; g.lineWidth = 1.6;
+      g.beginPath(); g.moveTo(0, floorY); g.lineTo(cw, floorY); g.stroke();
+
+      // Determine active preview weapon, gear, breathing & tap-to-swing flourish!
       const prevWep = armoryTab === 'weapons'
         ? (armorySelId === 'default' ? el.wType : (WEAPON_CATALOG.find(x => x.id === armorySelId)?.wType || el.wType))
         : getWeaponSpec(p1).wType;
       const prevGear = armoryTab === 'gear' ? armorySelId : PROG.equippedGear;
-      const br = Math.sin(performance.now() * 0.004);
-      const st = el.stance;
+      const now = performance.now();
+      const br = Math.sin(now * 0.0038);
+      const sinceSwing = (now - armorySwingAt) / 1000;
+      const swingAmt = sinceSwing < 0.68 ? Math.sin((sinceSwing / 0.68) * Math.PI) * 0.82 : 0;
 
-      g.save();
-      g.translate(w * 0.5, h - 42);
-      g.scale(1.12, 1.12);
-      g.shadowColor = el.glow; g.shadowBlur = 14;
-      g.fillStyle = '#05070c';
-      g.translate(0, st.py + br * 2.5);
-      g.rotate(st.pr || 0);
-      // Legs
-      g.save(); g.translate(-4, 4); g.rotate(st.bh); drawHumanThigh(g); g.translate(0, 43); g.rotate(st.bk); drawHumanShin(g); g.translate(0, 43); g.rotate(-(st.bh + st.bk) * 0.85); drawHumanFoot(g); g.restore();
-      g.save(); g.translate(5, 4); g.rotate(st.fh); drawHumanThigh(g); g.translate(0, 43); g.rotate(st.fk); drawHumanShin(g); g.translate(0, 43); g.rotate(-(st.fh + st.fk) * 0.85); drawHumanFoot(g); g.restore();
-      g.beginPath(); g.moveTo(-15,-6); g.lineTo(15,-6); g.lineTo(19,15); g.lineTo(-19,15); g.fill();
-      g.save(); g.translate(0, -4); g.rotate(st.tr + br * 0.03);
-      if (prevGear === 'cloak') {
-        g.beginPath(); g.moveTo(-12, -56); g.quadraticCurveTo(-42, -16, -54, 24); g.lineTo(-32, 34); g.quadraticCurveTo(-20, -4, -6, -42); g.closePath(); g.fill();
+      // Render seamless solid-black fighter into silBuf (ZERO glowing puppet joint circles!)
+      renderStaticSilhouetteToBuf({
+        st: el.stance, dir: 1, sc: 1.0, wType: prevWep,
+        rim: el.glow, core: el.core, gearId: prevGear,
+        glowingEyes: PROG.avatarUnlocked || prevGear === 'crown',
+        br, swingAmt
+      });
+
+      // Weapon-aware auto-fit framing so even Naginata, Bo Staff, and Titan Warhammer are 100% visible!
+      const isLong = ['liquid_staff', 'naginata', 'great_hammer', 'heavy_cleaver'].includes(prevWep);
+      const boxW = isLong ? 345 : 275;
+      const boxH = 268;
+      const drawSc = Math.min((cw * 0.90) / boxW, (ch * 0.84) / boxH);
+      const footX = cw * (isLong ? 0.40 : 0.46);
+      const drawW = silBuf.width * drawSc, drawH = silBuf.height * drawSc;
+      const dx = footX - 240 * drawSc, dy = floorY - 330 * drawSc;
+
+      // Subtle elemental slash arc during tap-to-swing flourish
+      if (swingAmt > 0.22) {
+        g.save();
+        g.translate(footX + 26 * drawSc, floorY - 122 * drawSc);
+        g.globalAlpha = swingAmt * 0.72;
+        g.strokeStyle = el.glow; g.lineWidth = 4.5 * drawSc;
+        g.beginPath(); g.arc(-14 * drawSc, 6 * drawSc, 96 * drawSc, -1.25, 0.72); g.stroke();
+        g.strokeStyle = el.core; g.lineWidth = 2 * drawSc;
+        g.beginPath(); g.arc(-14 * drawSc, 6 * drawSc, 99 * drawSc, -1.15, 0.64); g.stroke();
+        g.restore();
       }
-      g.save(); g.translate(-5, -52); g.rotate(st.bs); drawHumanUpperArm(g); g.translate(0, 32); g.rotate(st.be); drawHumanForearm(g); g.translate(0, 32); g.rotate(-0.4); drawWeaponShape(g, prevWep, el.glow, el.core, false); g.restore();
-      g.fillStyle = '#05070c'; drawHumanTorso(g);
-      g.save(); g.translate(2, -64); drawHumanHead(g, el.core, PROG.avatarUnlocked);
-      g.fillStyle = '#05070c';
-      if (prevGear === 'kasa') { g.beginPath(); g.moveTo(-34, -22); g.quadraticCurveTo(0, -45, 36, -20); g.quadraticCurveTo(2, -26, -34, -22); g.closePath(); g.fill(); }
-      else if (prevGear === 'kabuto') { g.beginPath(); g.moveTo(-16, -24); g.quadraticCurveTo(-18, -36, 0, -34); g.quadraticCurveTo(16, -34, 15, -22); g.closePath(); g.fill(); g.beginPath(); g.moveTo(6, -30); g.quadraticCurveTo(18, -46, 24, -52); g.lineTo(13, -34); g.closePath(); g.fill(); }
-      else if (prevGear === 'crown') { g.strokeStyle = el.core; g.lineWidth = 2.5; g.beginPath(); g.ellipse(0, -40 + br * 2, 19, 4.5, 0, 0, Math.PI * 2); g.stroke(); }
+
+      // Ground contact shadow + inverted floor reflection
+      g.save();
+      g.fillStyle = 'rgba(0,0,0,0.65)';
+      g.beginPath(); g.ellipse(footX, floorY + 2, 46 * drawSc, 6 * drawSc, 0, 0, Math.PI * 2); g.fill();
+      g.beginPath(); g.rect(0, floorY, cw, ch - floorY); g.clip();
+      g.translate(footX, floorY + 1); g.scale(1, -0.24); g.globalAlpha = 0.22;
+      g.drawImage(silBuf, -240 * drawSc, -330 * drawSc, drawW, drawH);
       g.restore();
-      g.fillStyle = '#05070c';
-      g.save(); g.translate(7, -52); g.rotate(st.fs + br * 0.05); drawHumanUpperArm(g); g.translate(0, 32); g.rotate(st.fe); drawHumanForearm(g); g.translate(0, 32); g.rotate(st.fw || 0); drawWeaponShape(g, prevWep, el.glow, el.core, true); g.restore();
+
+      // Unified crisp outer elemental rim + pitch-black silhouette (NO joint seams!)
+      g.save();
+      rctx.save();
+      rctx.globalCompositeOperation = 'source-over';
+      rctx.clearRect(0, 0, rimBuf.width, rimBuf.height);
+      rctx.drawImage(silBuf, 0, 0);
+      rctx.globalCompositeOperation = 'source-in';
+      rctx.fillStyle = el.glow;
+      rctx.fillRect(0, 0, rimBuf.width, rimBuf.height);
+      rctx.restore();
+      g.globalAlpha = 0.82;
+      const sp = Math.max(1.5, 2.2 * drawSc);
+      g.drawImage(rimBuf, dx - sp, dy, drawW, drawH);
+      g.drawImage(rimBuf, dx + sp, dy, drawW, drawH);
+      g.drawImage(rimBuf, dx, dy - sp, drawW, drawH);
+      g.drawImage(rimBuf, dx, dy + sp * 0.6, drawW, drawH);
+      g.globalAlpha = 1;
+      g.drawImage(silBuf, dx, dy, drawW, drawH);
       g.restore();
-      g.restore();
+
       armoryPreviewRaf = requestAnimationFrame(drawPrev);
     };
     armoryPreviewRaf = requestAnimationFrame(drawPrev);

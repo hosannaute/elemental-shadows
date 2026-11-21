@@ -2,15 +2,20 @@ package com.hosannaute.elementalshadows;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
+import android.os.VibratorManager;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowInsets;
 import android.view.WindowInsetsController;
 import android.view.WindowManager;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
@@ -21,11 +26,39 @@ import androidx.webkit.WebViewAssetLoader;
 
 public class MainActivity extends Activity {
     private WebView webView;
+    private Vibrator vibrator;
+
+    private class HapticBridge {
+        @JavascriptInterface
+        public void pulse(int ms, int amp) {
+            if (vibrator == null || !vibrator.hasVibrator()) return;
+            try {
+                int dur = Math.max(8, Math.min(220, ms));
+                int strength = Math.max(20, Math.min(255, amp));
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    vibrator.vibrate(VibrationEffect.createOneShot(dur, strength));
+                } else {
+                    @SuppressWarnings("deprecation")
+                    long d = dur;
+                    vibrator.vibrate(d);
+                }
+            } catch (Throwable ignored) { }
+        }
+    }
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            VibratorManager vm = (VibratorManager) getSystemService(Context.VIBRATOR_MANAGER_SERVICE);
+            if (vm != null) vibrator = vm.getDefaultVibrator();
+        } else {
+            @SuppressWarnings("deprecation")
+            Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+            vibrator = v;
+        }
 
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -36,7 +69,7 @@ public class MainActivity extends Activity {
         }
 
         webView = new WebView(this);
-        webView.setBackgroundColor(Color.parseColor("#05080f"));
+        webView.setBackgroundColor(Color.parseColor("#0b0908"));
         webView.setOverScrollMode(View.OVER_SCROLL_NEVER);
         webView.setHorizontalScrollBarEnabled(false);
         webView.setVerticalScrollBarEnabled(false);
@@ -52,6 +85,8 @@ public class MainActivity extends Activity {
         settings.setDisplayZoomControls(false);
         settings.setSupportZoom(false);
         settings.setCacheMode(WebSettings.LOAD_DEFAULT);
+
+        webView.addJavascriptInterface(new HapticBridge(), "AndroidHaptics");
 
         final WebViewAssetLoader assetLoader = new WebViewAssetLoader.Builder()
                 .addPathHandler("/assets/", new WebViewAssetLoader.AssetsPathHandler(this))

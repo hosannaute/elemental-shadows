@@ -52,25 +52,25 @@ jobs:
       - name: Prepare APK deliverable
         run: |
           mkdir -p out
-          cp android/app/build/outputs/apk/release/app-release.apk out/ElementalShadows-v2.1.0-android.apk
-          ls -lh out/ElementalShadows-v2.1.0-android.apk
+          cp android/app/build/outputs/apk/release/app-release.apk out/ElementalShadows-v2.2.0-android.apk
+          ls -lh out/ElementalShadows-v2.2.0-android.apk
 
       - name: Upload APK workflow artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ElementalShadows-v2.1.0-android-apk
-          path: out/ElementalShadows-v2.1.0-android.apk
+          name: ElementalShadows-v2.2.0-android-apk
+          path: out/ElementalShadows-v2.2.0-android.apk
           retention-days: 90
 
       - name: Publish GitHub Release with direct APK download
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          TAG="v2.1.0-android"
+          TAG="v2.2.0-android"
           if gh release view "$TAG" >/dev/null 2>&1; then
-            gh release upload "$TAG" out/ElementalShadows-v2.1.0-android.apk --clobber
+            gh release upload "$TAG" out/ElementalShadows-v2.2.0-android.apk --clobber
           else
-            gh release create "$TAG" out/ElementalShadows-v2.1.0-android.apk \
-              --title "Elemental Shadows v2.1.0 (Android APK — Art & Touch Fix)" \
-              --notes "Standalone offline Android APK of **Elemental Shadows — The Hollow Avatar**.\n\n### What's New in v2.1.0\n- **Touch Controls Fix:** Movement joystick & action buttons automatically hide during Round Over / Match Over / Menus and sit beneath the Victory/Rematch overlay so **REMATCH**, **NEXT MASTER**, **ARMORY**, and **MAIN MENU** are never blocked.\n- **Nano Banana Artwork + Zero-Slop Cohesive Visuals:** Painted Blazing Dojo arena, hand-inked World Map parchment scroll, custom Android Adaptive Icon, 8 bespoke realm backdrops with shared rice-paper grain, real-time floor reflections, sumi-e brushstroke slash arcs, and live ambient weather."
+            gh release create "$TAG" out/ElementalShadows-v2.2.0-android.apk \
+              --title "Elemental Shadows v2.2.0 (Android APK — Indie Sumi-e Art, Armory Showcase & Haptics)" \
+              --notes "Standalone offline Android APK of **Elemental Shadows — The Hollow Avatar**.\n\n### What's New in v2.2.0\n- **Shadow Fight 2–Style 3-Column Armory Showcase:** Vertically scrollable left item list (no more squashed bottom tiles), auto-fit live dojo showcase preview so long weapons (Naginata, Imperial Bo Staff, Titan Warhammer) never get clipped, interactive tap-to-swing flourish, and custom vector SVG weapon/gear icons.\n- **Unified Hand-Painted Sumi-e Art Across All 8 Realms:** New Nano Banana hand-painted backdrops for Tidal Shrine, Sky Monastery, and Frozen Peak plus painterly glazed editions for Iron Mountain, Storm Spire, Obsidian Caldera, and Eclipse Citadel — removing flat vector triangles, redundant pillars, and generic dark-navy HTML styling.\n- **Crisp Mobile Visuals at 60fps:** High-DPI Retina canvas scaling, seamless joint-free silhouettes in Armory & Story cutscenes, zero-blur elemental rim outlines, weapon swing ribbons, and ambient elemental auras active in Android Low Boost mode.\n- **Sculpted Weapons & Hokusai Bending Waves:** Tapered organic weapon silhouettes, Hokusai-style clawing foam waves, cinematic letterboxed dialogue scenes with Master crests, and custom elemental crest pins on the World Map.\n- **Native Android Haptics & Swipe-to-Bend:** Native vibration feedback on hits, parries, clashes, and KOs plus 4-way swipe-to-bend directly on the BEND button."
           fi
