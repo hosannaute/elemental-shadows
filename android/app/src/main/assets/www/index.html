@@ -702,6 +702,163 @@
       .story-text { font-size: 12.5px; line-height: 1.35; }
       .first-tip { display: none; }
     }
+
+    /* ===== USER-REFERENCE AAA INDIE SUMI-E LACQUER & ORNATE SCROLL CHROME ===== */
+    .poise-frame {
+      position: relative; width: 46%; height: 4px; margin-top: 1px;
+      background: rgba(14, 10, 8, 0.85); border: 1px solid rgba(218, 178, 112, 0.3);
+      overflow: hidden; transform: skewX(-16deg);
+    }
+    .p2 .poise-frame { transform: skewX(16deg); }
+    .poise-fill { position: absolute; top: 0; bottom: 0; background: linear-gradient(90deg, #b88a44, #f5dca4); transition: width 0.08s; }
+    .p1 .poise-fill { left: 0; }
+    .p2 .poise-fill { right: 0; }
+    .poise-frame.low .poise-fill { background: linear-gradient(90deg, #c93b24, #ff7a48); }
+
+    .pause-corner svg, .xbtn svg { width: 52%; height: 52%; display: block; }
+    .oct-btn {
+      width: clamp(34px, 3.6vw, 44px); height: clamp(34px, 3.6vw, 44px);
+      clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+      background: radial-gradient(circle at 35% 30%, #2a2018, #120d0a);
+      border: none; box-shadow: inset 0 0 0 1.5px rgba(218, 178, 112, 0.55);
+      color: var(--gold-light); cursor: pointer; display: inline-flex; align-items: center; justify-content: center;
+      flex-shrink: 0; transition: transform 0.12s, background 0.14s;
+    }
+    .oct-btn:hover { transform: scale(1.06); background: radial-gradient(circle at 35% 30%, #3e2d1f, #1a120d); }
+    .oct-btn svg { width: 52%; height: 52%; display: block; }
+
+    .coin-hex {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 6px 14px; font-family: var(--font-head); font-weight: 800; font-size: 13px;
+      color: var(--gold-light); letter-spacing: 0.06em; white-space: nowrap; flex-shrink: 0;
+      background: linear-gradient(180deg, rgba(32, 24, 18, 0.94), rgba(14, 10, 8, 0.96));
+      clip-path: polygon(9px 0%, calc(100% - 9px) 0%, 100% 50%, calc(100% - 9px) 100%, 9px 100%, 0% 50%);
+      box-shadow: inset 0 0 0 1.5px rgba(218, 178, 112, 0.52);
+    }
+    .coin-hex svg { width: 16px; height: 16px; color: var(--gold); flex-shrink: 0; }
+
+    /* Main Menu Title Ornament + Pointed Lacquer Scroll Plaques */
+    .mm-title { display: flex; flex-direction: column; align-items: flex-start; }
+    .mm-rule {
+      display: flex; align-items: center; gap: 8px;
+      width: min(390px, 52vw); margin: 5px 0 3px;
+    }
+    .mm-rule::before, .mm-rule::after {
+      content: ''; flex: 1; height: 1px;
+      background: linear-gradient(90deg, rgba(218,178,112,0.12), rgba(242,208,142,0.75), rgba(218,178,112,0.12));
+    }
+    .mm-rule svg { width: 16px; height: 16px; color: var(--gold-light); flex-shrink: 0; }
+    .mm-nav { max-width: clamp(248px, 31vw, 350px); gap: clamp(7px, 1.35vh, 12px); }
+    .mm-btn {
+      padding: clamp(7px, 1.35vh, 13px) clamp(14px, 1.8vw, 20px);
+      border-radius: 2px; border: 1px solid rgba(218, 178, 112, 0.4); border-left: 1px solid rgba(218, 178, 112, 0.4);
+      clip-path: polygon(10px 0%, calc(100% - 10px) 0%, 100% 50%, calc(100% - 10px) 100%, 10px 100%, 0% 50%);
+      background: linear-gradient(90deg, rgba(24, 18, 14, 0.88), rgba(16, 12, 10, 0.72));
+      box-shadow: inset 0 0 0 1px rgba(218, 178, 112, 0.38);
+      gap: 12px;
+    }
+    .mm-btn.primary {
+      background: linear-gradient(100deg, rgba(164, 34, 16, 0.94), rgba(196, 76, 22, 0.92) 55%, rgba(138, 28, 14, 0.94));
+      box-shadow: inset 0 0 0 1.5px rgba(248, 206, 122, 0.82), 0 0 22px rgba(216, 72, 24, 0.45);
+      border-color: #f6ce82; border-left-color: #f6ce82;
+    }
+    .mm-btn .mm-ico {
+      width: clamp(26px, 3.2vw, 36px); height: clamp(26px, 3.2vw, 36px); flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center; color: #f6e2bc;
+    }
+    .mm-btn .mm-ico svg { width: 100%; height: 100%; display: block; }
+    .mm-btn .mm-txt { flex: 1; min-width: 0; }
+    .mm-btn .arr { width: 14px; height: 14px; display: flex; align-items: center; color: rgba(246, 226, 188, 0.7); }
+    .mm-btn .arr svg { width: 100%; height: 100%; }
+
+    /* Martial Arts Touch Action Medallions */
+    .cbtn .act-ico { width: 48%; height: 48%; display: flex; align-items: center; justify-content: center; color: #fff8ea; }
+    .cbtn .act-ico svg { width: 100%; height: 100%; display: block; filter: drop-shadow(0 1px 3px rgba(0,0,0,0.65)); }
+    .s-arr svg { width: 10px; height: 10px; display: block; }
+
+    /* Full-Bleed Atmospheric World Map Screen (matches reference mockup) */
+    .backdrop.wm-full { padding: 0; background: #0b0807; }
+    .wm-screen {
+      position: relative; width: 100%; height: 100%; overflow: hidden;
+      background-color: #0d0908;
+      background-image: linear-gradient(180deg, rgba(12,8,6,0.72) 0%, rgba(10,7,6,0.58) 55%, rgba(8,6,5,0.88) 100%), url('assets/arena_eclipse_citadel.webp');
+      background-size: cover; background-position: center;
+      display: flex; flex-direction: column; gap: clamp(7px, 1.3vh, 13px);
+      padding: clamp(9px, 1.5vw, 18px) clamp(12px, 2.2vw, 26px);
+    }
+    .wm-topbar {
+      display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-shrink: 0;
+      padding-bottom: 6px; border-bottom: 1px solid rgba(218, 178, 112, 0.34);
+    }
+    .wm-brand { display: flex; align-items: center; gap: 10px; min-width: 0; }
+    .wm-brand-ico {
+      width: clamp(30px, 3.5vw, 42px); height: clamp(30px, 3.5vw, 42px); border-radius: 50%;
+      border: 1.5px solid rgba(218, 178, 112, 0.65); background: rgba(18, 13, 10, 0.9);
+      display: flex; align-items: center; justify-content: center; padding: 6px; color: var(--gold-light); flex-shrink: 0;
+    }
+    .wm-brand-ico svg { width: 100%; height: 100%; }
+    .wm-brand h1 { font-family: var(--font-head); font-size: clamp(14px, 1.9vw, 22px); letter-spacing: 0.16em; color: var(--gold-light); white-space: nowrap; }
+    .wm-body { flex: 1; min-height: 0; display: grid; grid-template-columns: 1.52fr 1fr; gap: clamp(10px, 1.6vw, 18px); }
+    .ornate-frame {
+      position: relative; min-height: 0; overflow: hidden;
+      background: linear-gradient(180deg, rgba(20, 15, 12, 0.95), rgba(11, 8, 7, 0.98));
+      border: 1.5px solid rgba(214, 174, 106, 0.62);
+      border-radius: 3px;
+      box-shadow: inset 0 0 0 3px rgba(10, 8, 6, 0.9), inset 0 0 0 4px rgba(214, 174, 106, 0.2), 0 16px 40px rgba(0, 0, 0, 0.72);
+    }
+    .ornate-frame::before, .ornate-frame::after {
+      content: ''; position: absolute; width: 12px; height: 12px; pointer-events: none; z-index: 3;
+      border-color: var(--gold-light); border-style: solid;
+    }
+    .ornate-frame::before { top: 4px; left: 4px; border-width: 2px 0 0 2px; }
+    .ornate-frame::after { bottom: 4px; right: 4px; border-width: 0 2px 2px 0; }
+    .wm-detail {
+      padding: clamp(10px, 1.6vw, 18px); display: flex; flex-direction: column; justify-content: space-between; gap: 8px;
+      background-image:
+        radial-gradient(circle at 20% 100%, rgba(214, 174, 106, 0.06) 0, rgba(214, 174, 106, 0.06) 24px, transparent 25px),
+        radial-gradient(circle at 50% 100%, rgba(214, 174, 106, 0.06) 0, rgba(214, 174, 106, 0.06) 24px, transparent 25px),
+        radial-gradient(circle at 80% 100%, rgba(214, 174, 106, 0.06) 0, rgba(214, 174, 106, 0.06) 24px, transparent 25px),
+        linear-gradient(180deg, rgba(20, 15, 12, 0.95), rgba(11, 8, 7, 0.98));
+    }
+    .wm-stars { display: flex; gap: 4px; align-items: center; margin: 4px 0; }
+    .wm-stars svg { width: clamp(13px, 1.4vw, 17px); height: clamp(13px, 1.4vw, 17px); color: var(--gold); }
+    .wm-div { display: flex; align-items: center; gap: 8px; margin: 6px 0; opacity: 0.7; }
+    .wm-div::before, .wm-div::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(218,178,112,0.55), transparent); }
+    .wm-div span { width: 6px; height: 6px; background: var(--gold); transform: rotate(45deg); }
+    .wm-actions { display: grid; grid-template-columns: 1fr 1.25fr; gap: 8px; margin-top: auto; }
+    .pill.with-ico { display: inline-flex; align-items: center; justify-content: center; gap: 7px; }
+    .pill.with-ico svg { width: 15px; height: 15px; flex-shrink: 0; display: block; }
+    .wm-foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-shrink: 0; }
+    .el-chip {
+      display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; flex-shrink: 0;
+      padding: 5px 11px; border-radius: 3px; cursor: pointer;
+      font-family: var(--font-head); font-size: 11.5px; font-weight: 700; letter-spacing: 0.05em;
+      background: rgba(20, 15, 11, 0.9); border: 1px solid rgba(218, 178, 112, 0.28); color: var(--text-main);
+      transition: border-color 0.12s, background 0.12s;
+    }
+    .el-chip svg { width: 13px; height: 13px; color: var(--ec, var(--gold)); flex-shrink: 0; }
+    .el-chip.active { border-color: var(--ec, var(--gold)); background: rgba(46, 34, 22, 0.96); box-shadow: 0 0 12px rgba(230, 169, 60, 0.22); color: #fff8eb; }
+
+    .is-touch .kb-hint { display: none; }
+    @media (pointer: coarse) { .kb-hint { display: none; } }
+
+    @media (max-height: 480px) {
+      .mm-rule { width: 220px; margin: 2px 0; }
+      .mm-nav { max-width: 242px; gap: 5px; }
+      .mm-btn { padding: 5px 11px; gap: 8px; }
+      .mm-btn .mm-ico { width: 22px; height: 22px; }
+      .wm-screen { padding: 7px 12px; gap: 6px; }
+      .wm-brand h1 { font-size: 13.5px; }
+      .wm-body { grid-template-columns: 1.46fr 1fr; gap: 10px; }
+      .wm-detail { padding: 8px 11px; gap: 4px; }
+      .wm-div { margin: 2px 0; }
+      .wm-actions .pill { padding: 6px 8px; font-size: 10.5px; }
+      .el-chip { padding: 3px 6.5px; font-size: 9.8px; gap: 4px; }
+      .el-chip svg { width: 11px; height: 11px; }
+      .el-strip { gap: 4px; padding-right: 4px; -webkit-mask-image: none; mask-image: none; }
+      .coin-hex { padding: 4px 10px; font-size: 11px; }
+      .oct-btn { width: 30px; height: 30px; }
+    }
   </style>
 </head>
 <body>
@@ -728,6 +885,7 @@
             <div class="magic-row">
               <div class="magic-frame" id="p1-mag-wrap"><div class="magic-fill" id="p1-mag" style="width:55%"></div></div>
             </div>
+            <div class="poise-frame" id="p1-poise-wrap"><div class="poise-fill" id="p1-poise" style="width:100%"></div></div>
             <div class="status-icons" id="p1-badges"></div>
           </div>
         </div>
@@ -749,6 +907,7 @@
             <div class="magic-row">
               <div class="magic-frame" id="p2-mag-wrap"><div class="magic-fill" id="p2-mag" style="width:55%"></div></div>
             </div>
+            <div class="poise-frame" id="p2-poise-wrap"><div class="poise-fill" id="p2-poise" style="width:100%"></div></div>
             <div class="status-icons" id="p2-badges"></div>
           </div>
           <div class="crest-wrap">
@@ -757,7 +916,7 @@
         </div>
       </header>
 
-      <button class="pause-corner" id="btn-pause" title="Pause (Esc)">⏸</button>
+      <button class="pause-corner" id="btn-pause" title="Pause (Esc)" aria-label="Pause"><svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4.2" height="16" rx="1"/><rect x="13.8" y="4" width="4.2" height="16" rx="1"/></svg></button>
       <div class="tut-pill hidden" id="tut-pill"><b id="tut-step">DOJO LESSON 1 / 4</b><span id="tut-desc"></span></div>
       <div class="combo c1" id="combo-p1"></div>
       <div class="combo c2" id="combo-p2"></div>
@@ -767,7 +926,7 @@
         <div class="banner-title" id="banner-title">ROUND 1</div>
         <div class="banner-sub" id="banner-sub"></div>
         <div class="match-actions hidden" id="match-actions">
-          <button class="pill primary hidden" id="btn-next-boss">NEXT MASTER →</button>
+          <button class="pill primary hidden" id="btn-next-boss">NEXT MASTER</button>
           <button class="pill primary" id="btn-rematch">REMATCH</button>
           <button class="pill" id="btn-open-armory-end">ARMORY</button>
           <button class="pill" id="btn-to-menu-end">MAIN MENU</button>
@@ -775,15 +934,15 @@
       </div>
     </div>
 
-    <!-- DYNAMIC SHADOW FIGHT 2 TOUCH CONTROLS -->
+    <!-- DYNAMIC MARTIAL-ARTS INK MEDALLION TOUCH CONTROLS -->
     <div class="touch-layer hidden" id="touch-layer">
       <div class="stick-field" id="stick-zone">
         <div class="stick-base" id="stick-base">
           <div class="stick-ring"></div>
-          <span class="s-arr u" id="arr-u">▲</span>
-          <span class="s-arr d" id="arr-d">▼</span>
-          <span class="s-arr l" id="arr-l">◀</span>
-          <span class="s-arr r" id="arr-r">▶</span>
+          <span class="s-arr u" id="arr-u"><svg viewBox="0 0 12 12" fill="currentColor"><polygon points="6,2 10.5,9.5 1.5,9.5"/></svg></span>
+          <span class="s-arr d" id="arr-d"><svg viewBox="0 0 12 12" fill="currentColor"><polygon points="6,10 10.5,2.5 1.5,2.5"/></svg></span>
+          <span class="s-arr l" id="arr-l"><svg viewBox="0 0 12 12" fill="currentColor"><polygon points="2,6 9.5,1.5 9.5,10.5"/></svg></span>
+          <span class="s-arr r" id="arr-r"><svg viewBox="0 0 12 12" fill="currentColor"><polygon points="10,6 2.5,1.5 2.5,10.5"/></svg></span>
           <div class="stick-knob" id="stick-knob"></div>
         </div>
       </div>
@@ -791,8 +950,8 @@
       <div class="action-cluster" id="action-cluster">
         <div class="action-row">
           <button class="cbtn b-avatar hidden" id="btn-avatar" title="Avatar Element Shift (Q)">
-            <span class="l" style="font-size:13px">✦</span>
-            <span class="h" style="color:#160902">SHIFT</span>
+            <span class="act-ico" style="color:#1b0c04"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 7.6L22 12l-7.6 2.4L12 22l-2.4-7.6L2 12l7.6-2.4z"/></svg></span>
+            <span class="h" style="color:#1b0c04">SHIFT</span>
           </button>
         </div>
         <div class="action-row top-row">
@@ -808,37 +967,63 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>
             <span class="h">ROLL</span>
           </button>
-          <button class="cbtn b-magic" data-act="magic" id="btn-magic" title="Bending Art (U / Space)">
-            <span class="bend-dir-pill" id="bend-dir-pill">→</span>
+          <button class="cbtn b-magic" data-act="magic" id="btn-magic" title="Bending Art (U / Space or Swipe)">
+            <span class="bend-dir-pill" id="bend-dir-pill"></span>
             <span class="mi" id="magic-icon"></span>
             <span class="mt">BEND</span>
           </button>
         </div>
         <div class="action-row">
-          <button class="cbtn b-punch" data-act="punch" title="Punch (J)"><span class="l">P</span><span class="kb-hint">J</span></button>
-          <button class="cbtn b-kick" data-act="kick" title="Kick (K)"><span class="l">K</span><span class="kb-hint">K</span></button>
-          <button class="cbtn b-weapon" data-act="weapon" title="Weapon (L)"><span class="l">W</span><span class="kb-hint">L</span></button>
+          <button class="cbtn b-punch" data-act="punch" title="Punch (J)">
+            <span class="act-ico"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7.5 11V7.2a1.7 1.7 0 0 1 3.4 0v2.1h.6V6.5a1.7 1.7 0 0 1 3.4 0v2.8h.6V7.5a1.6 1.6 0 0 1 3.2 0v5.8c0 4-2.7 6.7-6.7 6.7H10c-3.4 0-5.8-2.4-5.8-5.9v-2.6a1.7 1.7 0 0 1 3.3-.5z"/></svg></span>
+            <span class="kb-hint">J</span>
+          </button>
+          <button class="cbtn b-kick" data-act="kick" title="Kick (K)">
+            <span class="act-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17l7-4 6.5-5.5"/><path d="M15 5.5l5 2.5-2.2 3.8"/><path d="M4 13c3.5-4.2 8.5-7 14-7.8" stroke-dasharray="2.5 2.5"/></svg></span>
+            <span class="kb-hint">K</span>
+          </button>
+          <button class="cbtn b-weapon" data-act="weapon" title="Weapon (L)">
+            <span class="act-ico" id="weapon-btn-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 19L19 5"/><path d="M8 12l4 4"/></svg></span>
+            <span class="kb-hint">L</span>
+          </button>
         </div>
       </div>
     </div>
 
-    <!-- MAIN MENU OVERLAY -->
+    <!-- MAIN MENU OVERLAY (HAND-INKED CRIMSON MAPLE LACQUER PLAQUES) -->
     <div class="main-menu" id="main-menu">
       <div class="mm-top">
         <div class="mm-title">
           <h1>ELEMENTAL SHADOWS</h1>
-          <div class="mm-sub" id="mm-rank-sub">THE HOLLOW AVATAR · 0 / 8 ELEMENTS RECLAIMED</div>
+          <div class="mm-rule"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><polygon points="10,2 18,10 10,18 2,10"/><polygon points="10,6 14,10 10,14 6,10" fill="currentColor"/></svg></div>
+          <div class="mm-sub" id="mm-rank-sub">THE HOLLOW AVATAR</div>
         </div>
         <div class="mm-status">
-          <span class="coin-badge" id="mm-coins">COINS · 150</span>
-          <button class="pause-corner" style="position:static" id="mm-settings" title="Settings">⚙</button>
+          <span class="coin-hex" id="mm-coins-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="9"/><path d="M12 7.2a4.8 4.8 0 1 1-3.4 1.4"/><circle cx="12" cy="12" r="1.8" fill="currentColor"/></svg><span id="mm-coins">150</span></span>
+          <button class="oct-btn" id="mm-settings" title="Settings" aria-label="Settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3h.1a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9v.1a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
         </div>
       </div>
       <nav class="mm-nav">
-        <button class="mm-btn primary" id="mm-story"><div><b>STORY</b><small id="mm-story-sub">Begin The Hollow Avatar</small></div><span class="arr">›</span></button>
-        <button class="mm-btn" id="mm-fight"><div><b>FIGHT</b><small>Quick Duel &amp; Endless Tower</small></div><span class="arr">›</span></button>
-        <button class="mm-btn" id="mm-dojo"><div><b>DOJO</b><small>Train &amp; Spar with Freed Allies</small></div><span class="arr">›</span></button>
-        <button class="mm-btn" id="mm-armory"><div><b>ARMORY</b><small>Weapons, Silhouette Gear &amp; Mastery</small></div><span class="arr">›</span></button>
+        <button class="mm-btn primary" id="mm-story">
+          <span class="mm-ico"><svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"><circle cx="18" cy="18" r="14"/><path d="M18 8c5 0 8 4 6 9-1.5 3.5-6 4.5-8 2.5"/><path d="M27 19c0 5-4 8-9 6-3.5-1.5-4.5-6-2.5-8"/><path d="M17 28c-5 0-8-4-6-9 1.5-3.5 6-4.5 8-2.5"/><circle cx="18" cy="18" r="2.5" fill="currentColor"/></svg></span>
+          <div class="mm-txt"><b>STORY</b><small id="mm-story-sub">Begin The Hollow Avatar</small></div>
+          <span class="arr"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="5,3 10,7 5,11"/></svg></span>
+        </button>
+        <button class="mm-btn" id="mm-fight">
+          <span class="mm-ico"><svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M7 29L28 8"/><path d="M29 29L8 8"/><path d="M10 22l4 4"/><path d="M26 22l-4 4"/></svg></span>
+          <div class="mm-txt"><b>FIGHT</b><small>Quick Duel &amp; Endless Tower</small></div>
+          <span class="arr"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="5,3 10,7 5,11"/></svg></span>
+        </button>
+        <button class="mm-btn" id="mm-dojo">
+          <span class="mm-ico"><svg viewBox="0 0 36 36" fill="currentColor"><circle cx="18" cy="11" r="3.4"/><path d="M18 7.6c4.2 0 6.8 3.2 6.8 6.4-2.2-1.8-4.4-2-6.8-1z"/><circle cx="12" cy="22" r="3.4"/><path d="M9 23.6c-2-3.6-.5-7.6 2.4-9.2-.4 2.8.5 4.8 2.6 6.4z"/><circle cx="24" cy="22" r="3.4"/><path d="M27 23.6c-2 3.6-6.2 4.6-9.2 2.8 2.6-.8 4.2-2.6 4.4-5.2z"/></svg></span>
+          <div class="mm-txt"><b>DOJO</b><small>Train &amp; Spar with Freed Allies</small></div>
+          <span class="arr"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="5,3 10,7 5,11"/></svg></span>
+        </button>
+        <button class="mm-btn" id="mm-armory">
+          <span class="mm-ico"><svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M6 14c4-3.5 20-3.5 24 0"/><path d="M9 14v13M15 14v13M21 14v13M27 14v13"/><path d="M6 27h24"/><path d="M10 10h16"/></svg></span>
+          <div class="mm-txt"><b>ARMORY</b><small>Weapons, Silhouette Gear &amp; Mastery</small></div>
+          <span class="arr"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="5,3 10,7 5,11"/></svg></span>
+        </button>
       </nav>
       <div class="mm-foot">
         <span>Offline Single-Player · 8 Elemental Disciplines · 9 Weapon Classes</span>
@@ -867,14 +1052,14 @@
 
     <div class="backdrop hidden" id="pause-modal"></div>
     <div class="backdrop center hidden" id="roster-modal"></div>
-    <div class="backdrop center hidden" id="campaign-modal"></div>
+    <div class="backdrop wm-full hidden" id="campaign-modal"></div>
     <div class="backdrop center hidden" id="armory-modal"></div>
   </div>
 </div>
 
 <div class="portrait-tip" id="portrait-tip">
   <span>Rotate to Landscape for full Shadow Fight controls</span>
-  <button id="btn-dismiss-tip" type="button">✕</button>
+  <button id="btn-dismiss-tip" type="button" aria-label="Dismiss"><svg viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 4l8 8M12 4l-8 8"/></svg></button>
 </div>
 
 <script>
@@ -1087,61 +1272,149 @@
     o.onended = () => { activeVoices = Math.max(0, activeVoices - 1); try { o.disconnect(); g.disconnect(); } catch {} };
     o.start(t); o.stop(t + dur + 0.02);
   }
-  function playBgmTone(freq, endFreq, dur, type, vol) {
-    if (!settings.musicOn || !audioCtx || audioCtx.state !== 'running' || settings.volume < 0.02 || bgmVoices >= 4) return;
+  let _noiseBuf = null;
+  function getNoiseBuf() {
+    if (_noiseBuf || !audioCtx) return _noiseBuf;
+    const len = Math.floor(audioCtx.sampleRate * 0.25);
+    const buf = audioCtx.createBuffer(1, len, audioCtx.sampleRate);
+    const d = buf.getChannelData(0);
+    for (let i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
+    _noiseBuf = buf;
+    return buf;
+  }
+  function playKoto(freq, dur = 0.42, vol = 0.055, shamisen = false) {
+    if (!settings.musicOn || !audioCtx || audioCtx.state !== 'running' || settings.volume < 0.02 || bgmVoices >= 5) return;
     bgmVoices++;
-    const t = audioCtx.currentTime, o = audioCtx.createOscillator(), g = audioCtx.createGain();
-    o.type = type; o.frequency.setValueAtTime(freq, t);
-    if (endFreq !== freq) o.frequency.exponentialRampToValueAtTime(Math.max(25, endFreq), t + dur);
-    g.gain.setValueAtTime(0.001, t);
-    g.gain.linearRampToValueAtTime(vol * settings.volume, t + 0.012);
-    g.gain.exponentialRampToValueAtTime(0.0008, t + dur);
+    const t = audioCtx.currentTime;
+    const o = audioCtx.createOscillator(), f = audioCtx.createBiquadFilter(), g = audioCtx.createGain();
+    o.type = shamisen ? 'sawtooth' : 'triangle';
+    o.frequency.setValueAtTime(freq * (shamisen ? 1.015 : 1.006), t);
+    o.frequency.exponentialRampToValueAtTime(freq, t + 0.022);
+    f.type = 'lowpass';
+    f.frequency.setValueAtTime(Math.min(5200, freq * (shamisen ? 6.5 : 4.8)), t);
+    f.frequency.exponentialRampToValueAtTime(Math.max(220, freq * 1.25), t + dur);
+    f.Q.value = shamisen ? 2.4 : 1.3;
+    g.gain.setValueAtTime(0.0008, t);
+    g.gain.linearRampToValueAtTime(vol * settings.volume, t + 0.006);
+    g.gain.exponentialRampToValueAtTime(0.0006, t + dur);
+    o.connect(f).connect(g).connect(audioCtx.destination);
+    o.onended = () => { bgmVoices = Math.max(0, bgmVoices - 1); try { o.disconnect(); f.disconnect(); g.disconnect(); } catch {} };
+    o.start(t); o.stop(t + dur + 0.02);
+  }
+  function playShakuhachi(freq, dur = 0.95, vol = 0.042) {
+    if (!settings.musicOn || !audioCtx || audioCtx.state !== 'running' || settings.volume < 0.02 || bgmVoices >= 5) return;
+    bgmVoices++;
+    const t = audioCtx.currentTime;
+    const o = audioCtx.createOscillator(), g = audioCtx.createGain();
+    o.type = 'sine';
+    o.frequency.setValueAtTime(freq * 0.96, t);
+    o.frequency.exponentialRampToValueAtTime(freq, t + 0.14);
+    o.frequency.linearRampToValueAtTime(freq * 1.008, t + dur * 0.65);
+    o.frequency.linearRampToValueAtTime(freq * 0.994, t + dur);
+    g.gain.setValueAtTime(0.0008, t);
+    g.gain.linearRampToValueAtTime(vol * settings.volume, t + 0.16);
+    g.gain.exponentialRampToValueAtTime(0.0006, t + dur);
     o.connect(g).connect(audioCtx.destination);
     o.onended = () => { bgmVoices = Math.max(0, bgmVoices - 1); try { o.disconnect(); g.disconnect(); } catch {} };
     o.start(t); o.stop(t + dur + 0.02);
+    const nb = getNoiseBuf();
+    if (nb && bgmVoices < 5) {
+      bgmVoices++;
+      const ns = audioCtx.createBufferSource(), bp = audioCtx.createBiquadFilter(), ng = audioCtx.createGain();
+      ns.buffer = nb; ns.loop = true;
+      bp.type = 'bandpass'; bp.frequency.value = Math.min(3400, freq * 2.1); bp.Q.value = 3.2;
+      ng.gain.setValueAtTime(0.0005, t);
+      ng.gain.linearRampToValueAtTime(vol * 0.28 * settings.volume, t + 0.14);
+      ng.gain.exponentialRampToValueAtTime(0.0004, t + dur * 0.85);
+      ns.connect(bp).connect(ng).connect(audioCtx.destination);
+      ns.onended = () => { bgmVoices = Math.max(0, bgmVoices - 1); try { ns.disconnect(); bp.disconnect(); ng.disconnect(); } catch {} };
+      ns.start(t); ns.stop(t + dur * 0.88);
+    }
   }
-  // Per-Region / Per-Element Pentatonic Scales & Boss Themes
+  function playTaiko(freq = 104, rim = false, vol = 0.14) {
+    if (!settings.musicOn || !audioCtx || audioCtx.state !== 'running' || settings.volume < 0.02 || bgmVoices >= 5) return;
+    bgmVoices++;
+    const t = audioCtx.currentTime;
+    const o = audioCtx.createOscillator(), g = audioCtx.createGain();
+    o.type = rim ? 'triangle' : 'sine';
+    o.frequency.setValueAtTime(rim ? freq * 4.8 : freq * 1.45, t);
+    o.frequency.exponentialRampToValueAtTime(rim ? freq * 1.6 : Math.max(34, freq * 0.42), t + (rim ? 0.05 : 0.24));
+    g.gain.setValueAtTime(0.001, t);
+    g.gain.linearRampToValueAtTime(vol * settings.volume, t + 0.005);
+    g.gain.exponentialRampToValueAtTime(0.0008, t + (rim ? 0.065 : 0.28));
+    o.connect(g).connect(audioCtx.destination);
+    o.onended = () => { bgmVoices = Math.max(0, bgmVoices - 1); try { o.disconnect(); g.disconnect(); } catch {} };
+    o.start(t); o.stop(t + (rim ? 0.08 : 0.30));
+  }
+  function playHyoshigi(vol = 0.036) {
+    if (!settings.musicOn || !audioCtx || audioCtx.state !== 'running' || settings.volume < 0.02 || bgmVoices >= 5) return;
+    bgmVoices++;
+    const t = audioCtx.currentTime, o = audioCtx.createOscillator(), g = audioCtx.createGain();
+    o.type = 'triangle';
+    o.frequency.setValueAtTime(2180, t); o.frequency.exponentialRampToValueAtTime(1640, t + 0.032);
+    g.gain.setValueAtTime(vol * settings.volume, t); g.gain.exponentialRampToValueAtTime(0.0008, t + 0.038);
+    o.connect(g).connect(audioCtx.destination);
+    o.onended = () => { bgmVoices = Math.max(0, bgmVoices - 1); try { o.disconnect(); g.disconnect(); } catch {} };
+    o.start(t); o.stop(t + 0.045);
+  }
+  // Traditional Japanese Hirajoshi / In-Sen Pentatonic Scales per Realm
   const REGION_BGM = {
-    water:     { scale: [146.83, 164.81, 196.00, 220.00, 261.63, 293.66, 329.63, 392.00, 440.00, 523.25, 587.33], wave: 'triangle', baseStep: 13, drum: 98 },
-    fire:      { scale: [146.83, 155.56, 220.00, 233.08, 293.66, 311.13, 440.00, 466.16, 587.33, 622.25, 659.25], wave: 'sawtooth', baseStep: 11, drum: 118 },
-    air:       { scale: [164.81, 196.00, 220.00, 246.94, 293.66, 329.63, 392.00, 440.00, 493.88, 587.33, 659.25], wave: 'sine',     baseStep: 12, drum: 104 },
-    ice:       { scale: [174.61, 196.00, 207.65, 261.63, 277.18, 349.23, 392.00, 415.30, 523.25, 554.37, 698.46], wave: 'triangle', baseStep: 13, drum: 90 },
-    earth:     { scale: [110.00, 123.47, 130.81, 164.81, 174.61, 220.00, 246.94, 261.63, 329.63, 349.23, 440.00], wave: 'sawtooth', baseStep: 13, drum: 82 },
-    lightning: { scale: [164.81, 174.61, 220.00, 246.94, 261.63, 329.63, 349.23, 440.00, 493.88, 523.25, 659.25], wave: 'square',   baseStep: 10, drum: 126 },
-    shadow:    { scale: [130.81, 138.59, 174.61, 196.00, 207.65, 261.63, 277.18, 349.23, 392.00, 415.30, 523.25], wave: 'sawtooth', baseStep: 11, drum: 88 },
-    lava:      { scale: [123.47, 130.81, 164.81, 185.00, 196.00, 246.94, 261.63, 329.63, 369.99, 392.00, 493.88], wave: 'sawtooth', baseStep: 10, drum: 86 }
+    water:     { scale: [146.83, 164.81, 196.00, 220.00, 261.63, 293.66, 329.63, 392.00, 440.00, 523.25, 587.33], shamisen: false, baseStep: 13, drum: 96 },
+    fire:      { scale: [146.83, 155.56, 220.00, 233.08, 293.66, 311.13, 440.00, 466.16, 587.33, 622.25, 659.25], shamisen: true,  baseStep: 11, drum: 112 },
+    air:       { scale: [164.81, 196.00, 220.00, 246.94, 293.66, 329.63, 392.00, 440.00, 493.88, 587.33, 659.25], shamisen: false, baseStep: 12, drum: 102 },
+    ice:       { scale: [174.61, 196.00, 207.65, 261.63, 277.18, 349.23, 392.00, 415.30, 523.25, 554.37, 698.46], shamisen: false, baseStep: 13, drum: 88 },
+    earth:     { scale: [110.00, 123.47, 130.81, 164.81, 174.61, 220.00, 246.94, 261.63, 329.63, 349.23, 440.00], shamisen: true,  baseStep: 12, drum: 80 },
+    lightning: { scale: [164.81, 174.61, 220.00, 246.94, 261.63, 329.63, 349.23, 440.00, 493.88, 523.25, 659.25], shamisen: true,  baseStep: 10, drum: 120 },
+    shadow:    { scale: [130.81, 138.59, 174.61, 196.00, 207.65, 261.63, 277.18, 349.23, 392.00, 415.30, 523.25], shamisen: true,  baseStep: 11, drum: 86 },
+    lava:      { scale: [123.47, 130.81, 164.81, 185.00, 196.00, 246.94, 261.63, 329.63, 369.99, 392.00, 493.88], shamisen: true,  baseStep: 10, drum: 84 }
   };
+  const KOTO_MENU_MOTIF  = [0, -1, 3, 5, -1, 7, 5, -1, 6, 5, 3, -1, 2, 0, -1, 3];
   const SHAMISEN_MOTIF_A = [0, 3, 5, 3, 6, 5, 3, 2, 0, 3, 7, 6, 5, 3, 1, 0];
   const SHAMISEN_MOTIF_B = [5, 7, 8, 7, 10, 8, 7, 5, 3, 5, 6, 5, 3, 2, 1, 3];
   const ECLIPSE_MOTIF    = [0, 1, 5, 4, 7, 6, 10, 7, 5, 4, 3, 1, 6, 5, 1, 0];
   function tickMusic() {
     if (!settings.musicOn || match.paused || !audioCtx || audioCtx.state !== 'running') return;
+    // Serene Japanese Koto & Shakuhachi ambience on Main Menu / World Map
+    if (match.inMenu) {
+      if (++bgmTick < 18) return;
+      bgmTick = 0;
+      const s = bgmStep % 16, bar = Math.floor(bgmStep / 16) % 4;
+      bgmStep++;
+      const reg = REGION_BGM.fire;
+      const idx = KOTO_MENU_MOTIF[s];
+      if (idx >= 0) playKoto(reg.scale[idx] * (bar >= 2 ? 1 : 0.999), 0.72, 0.046, false);
+      if (s === 0 && bar % 2 === 0) playShakuhachi(reg.scale[bar === 0 ? 5 : 7], 1.55, 0.036);
+      if (s === 8 && bar === 3) playTaiko(78, false, 0.075);
+      return;
+    }
     const isFinalBoss = Boolean(match.boss && match.boss.isFinal);
+    const isPhase2 = Boolean(p2 && p2.phase2);
     const reg = REGION_BGM[(match.boss ? match.boss.el : p2.el.id)] || REGION_BGM.water;
-    const intense = isFinalBoss || (p1.hp / p1.maxHp < 0.32) || (p2.hp / p2.maxHp < 0.32) || (match.round >= 3) || (match.boss && match.boss.id >= 6);
-    const stepFrames = isFinalBoss ? 8 : (intense ? Math.max(8, reg.baseStep - 3) : reg.baseStep);
+    const intense = isFinalBoss || isPhase2 || (p1.hp / p1.maxHp < 0.32) || (p2.hp / p2.maxHp < 0.32) || (match.round >= 3) || (match.boss && match.boss.id >= 6);
+    const stepFrames = (isFinalBoss || isPhase2) ? 8 : (intense ? Math.max(8, reg.baseStep - 3) : reg.baseStep);
     if (++bgmTick < stepFrames) return;
     bgmTick = 0;
     const s = bgmStep % 16;
     const bar = Math.floor(bgmStep / 16) % 4;
     bgmStep++;
-    // Taiko War Drum downbeats & syncopated rim hits
+    // O-daiko & Shime-daiko war drums + wooden Hyoshigi clappers
     if (s === 0 || s === 6 || s === 8 || (intense && (s === 12 || s === 14))) {
-      playBgmTone(s === 0 ? reg.drum + 16 : reg.drum, 34, 0.22, 'sine', s === 0 ? 0.14 : 0.10);
+      playTaiko(s === 0 ? reg.drum + 14 : reg.drum, false, s === 0 ? 0.15 : 0.105);
     } else if (s === 4 || s === 12 || (intense && s % 2 === 1)) {
-      playBgmTone(620, 190, 0.045, 'triangle', 0.032);
+      playTaiko(reg.drum, true, 0.048);
     }
-    // Regional shamisen / flute pentatonic phrase
-    const motif = isFinalBoss ? ECLIPSE_MOTIF : ((bar >= 2 || intense) ? SHAMISEN_MOTIF_B : SHAMISEN_MOTIF_A);
+    if (intense && (s === 2 || s === 10)) playHyoshigi(0.032);
+    // Plucked Shamisen / Koto Japanese pentatonic lead
+    const motif = (isFinalBoss || isPhase2) ? ECLIPSE_MOTIF : ((bar >= 2 || intense) ? SHAMISEN_MOTIF_B : SHAMISEN_MOTIF_A);
     if (s % 2 === 0 || (intense && (s === 3 || s === 7 || s === 11 || s === 15))) {
       const noteIdx = motif[s];
-      const freq = reg.scale[noteIdx] * (isFinalBoss ? 1.06 : 1.0);
-      playBgmTone(freq, freq * 0.995, intense ? 0.14 : 0.19, reg.wave, reg.wave === 'square' ? 0.026 : 0.042);
-      playBgmTone(freq * 2, freq * 1.98, 0.08, 'triangle', 0.022);
+      const freq = reg.scale[noteIdx] * (isPhase2 ? 1.08 : (isFinalBoss ? 1.05 : 1.0));
+      playKoto(freq, intense ? 0.22 : 0.34, intense ? 0.058 : 0.048, reg.shamisen || intense);
     }
-    // Shakuhachi low drone breath on bar start
-    if (s === 0 && bar % 2 === 0) {
-      playBgmTone(reg.scale[0], reg.scale[0], 0.85, 'sine', 0.036);
+    // Breathy Shakuhachi bamboo flute phrasing
+    if ((s === 0 && bar % 2 === 0) || (s === 8 && bar === 1)) {
+      const flIdx = bar === 0 ? 5 : (bar === 1 ? 7 : 3);
+      playShakuhachi(reg.scale[flIdx], 1.05, 0.038);
     }
   }
 
@@ -1476,6 +1749,9 @@
     return {
       id, el, x: id === 'p1' ? 405 : 875, y: GROUND_Y, vx: 0, vy: 0, facing: id === 'p1' ? 1 : -1,
       hp: el.hp, maxHp: el.hp, trailHp: el.hp, magic: 55,
+      poise: 100, maxPoise: 100,
+      octopusF: 0, octopusCd: 0, airScooterF: 0, fireJetF: 0, seismicWaveF: 0, frozenPrisonF: 0,
+      phase2: false, phase2Used: false,
       artIdx: 0, castArtIdx: 0, quickBendDir: 'fwd', bendChargeF: 0, chargingBend: false,
       guardWear: 0, airJumpsLeft: 0, fireStreak: 0, fireStreakT: 0,
       rockArmorF: 0, reflectStanceF: 0, disarmed: false, wallSplatted: false,
@@ -1507,6 +1783,7 @@
     banner: null, callouts: []
   };
   let bendingWaves = [], hazards = [], particles = [], ghosts = [], droppedWeapons = [], rockWalls = [], decoyClones = [];
+  let braziers = [], bladeClash = null, bladeClashCd = 0;
 
   function showBanner(text, sub, color, dur = 64, isUlt = false) { match.banner = { text, sub, color, f: dur, isUlt }; }
   function pushCallout(text, color, x, y) {
@@ -1521,6 +1798,10 @@
     const bonusHp = f.id === 'p1' ? p1HpBonus() : 0;
     f.maxHp = Math.round(f.el.hp * bossHpMult + bonusHp); f.hp = f.maxHp; f.trailHp = f.maxHp;
     f.magic = full ? 55 : Math.min(100, Math.max(55, f.magic * 0.6 + 30));
+    f.maxPoise = 100 + (f.id === 'p1' ? PROG.upgrades.body * 8 : (match.boss ? 20 : 0));
+    f.poise = f.maxPoise;
+    f.octopusF = 0; f.octopusCd = 0; f.airScooterF = 0; f.fireJetF = 0; f.seismicWaveF = 0; f.frozenPrisonF = 0;
+    if (full) { f.phase2 = false; f.phase2Used = false; }
     f.state = 'idle'; f.sf = 0; f.inv = 0; f.armor = 0; f.stun = 0; f.freezeRec = 0; f.avatarFlash = 0;
     f.move = null; f.moveId = null; f.hitDone = false; f.flash = 0; f.afterTimer = 0; f.guardWear = 0;
     f.airJumpsLeft = f.el.id === 'air' ? 1 : 0;
@@ -1607,14 +1888,15 @@
     p2.avatarElIdx = 0;
     if (bossStage && typeof bossStage.theme === 'number') {
       themeIdx = bossStage.theme;
-      buildBackdrop();
     }
-    match.toWin = (opts.mode === 'dojo' || opts.mode === 'tutorial') ? 999 : (bossStage ? 2 : (opts.mode === 'endless' ? 1 : (settings.format === 'bo3' ? 2 : settings.format === 'bo5' ? 3 : 999)));
+    // Campaign Masters fight Best of 5 (3 rounds to win)!
+    match.toWin = (opts.mode === 'dojo' || opts.mode === 'tutorial') ? 999 : (bossStage ? 3 : (opts.mode === 'endless' ? 1 : (settings.format === 'bo3' ? 2 : settings.format === 'bo5' ? 3 : 999)));
     match.round = 1; match.p1W = 0; match.p2W = 0; match.winner = null; match.paused = false;
     match.maxComboP1 = 0; match.headHitsP1 = 0;
     match.p1Blocked = false; match.p1QuickBends = 0; match.p1AirWins = false;
     match.p1WallSplats = 0; match.p1Clashes = 0; match.p1Reactions = 0; match.allyUsed = false;
     enterBattleUI();
+    buildBackdrop();
     resetFighter(p1, true); resetFighter(p2, true);
     if (match.mode === 'tutorial') p1.magic = 65;
     syncTutorialPill();
@@ -1635,13 +1917,18 @@
   function beginRound() {
     resetFighter(p1, false); resetFighter(p2, false);
     bendingWaves = []; hazards = []; particles = []; ghosts = []; droppedWeapons = []; rockWalls = []; decoyClones = [];
+    braziers = [
+      { x: ARENA_L + 22, intact: true, hitFlash: 0 },
+      { x: ARENA_R - 22, intact: true, hitFlash: 0 }
+    ];
+    bladeClash = null; bladeClashCd = 0;
     hitstop = 0; slowMoFrames = 0; dramaticZoom = 0; ultDimFrames = 0; stormFlashFrames = 0;
     match.timer = 99; match.tTick = 0; match.roundElapsed = 0; match.intro = 56; match.over = 0;
     match.c1 = 0; match.c1Live = false; match.c2 = 0; match.c2Live = false; match.callouts = []; match.screen = 'fighting';
     if (match.mode === 'endless') {
       showBanner(`SHADOW TOWER · WAVE ${match.endlessWave}`, p2.el.fighter, p2.el.glow, 48);
     } else if (match.boss) {
-      showBanner(match.round === 1 ? match.boss.title : `ROUND ${match.round}`, `${match.boss.rank} · ${match.boss.region}`, match.boss.isFinal ? '#f472b6' : p2.el.glow, 52);
+      showBanner(match.round === 1 ? match.boss.title : `ROUND ${match.round}`, `${match.boss.rank} · ${match.boss.region} · FIRST TO ${match.toWin}`, match.boss.isFinal ? '#f472b6' : p2.el.glow, 52);
     } else if (match.mode === 'dojo') {
       showBanner('DOJO SPARRING', `TRAINING VS ${p2.el.fighter}`, '#7cf0bd', 40);
     } else {
@@ -1650,7 +1937,7 @@
     sfx.gong();
   }
 
-  // ===== INPUT (Supports 35% Quick-Bends & Lightning Hold-to-Charge) =====
+  // ===== INPUT (Supports 35% Quick-Bends, Blade-Lock Clash & Lightning Hold-to-Charge) =====
   function setDir(f, x, y) {
     if (x !== 0 && f.prevX === 0) {
       if (f.lastTapX === x && simFrame - f.lastTapF <= 16) { f.dblTap = { x, f: simFrame }; f.lastTapX = 0; }
@@ -1662,6 +1949,15 @@
   function pressBtn(f, btn) {
     if (f.held.has(btn)) return;
     f.held.add(btn);
+    // Blade-Lock Weapon Clash tug-of-war mashing!
+    if (bladeClash && (btn === 'punch' || btn === 'kick' || btn === 'weapon' || btn === 'magic')) {
+      bladeClash.meter = Math.max(-100, Math.min(100, bladeClash.meter + (f.id === 'p1' ? 16 : -14)));
+      const mx = (p1.x + p2.x) * 0.5, my = Math.min(p1.y, p2.y) - 118;
+      spawnSparks(mx, my, f.el.glow, '#ffffff', 0.85);
+      sfx.guard(true);
+      if (f.id === 'p1') haptic('light');
+      return;
+    }
     if (btn === 'block') { f.guardFrame = simFrame; return; }
     if (btn === 'magic') {
       if (f.magic < 35) {
@@ -1846,10 +2142,10 @@
         bendingWaves.push({ owner: f.id, el, kind: 'ice_slide', x: f.x + dir * 48, y: GROUND_Y - 24, vx: dir * 16.5, dir, w: 112, h: 52, dmg: 64, ly: -9.5, low: true, f: 20, max: 20, hit: false, ult: false });
         pushCallout('ICE SLIDE', '#38d8ff', f.x, f.y - 185);
       } else if (dirKey === 'up') {
-        // Redirecting Parry Stance: auto-redirects projectiles & parries next blow!
-        f.reflectStanceF = 26; f.guardFrame = simFrame + 16;
-        spawnSparks(f.x, f.y - 100, '#38d8ff', '#ffffff', 1.3);
-        pushCallout('TIDAL REDIRECT', '#9cf4ff', f.x, f.y - 190);
+        // ATLA SIGNATURE — Katara's Octopus Form: whirling 8-tentacle ring intercepting projectiles & lashing close foes!
+        f.octopusF = 165; f.octopusCd = 0; f.reflectStanceF = Math.max(f.reflectStanceF, 28);
+        spawnSparks(f.x, f.y - 100, '#38d8ff', '#ffffff', 1.5);
+        pushCallout('OCTOPUS FORM!', '#7cf2ff', f.x, f.y - 196);
       } else {
         // Water Tentacle Pull: drags retreating enemy right back into melee range!
         bendingWaves.push({ owner: f.id, el, kind: 'water_pull', x: f.x + dir * 75, y: f.y - 106, vx: dir * 18.5, dir, w: 155, h: 92, dmg: 58, ly: -5.5, low: false, pullTo: f.id, f: 24, max: 24, hit: false, ult: false });
@@ -1871,19 +2167,22 @@
         bendingWaves.push({ owner: f.id, el, kind: 'fire_arc', x: f.x + dir * 55, y: f.y - 105, vx: dir * 18.5, dir, w: 112, h: 96, dmg: 46, ly: -8.5, low: false, f: 22, max: 22, delay: 7, hit: false, ult: false });
         pushCallout('FIRE-FIST BURST', '#ff6a1a', f.x, f.y - 188);
       } else {
-        // Jet-Propelled Flying Kick: rockets across screen in flames!
-        f.vx = dir * 21.5; f.vy = -5.5; f.afterTimer = 18; f.armor = Math.max(f.armor, 1);
-        bendingWaves.push({ owner: f.id, el, kind: 'fire_jet', x: f.x + dir * 48, y: f.y - 102, vx: dir * 20.5, dir, w: 126, h: 94, dmg: 86, ly: -10.0, low: false, f: 20, max: 20, hit: false, ult: false });
-        pushCallout('JET KICK', '#ff951a', f.x, f.y - 188);
+        // ATLA SIGNATURE — Sozin's Jet-Step: twin roaring foot-jets aerial flame-glide + guard-breaking overhead drop!
+        f.fireJetF = 24; f.vx = dir * 20.5; f.vy = -10.5; f.afterTimer = 24; f.armor = Math.max(f.armor, 1);
+        bendingWaves.push({ owner: f.id, el, kind: 'fire_jet', x: f.x + dir * 48, y: f.y - 110, vx: dir * 19.5, dir, w: 136, h: 102, dmg: 88, ly: -10.5, low: false, guardCrush: true, f: 22, max: 22, hit: false, ult: false });
+        pushCallout("SOZIN'S JET-STEP!", '#ffb347', f.x, f.y - 196);
       }
     } else if (el.id === 'earth') {
       if (dirKey === 'back') {
-        // Rock Wall Shield: destructible barrier that blocks enemy projectiles!
+        // ATLA SIGNATURE — Toph's Seismic Sense & Earth Armor: sonar floor ripple + orbiting rock armor + delayed pillar under foe!
+        f.seismicWaveF = 28; f.rockArmorF = 210; f.armor = Math.max(f.armor, 2);
         const wx = Math.max(ARENA_L + 70, Math.min(ARENA_R - 70, f.x + dir * 84));
         rockWalls.push({ owner: f.id, x: wx, y: GROUND_Y, w: 46, h: 162, hp: 2, f: 220, max: 220 });
         if (rockWalls.length > 2) rockWalls.shift();
-        spawnDust(wx, GROUND_Y, 0, 14, '#e8b038');
-        pushCallout('ROCK WALL', '#e8b038', wx, GROUND_Y - 178);
+        const px = Math.max(ARENA_L + 50, Math.min(ARENA_R - 50, opp.x));
+        bendingWaves.push({ owner: f.id, el, kind: 'earth_spike', x: px, y: GROUND_Y, vx: 0, dir, w: 100, h: 196, dmg: 76, ly: -14.8, low: true, launcher: true, delay: 14, f: 28, max: 28, hit: false, ult: false });
+        spawnDust(f.x, GROUND_Y, 0, 14, '#e8b038');
+        pushCallout("SEISMIC SENSE!", '#f5d061', f.x, f.y - 196);
       } else if (dirKey === 'up') {
         // Stone Pillar Launcher: erupts under/near enemy to launch airborne!
         const px = Math.max(ARENA_L + 50, Math.min(ARENA_R - 50, Math.abs(opp.x - f.x) < 290 ? opp.x : f.x + dir * 165));
@@ -1902,10 +2201,10 @@
       }
     } else if (el.id === 'air') {
       if (dirKey === 'fwd') {
-        // Air Scooter Dodge: fast low-profile dash gliding right through enemy!
-        f.state = 'roll_fwd'; f.sf = 0; f.inv = 18; f.vx = dir * 19.5; f.afterTimer = 18;
-        spawnDust(f.x, GROUND_Y, -dir * 3, 12, '#5effc8');
-        pushCallout('AIR SCOOTER', '#5effc8', f.x, f.y - 180);
+        // ATLA SIGNATURE — Aang's Air Scooter: rides a spinning Air Sphere hovering over lows/hazards at 1.65x speed!
+        f.airScooterF = 115; f.inv = Math.max(f.inv, 12); f.vx = dir * 12.5; f.afterTimer = 22;
+        spawnDust(f.x, GROUND_Y, -dir * 3, 14, '#5effc8');
+        pushCallout("AIR SCOOTER!", '#5effc8', f.x, f.y - 196);
       } else if (dirKey === 'up' || dirKey === 'down') {
         // Wind-Blade Spin: 360° swirling gale launch!
         f.vy = -10.5;
@@ -1918,7 +2217,12 @@
         pushCallout('VACUUM PULL', '#5effc8', vx, opp.y - 185);
       }
     } else if (el.id === 'lightning') {
-      if (dirKey === 'up' || dirKey === 'back') {
+      if (dirKey === 'back') {
+        // ATLA SIGNATURE — Iroh's Lightning Redirection: chest-loop redirect stance returning 1.5x overcharged bolt!
+        f.reflectStanceF = 42; f.guardFrame = simFrame + 24;
+        spawnSparks(f.x, f.y - 115, '#78e2ff', '#ffe878', 1.5);
+        pushCallout("IROH'S REDIRECT!", '#ffe878', f.x, f.y - 196);
+      } else if (dirKey === 'up') {
         // Teleport Snap: short-range blink near opponent followed by stunning shock!
         const tx = Math.max(ARENA_L + 35, Math.min(ARENA_R - 35, opp.x - opp.facing * 86));
         spawnSparks(f.x, f.y - 95, '#66d0ff', '#ffffff', 1.3);
@@ -1958,18 +2262,20 @@
         bendingWaves.push({ owner: f.id, el, kind: 'ice_spike', x: f.x + dir * 115, y: GROUND_Y, vx: 0, dir, w: 122, h: 168, dmg: 82, ly: -11.5, low: false, heavyHit: true, f: 24, max: 24, hit: false, ult: false });
         pushCallout('FROST SHATTER', '#78eeff', f.x + dir * 110, GROUND_Y - 178);
       } else {
-        // Frozen Feet Trap: roots opponent's feet to floor for ~0.55s!
+        // ATLA SIGNATURE — Katara's Cryo Prison: encases enemy in a visible Ice Crystal Cage (+35% shatter dmg on heavy follow-up)!
         const fx = Math.max(ARENA_L + 50, Math.min(ARENA_R - 50, opp.x));
-        bendingWaves.push({ owner: f.id, el, kind: 'ice_trap', x: fx, y: GROUND_Y, vx: 0, dir, w: 118, h: 95, dmg: 52, ly: 0, low: true, rootF: 34, f: 24, max: 24, hit: false, ult: false });
-        pushCallout('FROZEN FEET', '#78eeff', fx, GROUND_Y - 120);
+        bendingWaves.push({ owner: f.id, el, kind: 'ice_trap', x: fx, y: GROUND_Y, vx: 0, dir, w: 124, h: 140, dmg: 56, ly: 0, low: true, rootF: 36, freezePrison: true, f: 26, max: 26, hit: false, ult: false });
+        pushCallout('CRYO PRISON!', '#9ef6ff', fx, GROUND_Y - 150);
       }
     } else if (el.id === 'shadow') {
       if (dirKey === 'back') {
-        // Decoy Clone: leaves shadow decoy that explodes when hit!
+        // ATLA SIGNATURE — Eclipse Swap: drops exploding ink decoy at origin & teleports behind opponent!
         decoyClones.push({ owner: f.id, x: f.x, y: GROUND_Y, facing: f.facing, f: 210, max: 210, el });
         if (decoyClones.length > 2) decoyClones.shift();
-        f.vx = -dir * 13.5; f.inv = 10;
-        pushCallout('DECOY CLONE', '#b49cff', f.x, f.y - 188);
+        const tx = Math.max(ARENA_L + 35, Math.min(ARENA_R - 35, opp.x - opp.facing * 92));
+        f.x = tx; f.facing = opp.x >= f.x ? 1 : -1; f.inv = 14; f.afterTimer = 16;
+        spawnSparks(f.x, f.y - 95, '#6348e8', '#f6f2ff', 1.4);
+        pushCallout('ECLIPSE SWAP!', '#c4b0ff', f.x, f.y - 196);
       } else if (dirKey === 'fwd') {
         // Shadow Sink: sinks into floor and reappears behind opponent!
         spawnDust(f.x, GROUND_Y, 0, 12, '#6348e8');
@@ -2005,9 +2311,10 @@
         spawnHazard(f, gx);
         pushCallout('MAGMA GEYSER', '#ff7014', gx, GROUND_Y - 215);
       } else {
-        // Lava-Disc Ricochet: bounces off arena walls/floor!
-        bendingWaves.push({ owner: f.id, el, kind: 'lava_disc', x: f.x + dir * 72, y: f.y - 98, vx: dir * 15.2, dir, w: 102, h: 86, dmg: 76, ly: -9.0, low: false, bounces: 1, f: 46, max: 46, hit: false, ult: false });
-        pushCallout('LAVA RICOCHET', '#ff7014', f.x, f.y - 188);
+        // ATLA SIGNATURE — Ghazan's Molten Shuriken & Magma Moat: boomerang spinning lava disc leaving a molten floor moat!
+        bendingWaves.push({ owner: f.id, el, kind: 'lava_disc', x: f.x + dir * 72, y: f.y - 98, vx: dir * 15.8, dir, w: 108, h: 88, dmg: 78, ly: -9.2, low: false, bounces: 1, boomerang: true, f: 52, max: 52, hit: false, ult: false });
+        spawnHazard(f, f.x + dir * 175);
+        pushCallout("MOLTEN SHURIKEN!", '#ff8e2b', f.x, f.y - 196);
       }
     }
   }
@@ -2155,7 +2462,7 @@
       f.vy += BASE_GRAV * gScale; f.y += f.vy;
       if (f.y >= GROUND_Y) { f.y = GROUND_Y; if (f.vy > 0) f.vy = 0; }
     }
-    // WALL SPLAT & CORNER REBOUND (Shadow Fight 2 Physics!)
+    // WALL SPLAT & BREAKABLE CORNER BRAZIERS!
     const canSplat = (f.state === 'hitstun' || f.state === 'knockdown_air') && !f.wallSplatted && Math.abs(f.vx) >= 10.5;
     if (f.x < ARENA_L) {
       f.x = ARENA_L;
@@ -2165,7 +2472,14 @@
         sfx.slam(); shake = Math.max(shake, 13 * settings.feedback);
         spawnDust(ARENA_L + 8, f.y - 80, 1, 12, '#fde68a');
         spawnSparks(ARENA_L + 8, f.y - 95, '#ffae34', '#ffffff', 1.4);
-        pushCallout('WALL SPLAT!', '#ffd84a', ARENA_L + 74, f.y - 185);
+        if (braziers[0] && braziers[0].intact) {
+          braziers[0].intact = false; f.hp = Math.max(1, f.hp - 45); f.poise = Math.max(0, f.poise - 30);
+          spawnSparks(ARENA_L + 22, GROUND_Y - 58, '#ff6814', '#ffe57f', 2.2);
+          spawnDust(ARENA_L + 22, GROUND_Y - 30, 1, 16, '#ffb347');
+          pushCallout('CORNER SHATTER! +45', '#ff9e38', ARENA_L + 95, f.y - 196);
+        } else {
+          pushCallout('WALL SPLAT!', '#ffd84a', ARENA_L + 74, f.y - 185);
+        }
       } else if (f.vx < 0) f.vx = 0;
     } else if (f.x > ARENA_R) {
       f.x = ARENA_R;
@@ -2175,12 +2489,19 @@
         sfx.slam(); shake = Math.max(shake, 13 * settings.feedback);
         spawnDust(ARENA_R - 8, f.y - 80, -1, 12, '#fde68a');
         spawnSparks(ARENA_R - 8, f.y - 95, '#ffae34', '#ffffff', 1.4);
-        pushCallout('WALL SPLAT!', '#ffd84a', ARENA_R - 74, f.y - 185);
+        if (braziers[1] && braziers[1].intact) {
+          braziers[1].intact = false; f.hp = Math.max(1, f.hp - 45); f.poise = Math.max(0, f.poise - 30);
+          spawnSparks(ARENA_R - 22, GROUND_Y - 58, '#ff6814', '#ffe57f', 2.2);
+          spawnDust(ARENA_R - 22, GROUND_Y - 30, -1, 16, '#ffb347');
+          pushCallout('CORNER SHATTER! +45', '#ff9e38', ARENA_R - 95, f.y - 196);
+        } else {
+          pushCallout('WALL SPLAT!', '#ffd84a', ARENA_R - 74, f.y - 185);
+        }
       } else if (f.vx > 0) f.vx = 0;
     }
   }
 
-  // ===== TICK FIGHTER (All 8 Passives, 35% Quick-Bends, Air Juggles, Double-Jump, Disarm Pickup) =====
+  // ===== TICK FIGHTER (All 8 Passives, ATLA Tricks, Guard Poise, Weapon Infusions) =====
   function tickFighter(f, opp, canCtrl) {
     if (f.trailHp > f.hp) f.trailHp = Math.max(f.hp, f.trailHp - Math.max(2.4, (f.trailHp - f.hp) * 0.09));
     else f.trailHp = f.hp;
@@ -2188,8 +2509,22 @@
     if (f.avengerF > 0) f.avengerF--; if (f.mirrorF > 0) f.mirrorF--;
     if (f.rockArmorF > 0) f.rockArmorF--;
     if (f.reflectStanceF > 0) f.reflectStanceF--;
+    if (f.octopusF > 0) f.octopusF--;
+    if (f.octopusCd > 0) f.octopusCd--;
+    if (f.airScooterF > 0) f.airScooterF--;
+    if (f.fireJetF > 0) f.fireJetF--;
+    if (f.seismicWaveF > 0) f.seismicWaveF--;
+    if (f.frozenPrisonF > 0) f.frozenPrisonF--;
     if (f.fireStreakT > 0 && --f.fireStreakT === 0) f.fireStreak = 0;
     if (f.multiHitCd > 0) f.multiHitCd--;
+    // Katara's Octopus Form: auto-lash any enemy who steps inside 124px!
+    if (canCtrl && f.octopusF > 0 && f.octopusCd <= 0 && opp.inv <= 0 && opp.state !== 'ko' && Math.abs(opp.x - f.x) < 124 && Math.abs(opp.y - f.y) < 110) {
+      f.octopusCd = 30;
+      const dirToOpp = opp.x >= f.x ? 1 : -1;
+      spawnSparks(opp.x, opp.y - 98, '#38d8ff', '#ffffff', 1.2);
+      resolveHit(f, opp, { dmg: 38, chip: 8, hs: 18, bs: 10, stop: 3, kb: 9.5, forceVx: dirToOpp * 10.5, ly: -4.5, kd: false, crit: false, h: 'mid', elStatus: true, mg: 6 }, opp.x, opp.y - 102, true);
+      pushCallout('OCTOPUS LASH!', '#7cf2ff', opp.x, opp.y - 178);
+    }
     if (f.chargingBend) {
       f.bendChargeF = Math.min(34, f.bendChargeF + 1);
       if (f.bendChargeF % 6 === 0) spawnSparks(f.x, f.y - 105, '#66d0ff', '#ffffff', 0.7);
@@ -2200,6 +2535,9 @@
       }
     }
     if (f.guardWear > 0 && f.state !== 'block_high' && f.state !== 'block_low' && simFrame % 45 === 0) f.guardWear = Math.max(0, f.guardWear - 1);
+    if (f.state !== 'block_high' && f.state !== 'block_low' && f.state !== 'hitstun' && f.poise < f.maxPoise) {
+      f.poise = Math.min(f.maxPoise, f.poise + 0.26);
+    }
     f.desperate = f.hp > 0 && f.hp / f.maxHp < 0.2;
     const bossMagMult = (f.id === 'p2' && match.boss) ? (match.boss.magicGain || 1) : 1;
     if (canCtrl && f.hp > 0) f.magic = Math.min(100, f.magic + 0.095 * (f.id === 'p1' ? p1FlowMult() : bossMagMult));
@@ -2207,12 +2545,13 @@
     const isIceFloor = Boolean(match.boss && match.boss.hazardId === 'glacier_floor') || hazards.some(h => h.kind === 'ice' && Math.abs(f.x - h.x) < h.hw);
     const isTailwind = Boolean(match.boss && match.boss.hazardId === 'gale_tailwind' && (simFrame % 240 < 90));
 
-    let spdMul = (settings.tempo === 'fast' ? 1.05 : 0.78) * (f.id === 'p1' ? p1SpeedMult() : 1), startMul = 1;
-    let isRooted = false;
+    let spdMul = (settings.tempo === 'fast' ? 1.05 : 0.78) * (f.id === 'p1' ? p1SpeedMult() : (f.phase2 ? 1.14 : 1)), startMul = f.phase2 ? 0.90 : 1;
+    if (f.airScooterF > 0) spdMul *= 1.65;
+    let isRooted = f.frozenPrisonF > 0;
     for (const k of Object.keys(f.statuses)) {
       const st = f.statuses[k]; st.f--; st.t++;
       if ((k === 'burn' || k === 'scorched') && st.t % 28 === 0 && f.hp > 1) f.hp = Math.max(1, f.hp - 9);
-      if (k === 'chill') { spdMul *= 0.68; startMul = 1.15; }
+      if (k === 'chill') { spdMul *= 0.68; startMul *= 1.15; }
       if (k === 'soaked') spdMul *= 0.88;
       if (k === 'hex' && st.t % 20 === 0) f.magic = Math.max(0, f.magic - 2.2);
       if (k === 'rooted') isRooted = true;
@@ -2374,10 +2713,21 @@
       const m = f.move;
       if (f.sf === m.ifrm) f.vx += f.facing * m.imp;
       if (f.sf === f.ms) {
+        const wSpec = getWeaponSpec(f);
         if (f.moveId === 'magic_cast') spawnAvatarUltimate(f, opp);
         else if (f.moveId === 'quick_bend') { spawnQuickBend(f, opp, f.quickBendDir, f.quickBendCharge || 0); if (f.id === 'p1') advanceTutorial('quick_bend'); }
         else if (m.bendWave) spawnStrikeBending(f, opp, m.bendWave, f.moveId);
         else if (m.bendBurst) spawnSparks(f.x + f.facing * 72, f.y - 118, f.el.primary, f.el.core, 0.95, f.el.id === 'ice');
+        // Elemental Weapon Infusion: heavy weapon finishers unleash an elemental wave when >=20% meter!
+        if (m.wep && !f.disarmed && (f.moveId === 'super_slash' || f.moveId === 'weapon_over' || f.moveId === 'weapon_spin')) {
+          if (wSpec.perk === 'hammer_crush') {
+            bendingWaves.push({ owner: f.id, el: f.el, kind: 'ground_shockwave', x: f.x + f.facing * 68, y: GROUND_Y - 22, vx: f.facing * 12.5, dir: f.facing, w: 120, h: 58, dmg: 52, ly: -8.5, low: true, f: 24, max: 24, hit: false, ult: false });
+          } else if (f.magic >= 20) {
+            f.magic = Math.max(0, f.magic - 10);
+            spawnStrikeBending(f, opp, 'heavy', f.moveId);
+            spawnSparks(f.x + f.facing * 78, f.y - 114, f.el.glow, '#ffffff', 1.2);
+          }
+        }
       }
       if (f.el.moltenWake && (f.moveId === 'weapon_over' || f.moveId === 'throw_fwd' || f.moveId === 'suplex') && f.sf === f.ms + 2) spawnHazard(f, f.x + f.facing * 52);
       if (f.y >= GROUND_Y - 0.5) f.vx *= isIceFloor ? 0.89 : 0.80;
@@ -2401,7 +2751,11 @@
         const ev = consumeBtn(f, ['evade']);
         if (ev) { startDash(f, relDir(f, ev.dir).fwd); return; }
       }
-      if (f.sf >= total) { f.move = null; f.moveId = null; f.freezeRec = 0; f.armor = 0; f.state = f.y >= GROUND_Y - 0.5 ? 'idle' : 'jump'; f.sf = 0; }
+      if (f.sf >= total) {
+        // Whiffing heavy swings drains a bit of poise
+        if (!f.hitDone && m.dmg >= 80 && !m.isThrow) f.poise = Math.max(0, f.poise - 8);
+        f.move = null; f.moveId = null; f.freezeRec = 0; f.armor = 0; f.state = f.y >= GROUND_Y - 0.5 ? 'idle' : 'jump'; f.sf = 0;
+      }
       return;
     }
 
@@ -2413,7 +2767,16 @@
     if (act) {
       if (act.btn === 'magic') { if (triggerBend(act)) return; }
       if (act.btn === 'evade' && !isRooted) { startDash(f, relDir(f, act.dir).fwd); return; }
-      if (act.btn !== 'magic' && act.btn !== 'evade') { dispatchAttack(f, act, opp, dist, startMul); return; }
+      if (act.btn !== 'magic' && act.btn !== 'evade') {
+        // Aang's Air Scooter attack exits smoothly into an aerial Cyclone Dive Strike!
+        if (f.airScooterF > 0) {
+          f.airScooterF = 0; f.vy = -11.5; f.vx = f.facing * 14.5;
+          startMove(f, 'spin_jump_kick', startMul);
+          pushCallout('CYCLONE DIVE!', '#5effc8', f.x, f.y - 188);
+          return;
+        }
+        dispatchAttack(f, act, opp, dist, startMul); return;
+      }
     }
 
     if (rel.up && !isRooted) {
@@ -2478,11 +2841,18 @@
       if (f.disarmed) {
         id = r.up ? 'uppercut' : r.down ? 'low_punch' : 'bare_1';
       } else {
-        if (r.up) id = 'weapon_over';
+        const ws = getWeaponSpec(f);
+        // Bo Staff Pole-Vault: Up + Weapon vaults airborne for an overhead staff smash!
+        if (r.up && ws.perk === 'staff_push') {
+          f.vy = -11.5; f.vx = f.facing * 10.5;
+          pushCallout('POLE VAULT!', f.el.glow, f.x, f.y - 185);
+          id = 'weapon_over';
+        } else if (r.up) id = 'weapon_over';
         else if (r.down) id = 'weapon_low';
         else if (r.back) id = 'weapon_spin';
         else if (r.fwd) id = 'weapon_thrust';
         else id = 'weapon_1';
+        if (ws.perk === 'hammer_crush' && (id === 'weapon_over' || id === 'weapon_spin')) f.armor = Math.max(f.armor, 1);
       }
     }
     startMove(f, id, sMul);
@@ -2496,8 +2866,32 @@
 
   // ===== IMPACT RESOLUTION (Status Combos, Element Passives, Disarming, Redirection) =====
   function resolveHit(atk, def, m, ix, iy, isProj = false) {
+    // Aang's Air Scooter hovers cleanly over low attacks!
+    if (def.airScooterF > 0 && m.h === 'low') {
+      pushCallout('SCOOTER EVADE!', '#5effc8', def.x, def.y - 188);
+      return;
+    }
+    // Iroh's Lightning Redirection: absorbs any incoming strike/projectile for 0 dmg & fires back 1.5x overcharged bolt!
+    if (def.el.id === 'lightning' && def.reflectStanceF > 0 && !m.isThrow) {
+      def.reflectStanceF = 0; def.poise = Math.min(def.maxPoise, def.poise + 20);
+      def.magic = Math.min(100, def.magic + 18);
+      const dir = atk.x >= def.x ? 1 : -1;
+      def.facing = dir;
+      bendingWaves.push({
+        owner: def.id, el: def.el, kind: 'bolt_lance', x: def.x + dir * 70, y: def.y - 110,
+        vx: dir * 26, dir, w: 215, h: 80, dmg: Math.min(145, Math.round(Math.max(76, m.dmg) * 1.5)),
+        ly: -9.5, low: false, guardCrush: true, microStun: true, deflected: true, f: 22, max: 22, hit: false, ult: false
+      });
+      if (def.id === 'p1') match.p1Clashes++;
+      sfx.elemBend('lightning'); sfx.guard(true); haptic('parry');
+      hitstop = 6; shake = Math.max(shake, 14 * settings.feedback);
+      spawnSparks(def.x, def.y - 112, '#78e2ff', '#ffe878', 2.0);
+      pushCallout('LIGHTNING REDIRECT!', '#ffe878', def.x, def.y - 205);
+      return;
+    }
     const rel = relDir(def);
     const wSpec = getWeaponSpec(atk);
+    const defWSpec = getWeaponSpec(def);
     const neutral = ['idle','walk_fwd','walk_back','crouch','block_high','block_low'].includes(def.state);
     const activeGuard = def.held.has('block') || rel.back || def.reflectStanceF > 0;
     const autoGuard = def.state === 'idle' && !m.unblockable && !m.overhead && m.h !== 'low';
@@ -2520,17 +2914,22 @@
     if (guarding) {
       const perf = activeGuard && (simFrame - def.guardFrame <= 10 || def.reflectStanceF > 0);
       const guardMax = def.id === 'p1' && PROG.equippedGear === 'kasa' ? 4 : 3;
-      // Ice Passive: Chilled/slowed enemies take increased guard wear!
+      // Guard Poise System: heavy blocks drain poise -> GUARD SHATTER!
       const chillWear = def.statuses.chill ? 1 : 0;
+      const poiseMult = (m.wep && wSpec.perk === 'naginata_chip') ? 1.6 : ((m.wep && wSpec.perk === 'cleaver_crush') || m.guardCrush ? 1.85 : 1.0);
+      const poiseLoss = perf ? 0 : Math.round((12 + m.dmg * 0.22) * poiseMult * (chillWear ? 1.25 : 1));
+      if (!perf) def.poise = Math.max(0, def.poise - poiseLoss);
       const wearAdd = ((m.wep && wSpec.perk === 'cleaver_crush') || m.guardCrush ? 2 : 1) + chillWear;
       if (!perf && (m.crit || m.wep || m.overhead || m.guardCrush || chillWear)) def.guardWear += wearAdd;
-      if (!perf && def.guardWear >= guardMax && (m.crit || m.overhead || m.dmg >= 84 || m.guardCrush || wSpec.perk === 'cleaver_crush')) {
-        def.guardWear = 0;
-        def.state = 'hitstun'; def.sf = 0; def.stun = 34; def.vx = atk.facing * 12;
+      const poiseBroken = !perf && (def.poise <= 0 || (def.guardWear >= guardMax && (m.crit || m.overhead || m.dmg >= 84 || m.guardCrush || wSpec.perk === 'cleaver_crush')));
+      if (poiseBroken) {
+        def.guardWear = 0; def.poise = def.maxPoise;
+        def.state = 'hitstun'; def.sf = 0; def.stun = 38; def.vx = atk.facing * 12.5;
         if (atk.id === 'p1') match.p1WallSplats++;
-        sfx.headHit(); haptic('heavy'); hitstop = 5; shake = Math.max(shake, 12 * settings.feedback);
-        spawnSparks(ix, iy, '#ffd84a', '#ffffff', 1.5);
-        pushCallout('GUARD BREAK!', '#ffd84a', def.x, def.y - 196);
+        sfx.headHit(); haptic('heavy'); hitstop = 6; slowMoFrames = Math.max(slowMoFrames, 8);
+        shake = Math.max(shake, 14 * settings.feedback);
+        spawnSparks(ix, iy, '#ffd84a', '#ffffff', 1.7);
+        pushCallout('GUARD SHATTER!', '#ffd84a', def.x, def.y - 200);
         return;
       }
       def.state = rel.down ? 'block_low' : 'block_high'; def.sf = 0; def.stun = m.bs;
@@ -2549,7 +2948,14 @@
       def.mirrorF = 95;
       if (perf) {
         def.guardWear = 0; def.reflectStanceF = 0;
+        def.poise = Math.min(def.maxPoise, def.poise + 24);
         pushCallout('PERFECT PARRY!', '#9cf4ff', def.x, def.y - 182);
+        // Sai Class Perk: Perfect Parry against a weapon disarms the opponent!
+        if (!isProj && !def.disarmed && defWSpec.perk === 'sai_flow' && m.wep && !atk.disarmed) {
+          atk.disarmed = true;
+          droppedWeapons.push({ owner: atk.id, x: atk.x, y: atk.y - 105, vx: def.facing * 8.5, vy: -10.5, rot: 0, vrot: def.facing * 0.34, wType: wSpec.wType, el: atk.el, grounded: false });
+          pushCallout('SAI DISARM!', '#fde047', atk.x, atk.y - 216);
+        }
         if (def.el.frostParry && !isProj) { atk.freezeRec = 18; applyStatus(atk, 'chill'); pushCallout('PERMAFROST PARRY!', '#7cf2ff', def.x, def.y - 210); }
       }
       if (def.id === 'p2' && match.boss && !isProj) {
@@ -2568,6 +2974,7 @@
     if (def.invisible) { def.invisible = false; pushCallout('VEIL BROKEN!', '#c4b5fd', def.x, def.y - 190); }
 
     let mult = atk.id === 'p1' ? p1DmgMult() : (match.boss ? (match.boss.dmgMult || 1) : 1);
+    if (atk.phase2) mult *= 1.12;
     if (def.id === 'p2' && match.boss && match.boss.defMult) mult /= match.boss.defMult;
     let crit = m.crit;
     if (atk.id === 'p1' && isProj && m.crit) mult *= p1FlowMult();
@@ -2585,8 +2992,10 @@
 
     if (!isProj && def.state === 'attack' && def.move) {
       if (def.sf < def.ms) {
-        mult *= (m.wep && wSpec.perk === 'katana_counter') ? 1.27 : 1.15;
-        pushCallout('COUNTER HIT!', '#38f2ff', def.x, def.y - 188);
+        const isKatana = Boolean(m.wep && wSpec.perk === 'katana_counter');
+        mult *= isKatana ? 1.38 : 1.25;
+        slowMoFrames = Math.max(slowMoFrames, 4);
+        pushCallout(isKatana ? 'IAIJUTSU COUNTER!' : 'LETHAL COUNTER!', isKatana ? '#ffe066' : '#38f2ff', def.x, def.y - 194);
       } else if (def.sf >= def.ms + def.ma) {
         mult *= 1.18;
         pushCallout('WHIFF PUNISH!', '#fde047', def.x, def.y - 188);
@@ -2621,15 +3030,17 @@
     const isHeavyStrike = Boolean(crit || m.kd || m.wep || m.heavyHit || m.dmg >= 78);
     const isLauncherHit = Boolean(m.launcher || (m.ly && m.ly <= -9.5));
 
-    // 1) SHATTER: Heavy hit on Frozen or Stone-Crushed enemy (+30% dmg + explosion + wall launch!)
-    if (isHeavyStrike && (def.statuses.chill || def.statuses.crush)) {
-      const wasIce = Boolean(def.statuses.chill);
+    // 1) SHATTER / CRYO PRISON SHATTER: Heavy hit on Cryo-Caged, Frozen, or Stone-Crushed enemy!
+    if (isHeavyStrike && (def.frozenPrisonF > 0 || def.statuses.chill || def.statuses.crush)) {
+      const wasCage = def.frozenPrisonF > 0;
+      const wasIce = wasCage || Boolean(def.statuses.chill);
+      def.frozenPrisonF = 0;
       delete def.statuses.chill; delete def.statuses.crush;
-      mult *= 1.30; extraKb += 8.5; extraLy -= 4.0;
+      mult *= wasCage ? 1.35 : 1.30; extraKb += 8.5; extraLy -= 4.0;
       if (atk.id === 'p1') match.p1Reactions++;
       sfx.slam(); shake = Math.max(shake, 16 * settings.feedback);
-      spawnSparks(ix, iy, wasIce ? '#78eeff' : '#e8b038', '#ffffff', 2.1, true);
-      pushCallout('SHATTER! +30%', wasIce ? '#78eeff' : '#fde047', def.x, def.y - 224);
+      spawnSparks(ix, iy, wasIce ? '#78eeff' : '#e8b038', '#ffffff', 2.2, true);
+      pushCallout(wasCage ? 'CRYO SHATTER! +35%' : 'SHATTER! +30%', wasIce ? '#78eeff' : '#fde047', def.x, def.y - 226);
     }
     // 2) ELECTRO-CHARGE: Any Lightning attack hitting Soaked enemy -> arcing electric stun!
     if ((atk.el.id === 'lightning' || m.microStun) && def.statuses.soaked) {
@@ -2688,8 +3099,9 @@
     atk.magic = Math.min(100, atk.magic + (m.mg + saiBonus) * fireFlow * (atk.id === 'p1' ? p1FlowMult() : 1));
     def.magic = Math.min(100, def.magic + Math.round(m.mg * 0.72 * (def.id === 'p1' ? p1FlowMult() : 1)));
     if (m.wep && wSpec.perk === 'sickle_drain') {
-      const drained = Math.min(6, def.magic);
+      const drained = Math.min(14, def.magic);
       def.magic -= drained; atk.magic = Math.min(100, atk.magic + drained);
+      def.x += (atk.x >= def.x ? 1 : -1) * Math.min(34, Math.abs(atk.x - def.x) * 0.25);
     }
     if (m.lifeDrain && atk.hp > 0) {
       atk.hp = Math.min(atk.maxHp, atk.hp + Math.round(dmg * 0.45));
@@ -2697,6 +3109,7 @@
     }
     if (m.elStatus) applyStatus(def, atk.el.status);
     if (m.rootF) applyStatus(def, 'rooted', m.rootF);
+    if (m.freezePrison) { def.frozenPrisonF = 72; applyStatus(def, 'chill', 160); }
 
     // ===== WEAPON DISARMING (SF2 SHOCK! on critical HEAD HIT late in a combo!) =====
     if (isHeadHit && crit && cCount >= 3 && !def.disarmed && def.hp > 0) {
@@ -2758,11 +3171,21 @@
     if (heavy) spawnDust(def.x, GROUND_Y, atk.facing, 10, atk.el.glow);
   }
 
-  // ===== CAMPAIGN BOSS RULES & UNIQUE ARENA HAZARDS =====
+  // ===== CAMPAIGN BOSS RULES, PHASE-2 AWAKENING & UNIQUE ARENA HAZARDS =====
   function tickBossRules(canFight) {
     if (stormFlashFrames > 0) stormFlashFrames--;
     if (!canFight || !match.boss || p2.state === 'ko' || p2.state === 'victory') return;
     p2.bossTimer++;
+    // Boss Phase-2 Awakening ("Eclipse Surge") below 45% HP in Round 2+ / decisive rounds!
+    if (!p2.phase2Used && p2.hp > 0 && p2.hp / p2.maxHp < 0.45 && (match.round >= 2 || match.p1W >= 2)) {
+      p2.phase2 = true; p2.phase2Used = true; p2.inv = 26; p2.avatarFlash = 38;
+      p2.poise = p2.maxPoise; p2.magic = Math.min(100, p2.magic + 45);
+      p1.vx = (p1.x >= p2.x ? 1 : -1) * 18;
+      sfx.gong(); sfx.ultimate(); haptic('heavy');
+      slowMoFrames = 18; dramaticZoom = 0.10; shake = Math.max(shake, 18 * settings.feedback);
+      spawnSparks(p2.x, p2.y - 110, '#f4432a', '#fde047', 2.4);
+      showBanner('ECLIPSE SURGE!', `${match.boss.title} AWAKENED`, '#ff6a3a', 64, true);
+    }
     const rule = match.boss.ruleId;
     const hazard = match.boss.hazardId;
     const dist = Math.abs(p1.x - p2.x);
@@ -3090,6 +3513,34 @@
       if (slowMoTick % 3 !== 0) return;
     }
     if (hitstop > 0) { hitstop--; updateParticles(); return; }
+    if (bladeClashCd > 0) bladeClashCd--;
+
+    // ===== BLADE-LOCK WEAPON CLASH MINIGAME =====
+    if (bladeClash) {
+      bladeClash.f--;
+      dramaticZoom = 0.14;
+      const aiPush = (match.boss ? 1.55 : 1.15) * (p2.phase2 ? 1.25 : 1);
+      if (simFrame % 6 === 0) bladeClash.meter = Math.max(-100, bladeClash.meter - aiPush * 4.5);
+      if (simFrame % 3 === 0) {
+        const mx = (p1.x + p2.x) * 0.5, my = Math.min(p1.y, p2.y) - 115;
+        spawnSparks(mx, my, '#fde047', '#ffffff', 1.15);
+      }
+      updateParticles();
+      if (bladeClash.f <= 0 || Math.abs(bladeClash.meter) >= 100) {
+        const p1Won = bladeClash.meter >= 0;
+        const winF = p1Won ? p1 : p2, loseF = p1Won ? p2 : p1;
+        bladeClash = null; bladeClashCd = 180;
+        winF.state = 'idle'; winF.sf = 0; winF.move = null; winF.magic = Math.min(100, winF.magic + 25);
+        loseF.state = 'knockdown_air'; loseF.sf = 0; loseF.move = null;
+        loseF.vx = (loseF.x >= winF.x ? 1 : -1) * 18.5; loseF.vy = -10.5;
+        loseF.hp = Math.max(1, loseF.hp - 58); loseF.poise = Math.max(0, loseF.poise - 45);
+        if (p1Won) match.p1Clashes++;
+        sfx.slam(); sfx.gong(); haptic('heavy'); shake = Math.max(shake, 18 * settings.feedback);
+        spawnSparks((p1.x + p2.x) * 0.5, GROUND_Y - 115, winF.el.glow, '#ffffff', 2.4);
+        pushCallout(p1Won ? 'CLASH VICTORY!' : 'CLASH BROKEN!', p1Won ? '#fde047' : '#ff6b4a', winF.x, winF.y - 205);
+      }
+      return;
+    }
 
     if (match.banner) { match.banner.f--; if (match.banner.f <= 0) match.banner = null; }
     for (let i = match.callouts.length - 1; i >= 0; i--) {
@@ -3148,14 +3599,24 @@
       }
     }
 
-    // Melee Hitbox Checks (supports Nunchaku 2-hit flurries, Projectile Deflection, Rock Walls, & Shadow Decoy Clones!)
+    // Melee Hitbox Checks (+ Blade-Lock Weapon Clash, Nunchaku Deflect, Rock Walls, Shadow Decoys!)
     if (canFight) {
+      const hb1 = getHitbox(p1), hb2 = getHitbox(p2);
+      if (hb1 && hb2 && bladeClashCd <= 0 && p1.move && p1.move.wep && p2.move && p2.move.wep && !p1.disarmed && !p2.disarmed && rectsHit(hb1, hb2)) {
+        bladeClash = { f: 72, max: 72, meter: 0 };
+        p1.hitDone = true; p2.hitDone = true;
+        sfx.guard(true); sfx.gong(); haptic('heavy'); shake = Math.max(shake, 14 * settings.feedback);
+        spawnSparks((p1.x + p2.x) * 0.5, Math.min(p1.y, p2.y) - 118, '#fde047', '#ffffff', 2.2);
+        pushCallout('BLADE CLASH! TAP FAST!', '#fde047', (p1.x + p2.x) * 0.5, Math.min(p1.y, p2.y) - 210);
+        return;
+      }
       [[p1, p2], [p2, p1]].forEach(([a, d]) => {
         const hb = getHitbox(a);
         if (!hb) return;
 
-        // 1) Heavy Super Slash / Weapon Spin DEFLECTS enemy non-ultimate bending waves!
-        if (a.move && a.move.deflects) {
+        // 1) Heavy Super Slash / Weapon Spin / Nunchaku DEFLECTS enemy non-ultimate bending waves!
+        const aWSpec = getWeaponSpec(a);
+        if (a.move && (a.move.deflects || (a.move.wep && !a.disarmed && aWSpec.perk === 'nunchaku_stun'))) {
           for (const b of bendingWaves) {
             if (b.owner !== a.id && !b.ult && !b.hit && !b.deflected && rectsHit(hb, getWaveBox(b))) {
               b.owner = a.id; b.dir = a.facing; b.vx = a.facing * Math.max(15, Math.abs(b.vx) * 1.25);
@@ -3336,8 +3797,13 @@
         continue;
       }
 
-      // Standard / Quick-Bend / Assault Waves (+ Lava Ricochet & Ice Rain vertical motion!)
+      // Standard / Quick-Bend / Assault Waves (+ Ghazan Boomerang Lava Disc & Ice Rain!)
       b.x += b.vx;
+      if (b.boomerang && b.f === Math.floor(b.max * 0.48)) {
+        b.vx = -b.vx * 1.05; b.dir = -b.dir; b.hit = false;
+        spawnHazard(a, b.x);
+        spawnSparks(b.x, b.y, '#ff7014', '#ffe478', 1.3);
+      }
       if (b.vy) {
         b.y += b.vy;
         if (b.y >= GROUND_Y) {
@@ -3356,6 +3822,15 @@
       if (canFight && !b.hit) {
         const box = getWaveBox(b);
         if (d.inv <= 0 && d.state !== 'ko' && d.state !== 'grabbed' && rectsHit(box, getHurtbox(d))) {
+          // Katara's Octopus Form intercepts & deflects enemy projectiles automatically!
+          if (!b.ult && !b.deflected && d.octopusF > 0 && Math.abs(b.vx) > 0) {
+            b.owner = d.id; b.dir = d.facing; b.vx = d.facing * Math.max(16, Math.abs(b.vx) * 1.18);
+            b.deflected = true; b.f = Math.max(b.f, 22);
+            if (d.id === 'p1') match.p1Clashes++;
+            sfx.guard(true); hitstop = 4; spawnSparks(b.x, b.y, '#38d8ff', '#ffffff', 1.6);
+            pushCallout('OCTOPUS INTERCEPT!', '#7cf2ff', d.x, d.y - 192);
+            continue;
+          }
           // Perfect Parry / Redirecting Stance DEFLECTS non-ultimate projectiles back at caster!
           const dRel = relDir(d);
           const dParry = !b.ult && !b.deflected && (d.reflectStanceF > 0 || ((d.held.has('block') || dRel.back) && simFrame - d.guardFrame <= 10));
@@ -3373,7 +3848,7 @@
             dmg: b.dmg, chip: Math.round(b.dmg * 0.24), hs: b.ult ? 34 : 22, bs: b.ult ? 18 : 12,
             stop: b.ult ? 6 : 4, kb: b.ult ? 15.5 : 10.5, ly: b.ly, kd: b.ult || b.ly < -8,
             crit: b.ult || b.heavyHit, launcher: b.launcher, guardCrush: b.guardCrush,
-            microStun: b.microStun, pullTo: b.pullTo, rootF: b.rootF, lifeDrain: b.lifeDrain, heavyHit: b.heavyHit,
+            microStun: b.microStun, pullTo: b.pullTo, rootF: b.rootF, freezePrison: b.freezePrison, lifeDrain: b.lifeDrain, heavyHit: b.heavyHit,
             h: b.low ? 'low' : 'mid', elStatus: true, mg: b.ult ? 0 : 8
           }, d.x, d.y - 100, true);
         }
@@ -3401,16 +3876,16 @@
       }
     }
 
-    // Update Floor Hazards (Magma Pools & Frozen Floor; Lava Passive is immune to floor hazards!)
+    // Update Floor Hazards (Magma Pools & Frozen Floor; Lava Passive & Air Scooter hover safely above hazards!)
     for (let i = hazards.length - 1; i >= 0; i--) {
       const h = hazards[i]; h.f--; h.t++;
       if (canFight && h.t % 20 === 0) {
         const tgt = h.owner === 'p1' ? p2 : p1;
-        if (tgt.y >= GROUND_Y - 1 && tgt.inv <= 0 && Math.abs(tgt.x - h.x) < h.hw + 14 && tgt.el.id !== 'lava') {
+        if (tgt.y >= GROUND_Y - 1 && tgt.inv <= 0 && tgt.airScooterF <= 0 && Math.abs(tgt.x - h.x) < h.hw + 14 && tgt.el.id !== 'lava') {
           if (h.kind === 'ice') {
             applyStatus(tgt, 'chill', 140);
           } else {
-            tgt.hp = Math.max(1, tgt.hp - 18); applyStatus(tgt, 'scorched');
+            tgt.hp = Math.max(1, tgt.hp - 18); tgt.poise = Math.max(0, tgt.poise - 10); applyStatus(tgt, 'scorched');
             spawnSparks(tgt.x, GROUND_Y - 14, '#ff4514', '#ffe478', 0.8);
           }
         }
@@ -3587,12 +4062,15 @@
     targetCtx.restore();
   }
 
-  // ===== COHESIVE VISUAL PIPELINE: 4 HAND-PAINTED SUMI-E MASTER CANVASES + 8 ELEMENTAL REALMS =====
+  // ===== COHESIVE VISUAL PIPELINE: 7 HAND-PAINTED NANO BANANA SUMI-E ARENAS + 8 ELEMENTAL REALMS =====
   const ART = {
     dojo: new Image(),
     tidal: new Image(),
     sky: new Image(),
     frozen: new Image(),
+    iron: new Image(),
+    storm: new Image(),
+    eclipse: new Image(),
     worldMap: new Image()
   };
   let washiPattern = null;
@@ -3618,15 +4096,19 @@
     buildBackdrop();
     if (storyState && !storyOverlay.classList.contains('hidden')) renderStoryStep();
   };
-  ['dojo', 'tidal', 'sky', 'frozen'].forEach(k => { ART[k].onload = onArenaImgLoad; });
+  ['dojo', 'tidal', 'sky', 'frozen', 'iron', 'storm', 'eclipse'].forEach(k => { ART[k].onload = onArenaImgLoad; });
   ART.worldMap.onload = () => { if (!campaignModal.classList.contains('hidden')) drawWorldMapCanvas(); };
   ART.dojo.src = 'assets/arena_blazing_dojo.webp';
   ART.tidal.src = 'assets/arena_tidal_shrine.webp';
   ART.sky.src = 'assets/arena_sky_monastery.webp';
   ART.frozen.src = 'assets/arena_frozen_peak.webp';
+  ART.iron.src = 'assets/arena_iron_mountain.webp';
+  ART.storm.src = 'assets/arena_storm_spire.webp';
+  ART.eclipse.src = 'assets/arena_eclipse_citadel.webp';
   ART.worldMap.src = 'assets/world_map.webp';
 
   function getActiveBiome() {
+    if (match.inMenu) return 'eclipse_sanctum';
     if (match.boss && match.boss.hazardId) return match.boss.hazardId;
     return themeIdx === 0 ? 'blazing_dojo' : themeIdx === 1 ? 'dew_shrine' : 'eclipse_sanctum';
   }
@@ -3643,44 +4125,32 @@
 
   function getPaintedSpec(biome) {
     if (biome === 'blazing_dojo' || biome === 'ember_updraft') {
-      return { img: ART.dojo, flip: false, mist: 'rgba(255,236,192,0.22)', rim: 'rgba(255,216,144,0.38)', floorTint: 'rgba(18,10,5,0.46)' };
+      return { img: ART.dojo, flip: false, mist: 'rgba(255,236,192,0.20)', rim: 'rgba(255,216,144,0.38)', floorTint: 'rgba(18,10,5,0.44)' };
     }
     if (biome === 'dew_shrine') {
-      return { img: ART.tidal, flip: false, mist: 'rgba(232,250,248,0.20)', rim: 'rgba(196,242,240,0.42)', floorTint: 'rgba(10,16,18,0.44)' };
+      return { img: ART.tidal, flip: false, mist: 'rgba(232,250,248,0.18)', rim: 'rgba(196,242,240,0.42)', floorTint: 'rgba(10,16,18,0.42)' };
     }
     if (biome === 'gale_tailwind') {
-      return { img: ART.sky, flip: false, mist: 'rgba(242,252,244,0.20)', rim: 'rgba(208,242,226,0.40)', floorTint: 'rgba(12,17,15,0.42)' };
+      return { img: ART.sky, flip: false, mist: 'rgba(242,252,244,0.18)', rim: 'rgba(208,242,226,0.40)', floorTint: 'rgba(12,17,15,0.40)' };
     }
     if (biome === 'glacier_floor') {
-      return { img: ART.frozen, flip: false, mist: 'rgba(232,248,255,0.22)', rim: 'rgba(190,238,255,0.48)', floorTint: 'rgba(10,16,22,0.45)' };
+      return { img: ART.frozen, flip: false, mist: 'rgba(232,248,255,0.20)', rim: 'rgba(190,238,255,0.46)', floorTint: 'rgba(10,16,22,0.44)' };
     }
     if (biome === 'seismic_tremor') {
-      return {
-        img: ART.sky, flip: true,
-        glaze: ['rgba(176,112,42,0.42)', 'rgba(232,174,88,0.28)', 'rgba(122,74,28,0.34)'],
-        mist: 'rgba(252,228,176,0.26)', rim: 'rgba(244,196,116,0.48)', floorTint: 'rgba(24,15,8,0.52)', kind: 'earth'
-      };
+      return { img: ART.iron, flip: false, mist: 'rgba(252,226,174,0.20)', rim: 'rgba(244,196,116,0.46)', floorTint: 'rgba(24,14,8,0.46)', kind: 'earth' };
     }
     if (biome === 'storm_spire') {
-      return {
-        img: ART.frozen, flip: true,
-        glaze: ['rgba(30,46,78,0.52)', 'rgba(84,122,172,0.24)', 'rgba(22,34,58,0.44)'],
-        mist: 'rgba(204,228,252,0.28)', rim: 'rgba(164,212,255,0.48)', floorTint: 'rgba(10,14,22,0.54)', kind: 'storm'
-      };
+      return { img: ART.storm, flip: false, mist: 'rgba(208,232,252,0.22)', rim: 'rgba(164,212,255,0.48)', floorTint: 'rgba(10,14,22,0.48)', kind: 'storm' };
     }
     if (biome === 'obsidian_caldera') {
       return {
-        img: ART.dojo, flip: true,
-        glaze: ['rgba(128,26,18,0.46)', 'rgba(234,92,28,0.26)', 'rgba(54,14,10,0.45)'],
-        mist: 'rgba(255,198,128,0.24)', rim: 'rgba(255,134,54,0.52)', floorTint: 'rgba(22,8,6,0.56)', kind: 'lava'
+        img: ART.iron, flip: true,
+        glaze: ['rgba(116,22,14,0.52)', 'rgba(236,78,22,0.30)', 'rgba(46,10,8,0.56)'],
+        mist: 'rgba(255,186,114,0.22)', rim: 'rgba(255,124,42,0.55)', floorTint: 'rgba(22,7,5,0.54)', kind: 'lava'
       };
     }
-    // eclipse_sanctum / avatar_convergence
-    return {
-      img: ART.dojo, flip: false,
-      glaze: ['rgba(94,16,32,0.48)', 'rgba(210,74,56,0.24)', 'rgba(34,10,18,0.46)'],
-      mist: 'rgba(255,212,174,0.22)', rim: 'rgba(255,148,104,0.48)', floorTint: 'rgba(18,8,10,0.54)', kind: 'eclipse'
-    };
+    // eclipse_sanctum / avatar_convergence / Main Menu (Crimson Maple Dusk Veranda)
+    return { img: ART.eclipse, flip: false, mist: 'rgba(255,212,170,0.16)', rim: 'rgba(255,170,112,0.42)', floorTint: 'rgba(18,8,8,0.40)', kind: 'eclipse' };
   }
 
   function renderBiomeBackdrop(g, biome) {
@@ -3694,7 +4164,7 @@
       g.drawImage(spec.img, 0, 0, W, H);
       g.restore();
 
-      // Painterly atmospheric color glaze for Iron Mountain, Storm Spire, Caldera, Eclipse Citadel
+      // Painterly volcanic multiply glaze for Obsidian Caldera
       if (spec.glaze) {
         g.save();
         g.globalCompositeOperation = 'multiply';
@@ -3704,27 +4174,16 @@
         g.restore();
       }
 
-      // Bespoke painted celestial/landmark accents integrated seamlessly into the sky opening
-      if (spec.kind === 'eclipse') {
+      if (spec.kind === 'lava') {
         g.save();
-        const cor = g.createRadialGradient(W * 0.5, 295, 76, W * 0.5, 295, 240);
-        cor.addColorStop(0, 'rgba(255, 134, 62, 0.85)'); cor.addColorStop(0.45, 'rgba(220, 56, 46, 0.35)'); cor.addColorStop(1, 'rgba(0,0,0,0)');
-        g.fillStyle = cor; g.beginPath(); g.arc(W * 0.5, 295, 240, 0, Math.PI * 2); g.fill();
-        g.strokeStyle = '#ff9852'; g.lineWidth = 6;
-        g.beginPath(); g.arc(W * 0.5, 295, 92, 0, Math.PI * 2); g.stroke();
-        g.fillStyle = '#0d070a'; g.beginPath(); g.arc(W * 0.5, 295, 88, 0, Math.PI * 2); g.fill();
-        g.restore();
-      } else if (spec.kind === 'storm') {
-        g.save();
-        const rift = g.createRadialGradient(W * 0.5, 290, 24, W * 0.5, 310, 320);
-        rift.addColorStop(0, 'rgba(226, 244, 255, 0.58)'); rift.addColorStop(0.55, 'rgba(130, 178, 228, 0.22)'); rift.addColorStop(1, 'rgba(0,0,0,0)');
-        g.fillStyle = rift; g.fillRect(180, 90, W - 360, GROUND_Y - 90);
-        g.restore();
-      } else if (spec.kind === 'lava') {
-        g.save();
-        const glow = g.createLinearGradient(0, 340, 0, GROUND_Y);
-        glow.addColorStop(0, 'rgba(255,100,24,0)'); glow.addColorStop(0.75, 'rgba(255,112,32,0.22)'); glow.addColorStop(1, 'rgba(255,152,58,0.34)');
-        g.fillStyle = glow; g.fillRect(0, 340, W, GROUND_Y - 340);
+        const glow = g.createLinearGradient(0, 320, 0, GROUND_Y);
+        glow.addColorStop(0, 'rgba(255,92,20,0)'); glow.addColorStop(0.7, 'rgba(255,102,28,0.24)'); glow.addColorStop(1, 'rgba(255,148,54,0.42)');
+        g.fillStyle = glow; g.fillRect(0, 320, W, GROUND_Y - 320);
+        // Glowing magma fissure veins along canyon cliffs
+        g.strokeStyle = 'rgba(255,150,48,0.72)'; g.lineWidth = 3.2;
+        [[260, 420, 340, 560], [520, 460, 495, 575], [880, 430, 935, 570], [1040, 465, 1005, 575]].forEach(([x1, y1, x2, y2]) => {
+          g.beginPath(); g.moveTo(x1, y1); g.quadraticCurveTo((x1 + x2) * 0.5 + 16, (y1 + y2) * 0.5, x2, y2); g.stroke();
+        });
         g.restore();
       }
 
@@ -5009,18 +5468,19 @@
     if (f.invisible) ctx.globalAlpha = 0.16;
     const isInvuln = f.inv > 0;
     const invPulse = isInvuln ? 1.0 + Math.abs(Math.sin(f.sf * 0.7)) * 0.65 : 1.0;
-    const soulGlow = f.id === 'p1' ? (0.45 + Math.min(8, PROG.unlockedElements.length) * 0.11 + (PROG.avatarUnlocked ? 0.35 : 0)) : 1.0;
-    const boost = (f.avatarFlash > 0 || f.magic >= 100 ? 1.38 : 1.0) * invPulse * soulGlow;
-    const rimCol = (f.flash > 0 || f.avatarFlash > 0 || (isInvuln && f.sf % 4 < 2)) ? '#ffffff' : (isInvuln ? '#8ef5ff' : (f.rockArmorF > 0 ? '#f5ba42' : f.el.glow));
+    const soulGlow = f.id === 'p1' ? (0.45 + Math.min(8, PROG.unlockedElements.length) * 0.11 + (PROG.avatarUnlocked ? 0.35 : 0)) : (f.phase2 ? 1.35 : 1.0);
+    const boost = (f.avatarFlash > 0 || f.magic >= 100 || f.phase2 ? 1.38 : 1.0) * invPulse * soulGlow;
+    const rimCol = (f.flash > 0 || f.avatarFlash > 0 || (isInvuln && f.sf % 4 < 2)) ? '#ffffff' : (f.phase2 ? '#ff6a32' : (isInvuln ? '#8ef5ff' : (f.rockArmorF > 0 ? '#f5ba42' : f.el.glow)));
+    const airHoverY = f.airScooterF > 0 ? -24 + Math.sin(simFrame * 0.35) * 4 : 0;
     if (settings.vfx !== 'low') {
       ctx.shadowColor = rimCol;
       ctx.shadowBlur = (settings.vfx === 'high' ? 11 : 6) * boost;
-      ctx.drawImage(silBuf, f.x + jx - 240, f.y - 330);
+      ctx.drawImage(silBuf, f.x + jx - 240, f.y + airHoverY - 330);
     } else {
       ctx.shadowBlur = 0;
-      const rimAlpha = (f.invisible ? 0.16 : 0.74) * Math.min(1, 0.75 + boost * 0.25);
-      drawTintedRim(ctx, f.x + jx - 240, f.y - 330, rimCol, boost > 1.2 ? 2.6 : 2.0, rimAlpha);
-      ctx.drawImage(silBuf, f.x + jx - 240, f.y - 330);
+      const rimAlpha = (f.invisible ? 0.16 : 0.76) * Math.min(1, 0.75 + boost * 0.25);
+      drawTintedRim(ctx, f.x + jx - 240, f.y + airHoverY - 330, rimCol, boost > 1.2 ? 2.6 : 2.0, rimAlpha);
+      ctx.drawImage(silBuf, f.x + jx - 240, f.y + airHoverY - 330);
     }
     ctx.restore();
 
@@ -5038,9 +5498,69 @@
       ctx.restore();
     }
 
-    // Visual Elemental Status Effects Directly on Silhouette (no floating text words!)
+    // Live ATLA Signature Bending Visuals + Status Effects Directly on Silhouette
     if (f.state !== 'ko') {
       ctx.save();
+      // 1) Katara's Octopus Form: 8 swirling animated water tentacles around fighter!
+      if (f.octopusF > 0) {
+        const fade = Math.min(1, f.octopusF / 24);
+        ctx.globalAlpha = 0.86 * fade;
+        for (let t = 0; t < 8; t++) {
+          const ang = (t / 8) * Math.PI * 2 + simFrame * 0.08;
+          const ox = f.x + Math.cos(ang) * 26, oy = f.y - 98 + Math.sin(ang) * 32;
+          const tipX = f.x + Math.cos(ang + Math.sin(simFrame * 0.16 + t) * 0.42) * 96;
+          const tipY = f.y - 98 + Math.sin(ang + Math.cos(simFrame * 0.14 + t) * 0.38) * 76;
+          ctx.strokeStyle = '#1498e8'; ctx.lineWidth = 9; ctx.lineCap = 'round';
+          ctx.beginPath(); ctx.moveTo(ox, oy); ctx.quadraticCurveTo((ox + tipX) * 0.5, (oy + tipY) * 0.5 - 14, tipX, tipY); ctx.stroke();
+          ctx.strokeStyle = '#d8fbff'; ctx.lineWidth = 2.6; ctx.stroke();
+        }
+      }
+      // 2) Aang's Air Scooter: spinning translucent glowing wind sphere beneath feet!
+      if (f.airScooterF > 0) {
+        const sy = f.y - 18 + Math.sin(simFrame * 0.35) * 3;
+        const sg = ctx.createRadialGradient(f.x, sy, 4, f.x, sy, 32);
+        sg.addColorStop(0, 'rgba(240,255,250,0.85)'); sg.addColorStop(0.65, 'rgba(94,255,200,0.42)'); sg.addColorStop(1, 'rgba(94,255,200,0)');
+        ctx.fillStyle = sg; ctx.beginPath(); ctx.arc(f.x, sy, 32, 0, Math.PI * 2); ctx.fill();
+        ctx.strokeStyle = '#b4ffe8'; ctx.lineWidth = 2.2;
+        for (let k = 0; k < 3; k++) {
+          const a = simFrame * 0.28 + k * 2.1;
+          ctx.beginPath(); ctx.arc(f.x, sy, 22 - k * 4, a, a + 2.4); ctx.stroke();
+        }
+      }
+      // 3) Sozin's Jet-Step: roaring twin foot flame plumes!
+      if (f.fireJetF > 0) {
+        ctx.globalAlpha = 0.9;
+        for (let k = 0; k < 2; k++) {
+          const fx = f.x - f.facing * (14 + k * 14), fy = f.y - 20 - k * 12;
+          ctx.fillStyle = '#ff6a14';
+          ctx.beginPath(); ctx.moveTo(fx, fy - 12); ctx.lineTo(fx - f.facing * 72, fy + 8); ctx.lineTo(fx, fy + 16); ctx.closePath(); ctx.fill();
+          ctx.fillStyle = '#fff3b0';
+          ctx.beginPath(); ctx.moveTo(fx, fy - 5); ctx.lineTo(fx - f.facing * 42, fy + 4); ctx.lineTo(fx, fy + 8); ctx.closePath(); ctx.fill();
+        }
+      }
+      // 4) Toph's Seismic Sense: expanding sonar wave rings along the arena floor!
+      if (f.seismicWaveF > 0) {
+        const prog = 1 - f.seismicWaveF / 28;
+        ctx.strokeStyle = '#f8f2d8'; ctx.lineWidth = 3.2 * (1 - prog * 0.6); ctx.globalAlpha = 0.85 * (1 - prog);
+        ctx.beginPath(); ctx.ellipse(f.x, GROUND_Y + 1, 34 + prog * 460, 10 + prog * 18, 0, 0, Math.PI * 2); ctx.stroke();
+        ctx.strokeStyle = '#e8b038'; ctx.lineWidth = 1.8;
+        ctx.beginPath(); ctx.ellipse(f.x, GROUND_Y + 1, 18 + prog * 310, 6 + prog * 12, 0, 0, Math.PI * 2); ctx.stroke();
+      }
+      // 5) Katara's Cryo Prison: faceted translucent Ice Crystal Cage encasing fighter!
+      if (f.frozenPrisonF > 0) {
+        ctx.globalAlpha = 0.68;
+        ctx.fillStyle = 'rgba(130, 240, 255, 0.34)'; ctx.strokeStyle = '#e6fcff'; ctx.lineWidth = 2.4;
+        ctx.beginPath();
+        ctx.moveTo(f.x - 42, GROUND_Y + 2); ctx.lineTo(f.x - 48, f.y - 115); ctx.lineTo(f.x - 16, f.y - 182);
+        ctx.lineTo(f.x + 18, f.y - 188); ctx.lineTo(f.x + 48, f.y - 112); ctx.lineTo(f.x + 40, GROUND_Y + 2);
+        ctx.closePath(); ctx.fill(); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(f.x - 16, f.y - 182); ctx.lineTo(f.x + 8, f.y - 84); ctx.lineTo(f.x + 40, GROUND_Y); ctx.stroke();
+      }
+      // 6) Boss Phase-2 Eclipse Surge aura ring
+      if (f.phase2) {
+        ctx.strokeStyle = '#ff6228'; ctx.lineWidth = 2.2; ctx.globalAlpha = 0.55 + Math.sin(simFrame * 0.22) * 0.2;
+        ctx.beginPath(); ctx.ellipse(f.x, GROUND_Y + 2, 68 + Math.sin(simFrame * 0.18) * 8, 12, 0, 0, Math.PI * 2); ctx.stroke();
+      }
       if (f.statuses.burn || f.statuses.scorched) {
         for (let k = 0; k < 3; k++) {
           const fx = f.x + Math.sin(simFrame * 0.25 + k * 2.1) * 24;
@@ -5069,8 +5589,13 @@
         ctx.beginPath(); ctx.ellipse(f.x, f.y - 96, 46, 72, 0, 0, Math.PI * 2); ctx.stroke();
       }
       if (f.reflectStanceF > 0) {
-        ctx.strokeStyle = '#9cf4ff'; ctx.lineWidth = 3; ctx.globalAlpha = 0.82;
-        ctx.beginPath(); ctx.arc(f.x, f.y - 100, 62, 0, Math.PI * 2); ctx.stroke();
+        const isIroh = f.el.id === 'lightning';
+        ctx.strokeStyle = isIroh ? '#ffe878' : '#9cf4ff'; ctx.lineWidth = isIroh ? 3.5 : 3; ctx.globalAlpha = 0.88;
+        ctx.beginPath(); ctx.arc(f.x, f.y - 106, isIroh ? 56 : 62, 0, Math.PI * 2); ctx.stroke();
+        if (isIroh) {
+          ctx.strokeStyle = '#78e2ff'; ctx.lineWidth = 2.4;
+          ctx.beginPath(); ctx.moveTo(f.x - 36, f.y - 118); ctx.quadraticCurveTo(f.x, f.y - 88, f.x + 36, f.y - 118); ctx.stroke();
+        }
       }
       ctx.restore();
     }
@@ -5219,11 +5744,19 @@
         ctx.strokeStyle = 'rgba(202, 232, 255, 0.36)'; ctx.lineWidth = 1.2;
         ctx.beginPath(); ctx.moveTo(rx, ry); ctx.lineTo(rx - 6, ry + 18); ctx.stroke();
       } else {
-        // Eclipse Sanctum / Convergence drifting crimson ink ash
-        const ex = (seed * 17 + Math.sin(simFrame * 0.018 + i) * 40) % W;
-        const ey = GROUND_Y - ((simFrame * 0.95 + seed * 6) % 450);
-        ctx.fillStyle = i % 3 === 0 ? '#ff6a42' : '#1a0c10'; ctx.globalAlpha = 0.56;
-        ctx.beginPath(); ctx.ellipse(ex, ey, 3.6, 1.8, simFrame * 0.04 + i, 0, Math.PI * 2); ctx.fill();
+        // Crimson Japanese Momiji Maple Leaves drifting gently across Eclipse Citadel & Main Menu
+        const ex = (seed * 21 + simFrame * (0.95 + (i % 3) * 0.25) + Math.sin(simFrame * 0.025 + i) * 32) % W;
+        const ey = (seed * 9 + simFrame * (0.85 + (i % 2) * 0.35)) % (GROUND_Y + 35);
+        ctx.save(); ctx.translate(ex, ey); ctx.rotate(simFrame * 0.032 + i * 1.4);
+        ctx.scale(1.05, 0.72 + Math.abs(Math.sin(simFrame * 0.04 + i)) * 0.32);
+        ctx.fillStyle = i % 3 === 0 ? '#c92e20' : (i % 3 === 1 ? '#961c15' : '#e04c2c');
+        ctx.globalAlpha = 0.82;
+        ctx.beginPath();
+        ctx.moveTo(0, -8.5); ctx.lineTo(1.8, -2.5); ctx.lineTo(6.8, -5.0); ctx.lineTo(3.2, -0.4);
+        ctx.lineTo(7.4, 2.6); ctx.lineTo(2.0, 2.2); ctx.lineTo(0.8, 6.2); ctx.lineTo(0, 4.0);
+        ctx.lineTo(-0.8, 6.2); ctx.lineTo(-2.0, 2.2); ctx.lineTo(-7.4, 2.6); ctx.lineTo(-3.2, -0.4);
+        ctx.lineTo(-6.8, -5.0); ctx.lineTo(-1.8, -2.5); ctx.closePath(); ctx.fill();
+        ctx.restore();
       }
     }
     ctx.globalAlpha = 1;
@@ -5306,6 +5839,31 @@
     if (!lastBackdropPainted) {
       drawLantern(60, 290, 0.96, 0);
       drawLantern(W - 56, 290, 0.96, 3.2);
+    }
+
+    // Breakable Corner Braziers (smash opponent into them for +45 Corner Shatter!)
+    if (!match.inMenu && braziers.length) {
+      braziers.forEach((bz, bi) => {
+        ctx.save();
+        if (bz.intact) {
+          const glow = ctx.createRadialGradient(bz.x, GROUND_Y - 58, 4, bz.x, GROUND_Y - 58, 48);
+          glow.addColorStop(0, 'rgba(255,190,82,0.52)'); glow.addColorStop(1, 'rgba(255,90,20,0)');
+          ctx.fillStyle = glow; ctx.beginPath(); ctx.arc(bz.x, GROUND_Y - 58, 48, 0, Math.PI * 2); ctx.fill();
+          ctx.fillStyle = '#120b09'; ctx.strokeStyle = '#c89b52'; ctx.lineWidth = 1.6;
+          ctx.beginPath(); ctx.moveTo(bz.x - 16, GROUND_Y); ctx.lineTo(bz.x - 10, GROUND_Y - 46); ctx.lineTo(bz.x + 10, GROUND_Y - 46); ctx.lineTo(bz.x + 16, GROUND_Y); ctx.closePath(); ctx.fill(); ctx.stroke();
+          ctx.beginPath(); ctx.moveTo(bz.x - 20, GROUND_Y - 46); ctx.lineTo(bz.x + 20, GROUND_Y - 46); ctx.lineTo(bz.x + 14, GROUND_Y - 34); ctx.lineTo(bz.x - 14, GROUND_Y - 34); ctx.closePath(); ctx.fill(); ctx.stroke();
+          const fl = Math.sin(simFrame * 0.25 + bi * 2) * 4;
+          ctx.fillStyle = '#ff6a18';
+          ctx.beginPath(); ctx.moveTo(bz.x - 10, GROUND_Y - 46); ctx.quadraticCurveTo(bz.x + fl * 0.5, GROUND_Y - 76 - fl, bz.x + 10, GROUND_Y - 46); ctx.closePath(); ctx.fill();
+          ctx.fillStyle = '#fff2b0';
+          ctx.beginPath(); ctx.moveTo(bz.x - 5, GROUND_Y - 46); ctx.quadraticCurveTo(bz.x, GROUND_Y - 64 - fl * 0.6, bz.x + 5, GROUND_Y - 46); ctx.closePath(); ctx.fill();
+        } else {
+          ctx.fillStyle = '#140d0a'; ctx.globalAlpha = 0.72;
+          ctx.fillRect(bz.x - 18, GROUND_Y - 6, 14, 6);
+          ctx.fillRect(bz.x + 4, GROUND_Y - 5, 16, 5);
+        }
+        ctx.restore();
+      });
     }
 
     if (ultDimFrames > 0) {
@@ -5442,6 +6000,24 @@
     }
     ctx.restore();
 
+    // Blade-Lock Weapon Clash Tug-of-War Bar (Screen-Space Center)
+    if (bladeClash) {
+      const bw = 340, bh = 22, bx = (W - bw) * 0.5, by = 152;
+      const pct = (bladeClash.meter + 100) / 200;
+      ctx.save();
+      ctx.fillStyle = 'rgba(14,9,7,0.88)'; ctx.strokeStyle = '#e6c07b'; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.roundRect(bx - 4, by - 4, bw + 8, bh + 8, 8); ctx.fill(); ctx.stroke();
+      ctx.fillStyle = '#38d8ff'; ctx.fillRect(bx, by, bw * pct, bh);
+      ctx.fillStyle = '#e23b26'; ctx.fillRect(bx + bw * pct, by, bw * (1 - pct), bh);
+      ctx.fillStyle = '#fff9e6'; ctx.fillRect(bx + bw * pct - 3, by - 4, 6, bh + 8);
+      ctx.font = '800 15px "Palatino Linotype", Georgia, serif'; ctx.textAlign = 'center';
+      ctx.strokeStyle = '#090605'; ctx.lineWidth = 4;
+      ctx.strokeText('BLADE CLASH · TAP ATTACK FAST!', W * 0.5, by - 12);
+      ctx.fillStyle = '#fde047';
+      ctx.fillText('BLADE CLASH · TAP ATTACK FAST!', W * 0.5, by - 12);
+      ctx.restore();
+    }
+
     if (settings.debug) {
       ctx.save(); ctx.font = '12px ui-monospace, monospace'; ctx.fillStyle = '#b8f7ff'; ctx.strokeStyle = '#04070d'; ctx.lineWidth = 3;
       const fm = (f) => f.move ? `${f.moveId}(${f.ms}/${f.ma}/${f.mr})` : f.state.toUpperCase();
@@ -5477,6 +6053,9 @@
     p2Hp: document.getElementById('p2-hp'), p2Trail: document.getElementById('p2-hp-trail'),
     p1Mag: document.getElementById('p1-mag'), p1MagW: document.getElementById('p1-mag-wrap'),
     p2Mag: document.getElementById('p2-mag'), p2MagW: document.getElementById('p2-mag-wrap'),
+    p1Poise: document.getElementById('p1-poise'), p1PoiseW: document.getElementById('p1-poise-wrap'),
+    p2Poise: document.getElementById('p2-poise'), p2PoiseW: document.getElementById('p2-poise-wrap'),
+    wepBtnIco: document.getElementById('weapon-btn-ico'),
     p1Badges: document.getElementById('p1-badges'), p2Badges: document.getElementById('p2-badges'),
     p1Jewels: document.getElementById('p1-jewels'), p2Jewels: document.getElementById('p2-jewels'),
     timer: document.getElementById('timer'), c1: document.getElementById('combo-p1'), c2: document.getElementById('combo-p2'),
@@ -5485,9 +6064,9 @@
     btnMag: document.getElementById('btn-magic'), magIcon: document.getElementById('magic-icon'),
     btnNextBoss: document.getElementById('btn-next-boss')
   };
-  let lastE1 = '', lastE2 = '', lastJw = '';
+  let lastE1 = '', lastE2 = '', lastJw = '', lastWepIco = '';
   let lastB1 = '', lastB2 = '', lastC1 = -1, lastC2 = -1, lastTmr = '', lastBanKey = '';
-  let lastH1 = '', lastHT1 = '', lastH2 = '', lastHT2 = '', lastM1 = '', lastM2 = '';
+  let lastH1 = '', lastHT1 = '', lastH2 = '', lastHT2 = '', lastM1 = '', lastM2 = '', lastP1 = '', lastP2 = '';
 
   function syncHud() {
     if (match.inMenu) return;
@@ -5499,6 +6078,12 @@
       elRefs.p1Mag.style.background = `linear-gradient(90deg, ${p1.el.primary}, ${p1.el.glow})`;
       elRefs.magIcon.innerHTML = p1.el.svg;
       elRefs.btnMag.style.setProperty('--mg-prim', p1.el.primary); elRefs.btnMag.style.setProperty('--mg-glow', p1.el.glow);
+    }
+    const wKey = `${PROG.equippedWeapon || 'default'}:${p1.el.id}`;
+    if (elRefs.wepBtnIco && wKey !== lastWepIco) {
+      lastWepIco = wKey;
+      const wObj = WEAPON_CATALOG.find(x => x.id === (PROG.equippedWeapon || 'default'));
+      elRefs.wepBtnIco.innerHTML = (wObj && wObj.ico) ? wObj.ico : SVG_ICONS.default;
     }
     const p2Key = `${p2.el.id}:${match.boss ? match.boss.id : -1}`;
     if (lastE2 !== p2Key) {
@@ -5529,6 +6114,11 @@
       elRefs.p2MagW.classList.toggle('ready', p2.magic >= 100);
       elRefs.p2MagW.classList.toggle('ex-ready', p2.magic >= 35 && p2.magic < 100);
     }
+    const po1 = `${Math.max(0, Math.min(100, p1.poise / (p1.maxPoise || 100) * 100)).toFixed(0)}%`;
+    if (elRefs.p1Poise && po1 !== lastP1) { lastP1 = po1; elRefs.p1Poise.style.width = po1; elRefs.p1PoiseW.classList.toggle('low', p1.poise / (p1.maxPoise || 100) < 0.34); }
+    const po2 = `${Math.max(0, Math.min(100, p2.poise / (p2.maxPoise || 100) * 100)).toFixed(0)}%`;
+    if (elRefs.p2Poise && po2 !== lastP2) { lastP2 = po2; elRefs.p2Poise.style.width = po2; elRefs.p2PoiseW.classList.toggle('low', p2.poise / (p2.maxPoise || 100) < 0.34); }
+
     const tmr = match.toWin > 10 ? '∞' : String(match.timer).padStart(2, '0');
     if (tmr !== lastTmr) { lastTmr = tmr; elRefs.timer.textContent = tmr; }
 
@@ -5844,10 +6434,10 @@
     const elCount = Math.min(8, PROG.cleared.filter(id => id < 8).length);
     document.getElementById('mm-rank-sub').textContent = PROG.avatarUnlocked
       ? 'THE FULL AVATAR · ALL 8 ELEMENTS RESTORED'
-      : `THE HOLLOW AVATAR · ${elCount} / 8 ELEMENTS RECLAIMED`;
-    document.getElementById('mm-coins').textContent = `COINS · ${PROG.coins}`;
+      : (elCount > 0 ? `THE HOLLOW AVATAR · ${elCount} / 8 RECLAIMED` : 'THE HOLLOW AVATAR');
+    document.getElementById('mm-coins').textContent = String(PROG.coins);
     document.getElementById('mm-story-sub').textContent = PROG.cleared.length === 0 ? 'Begin The Hollow Avatar' : `Continue · ${CAMPAIGN_STAGES[Math.min(8, PROG.cleared.length)].rank}`;
-    document.getElementById('mm-avatar-badge').textContent = PROG.avatarUnlocked ? '✦ AVATAR STATE & ENDLESS TOWER UNLOCKED' : '';
+    document.getElementById('mm-avatar-badge').textContent = PROG.avatarUnlocked ? 'AVATAR STATE & ENDLESS TOWER UNLOCKED' : '';
     // Keep live ambient sparring behind menu
     resetFighter(p1, true); resetFighter(p2, true);
     p1.x = 560; p2.x = 860;
@@ -6022,17 +6612,17 @@
       `;
     } else {
       const mvs = [
-        ['35% Quick-Bend Techniques', 'Direction + BEND (or Swipe BEND on touch) at 35%+', 'Every element has 3–4 directional moves: Water Whip Pull/Heal, Fire Jet Kick/Breath, Earth Rock Wall/Pillar, Air Scooter/Vacuum, Lightning Charged Bolt/Teleport, Ice Floor/Feet Trap, Shadow Clone/Sink, Lava Geyser/Armor.'],
-        ['100% Avatar Bending Arts', 'BEND at 100% (Neutral / ↑ Vortex / ↓ Arm Slam)', 'Full-screen signature arts that overpower normal bending waves.'],
-        ['Elemental Clashes & Redirection', 'Wave vs Wave · Timed Block (B) / Super Slash', 'Opposing waves explode on contact (Steam, Crystal, Plasma). Perfect Parry or Super Slash deflects enemy projectiles back!'],
-        ['Elemental Status Combos', 'Shatter · Electro-Charge · Combustion', 'Heavy vs Frozen/Crushed = Shatter (+30%); Lightning vs Soaked = Stun; Launcher vs Burning = Super-Launch!'],
-        ['Wall Splats, Air Juggles & Disarm', 'Heavy into Wall · Air P/K/↓K · Crit Head Hit', 'Bounce foes off dojo walls, chain multi-hit air combos, and knock weapons out of enemy hands!']
+        ['8 Avatar Signature Tricks (35% Meter)', 'Tilt Direction + BEND (or Swipe BEND on touch)', 'Water Up = Octopus Form (intercepts projectiles); Fire Fwd = Sozin Jet-Step; Earth Back = Toph Seismic Sense; Air Fwd = Aang Air Scooter; Lightning Back = Iroh Redirect; Ice Fwd = Katara Cryo Prison; Shadow Back = Eclipse Swap; Lava Fwd = Ghazan Molten Shuriken.'],
+        ['100% Avatar Bending Arts', 'BEND at 100% (Neutral / Up Vortex / Down Arm Slam)', 'Full-screen signature bending arts that overpower normal projectiles.'],
+        ['Guard Poise, Lethal Counter & Blade Clash', 'Timed Block (B) · Overlapping Weapon Swings', 'Blocking heavy strikes drains golden Guard Poise -> GUARD SHATTER. Interrupting startup deals LETHAL COUNTER. Clashing weapons triggers a rapid-tap Blade-Lock!'],
+        ['Weapons, Infusions & Corner Braziers', 'Heavy Finishers (>=20% Meter) · Wall Splats', 'Sai disarms on Parry, Katana boosts Iaijutsu Counters, Bo Staff Up+W Pole-Vaults, Kusarigama pulls & siphons meter. Smash foes into Corner Braziers for +45 dmg!'],
+        ['Elemental Status Combos', 'Cryo Shatter (+35%) · Electro-Charge · Combustion', 'Heavy vs Cryo-Caged/Frozen/Crushed = Shatter; Lightning vs Soaked = Stun; Launcher vs Burning = Super-Launch!']
       ];
       body = mvs.map(([n, i, d]) => `<div class="mrow"><b>${n}</b><small>${i}</small><span>${d}</span></div>`).join('');
     }
     pauseModal.innerHTML = `
       <aside class="drawer">
-        <div class="drawer-head"><div><h2>${match.inMenu ? 'SETTINGS' : 'PAUSED'}</h2><p>${match.inMenu ? 'Audio, controls & display' : 'Round preserved'}</p></div><button class="xbtn" id="p-x">✕</button></div>
+        <div class="drawer-head"><div><h2>${match.inMenu ? 'SETTINGS' : 'PAUSED'}</h2><p>${match.inMenu ? 'Audio, controls &amp; display' : 'Round preserved'}</p></div><button class="xbtn" id="p-x" aria-label="Close"><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 4l8 8M12 4l-8 8"/></svg></button></div>
         ${match.inMenu ? '' : `
           <div class="pill-row">
             <button class="pill primary" id="p-res">RESUME</button>
@@ -6157,51 +6747,61 @@
     const cleared = PROG.cleared.includes(st.id);
     const unlocked = PROG.sandboxUnlockAll || st.id <= PROG.cleared.length;
     const trialDone = st.trial && PROG.completedTrials.includes(st.trial.id);
-    const starsStr = '★'.repeat(st.stars) + '☆'.repeat(5 - st.stars);
+    const starFull = `<svg viewBox="0 0 20 20" fill="currentColor"><polygon points="10,1.6 12.6,7 18.6,7.8 14.2,12 15.3,18 10,15.1 4.7,18 5.8,12 1.4,7.8 7.4,7"/></svg>`;
+    const starEmpty = `<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="10,2 12.5,7.2 18.2,8 14.1,12 15.1,17.7 10,14.9 4.9,17.7 5.9,12 1.8,8 7.5,7.2"/></svg>`;
+    const starsHtml = starFull.repeat(st.stars) + starEmpty.repeat(Math.max(0, 5 - st.stars));
+    const spiralSvg = `<svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"><circle cx="18" cy="18" r="14"/><path d="M18 8c5 0 8 4 6 9-1.5 3.5-6 4.5-8 2.5"/><path d="M27 19c0 5-4 8-9 6-3.5-1.5-4.5-6-2.5-8"/><path d="M17 28c-5 0-8-4-6-9 1.5-3.5 6-4.5 8-2.5"/><circle cx="18" cy="18" r="2.4" fill="currentColor"/></svg>`;
+    const coinSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="9"/><path d="M12 7.2a4.8 4.8 0 1 1-3.4 1.4"/><circle cx="12" cy="12" r="1.8" fill="currentColor"/></svg>`;
+    const gearSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3h.1a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9v.1a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>`;
+    const bladesSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 19L19 5M19 19L5 5M7 14l3 3M17 14l-3 3"/></svg>`;
+    const toriiSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6c5 1.8 13 1.8 18 0"/><path d="M5 10h14"/><path d="M8 7v13M16 7v13"/></svg>`;
 
     campaignModal.innerHTML = `
-      <section class="panel-modal" style="--accent:${el.glow}">
-        <div class="panel-head">
-          <div>
+      <section class="wm-screen" style="--accent:${el.glow}">
+        <header class="wm-topbar">
+          <div class="wm-brand">
+            <span class="wm-brand-ico">${spiralSvg}</span>
             <h1>THE HOLLOW AVATAR · WORLD MAP</h1>
-            <p>Reclaim your eight scattered elements to confront the Eclipse Master.</p>
           </div>
           <div class="pill-row">
             <button class="pill" id="c-intro">REPLAY INTRO</button>
-            <span class="coin-badge">COINS · ${PROG.coins}</span>
+            <span class="coin-hex">${coinSvg}<span>${PROG.coins}</span></span>
+            <button class="oct-btn" id="c-settings" title="Settings" aria-label="Settings">${gearSvg}</button>
           </div>
-        </div>
-        <div class="map-layout">
-          <div class="map-canvas-wrap"><canvas id="map-canvas" width="640" height="380"></canvas></div>
-          <div class="map-detail">
+        </header>
+        <div class="wm-body">
+          <div class="ornate-frame map-canvas-wrap"><canvas id="map-canvas" width="640" height="380"></canvas></div>
+          <div class="ornate-frame wm-detail">
             <div>
-              <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;flex-wrap:nowrap">
+              <div style="display:flex;align-items:center;gap:11px;margin-bottom:6px;flex-wrap:nowrap">
                 <div class="md-crest">${el.svg}</div>
                 <div style="min-width:0;flex:1">
                   <div class="md-title">${st.title}</div>
                   <div class="md-sub">${st.subtitle} · ${st.rank}</div>
                 </div>
               </div>
-              <div class="md-stars">${starsStr}</div>
+              <div class="wm-stars">${starsHtml}</div>
               <p class="md-desc">${st.storyDesc}</p>
-              ${st.trial ? `<div class="md-trial" style="margin-top:8px"><b>REGIONAL TRIAL ${trialDone ? '· COMPLETED ✓' : `· +${st.trial.reward} COINS`}</b>${st.trial.desc}</div>` : ''}
+              <div class="wm-div"><span></span></div>
+              ${st.trial ? `<div class="md-trial"><b>REGIONAL TRIAL ${trialDone ? '· COMPLETED' : `· +${st.trial.reward} COINS`}</b><span style="display:inline-flex;align-items:center;gap:5px"><svg viewBox="0 0 10 10" width="8" height="8" fill="#e6a93c"><polygon points="5,0 10,5 5,10 0,5"/></svg>${st.trial.desc}</span></div>` : ''}
             </div>
-            <div class="pill-row" style="justify-content:space-between">
-              <button class="pill" id="c-armory">ARMORY</button>
-              <div class="pill-row">
-                ${cleared && st.honorable ? `<button class="pill" id="c-spar">SPAR ALLY</button>` : ''}
-                <button class="pill primary" id="c-fight" ${!unlocked ? 'disabled' : ''}>${unlocked ? (cleared ? 'REMATCH' : 'CHALLENGE') : 'LOCKED'}</button>
-              </div>
+            <div class="wm-actions">
+              <button class="pill with-ico" id="c-armory">${bladesSvg}<span>ARMORY</span></button>
+              <button class="pill primary with-ico" id="c-fight" ${!unlocked ? 'disabled' : ''}>${toriiSvg}<span>${unlocked ? (cleared ? 'REMATCH' : 'CHALLENGE') : 'LOCKED'}</span></button>
             </div>
+            ${cleared && st.honorable ? `<button class="pill" id="c-spar" style="width:100%">SPAR ALLY (DOJO)</button>` : ''}
           </div>
         </div>
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:nowrap">
+        <footer class="wm-foot">
           <div class="el-strip">
-            <span style="font-size:11px;color:var(--text-muted);white-space:nowrap">Element:</span>
-            ${EL_ORDER.filter(isElUnlocked).map(eid => `<button class="pill ${p1.el.id===eid?'primary':''}" data-p1el="${eid}">${ELEMENTS[eid].name}</button>`).join('')}
+            <span style="font-size:11.5px;color:var(--gold-light);font-family:var(--font-head);letter-spacing:0.08em;white-space:nowrap">Element:</span>
+            ${EL_ORDER.filter(isElUnlocked).map(eid => {
+              const eObj = ELEMENTS[eid];
+              return `<button class="el-chip ${p1.el.id===eid?'active':''}" style="--ec:${eObj.glow}" data-p1el="${eid}">${eObj.svg}<span>${eObj.name}</span></button>`;
+            }).join('')}
           </div>
           <button class="pill" id="c-back" style="flex-shrink:0">CLOSE</button>
-        </div>
+        </footer>
       </section>`;
 
     drawWorldMapCanvas();
@@ -6223,6 +6823,7 @@
     const sparBtn = campaignModal.querySelector('#c-spar');
     if (sparBtn) sparBtn.onclick = () => { closeAllModals(); startMatch(p1.el.id, st.el, null, { mode: 'dojo' }); };
     campaignModal.querySelector('#c-armory').onclick = openArmory;
+    campaignModal.querySelector('#c-settings').onclick = () => { pauseModal.classList.remove('hidden'); renderPause(); };
     campaignModal.querySelector('#c-intro').onclick = () => {
       openStorySequence('intro', STORY_INTRO_PANELS, () => { openCampaign(); });
     };
@@ -6242,8 +6843,8 @@
         g.lineTo(Math.cos(a) * r * 0.98, Math.sin(a) * r * 0.98); g.stroke();
       }
     } else if (elId === 'water') {
-      g.beginPath(); g.moveTo(-r * 0.65, r * 0.25); g.quadraticCurveTo(-r * 0.2, -r * 0.55, r * 0.35, -r * 0.2);
-      g.quadraticCurveTo(r * 0.65, 0, r * 0.35, r * 0.35); g.quadraticCurveTo(0, r * 0.55, -r * 0.65, r * 0.25); g.stroke();
+      g.beginPath(); g.moveTo(0, -r * 0.72); g.quadraticCurveTo(r * 0.56, r * 0.05, r * 0.44, r * 0.42);
+      g.arc(0, r * 0.3, r * 0.44, 0.2, Math.PI - 0.2); g.quadraticCurveTo(-r * 0.56, r * 0.05, 0, -r * 0.72); g.fill();
     } else if (elId === 'fire') {
       g.beginPath(); g.moveTo(0, -r * 0.72); g.quadraticCurveTo(r * 0.62, -r * 0.05, r * 0.38, r * 0.58);
       g.quadraticCurveTo(0, r * 0.8, -r * 0.38, r * 0.58); g.quadraticCurveTo(-r * 0.62, -r * 0.05, 0, -r * 0.72); g.fill();
@@ -6287,33 +6888,29 @@
     if (ART.worldMap.complete && ART.worldMap.naturalWidth > 0) {
       g.drawImage(ART.worldMap, 0, 0, w, h);
       const ov = g.createRadialGradient(w * 0.5, h * 0.48, w * 0.25, w * 0.5, h * 0.5, w * 0.65);
-      ov.addColorStop(0, 'rgba(18, 12, 8, 0.12)'); ov.addColorStop(1, 'rgba(10, 7, 5, 0.62)');
+      ov.addColorStop(0, 'rgba(18, 12, 8, 0.10)'); ov.addColorStop(1, 'rgba(10, 7, 5, 0.58)');
       g.fillStyle = ov; g.fillRect(0, 0, w, h);
     } else {
       const bg = g.createRadialGradient(w * 0.5, h * 0.48, 30, w * 0.5, h * 0.5, w * 0.65);
       bg.addColorStop(0, '#2c2218'); bg.addColorStop(0.65, '#19130e'); bg.addColorStop(1, '#0d0a08');
       g.fillStyle = bg; g.fillRect(0, 0, w, h);
-      g.fillStyle = 'rgba(235, 210, 165, 0.08)';
-      g.beginPath();
-      g.moveTo(48, 250); g.quadraticCurveTo(140, 80, 320, 62); g.quadraticCurveTo(520, 66, 588, 215);
-      g.quadraticCurveTo(560, 345, 360, 335); g.quadraticCurveTo(140, 340, 48, 250); g.closePath(); g.fill();
     }
 
-    // Ink paths connecting Stages 1 -> 8 -> 9 (Eclipse Citadel)
+    // Glowing gold/cyan paths connecting Stages 1 -> 8 -> 9 (Eclipse Citadel)
     g.save();
     for (let i = 0; i < CAMPAIGN_STAGES.length - 1; i++) {
       const a = CAMPAIGN_STAGES[i], b = CAMPAIGN_STAGES[i + 1];
       const lit = PROG.cleared.includes(a.id);
-      g.strokeStyle = 'rgba(12, 8, 6, 0.65)'; g.lineWidth = lit ? 4.4 : 3;
+      g.strokeStyle = 'rgba(10, 7, 5, 0.72)'; g.lineWidth = lit ? 4.4 : 3;
       g.setLineDash(lit ? [] : [5, 5]);
       g.beginPath(); g.moveTo(a.mx * w, a.my * h); g.lineTo(b.mx * w, b.my * h); g.stroke();
-      g.strokeStyle = lit ? 'rgba(240, 182, 74, 0.92)' : 'rgba(218, 198, 168, 0.34)';
+      g.strokeStyle = lit ? 'rgba(244, 194, 88, 0.94)' : 'rgba(218, 198, 168, 0.36)';
       g.lineWidth = lit ? 2.2 : 1.5;
       g.beginPath(); g.moveTo(a.mx * w, a.my * h); g.lineTo(b.mx * w, b.my * h); g.stroke();
     }
     g.restore();
 
-    // Stage Master Seals with bespoke elemental crest emblems (zero generic stick-person dots!)
+    // Stage Master Seals with glowing active rings & dark chamfered region label pills!
     CAMPAIGN_STAGES.forEach(s => {
       const x = s.mx * w, y = s.my * h;
       const el = ELEMENTS[s.el];
@@ -6323,26 +6920,41 @@
       const rad = s.isFinal ? 21 : 16;
 
       g.save();
-      if (selected) {
-        g.strokeStyle = '#f8e2b5'; g.lineWidth = 2.6;
-        g.beginPath(); g.arc(x, y, rad + 5.5, 0, Math.PI * 2); g.stroke();
+      const pinCol = s.isFinal ? '#f6bd58' : el.glow;
+      if (selected || s.isFinal) {
+        const rg = g.createRadialGradient(x, y, rad * 0.7, x, y, rad + 18);
+        rg.addColorStop(0, pinCol + '78'); rg.addColorStop(1, 'rgba(0,0,0,0)');
+        g.fillStyle = rg; g.beginPath(); g.arc(x, y, rad + 18, 0, Math.PI * 2); g.fill();
       }
-      g.fillStyle = cleared ? '#1e281a' : unlocked ? '#1b140f' : '#120f0d';
-      g.strokeStyle = cleared ? '#6be28e' : unlocked ? el.glow : '#786c5e';
-      g.lineWidth = selected ? 3 : 2;
+      if (selected) {
+        g.strokeStyle = pinCol; g.lineWidth = 2.4;
+        g.beginPath(); g.arc(x, y, rad + 6, 0, Math.PI * 2); g.stroke();
+      }
+      g.fillStyle = cleared ? '#1a2417' : unlocked ? '#18120e' : '#120e0c';
+      g.strokeStyle = selected ? '#fff3d4' : (cleared ? '#6be28e' : unlocked ? pinCol : '#7a6c5e');
+      g.lineWidth = selected ? 2.8 : 2;
       g.beginPath(); g.arc(x, y, rad, 0, Math.PI * 2); g.fill(); g.stroke();
 
-      const symCol = unlocked ? (cleared ? '#f8e2b5' : el.glow) : '#786c5e';
+      const symCol = unlocked ? (cleared ? '#f8e2b5' : pinCol) : '#8c7e6e';
       g.fillStyle = symCol; g.strokeStyle = symCol;
       drawMapCrestSymbol(g, s.el, x, y, rad * 0.72, Boolean(s.isFinal));
 
-      const lx = Math.max(54, Math.min(w - 54, x));
-      const ly = Math.min(h - 9, y + rad + 13);
+      // Dark chamfered label pill underneath every realm pin (matches reference mockup)
       g.font = '700 10.5px "Palatino Linotype", Georgia, serif'; g.textAlign = 'center';
-      g.strokeStyle = 'rgba(10, 7, 5, 0.94)'; g.lineWidth = 3.5;
-      g.strokeText(s.region, lx, ly);
-      g.fillStyle = unlocked ? '#f8efe0' : '#9c8e7c';
-      g.fillText(s.region, lx, ly);
+      const tw = g.measureText(s.region).width;
+      const pw = tw + 16, ph = 17;
+      const lx = Math.max(pw * 0.5 + 4, Math.min(w - pw * 0.5 - 4, x));
+      const ly = Math.min(h - ph - 3, y + rad + 4);
+      g.fillStyle = selected ? 'rgba(26, 18, 12, 0.94)' : 'rgba(13, 10, 8, 0.86)';
+      g.strokeStyle = selected ? el.glow : 'rgba(218, 178, 112, 0.42)';
+      g.lineWidth = selected ? 1.4 : 1;
+      g.beginPath();
+      g.moveTo(lx - pw * 0.5 + 4, ly); g.lineTo(lx + pw * 0.5 - 4, ly);
+      g.lineTo(lx + pw * 0.5, ly + ph * 0.5); g.lineTo(lx + pw * 0.5 - 4, ly + ph);
+      g.lineTo(lx - pw * 0.5 + 4, ly + ph); g.lineTo(lx - pw * 0.5, ly + ph * 0.5);
+      g.closePath(); g.fill(); g.stroke();
+      g.fillStyle = unlocked ? '#f8efe0' : '#a69784';
+      g.fillText(s.region, lx, ly + 12);
       g.restore();
     });
   }
@@ -6369,13 +6981,13 @@
     let actionBtn = '', catLabel = armoryTab === 'weapons' ? 'WEAPON CLASS' : armoryTab === 'gear' ? 'SILHOUETTE GEAR' : 'DOJO MASTERY';
     if (armoryTab === 'weapons') {
       const owned = PROG.ownedWeapons.includes(sel.id), eq = PROG.equippedWeapon === sel.id;
-      actionBtn = `<button class="pill ${eq ? '' : 'primary'}" id="arm-act" ${!owned && PROG.coins < sel.cost ? 'disabled' : ''}>${eq ? 'EQUIPPED ✓' : owned ? 'EQUIP' : `BUY · ${sel.cost}`}</button>`;
+      actionBtn = `<button class="pill ${eq ? '' : 'primary'}" id="arm-act" ${!owned && PROG.coins < sel.cost ? 'disabled' : ''}>${eq ? 'EQUIPPED' : owned ? 'EQUIP' : `BUY · ${sel.cost}`}</button>`;
     } else if (armoryTab === 'gear') {
       const owned = PROG.ownedGear.includes(sel.id), eq = PROG.equippedGear === sel.id;
-      actionBtn = `<button class="pill ${eq ? '' : 'primary'}" id="arm-act" ${!owned && PROG.coins < sel.cost ? 'disabled' : ''}>${eq ? 'EQUIPPED ✓' : owned ? 'EQUIP' : `BUY · ${sel.cost}`}</button>`;
+      actionBtn = `<button class="pill ${eq ? '' : 'primary'}" id="arm-act" ${!owned && PROG.coins < sel.cost ? 'disabled' : ''}>${eq ? 'EQUIPPED' : owned ? 'EQUIP' : `BUY · ${sel.cost}`}</button>`;
     } else {
       const lv = PROG.upgrades[sel.id] || 0, maxed = lv >= sel.max, cost = sel.baseCost + lv * sel.stepCost;
-      actionBtn = `<button class="pill ${maxed ? '' : 'primary'}" id="arm-act" ${maxed || PROG.coins < cost ? 'disabled' : ''}>${maxed ? 'MASTERED ✓' : `TRAIN · ${cost}`}</button>`;
+      actionBtn = `<button class="pill ${maxed ? '' : 'primary'}" id="arm-act" ${maxed || PROG.coins < cost ? 'disabled' : ''}>${maxed ? 'MASTERED' : `TRAIN · ${cost}`}</button>`;
     }
 
     armoryModal.innerHTML = `
