@@ -52,25 +52,40 @@ jobs:
       - name: Prepare APK deliverable
         run: |
           mkdir -p out
-          cp android/app/build/outputs/apk/release/app-release.apk out/ElementalShadows-v2.4.0-android.apk
-          ls -lh out/ElementalShadows-v2.4.0-android.apk
+          cp android/app/build/outputs/apk/release/app-release.apk out/ElementalShadows-v2.5.0-android.apk
+          ls -lh out/ElementalShadows-v2.5.0-android.apk
 
       - name: Upload APK workflow artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ElementalShadows-v2.4.0-android-apk
-          path: out/ElementalShadows-v2.4.0-android.apk
+          name: ElementalShadows-v2.5.0-android-apk
+          path: out/ElementalShadows-v2.5.0-android.apk
           retention-days: 90
 
       - name: Publish GitHub Release with direct APK download
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          TAG="v2.4.0-android"
+          TAG="v2.5.0-android"
+          NOTES=$(cat <<'EOF'
+          Standalone 100% offline Android APK of **Elemental Shadows — The Hollow Avatar**.
+
+          ### What's New in v2.5.0
+          - **Three.js 2.5D WebGL Visual Enhancer (100% Offline, Preserving 2D Sumi-e Silhouettes & Exact 60Hz Mechanics):**
+            - **Real-Time Dynamic 6-Light Elemental Dojo Floor Shader:** Live elemental lighting pools from both fighters, active bending waves, flickering Corner Braziers, Blade Clashes, and hazards sweep across the wooden veranda planks and basalt tiles — with animated water caustics on Tidal Shrine, volcanic heat-veins on Obsidian Caldera & Blazing Dojo, and crystalline frost glint on Frozen Peak.
+            - **3D Volumetric Signature Bending Effects:** Real 3D Fresnel wind sphere + 3 tilted gyroscopic torus wind bands for **Aang's Air Scooter**; translucent 3D faceted ice crystal prism + **24 physical tumbling 3D crystal shards** with floor bounce on **Katara's Cryo Prison & CRYO SHATTER! (+40%)**; 3D orbital energy halos for Octopus Form & Iroh's Lightning Redirection; and 3D perspective floor shockwave rings on slams, Seismic Sense/Eruption, Guard Shatters, Wall Splats, and Eclipse Finishers.
+            - **True 2.5D Depth-Layered Weather & Cinematic Camera Tilt:** Biome-reactive 3D particles spanning background-to-foreground (including tumbling 3D crimson Japanese maple leaves in Eclipse Citadel & Main Menu) plus subtle 2.5D perspective tilt during Ultimates, Blade Clashes, 8-Arm Octopus Multi-Slam, and `FINISH THEM!`.
+            - **Android-Optimized & Toggleable:** Bundled offline in `assets/three.min.js` (zero CDN), pre-allocated pools (zero GC stalls), and a live **`2.5D WebGL FX (Three.js): ON / OFF`** switch in Pause -> Audio & AI.
+          - **Katara's Overhauled 8-Arm Octopus Multi-Slam:**
+            - Water's Tap / Fwd + BEND (35% meter) now activates Octopus Form AND immediately surges forward with an articulated **8-Arm Octopus Whip** (`355px` reach, also re-triggerable via `GRAB` during Octopus Form!).
+            - On grab, ALL 8 sculpted ink-outlined water tentacles radiate from the caster in a Tai Chi stance and whip-slam the opponent **8 alternating times** left-to-right (`OCTOPUS SLAM 1/8` -> `7/8`), building an instant **`COMBO x8`**, before all 8 Kraken arms converge for the lethal **`8/8 OCTOPUS FINALE!`** with monochrome ink flash, slow-mo, and 3D floor water-ripple shockwaves!
+          - **Polish & Readability:** Upgraded combat callout anti-overlap stacking and crisp single-counter replacement during multi-slams.
+          EOF
+          )
           if gh release view "$TAG" >/dev/null 2>&1; then
-            gh release upload "$TAG" out/ElementalShadows-v2.4.0-android.apk --clobber
+            gh release upload "$TAG" out/ElementalShadows-v2.5.0-android.apk --clobber
           else
-            gh release create "$TAG" out/ElementalShadows-v2.4.0-android.apk \
-              --title "Elemental Shadows v2.4.0 (Android APK — Overhauled Avatar Signatures, Free-Flow Cross-Combos, 60FPS Slow-Mo & Bespoke Art)" \
-              --notes "Standalone offline Android APK of **Elemental Shadows — The Hollow Avatar**.\n\n### What's New in v2.4.0\n- **All 8 *Avatar* Signature Abilities Trigger on Instant Tap BEND + Massive Physical Payoff:**\n  - **Water — Katara's Octopus Form (240f):** Every Punch/Kick/Weapon strike launches an extra mid-range Water Tentacle Whip + auto-intercepts projectiles + ends in a 360° **Octopus Tidal Slam**.\n  - **Fire — Sozin's Jet-Step:** Authentic airborne rocket flying-kick pose, zero ground-friction glide, roaring twin dragon-flame plumes, burning embers & guard-crushing flame blitz.\n  - **Earth — Toph's Seismic Sense & Stone Gauntlets:** Live-tracking white-gold wireframe sonar wave erupts a Rock Monolith directly under the opponent's live position + equips visible **Stone Gauntlets** (+30% melee dmg & +40% poise shred).\n  - **Air — Aang's Air Scooter:** Authentic crouched riding pose atop a layered spinning wind sphere, auto-gliding forward, wall-bouncing (**SCOOTER BOUNCE!**), bowling opponents skyward (**SCOOTER BOWL!**), and canceling into **Cyclone Dive**.\n  - **Lightning — Iroh's Lightning Redirection:** 56f golden-cyan stance absorbing ANY strike/projectile for 0 dmg + **2× Golden Dragon Counter-Bolt**, or auto-firing a Twin-Finger Dragon Lightning Beam on expiry so 35% meter is never wasted.\n  - **Ice — Katara's Cryo Prison (Sub-Zero Freeze):** Fast piercing frost wave freezes the enemy SOLID mid-animation for 2.2s inside a faceted Ice Crystal Block; heavy strikes trigger **CRYO SHATTER (+40% dmg)** with Sumi-e Ink Flash.\n  - **Shadow — Eclipse Swap (Noob Saibot Pincer):** Spawns a REAL pitch-black attacking warrior silhouette clone that sprints & slashes from the front while you teleport behind.\n  - **Lava — Ghazan's 4-Blade Molten Shuriken:** Sculpted spinning volcanic buzzsaw locks foes in a 3-hit grinding stagger, carves a Magma Moat, then boomerangs back.\n- **Zero Lag & Snappier Controls:** Replaced 20fps slow-mo stutter with buttery 60fps time-dilation, cropped Android rim buffer blitting, fixed Lightning's broken touch-swipe bug, added live trick names on the `BEND` button & swipe pill, and unlocked **Free-Flow `P → K → W → BEND` Cross-Combos** + **Roll/Block Recovery Cancels**.\n- **Addictive Combat Juice:** Live **Style Rank (`D → C → B → A → S → AVATAR`)**, Shadow Fight 2 **Monochrome Sumi-e Ink Flash** on crits/shatters/finishers, and **`FINISH THEM!`** final-round execution windows (**`ECLIPSE FINISHER! +75 COINS`**).\n- **100% Bespoke Nano Banana Art (8/8 Realms + Dojo Forge):** Brand-new hand-painted **Obsidian Caldera** volcanic veranda and candlelit **Armory Dojo Forge** backdrop.\n- **Fighter Winner Banners:** Displays **`{Player Name} WINS`** / **`{Opponent Name} WINS`** on every round and match victory (replacing `K.O.`)."
+            gh release create "$TAG" out/ElementalShadows-v2.5.0-android.apk \
+              --title "Elemental Shadows v2.5.0 (Android APK — Three.js 2.5D Visual Enhancer & Katara 8-Arm Octopus Multi-Slam)" \
+              --notes "$NOTES"
           fi

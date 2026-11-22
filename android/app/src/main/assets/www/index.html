@@ -46,7 +46,8 @@
       background: #0d0a08;
       box-shadow: 0 24px 80px rgba(0, 0, 0, 0.9);
     }
-    canvas#game { width: 100%; height: 100%; display: block; touch-action: none; }
+    canvas#game { position: relative; z-index: 1; width: 100%; height: 100%; display: block; touch-action: none; }
+    canvas#fx3d { position: absolute; inset: 0; width: 100%; height: 100%; display: block; pointer-events: none; z-index: 2; }
     .hidden { display: none !important; }
 
     /* ===== MINIMALIST SHADOW FIGHT 2 BATTLE HUD ===== */
@@ -883,6 +884,7 @@
 <div class="shell">
   <div class="stage-frame" id="stage" tabindex="0">
     <canvas id="game" width="1280" height="720"></canvas>
+    <canvas id="fx3d"></canvas>
 
     <!-- MINIMALIST BATTLE HUD (Health, Bending, Timer & Corner Pause ONLY) -->
     <div class="hud hidden" id="hud">
@@ -1081,6 +1083,7 @@
   <button id="btn-dismiss-tip" type="button" aria-label="Dismiss"><svg viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 4l8 8M12 4l-8 8"/></svg></button>
 </div>
 
+<script src="assets/three.min.js"></script>
 <script>
 (() => {
   'use strict';
@@ -1254,7 +1257,7 @@
   const settings = {
     inputMode: 'auto', stickMode: 'fixed', scale: 1.0, opacity: 0.88,
     buffer: 8, tempo: 'fast', vfx: _initTouch ? 'low' : 'high', feedback: 1, fps: 60, format: 'bo3',
-    aiTier: 'warrior', debug: false, volume: 0.72, sfxOn: true, musicOn: true, hapticsOn: true
+    aiTier: 'warrior', debug: false, volume: 0.72, sfxOn: true, musicOn: true, hapticsOn: true, fx3d: true
   };
   let lastHapticAt = 0;
   function haptic(kind = 'light') {
@@ -1780,7 +1783,7 @@
       id, el, x: id === 'p1' ? 405 : 875, y: GROUND_Y, vx: 0, vy: 0, facing: id === 'p1' ? 1 : -1,
       hp: el.hp, maxHp: el.hp, trailHp: el.hp, magic: 55,
       poise: 100, maxPoise: 100,
-      octopusF: 0, octopusCd: 0, airScooterF: 0, scooterHitCd: 0, fireJetF: 0, seismicWaveF: 0, gauntletsF: 0, frozenPrisonF: 0, irohBeamReady: false,
+      octopusF: 0, octopusCd: 0, octopusGrabReady: false, octopusGrabCd: 0, octopusSwinging: false, airScooterF: 0, scooterHitCd: 0, fireJetF: 0, seismicWaveF: 0, gauntletsF: 0, frozenPrisonF: 0, irohBeamReady: false,
       dizzied: false, dizzyF: 0,
       phase2: false, phase2Used: false,
       artIdx: 0, castArtIdx: 0, quickBendDir: 'fwd', bendChargeF: 0, chargingBend: false,
@@ -1800,6 +1803,7 @@
 
   let simFrame = 0, hitstop = 0, slowMoFrames = 0, slowMoTick = 0, shake = 0, camX = W * 0.5, camZoom = 1.08, dramaticZoom = 0;
   let ultDimFrames = 0, ultDimColor = '#0c7de8', stormFlashFrames = 0, inkFlashF = 0;
+  let FX3D = null;
   let p1 = createFighter('p1', 'water');
   let p2 = createFighter('p2', 'fire');
   const match = {
@@ -1830,8 +1834,16 @@
 
   function showBanner(text, sub, color, dur = 64, isUlt = false) { match.banner = { text, sub, color, f: dur, isUlt }; }
   function pushCallout(text, color, x, y) {
-    match.callouts.push({ text, color, x, y, f: 46, max: 46 });
-    if (match.callouts.length > 8) match.callouts.shift();
+    let cy = y;
+    for (let i = match.callouts.length - 1; i >= 0; i--) {
+      const c = match.callouts[i];
+      if (c.f > 8 && Math.abs(c.x - x) < 135 && Math.abs(c.y - cy) < 26) {
+        cy -= 26;
+      }
+    }
+    cy = Math.max(82, cy);
+    match.callouts.push({ text, color, x, y: cy, f: 46, max: 46 });
+    if (match.callouts.length > 10) match.callouts.shift();
   }
 
   function resetFighter(f, full) {
@@ -1843,7 +1855,7 @@
     f.magic = full ? 55 : Math.min(100, Math.max(55, f.magic * 0.6 + 30));
     f.maxPoise = 100 + (f.id === 'p1' ? PROG.upgrades.body * 8 : (match.boss ? 20 : 0));
     f.poise = f.maxPoise;
-    f.octopusF = 0; f.octopusCd = 0; f.airScooterF = 0; f.scooterHitCd = 0; f.fireJetF = 0; f.seismicWaveF = 0; f.gauntletsF = 0; f.frozenPrisonF = 0; f.irohBeamReady = false;
+    f.octopusF = 0; f.octopusCd = 0; f.octopusGrabReady = false; f.octopusGrabCd = 0; f.octopusSwinging = false; f.airScooterF = 0; f.scooterHitCd = 0; f.fireJetF = 0; f.seismicWaveF = 0; f.gauntletsF = 0; f.frozenPrisonF = 0; f.irohBeamReady = false;
     f.dizzied = false; f.dizzyF = 0;
     if (full) { f.phase2 = false; f.phase2Used = false; }
     f.state = 'idle'; f.sf = 0; f.inv = 0; f.armor = 0; f.stun = 0; f.freezeRec = 0; f.avatarFlash = 0;
@@ -1963,6 +1975,7 @@
   function beginRound() {
     resetFighter(p1, false); resetFighter(p2, false);
     bendingWaves = []; hazards = []; particles = []; ghosts = []; droppedWeapons = []; rockWalls = []; decoyClones = [];
+    if (FX3D) FX3D.clearTransients();
     braziers = [
       { x: ARENA_L + 22, intact: true, hitFlash: 0 },
       { x: ARENA_R - 22, intact: true, hitFlash: 0 }
@@ -2160,6 +2173,25 @@
     return 'fwd';
   }
 
+  function spawnOctopus8Swing(f, opp) {
+    const dir = (opp && Math.abs(opp.x - f.x) > 8) ? (opp.x >= f.x ? 1 : -1) : f.facing;
+    f.facing = dir;
+    if (bendingWaves.some(w => w.owner === f.id && w.kind === 'octopus_8_swing')) return false;
+    f.vx = dir * 10.5;
+    bendingWaves.push({
+      owner: f.id, el: f.el, kind: 'octopus_8_swing',
+      x: f.x + dir * 28, y: f.y - 104,
+      tipX: f.x + dir * 64, tipY: f.y - 104,
+      vx: 0, dir, w: 355, h: 162,
+      phase: 'reach', age: 0, swingIdx: 0, swingF: 0, totalSwings: 8,
+      grabStartDist: 175, grabbed: false,
+      f: 28, max: 28, hit: false, ult: false
+    });
+    sfx.elemBend('water');
+    if (FX3D) FX3D.spawnFloorRing(f.x, '#38d8ff', 175, 22);
+    return true;
+  }
+
   function spawnQuickBend(f, opp, dirKey, chargeF = 0) {
     const el = f.el, dir = f.facing;
     if (f.id === 'p1') { match.p1QuickBends++; addStyle(12, 'bend'); }
@@ -2172,6 +2204,7 @@
         const heal = Math.round(f.maxHp * 0.10);
         f.hp = Math.min(f.maxHp, f.hp + heal); f.trailHp = f.hp;
         spawnSparks(f.x, f.y - 95, '#38d8ff', '#ffffff', 1.4);
+        if (FX3D) FX3D.spawnFloorRing(f.x, '#7cf2ff', 150, 24);
         pushCallout('WATER HEAL', '#7cf2ff', f.x, f.y - 188);
       } else if (dirKey === 'down') {
         // Ice-Floor Slide: low-profile dash that trips grounded opponents!
@@ -2183,11 +2216,16 @@
         bendingWaves.push({ owner: f.id, el, kind: 'water_pull', x: f.x + dir * 75, y: f.y - 106, vx: dir * 19.5, dir, w: 165, h: 96, dmg: 62, ly: -5.5, low: false, pullTo: f.id, f: 24, max: 24, hit: false, ult: false });
         pushCallout('WATER WHIP PULL', '#38d8ff', f.x, f.y - 188);
       } else {
-        // ATLA SIGNATURE (TAP / FWD) — Katara's Octopus Form: 240f whirling 8-tentacle ring!
-        // Every P/K/W strike launches an extra mid-range Octopus Tentacle Whip + auto-intercepts projectiles + ends in 360° Tidal Slam!
-        f.octopusF = 240; f.octopusCd = 0; f.reflectStanceF = Math.max(f.reflectStanceF, 24);
-        spawnSparks(f.x, f.y - 100, '#38d8ff', '#ffffff', 1.7);
-        pushCallout('OCTOPUS FORM!', '#7cf2ff', f.x, f.y - 202);
+        // ATLA SIGNATURE (TAP / FWD) — Katara's 8-Arm Octopus Form & 8-Slam Multi-Swing!
+        // Activates 240f whirling 8-tentacle ring AND immediately lashes forward with 8 water arms to grab & whip-slam the opponent 8 TIMES!
+        f.octopusF = 240; f.octopusCd = 0; f.octopusGrabReady = true; f.reflectStanceF = Math.max(f.reflectStanceF, 24);
+        spawnSparks(f.x, f.y - 100, '#38d8ff', '#ffffff', 1.9);
+        if (f.octopusGrabCd <= 0) {
+          spawnOctopus8Swing(f, opp);
+          pushCallout('8-ARM OCTOPUS WHIP!', '#7cf2ff', f.x, f.y - 206);
+        } else {
+          pushCallout('OCTOPUS FORM!', '#7cf2ff', f.x, f.y - 202);
+        }
       }
     } else if (el.id === 'fire') {
       if (dirKey === 'down') {
@@ -2517,8 +2555,10 @@
           braziers[0].intact = false; f.hp = Math.max(1, f.hp - 45); f.poise = Math.max(0, f.poise - 30);
           spawnSparks(ARENA_L + 22, GROUND_Y - 58, '#ff6814', '#ffe57f', 2.2);
           spawnDust(ARENA_L + 22, GROUND_Y - 30, 1, 16, '#ffb347');
+          if (FX3D) { FX3D.spawnFloorRing(ARENA_L + 22, '#ff7a18', 210, 26); FX3D.spawnBurst(ARENA_L + 22, GROUND_Y - 56, '#ff9a2e', 18, false); }
           pushCallout('CORNER SHATTER! +45', '#ff9e38', ARENA_L + 95, f.y - 196);
         } else {
+          if (FX3D) { FX3D.spawnFloorRing(ARENA_L + 16, '#ffd84a', 145, 20); FX3D.spawnBurst(ARENA_L + 14, f.y - 84, '#ffd84a', 10, false); }
           pushCallout('WALL SPLAT!', '#ffd84a', ARENA_L + 74, f.y - 185);
         }
       } else if (f.vx < 0) f.vx = 0;
@@ -2534,8 +2574,10 @@
           braziers[1].intact = false; f.hp = Math.max(1, f.hp - 45); f.poise = Math.max(0, f.poise - 30);
           spawnSparks(ARENA_R - 22, GROUND_Y - 58, '#ff6814', '#ffe57f', 2.2);
           spawnDust(ARENA_R - 22, GROUND_Y - 30, -1, 16, '#ffb347');
+          if (FX3D) { FX3D.spawnFloorRing(ARENA_R - 22, '#ff7a18', 210, 26); FX3D.spawnBurst(ARENA_R - 22, GROUND_Y - 56, '#ff9a2e', 18, false); }
           pushCallout('CORNER SHATTER! +45', '#ff9e38', ARENA_R - 95, f.y - 196);
         } else {
+          if (FX3D) { FX3D.spawnFloorRing(ARENA_R - 16, '#ffd84a', 145, 20); FX3D.spawnBurst(ARENA_R - 14, f.y - 84, '#ffd84a', 10, false); }
           pushCallout('WALL SPLAT!', '#ffd84a', ARENA_R - 74, f.y - 185);
         }
       } else if (f.vx > 0) f.vx = 0;
@@ -2571,14 +2613,19 @@
     if (f.octopusF > 0) {
       f.octopusF--;
       // Katara's Octopus Form expiration 360° Tidal Slam!
-      if (f.octopusF === 0 && canCtrl && opp.inv <= 0 && opp.state !== 'ko' && Math.abs(opp.x - f.x) < 175 && Math.abs(opp.y - f.y) < 120) {
-        const dirToOpp = opp.x >= f.x ? 1 : -1;
-        spawnSparks(f.x, f.y - 95, '#38d8ff', '#ffffff', 2.0);
-        resolveHit(f, opp, { dmg: 64, chip: 14, hs: 26, bs: 12, stop: 5, kb: 15.5, forceVx: dirToOpp * 15.5, ly: -10.5, kd: true, crit: true, h: 'mid', elStatus: true, mg: 8 }, opp.x, opp.y - 100, true);
-        pushCallout('OCTOPUS TIDAL SLAM!', '#7cf2ff', f.x, f.y - 206);
+      if (f.octopusF === 0) {
+        f.octopusGrabReady = false;
+        if (!f.octopusSwinging && canCtrl && opp.inv <= 0 && opp.state !== 'ko' && Math.abs(opp.x - f.x) < 175 && Math.abs(opp.y - f.y) < 120) {
+          const dirToOpp = opp.x >= f.x ? 1 : -1;
+          spawnSparks(f.x, f.y - 95, '#38d8ff', '#ffffff', 2.0);
+          if (FX3D) { FX3D.spawnFloorRing(f.x, '#38d8ff', 210, 26); FX3D.spawnBurst(f.x, f.y - 60, '#7cf2ff', 14, false); }
+          resolveHit(f, opp, { dmg: 64, chip: 14, hs: 26, bs: 12, stop: 5, kb: 15.5, forceVx: dirToOpp * 15.5, ly: -10.5, kd: true, crit: true, h: 'mid', elStatus: true, mg: 8 }, opp.x, opp.y - 100, true);
+          pushCallout('OCTOPUS TIDAL SLAM!', '#7cf2ff', f.x, f.y - 206);
+        }
       }
     }
     if (f.octopusCd > 0) f.octopusCd--;
+    if (f.octopusGrabCd > 0) f.octopusGrabCd--;
     if (f.airScooterF > 0) f.airScooterF--;
     if (f.fireJetF > 0) {
       f.fireJetF--;
@@ -2591,8 +2638,8 @@
     if (f.fireStreakT > 0 && --f.fireStreakT === 0) f.fireStreak = 0;
     if (f.multiHitCd > 0) f.multiHitCd--;
 
-    // Katara's Octopus Form: auto-lash any enemy who steps inside 132px!
-    if (canCtrl && f.octopusF > 0 && f.octopusCd <= 0 && opp.inv <= 0 && opp.state !== 'ko' && Math.abs(opp.x - f.x) < 132 && Math.abs(opp.y - f.y) < 115) {
+    // Katara's Octopus Form: auto-lash any enemy who steps inside 132px (paused while executing 8-Arm Multi-Slam)!
+    if (canCtrl && f.octopusF > 0 && !f.octopusSwinging && f.octopusCd <= 0 && opp.inv <= 0 && opp.state !== 'ko' && opp.state !== 'grabbed' && Math.abs(opp.x - f.x) < 132 && Math.abs(opp.y - f.y) < 115) {
       f.octopusCd = 28;
       const dirToOpp = opp.x >= f.x ? 1 : -1;
       spawnSparks(opp.x, opp.y - 98, '#38d8ff', '#ffffff', 1.3);
@@ -2655,6 +2702,11 @@
     const nearWall = f.x <= ARENA_L + 78 ? -1 : f.x >= ARENA_R - 78 ? 1 : 0;
 
     if (f.state === 'grabbed') { return; }
+    if (f.octopusSwinging) {
+      f.vx *= 0.72; f.state = 'idle'; f.move = null; f.moveId = null;
+      applyPhys(f, false);
+      return;
+    }
     if (f.state === 'ko' || f.state === 'victory') { f.vx *= 0.84; applyPhys(f, false); return; }
 
     // Sub-Zero Cryo Prison Freeze-Solid Lock: victim is completely frozen inside the ice block!
@@ -2891,6 +2943,13 @@
     if (act) {
       if (act.btn === 'magic') { if (triggerBend(act)) return; }
       if (act.btn === 'evade' && !isRooted) { startDash(f, relDir(f, act.dir).fwd); return; }
+      if (act.btn === 'grab' && f.el.id === 'water' && f.octopusF > 0 && f.octopusGrabReady && f.octopusGrabCd <= 0 && !f.octopusSwinging) {
+        if (spawnOctopus8Swing(f, opp)) {
+          f.octopusGrabReady = false;
+          pushCallout('8-ARM OCTOPUS WHIP!', '#7cf2ff', f.x, f.y - 206);
+          return;
+        }
+      }
       if (act.btn !== 'magic' && act.btn !== 'evade') {
         // Aang's Air Scooter attack exits smoothly into an aerial Cyclone Dive Strike!
         if (f.airScooterF > 0) {
@@ -3019,6 +3078,7 @@
       sfx.elemBend('lightning'); sfx.guard(true); haptic('parry');
       hitstop = 6; inkFlashF = 4; shake = Math.max(shake, 16 * settings.feedback);
       spawnSparks(def.x, def.y - 112, '#78e2ff', '#ffe878', 2.3);
+      if (FX3D) { FX3D.spawnFloorRing(def.x, '#ffe878', 215, 26); FX3D.spawnBurst(def.x, def.y - 105, '#78e2ff', 14, false); FX3D.flashSky('#78e2ff', 0.42); }
       pushCallout('LIGHTNING REDIRECT 2x!', '#ffe878', def.x, def.y - 208);
       return;
     }
@@ -3063,6 +3123,7 @@
         sfx.headHit(); haptic('heavy'); hitstop = 6; inkFlashF = 4; slowMoFrames = Math.max(slowMoFrames, 8);
         shake = Math.max(shake, 14 * settings.feedback);
         spawnSparks(ix, iy, '#ffd84a', '#ffffff', 1.7);
+        if (FX3D) { FX3D.spawnFloorRing(def.x, '#ffd84a', 190, 24); FX3D.spawnBurst(ix, iy, '#ffd84a', 14, true); }
         pushCallout('GUARD SHATTER!', '#ffd84a', def.x, def.y - 200);
         return;
       }
@@ -3175,7 +3236,7 @@
     const isHeavyStrike = Boolean(crit || m.kd || m.wep || m.heavyHit || m.dmg >= 74);
     const isLauncherHit = Boolean(m.launcher || (m.ly && m.ly <= -9.5));
 
-    // 1) SHATTER / CRYO PRISON SHATTER (+40% dmg + Monochrome Ink Flash + Wall Launch!)
+    // 1) SHATTER / CRYO PRISON SHATTER (+40% dmg + Monochrome Ink Flash + 3D Crystal Explosion + Wall Launch!)
     if (isHeavyStrike && !m.freezePrison && (def.frozenPrisonF > 0 || def.statuses.chill || def.statuses.crush)) {
       const wasCage = def.frozenPrisonF > 0;
       const wasIce = wasCage || Boolean(def.statuses.chill);
@@ -3186,6 +3247,7 @@
       inkFlashF = Math.max(inkFlashF, 4);
       sfx.slam(); shake = Math.max(shake, 18 * settings.feedback);
       spawnSparks(ix, iy, wasIce ? '#78eeff' : '#e8b038', '#ffffff', 2.4, true);
+      if (FX3D) { FX3D.spawnFloorRing(def.x, wasIce ? '#78eeff' : '#e8b038', 235, 30); FX3D.spawnBurst(def.x, def.y - 95, wasIce ? '#9ef6ff' : '#e8b038', 24, true); if (wasIce) FX3D.flashSky('#78eeff', 0.35); }
       pushCallout(wasCage ? 'CRYO SHATTER! +40%' : 'SHATTER! +30%', wasIce ? '#78eeff' : '#fde047', def.x, def.y - 228);
     }
     // 2) ELECTRO-CHARGE: Any Lightning attack hitting Soaked enemy -> arcing electric stun!
@@ -3195,6 +3257,7 @@
       if (atk.id === 'p1') { match.p1Reactions++; addStyle(18, 'reaction'); }
       sfx.elemBend('lightning');
       spawnSparks(ix, iy, '#66d0ff', '#ffffff', 1.9);
+      if (FX3D) { FX3D.spawnFloorRing(def.x, '#66d0ff', 175, 22); FX3D.flashSky('#66d0ff', 0.28); }
       pushCallout('ELECTRO-CHARGE!', '#78e2ff', def.x, def.y - 224);
     }
     // 3) COMBUSTION: Launcher hitting Burning or Scorched enemy -> explosive super-launch for extended air juggles!
@@ -3204,6 +3267,7 @@
       if (atk.id === 'p1') { match.p1Reactions++; addStyle(18, 'reaction'); }
       sfx.elemBend('fire'); shake = Math.max(shake, 15 * settings.feedback);
       spawnSparks(ix, iy, '#ff5210', '#fff5cc', 2.0);
+      if (FX3D) { FX3D.spawnFloorRing(def.x, '#ff6a18', 200, 24); FX3D.spawnBurst(def.x, def.y - 80, '#ff8a28', 16, false); }
       pushCallout('COMBUSTION!', '#ff951a', def.x, def.y - 224);
     }
 
@@ -3232,6 +3296,7 @@
       inkFlashF = 6; slowMoFrames = 46; dramaticZoom = 0.16; shake = Math.max(shake, 22 * settings.feedback);
       sfx.headHit(); sfx.slam(); haptic('ko');
       spawnSparks(ix, iy, atk.el.glow, '#ffffff', 2.6, atk.el.id === 'ice');
+      if (FX3D) { FX3D.spawnFloorRing(def.x, atk.el.glow, 290, 38); FX3D.spawnBurst(ix, iy, atk.el.glow, 24, true); FX3D.flashSky(atk.el.glow, 0.55); }
       pushCallout('ECLIPSE FINISHER! +75 COINS', '#fde047', def.x, def.y - 230);
       return;
     }
@@ -3241,6 +3306,7 @@
       def.enlightUsed = true; def.hp = Math.round(def.maxHp * 0.25); def.inv = 34; def.avatarFlash = 34;
       atk.vx = -atk.facing * 20; atk.vy = -8.5; atk.state = 'hitstun'; atk.stun = 24;
       spawnSparks(def.x, def.y - 95, '#ffe57f', '#ffffff', 2.2);
+      if (FX3D) { FX3D.spawnFloorRing(def.x, '#ffe57f', 260, 32); FX3D.flashSky('#ffe57f', 0.40); }
       showBanner('ENLIGHTENMENT!', 'SECOND WIND', '#ffe57f', 48, true);
       sfx.gong(); hitstop = Math.round(5 * settings.feedback);
       slowMoFrames = 24; dramaticZoom = 0.09; shake = Math.max(shake, 16 * settings.feedback);
@@ -3283,6 +3349,7 @@
       def.vx = 0; def.vy = 0; def.state = 'hitstun'; def.stun = 18;
       applyStatus(def, 'chill', 180);
       spawnSparks(def.x, def.y - 95, '#78eeff', '#ffffff', 1.8, true);
+      if (FX3D) FX3D.spawnFloorRing(def.x, '#78eeff', 165, 24);
       pushCallout('FROZEN SOLID!', '#9ef6ff', def.x, def.y - 210);
     }
 
@@ -3719,6 +3786,7 @@
         inkFlashF = 4;
         sfx.slam(); sfx.gong(); haptic('heavy'); shake = Math.max(shake, 18 * settings.feedback);
         spawnSparks((p1.x + p2.x) * 0.5, GROUND_Y - 115, winF.el.glow, '#ffffff', 2.4);
+        if (FX3D) { FX3D.spawnFloorRing((p1.x + p2.x) * 0.5, winF.el.glow, 240, 28); FX3D.spawnBurst((p1.x + p2.x) * 0.5, GROUND_Y - 115, '#fde047', 18, true); }
         pushCallout(p1Won ? 'CLASH VICTORY!' : 'CLASH BROKEN!', p1Won ? '#fde047' : '#ff6b4a', winF.x, winF.y - 205);
       }
       return;
@@ -3804,7 +3872,7 @@
         const aWSpec = getWeaponSpec(a);
         if (a.move && (a.move.deflects || (a.move.wep && !a.disarmed && aWSpec.perk === 'nunchaku_stun'))) {
           for (const b of bendingWaves) {
-            if (b.owner !== a.id && !b.ult && !b.hit && !b.deflected && b.kind !== 'seismic_sonar' && rectsHit(hb, getWaveBox(b))) {
+            if (b.owner !== a.id && !b.ult && !b.hit && !b.deflected && b.kind !== 'seismic_sonar' && b.kind !== 'octopus_8_swing' && rectsHit(hb, getWaveBox(b))) {
               b.owner = a.id; b.dir = a.facing; b.vx = a.facing * Math.max(15, Math.abs(b.vx) * 1.25);
               b.deflected = true; b.f = Math.max(b.f, 24);
               if (a.id === 'p1') { match.p1Clashes++; addStyle(16, 'parry'); }
@@ -3849,12 +3917,12 @@
       for (let i = 0; i < bendingWaves.length; i++) {
         if (toRemove.has(i)) continue;
         const b1 = bendingWaves[i];
-        if (b1.delay > 0 || b1.kind === 'ult_arm_swing' || b1.kind === 'seismic_sonar') continue;
+        if (b1.delay > 0 || b1.kind === 'ult_arm_swing' || b1.kind === 'octopus_8_swing' || b1.kind === 'seismic_sonar') continue;
         const box1 = getWaveBox(b1);
         for (let j = i + 1; j < bendingWaves.length; j++) {
           if (toRemove.has(j)) continue;
           const b2 = bendingWaves[j];
-          if (b2.owner === b1.owner || b2.delay > 0 || b2.kind === 'ult_arm_swing' || b2.kind === 'seismic_sonar') continue;
+          if (b2.owner === b1.owner || b2.delay > 0 || b2.kind === 'ult_arm_swing' || b2.kind === 'octopus_8_swing' || b2.kind === 'seismic_sonar') continue;
           if (!rectsHit(box1, getWaveBox(b2))) continue;
           if (b1.ult && !b2.ult) {
             toRemove.add(j); b1.dmg = Math.round(b1.dmg * 0.82); b1.w *= 0.9;
@@ -3881,7 +3949,7 @@
       const rBox = { x: rw.x - rw.w * 0.5, y: GROUND_Y - rw.h, w: rw.w, h: rw.h };
       for (let wi = bendingWaves.length - 1; wi >= 0; wi--) {
         const b = bendingWaves[wi];
-        if (b.owner !== rw.owner && !b.delay && b.kind !== 'ult_arm_swing' && b.kind !== 'seismic_sonar' && rectsHit(rBox, getWaveBox(b))) {
+        if (b.owner !== rw.owner && !b.delay && b.kind !== 'ult_arm_swing' && b.kind !== 'octopus_8_swing' && b.kind !== 'seismic_sonar' && rectsHit(rBox, getWaveBox(b))) {
           if (!b.ult) { bendingWaves.splice(wi, 1); rw.hp--; }
           else { rw.hp = 0; b.dmg = Math.round(b.dmg * 0.65); }
           sfx.slam(); spawnDust(rw.x, GROUND_Y - 75, 0, 14, '#e8b038');
@@ -3919,7 +3987,7 @@
       }
     }
 
-    // Update Bending Waves, Vortexes, Seismic Sonar & Elemental Arm Swings
+    // Update Bending Waves, Vortexes, Seismic Sonar, 8-Arm Octopus Whip & Elemental Arm Swings
     for (let i = bendingWaves.length - 1; i >= 0; i--) {
       const b = bendingWaves[i];
       if (b.delay && b.delay > 0) { b.delay--; continue; }
@@ -3936,7 +4004,104 @@
           bendingWaves.push({ owner: b.owner, el: b.el, kind: 'earth_spike', x: px, y: GROUND_Y, vx: 0, dir: dirToD, w: 118, h: 224, dmg: 86, ly: -16.8, low: true, launcher: true, heavyHit: true, f: 28, max: 28, hit: false, ult: false });
           sfx.slam(); shake = Math.max(shake, 16 * settings.feedback);
           spawnDust(px, GROUND_Y, 0, 18, '#f5d061');
+          if (FX3D) { FX3D.spawnFloorRing(px, '#f5d061', 230, 28); FX3D.spawnBurst(px, GROUND_Y - 30, '#e8b038', 16, true); }
           pushCallout('SEISMIC ERUPTION!', '#f5d061', px, GROUND_Y - 220);
+        }
+        continue;
+      }
+
+      // Katara's 8-Arm Octopus Multi-Swing: 8 articulated water tentacles whipping & slamming the opponent 8 TIMES!
+      if (b.kind === 'octopus_8_swing') {
+        b.age++; b.f--;
+        if (b.lastSlamF > 0) b.lastSlamF--;
+        const ox = a.x, oy = a.y - 104;
+        b.x = ox; b.y = oy;
+        if (b.phase === 'reach') {
+          const prog = Math.min(1, b.age / 11);
+          const reachLen = 48 + prog * (b.w - 36);
+          b.tipX = Math.max(ARENA_L + 16, Math.min(ARENA_R - 16, ox + b.dir * reachLen));
+          b.tipY = oy + Math.sin(prog * Math.PI * 2.2) * 26;
+          if (settings.vfx !== 'low' && b.age % 2 === 0) spawnSparks(b.tipX, b.tipY, '#0c7de8', '#e6fcff', 0.85);
+          const tipBox = { x: b.tipX - 64, y: b.tipY - 78, w: 128, h: 156 };
+          if (canFight && d.inv <= 0 && d.state !== 'ko' && d.state !== 'grabbed' && rectsHit(tipBox, getHurtbox(d))) {
+            b.phase = 'swing'; b.swingIdx = 0; b.swingF = 0; b.totalSwings = 8; b.f = 140; b.grabbed = true;
+            b.grabStartDist = Math.max(135, Math.min(220, Math.abs(d.x - a.x)));
+            a.octopusSwinging = true; a.octopusGrabReady = false; a.octopusGrabCd = 180; a.octopusF = Math.max(a.octopusF, 150);
+            d.state = 'grabbed'; d.sf = 0; d.vx = 0; d.vy = 0; d.inv = 0; d.frozenPrisonF = 0;
+            dramaticZoom = Math.max(dramaticZoom, 0.08);
+            sfx.bend(); shake = Math.max(shake, 8 * settings.feedback);
+            spawnSparks(d.x, d.y - 95, '#38d8ff', '#e6fcff', 1.6);
+            if (FX3D) FX3D.spawnFloorRing(d.x, '#38d8ff', 165, 22);
+            pushCallout('8-ARM GRAB!', '#7cf2ff', d.x, d.y - 186);
+          } else if (b.age >= 15) {
+            bendingWaves.splice(i, 1); continue;
+          }
+        } else if (b.phase === 'swing') {
+          const swingDurs = [10, 10, 8, 8, 8, 7, 7, 11];
+          const dur = swingDurs[b.swingIdx] || 8;
+          b.swingF++;
+          const u = Math.min(1, b.swingF / dur);
+          const ease = u < 0.5 ? 2 * u * u : 1 - Math.pow(-2 * u + 2, 2) / 2;
+          const fromSide = (b.swingIdx % 2 === 0 ? 1 : -1) * b.dir;
+          const ang = ease * Math.PI;
+          const radX = Math.min(220, 165 + b.swingIdx * 6);
+          const radY = 195 + (b.swingIdx === 7 ? 48 : b.swingIdx * 5);
+          b.tipX = Math.max(ARENA_L + 38, Math.min(ARENA_R - 38, a.x + fromSide * Math.cos(ang) * radX));
+          b.tipY = Math.min(GROUND_Y - 12, (a.y - 90) - Math.sin(ang) * radY + u * 56);
+          b.activeArm = b.swingIdx % 8;
+          d.x = b.tipX; d.y = Math.min(GROUND_Y, b.tipY + 66);
+          a.facing = b.tipX >= a.x ? 1 : -1;
+          dramaticZoom = Math.max(dramaticZoom, 0.08 + b.swingIdx * 0.008);
+          if (settings.vfx !== 'low' && b.swingF % 2 === 0 && particles.length < 240) {
+            particles.push({ x: b.tipX, y: b.tipY, vx: (Math.random() - 0.5) * 5, vy: -1.5 - Math.random() * 3, sz: 5.2, c: Math.random() < 0.5 ? '#e6fcff' : '#38d8ff', age: 0, max: 16, g: 0.14, t: 'spark' });
+          }
+          if (b.swingF >= dur) {
+            const slamNum = b.swingIdx + 1;
+            d.y = GROUND_Y; b.lastSlamX = d.x; b.lastSlamF = 11;
+            if (slamNum < 8) {
+              d.hp = Math.max(1, d.hp - 15); d.flash = 5;
+              applyStatus(d, 'soaked');
+              if (a.id === 'p1') {
+                match.c1 = match.c1Live ? match.c1 + 1 : 1;
+                match.c1Live = true; match.c1t = 60;
+                if (match.c1 > match.maxComboP1) match.maxComboP1 = match.c1;
+                if (match.c1 >= 3) advanceTutorial('combo3');
+                addStyle(6, 'bend');
+              } else {
+                match.c2 = match.c2Live ? match.c2 + 1 : 1;
+                match.c2Live = true; match.c2t = 60;
+              }
+              sfx.slam(); haptic('medium');
+              shake = Math.max(shake, (10 + slamNum * 1.2) * settings.feedback);
+              spawnSparks(d.x, GROUND_Y - 22, '#0c7de8', '#e6fcff', 1.5);
+              spawnDust(d.x, GROUND_Y, fromSide, 10, '#38d8ff');
+              if (FX3D) { FX3D.spawnFloorRing(d.x, '#38d8ff', 150 + slamNum * 10, 22); FX3D.spawnBurst(d.x, GROUND_Y - 18, '#7cf2ff', 8, false); }
+              for (let ci = match.callouts.length - 1; ci >= 0; ci--) if (match.callouts[ci].text.startsWith('OCTOPUS SLAM')) match.callouts.splice(ci, 1);
+              pushCallout(`OCTOPUS SLAM ${slamNum}/8`, '#7cf2ff', d.x, GROUND_Y - 172);
+              b.swingIdx++; b.swingF = 0; b.f = Math.max(b.f, 36);
+            } else {
+              b.phase = 'slam'; b.f = 12; a.octopusSwinging = false;
+              d.state = 'idle';
+              sfx.slam(); sfx.headHit(); haptic('heavy');
+              inkFlashF = Math.max(inkFlashF, 5); slowMoFrames = Math.max(slowMoFrames, 16);
+              dramaticZoom = 0.14; shake = Math.max(shake, 24 * settings.feedback);
+              spawnSparks(d.x, GROUND_Y - 26, '#0c7de8', '#ffffff', 2.6);
+              spawnDust(d.x, GROUND_Y, -fromSide, 22, '#7cf2ff');
+              if (FX3D) { FX3D.spawnFloorRing(d.x, '#7cf2ff', 260, 34); FX3D.spawnBurst(d.x, GROUND_Y - 24, '#7cf2ff', 22, false); FX3D.flashSky('#38d8ff', 0.35); }
+              for (let ci = match.callouts.length - 1; ci >= 0; ci--) if (match.callouts[ci].text.startsWith('OCTOPUS SLAM')) match.callouts.splice(ci, 1);
+              pushCallout('8/8 OCTOPUS FINALE!', '#ffe066', d.x, GROUND_Y - 215);
+              resolveHit(a, d, {
+                dmg: 48, chip: 0, hs: 38, bs: 0, stop: 6,
+                kb: 14, forceVx: -fromSide * 13.5, ly: -13.8, kd: true, crit: true,
+                unblockable: true, h: 'mid', elStatus: true, mg: 10
+              }, d.x, GROUND_Y - 38, true);
+            }
+          }
+        }
+        if (b.f <= 0 || !canFight) {
+          a.octopusSwinging = false;
+          if (d.state === 'grabbed') { d.state = 'knockdown_air'; d.vy = -8; }
+          bendingWaves.splice(i, 1);
         }
         continue;
       }
@@ -3981,6 +4146,7 @@
             sfx.slam(); slowMoFrames = 14; dramaticZoom = 0.095; shake = Math.max(shake, 22 * settings.feedback);
             spawnSparks(d.x, GROUND_Y - 24, b.el.primary, b.el.core, 2.4, b.el.id === 'ice');
             spawnDust(d.x, GROUND_Y, -b.dir, 18, b.el.glow);
+            if (FX3D) { FX3D.spawnFloorRing(d.x, b.el.glow, 240, 30); FX3D.spawnBurst(d.x, GROUND_Y - 24, b.el.glow, 18, b.el.id === 'ice' || b.el.id === 'earth'); }
             if (b.el.id === 'lava') spawnHazard(a, d.x);
             resolveHit(a, d, {
               dmg: b.dmg, chip: 0, hs: 38, bs: 0, stop: 6,
@@ -4483,6 +4649,11 @@
       // Sozin's Jet-Step: horizontal rocket flying-kick glide pose!
       return { ...BASE, py: -96, px: 10, pr: 0.56, tr: 0.34, hr: -0.45, fh: -1.78, fk: 0.08, bh: 0.45, bk: 0.42, fs: -1.95, fe: -0.25, bs: 1.15, be: -0.3 };
     }
+    if (f.octopusSwinging && f.state !== 'ko') {
+      // Katara's Tai Chi Octopus Channeling Stance: wide rooted horse-stance conducting all 8 water whips!
+      const sw = Math.sin(simFrame * 0.42), cw = Math.cos(simFrame * 0.42);
+      return { ...BASE, py: -76, px: sw * 5, pr: sw * 0.08, tr: 0.14 + sw * 0.22, hr: -0.06 - sw * 0.08, fs: -1.65 + sw * 0.72, fe: -0.45 + cw * 0.35, fw: 0.25, bs: -1.15 - sw * 0.78, be: -0.52 - cw * 0.35, fh: -0.76, fk: 0.88, bh: 0.72, bk: 0.80 };
+    }
     if (f.airScooterF > 0 && f.state !== 'ko' && f.state !== 'hitstun' && f.state !== 'knockdown_air') {
       // Aang's Air Scooter: authentic crouched balanced surf/riding pose atop spinning wind sphere!
       const bob = Math.sin(simFrame * 0.34) * 3.5;
@@ -4882,7 +5053,7 @@
     f.animSf = f.sf;
 
     let target, clip = true;
-    if (f.dizzied || f.fireJetF > 0 || (f.airScooterF > 0 && f.state !== 'attack')) {
+    if (f.dizzied || f.octopusSwinging || f.fireJetF > 0 || (f.airScooterF > 0 && f.state !== 'attack')) {
       target = { ...BASE, ...getPose(f) }; clip = false;
     } else if (f.state === 'attack' && f.move) {
       target = sampleClip(getMoveClip(f), movePhase(f), f.animFrom, BASE, 3);
@@ -5318,6 +5489,103 @@
       // Base splash / whirlwind crater ring
       ctx.fillStyle = el.glow + '66';
       ctx.beginPath(); ctx.ellipse(b.x, GROUND_Y + 2, 115, 22, 0, 0, Math.PI * 2); ctx.fill();
+      ctx.restore();
+      return;
+    }
+
+    // 1b) KATARA'S 8-ARM OCTOPUS MULTI-SWING (ALL 8 Articulated Sumi-e Water Tentacles Whipping Opponent 8 Times!)
+    if (b.kind === 'octopus_8_swing') {
+      const ox = b.x, oy = b.y, tx = b.tipX, ty = b.tipY;
+      const fade = b.phase === 'slam' ? Math.max(0.18, b.f / 12) : 1;
+      const activeIdx = (b.activeArm || 0) % 8;
+      const nextIdx = (activeIdx + 1) % 8;
+      const isFinale = b.phase === 'slam' || b.swingIdx === 7;
+      ctx.globalAlpha = 0.96 * fade;
+
+      const drawTentacle = (sx, sy, cx, cy, ex, ey, thick, isMain) => {
+        ctx.lineCap = 'round';
+        ctx.strokeStyle = '#03182e'; ctx.lineWidth = thick + 5;
+        ctx.beginPath(); ctx.moveTo(sx, sy); ctx.quadraticCurveTo(cx, cy, ex, ey); ctx.stroke();
+        ctx.strokeStyle = '#0c7de8'; ctx.lineWidth = thick;
+        ctx.beginPath(); ctx.moveTo(sx, sy); ctx.quadraticCurveTo(cx, cy, ex, ey); ctx.stroke();
+        ctx.strokeStyle = '#38d8ff'; ctx.lineWidth = thick * 0.56;
+        ctx.beginPath(); ctx.moveTo(sx, sy); ctx.quadraticCurveTo(cx, cy, ex, ey); ctx.stroke();
+        ctx.strokeStyle = '#e6fcff'; ctx.lineWidth = Math.max(2.2, thick * 0.22);
+        ctx.beginPath(); ctx.moveTo(sx, sy); ctx.quadraticCurveTo(cx, cy, ex, ey); ctx.stroke();
+        if (isMain) {
+          for (let s = 1; s <= 5; s++) {
+            const u = s / 6;
+            const px = (1 - u) * (1 - u) * sx + 2 * (1 - u) * u * cx + u * u * ex;
+            const py = (1 - u) * (1 - u) * sy + 2 * (1 - u) * u * cy + u * u * ey;
+            ctx.strokeStyle = '#e6fcff'; ctx.lineWidth = 2.2;
+            ctx.beginPath(); ctx.arc(px, py, (12 - u * 4), 0, Math.PI * 2); ctx.stroke();
+          }
+        } else {
+          // Curled Hokusai foam claw at tip of each coiling octopus arm
+          ctx.fillStyle = '#38d8ff'; ctx.strokeStyle = '#e6fcff'; ctx.lineWidth = 1.8;
+          ctx.beginPath(); ctx.arc(ex, ey, thick * 0.45, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+        }
+      };
+
+      // Draw all 7 secondary / relay-coiling water tentacles radiating from caster's back & shoulders
+      for (let k = 0; k < 8; k++) {
+        if (k === activeIdx) continue;
+        const side = k < 4 ? -1 : 1;
+        const slot = k % 4;
+        const baseAng = side === 1
+          ? (-1.28 + slot * 0.58)
+          : (Math.PI + 1.28 - slot * 0.58);
+        const wave = Math.sin(simFrame * 0.28 + k * 1.15);
+        const sx = ox + Math.cos(baseAng) * 18, sy = oy + Math.sin(baseAng) * 20;
+        if (isFinale) {
+          // 8/8 FINALE: ALL 8 octopus arms fan out wide like a Kraken before converging onto the victim!
+          const spreadX = side * (110 + slot * 42);
+          const spreadY = -92 + (slot - 1.5) * 46 + wave * 18;
+          drawTentacle(sx, sy, (sx + tx) * 0.5 + spreadX, Math.min(GROUND_Y - 26, (sy + ty) * 0.5 + spreadY), tx + Math.cos(k * 0.8) * 18, ty + Math.sin(k * 0.8) * 14, 11, false);
+        } else if (b.phase === 'swing' && k === nextIdx) {
+          // Relay arm reaches eagerly toward the landing zone to catch & whip back!
+          const aimX = ox + (tx >= ox ? -1 : 1) * 155;
+          const aimY = oy - 55 + wave * 28;
+          drawTentacle(sx, sy, (sx + aimX) * 0.5, oy - 135, aimX, aimY, 13, false);
+        } else {
+          const len = 104 + (slot % 2) * 32 + Math.sin(simFrame * 0.22 + k) * 16;
+          const ex = ox + Math.cos(baseAng + wave * 0.28) * len;
+          const ey = Math.min(GROUND_Y - 14, oy + Math.sin(baseAng + wave * 0.24) * (len * 0.85));
+          const cx = (sx + ex) * 0.5 + side * 32;
+          const cy = (sy + ey) * 0.5 - 36 + wave * 14;
+          drawTentacle(sx, sy, cx, cy, ex, ey, 11, false);
+        }
+      }
+
+      // Draw the PRIMARY active whipping octopus arm gripping & slamming the opponent!
+      const mx = (ox + tx) * 0.5;
+      const arcLift = b.phase === 'swing' ? -112 : Math.sin(simFrame * 0.55) * 38;
+      const my = Math.min(GROUND_Y - 22, (oy + ty) * 0.5 + arcLift);
+      drawTentacle(ox, oy, mx, my, tx, ty, isFinale ? 24 : 21, true);
+
+      // Grasping Hokusai Water Claw & Coiling Bands wrapped around the grabbed opponent
+      ctx.save(); ctx.translate(tx, ty);
+      ctx.fillStyle = '#0c7de8'; ctx.strokeStyle = '#e6fcff'; ctx.lineWidth = 2.8;
+      ctx.beginPath(); ctx.arc(0, 0, b.grabbed ? 30 : 22, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+      for (let f = -2; f <= 2; f++) {
+        const fa = f * 0.58 + simFrame * 0.22;
+        ctx.strokeStyle = '#e6fcff'; ctx.lineWidth = 4;
+        ctx.beginPath(); ctx.moveTo(0, 0);
+        ctx.quadraticCurveTo(Math.cos(fa) * 28, Math.sin(fa) * 28, Math.cos(fa + 0.5) * 44, Math.sin(fa + 0.5) * 44);
+        ctx.stroke();
+      }
+      ctx.restore();
+
+      // Splash shockwave crest on every single slam impact (1/8 through 8/8)!
+      if (b.lastSlamF > 0 && b.lastSlamX) {
+        const sp = 1 - b.lastSlamF / 11;
+        const sr = (isFinale ? 230 : 145) * (0.35 + sp * 0.85);
+        ctx.globalAlpha = (1 - sp) * 0.92;
+        ctx.strokeStyle = '#e6fcff'; ctx.lineWidth = (isFinale ? 7 : 4.5) * (1 - sp * 0.5);
+        ctx.beginPath(); ctx.ellipse(b.lastSlamX, GROUND_Y, sr, sr * 0.22, 0, 0, Math.PI * 2); ctx.stroke();
+        ctx.fillStyle = 'rgba(56, 216, 255, 0.36)';
+        ctx.beginPath(); ctx.ellipse(b.lastSlamX, GROUND_Y, sr * 0.82, sr * 0.17, 0, 0, Math.PI * 2); ctx.fill();
+      }
       ctx.restore();
       return;
     }
@@ -5809,8 +6077,8 @@
     // Live ATLA Signature Bending Visuals + Status Effects Directly on Silhouette
     if (f.state !== 'ko') {
       ctx.save();
-      // 1) Katara's Octopus Form: 8 swirling animated water tentacles around fighter!
-      if (f.octopusF > 0) {
+      // 1) Katara's Octopus Form: 8 swirling animated water tentacles around fighter (replaced by full 8-arm whip during multi-swing)!
+      if (f.octopusF > 0 && !bendingWaves.some(w => w.owner === f.id && w.kind === 'octopus_8_swing')) {
         const fade = Math.min(1, f.octopusF / 24);
         ctx.globalAlpha = 0.88 * fade;
         for (let t = 0; t < 8; t++) {
@@ -6125,6 +6393,648 @@
     ctx.restore();
   }
 
+  // ===== THREE.JS 2.5D VISUAL ENHANCER (Dynamic Floor Lighting, Volumetric Bending FX, 3D Shards & Depth Weather) =====
+  function createFX3D() {
+    const fxCanvas = document.getElementById('fx3d');
+    if (!fxCanvas || typeof window.THREE === 'undefined') return null;
+    const T = window.THREE;
+    let renderer;
+    try {
+      renderer = new T.WebGLRenderer({ canvas: fxCanvas, alpha: true, antialias: true, powerPreference: 'high-performance' });
+    } catch {
+      fxCanvas.style.display = 'none';
+      return null;
+    }
+
+    const FOV = 36;
+    const CAM_Z = (H * 0.5) / Math.tan((FOV * 0.5) * Math.PI / 180); // ~1107.965 -> 1:1 pixel sync at z = 0
+    const FLOOR_Y3D = H * 0.5 - GROUND_Y; // -222
+    const to3X = (wx) => wx - W * 0.5;
+    const to3Y = (wy) => H * 0.5 - wy;
+
+    renderer.setClearColor(0x000000, 0);
+    renderer.outputColorSpace = T.SRGBColorSpace;
+    const syncQuality = () => {
+      const maxDpr = settings.vfx === 'low' ? 1.25 : 1.5;
+      const dpr = Math.min(maxDpr, Math.max(1, window.devicePixelRatio || 1));
+      renderer.setPixelRatio(dpr);
+      renderer.setSize(W, H, false);
+    };
+    syncQuality();
+    window.addEventListener('resize', syncQuality);
+
+    const scene = new T.Scene();
+    const camera = new T.PerspectiveCamera(FOV, W / H, 40, 4000);
+    camera.position.set(0, 0, CAM_Z);
+
+    // Subtle 3-point lighting for 3D ice prisms & tumbling shards
+    scene.add(new T.AmbientLight(0xdce8ff, 0.72));
+    const keyLight = new T.DirectionalLight(0xfff5e4, 1.55);
+    keyLight.position.set(220, 440, 520);
+    scene.add(keyLight);
+    const rimLight = new T.DirectionalLight(0x66dcff, 1.05);
+    rimLight.position.set(-340, 260, -260);
+    scene.add(rimLight);
+
+    // 1) REAL-TIME DYNAMIC 6-LIGHT ELEMENTAL DOJO FLOOR (Custom GLSL Specular + Biome Ripples/Magma/Frost)
+    const lightPos = Array.from({ length: 6 }, () => new T.Vector3(0, -9999, 0));
+    const lightCol = Array.from({ length: 6 }, () => new T.Color(0x000000));
+    const lightRad = [180, 180, 180, 180, 180, 180];
+    const floorUniforms = {
+      uLightPos: { value: lightPos },
+      uLightCol: { value: lightCol },
+      uLightRad: { value: lightRad },
+      uTime: { value: 0 },
+      uBiomeMode: { value: 0 }
+    };
+    const floorMat = new T.ShaderMaterial({
+      uniforms: floorUniforms,
+      vertexShader: `
+        varying vec3 vWorldPos;
+        varying vec2 vUv;
+        void main() {
+          vUv = uv;
+          vec4 wp = modelMatrix * vec4(position, 1.0);
+          vWorldPos = wp.xyz;
+          gl_Position = projectionMatrix * viewMatrix * wp;
+        }
+      `,
+      fragmentShader: `
+        precision mediump float;
+        uniform vec3 uLightPos[6];
+        uniform vec3 uLightCol[6];
+        uniform float uLightRad[6];
+        uniform float uTime;
+        uniform float uBiomeMode;
+        varying vec3 vWorldPos;
+        varying vec2 vUv;
+        void main() {
+          float edgeX = smoothstep(0.0, 0.12, vUv.x) * smoothstep(1.0, 0.88, vUv.x);
+          float edgeZ = smoothstep(0.0, 0.24, vUv.y) * smoothstep(1.0, 0.34, vUv.y);
+          float mask = edgeX * edgeZ;
+          if (mask < 0.005) discard;
+
+          // Surface micro-pattern tuned per realm
+          float surf = 0.88 + 0.12 * sin(vWorldPos.z * 0.26);
+          vec3 ambientBiome = vec3(0.0);
+          if (uBiomeMode > 0.5 && uBiomeMode < 1.5) {
+            // Tidal Shrine shimmering water caustics
+            float rip = sin(vWorldPos.x * 0.042 + uTime * 2.5) * cos(vWorldPos.z * 0.075 - uTime * 1.9);
+            float rip2 = sin((vWorldPos.x - vWorldPos.z) * 0.055 - uTime * 2.1);
+            surf = 0.72 + 0.36 * max(0.0, rip * 0.6 + rip2 * 0.4);
+            ambientBiome = vec3(0.04, 0.16, 0.24) * max(0.0, rip2) * 0.42;
+          } else if (uBiomeMode >= 1.5 && uBiomeMode < 2.5) {
+            // Obsidian Caldera / Blazing Dojo glowing ember heat-veins
+            float heat = sin(vWorldPos.x * 0.032 + sin(vWorldPos.z * 0.04 + uTime * 1.4)) * cos(vWorldPos.z * 0.048 - uTime * 1.1);
+            surf = 0.80 + 0.28 * max(0.0, heat);
+            ambientBiome = vec3(0.32, 0.09, 0.02) * pow(max(0.0, heat), 2.5) * 0.52;
+          } else if (uBiomeMode >= 2.5 && uBiomeMode < 3.5) {
+            // Frozen Peak specular frost crystal glint
+            float glint = pow(max(0.0, sin(vWorldPos.x * 0.065 + vWorldPos.z * 0.05 + uTime * 0.6)), 4.0);
+            surf = 0.84 + 0.32 * glint;
+            ambientBiome = vec3(0.10, 0.26, 0.34) * glint * 0.38;
+          }
+
+          vec3 accum = ambientBiome;
+          for (int i = 0; i < 6; i++) {
+            float rad = max(1.0, uLightRad[i]);
+            vec3 d = uLightPos[i] - vWorldPos;
+            float dist2 = dot(d.xz, d.xz) + d.y * d.y * 0.55;
+            float att = exp(-dist2 / (rad * rad * 0.44));
+            float spec = pow(att, 1.85) * 0.45;
+            accum += uLightCol[i] * (att * 0.58 + spec) * surf;
+          }
+          accum *= mask;
+          float lum = max(accum.r, max(accum.g, accum.b));
+          gl_FragColor = vec4(accum, clamp(lum * 0.92, 0.0, 0.72));
+        }
+      `,
+      transparent: true,
+      depthWrite: false,
+      blending: T.AdditiveBlending
+    });
+    const floorMesh = new T.Mesh(new T.PlaneGeometry(1840, 360, 1, 1), floorMat);
+    floorMesh.rotation.x = -Math.PI * 0.5;
+    floorMesh.position.set(0, FLOOR_Y3D, 70);
+    scene.add(floorMesh);
+
+    // 2) SUBTLE BACKDROP IMPACT FLASH WASH (Lightning / Cryo Shatter / Eclipse Finisher sky illumination)
+    const skyFlashMat = new T.MeshBasicMaterial({ color: 0x78e2ff, transparent: true, opacity: 0, depthWrite: false, blending: T.AdditiveBlending });
+    const skyFlashMesh = new T.Mesh(new T.PlaneGeometry(2100, 1100), skyFlashMat);
+    skyFlashMesh.position.set(0, 40, -180);
+    skyFlashMesh.visible = false;
+    scene.add(skyFlashMesh);
+    let skyFlashA = 0;
+
+    // 3) PRE-ALLOCATED POOL OF 12 REAL 3D PERSPECTIVE FLOOR SHOCKWAVE RINGS
+    const ringGeo = new T.RingGeometry(0.76, 1.0, 40);
+    const rings = [];
+    for (let i = 0; i < 12; i++) {
+      const mat = new T.MeshBasicMaterial({ color: 0x38d8ff, transparent: true, opacity: 0, side: T.DoubleSide, depthWrite: false, blending: T.AdditiveBlending });
+      const mesh = new T.Mesh(ringGeo, mat);
+      mesh.rotation.x = -Math.PI * 0.5;
+      mesh.position.set(0, FLOOR_Y3D + 2, 0);
+      mesh.visible = false;
+      scene.add(mesh);
+      rings.push({ mesh, mat, active: false, age: 0, dur: 24, maxR: 180 });
+    }
+    let ringCursor = 0;
+    const spawnFloorRing = (wx, hexCol, maxR = 190, dur = 24) => {
+      if (!settings.fx3d) return;
+      const r = rings[ringCursor];
+      ringCursor = (ringCursor + 1) % rings.length;
+      r.active = true; r.age = 0; r.dur = dur; r.maxR = maxR;
+      r.mat.color.set(hexCol || '#38d8ff');
+      r.mat.opacity = 0.85;
+      r.mesh.position.set(to3X(wx), FLOOR_Y3D + 2, 4);
+      r.mesh.scale.set(14, 14, 1);
+      r.mesh.visible = true;
+    };
+
+    // 4) PRE-ALLOCATED POOL OF 24 REAL 3D TUMBLING CRYSTAL / EMBER / ROCK SHARDS WITH FLOOR BOUNCE!
+    const shardGeo = new T.OctahedronGeometry(10, 0);
+    const shards = [];
+    for (let i = 0; i < 24; i++) {
+      const mat = new T.MeshStandardMaterial({
+        color: 0x9ef6ff, emissive: 0x1a9be8, emissiveIntensity: 0.65,
+        flatShading: true, roughness: 0.16, metalness: 0.25, transparent: true, opacity: 0.92
+      });
+      const mesh = new T.Mesh(shardGeo, mat);
+      mesh.visible = false;
+      scene.add(mesh);
+      shards.push({ mesh, mat, active: false, vx: 0, vy: 0, vz: 0, rx: 0, ry: 0, rz: 0, age: 0, max: 42, scale: 1 });
+    }
+    let shardCursor = 0;
+    const spawnBurst = (wx, wy, hexCol, count = 16, isCrystal = true) => {
+      if (!settings.fx3d) return;
+      const n = Math.min(shards.length, settings.vfx === 'low' ? Math.ceil(count * 0.6) : count);
+      const bx = to3X(wx), by = to3Y(wy);
+      const col = new T.Color(hexCol || '#9ef6ff');
+      for (let i = 0; i < n; i++) {
+        const s = shards[shardCursor];
+        shardCursor = (shardCursor + 1) % shards.length;
+        const ang = (i / n) * Math.PI * 2 + (Math.random() - 0.5) * 0.65;
+        const spd = 4.5 + Math.random() * 10.5;
+        s.active = true; s.age = 0; s.max = 32 + Math.floor(Math.random() * 20);
+        s.vx = Math.cos(ang) * spd;
+        s.vy = Math.abs(Math.sin(ang)) * spd * 1.05 + 3.5 + Math.random() * 5.5;
+        s.vz = (Math.random() - 0.35) * 14.5; // bursts forward toward lens & back!
+        s.rx = (Math.random() - 0.5) * 0.38;
+        s.ry = (Math.random() - 0.5) * 0.38;
+        s.rz = (Math.random() - 0.5) * 0.38;
+        s.scale = (isCrystal ? 0.75 : 0.55) + Math.random() * (isCrystal ? 0.95 : 0.6);
+        s.mat.color.copy(col);
+        s.mat.emissive.copy(col);
+        s.mat.emissiveIntensity = isCrystal ? 0.55 : 0.92;
+        s.mat.opacity = isCrystal ? 0.88 : 0.95;
+        s.mesh.position.set(bx + (Math.random() - 0.5) * 28, by + (Math.random() - 0.5) * 34, (Math.random() - 0.5) * 24);
+        s.mesh.scale.set(s.scale * (isCrystal ? 0.72 : 1), s.scale * (isCrystal ? 1.55 : 1), s.scale * 0.75);
+        s.mesh.visible = true;
+      }
+    };
+
+    // 5) PRE-ALLOCATED 3D VOLUMETRIC SIGNATURE BENDING MESHES WRAPPING AROUND THE 2D FIGHTERS!
+    // 5a) 2x Aang's 3D Air Scooter (Fresnel wind sphere + 3 tilted spinning gyroscopic torus bands)
+    const scooterFresnelMat = new T.ShaderMaterial({
+      uniforms: { uColor: { value: new T.Color('#78ffd6') } },
+      vertexShader: `
+        varying vec3 vNorm;
+        void main() {
+          vNorm = normalize(normalMatrix * normal);
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+      `,
+      fragmentShader: `
+        precision mediump float;
+        uniform vec3 uColor;
+        varying vec3 vNorm;
+        void main() {
+          float fres = pow(1.0 - abs(vNorm.z), 1.65);
+          gl_FragColor = vec4(mix(uColor, vec3(1.0), fres * 0.6), fres * 0.82);
+        }
+      `,
+      transparent: true, depthWrite: false, blending: T.AdditiveBlending
+    });
+    const scooterSphereGeo = new T.SphereGeometry(35, 18, 14);
+    const scooterBandGeo = new T.TorusGeometry(39, 2.3, 8, 32);
+    const scooterBandMat = new T.MeshBasicMaterial({ color: 0xc8ffef, transparent: true, opacity: 0.78, depthWrite: false, blending: T.AdditiveBlending });
+    const airScooters = [0, 1].map(() => {
+      const g = new T.Group();
+      const sphere = new T.Mesh(scooterSphereGeo, scooterFresnelMat);
+      g.add(sphere);
+      const bands = [0, 1, 2].map((bi) => {
+        const b = new T.Mesh(scooterBandGeo, scooterBandMat);
+        b.rotation.set(bi * 0.9, bi * 1.1, bi * 0.6);
+        g.add(b);
+        return b;
+      });
+      g.visible = false;
+      scene.add(g);
+      return { group: g, bands };
+    });
+
+    // 5b) 2x Katara's 3D Faceted Cryo Prison Crystal Cluster (real 3D ice facets gleaming over frozen fighter!)
+    const cryoCoreGeo = new T.OctahedronGeometry(52, 0);
+    const cryoSpireGeo = new T.ConeGeometry(16, 86, 5);
+    const cryoPrisons = [0, 1].map(() => {
+      const g = new T.Group();
+      const mat = new T.MeshStandardMaterial({
+        color: 0x9ef6ff, emissive: 0x1298e0, emissiveIntensity: 0.52,
+        flatShading: true, roughness: 0.12, metalness: 0.22,
+        transparent: true, opacity: 0.44, side: T.DoubleSide, depthWrite: false
+      });
+      const core = new T.Mesh(cryoCoreGeo, mat);
+      core.scale.set(0.88, 1.92, 0.85);
+      g.add(core);
+      const spireOffsets = [[-36, -34, 14, 0.35], [38, -28, 12, -0.32], [-26, 22, -14, 0.24], [28, 28, -12, -0.26]];
+      spireOffsets.forEach(([ox, oy, oz, rz]) => {
+        const sp = new T.Mesh(cryoSpireGeo, mat);
+        sp.position.set(ox, oy, oz);
+        sp.rotation.z = rz;
+        g.add(sp);
+      });
+      g.visible = false;
+      scene.add(g);
+      return { group: g, mat };
+    });
+
+    // 5c) 2x 3D Orbital Energy Halos (Katara Octopus Form / 8-Arm Whip & Iroh Lightning Redirection!)
+    const haloGeo = new T.TorusGeometry(68, 2.8, 8, 40);
+    const orbitalHalos = [0, 1].map(() => {
+      const g = new T.Group();
+      const m1 = new T.MeshBasicMaterial({ color: 0x38d8ff, transparent: true, opacity: 0.62, depthWrite: false, blending: T.AdditiveBlending });
+      const m2 = new T.MeshBasicMaterial({ color: 0xe6fcff, transparent: true, opacity: 0.48, depthWrite: false, blending: T.AdditiveBlending });
+      const r1 = new T.Mesh(haloGeo, m1);
+      const r2 = new T.Mesh(haloGeo, m2);
+      r1.rotation.x = 1.15; r2.rotation.x = -1.12; r2.scale.setScalar(1.16);
+      g.add(r1, r2);
+      g.visible = false;
+      scene.add(g);
+      return { group: g, r1, r2, m1, m2 };
+    });
+
+    // 5d) 3x 3D Floor Hazard Glow Discs (Magma Pools & Frozen Floor!)
+    const hazGeo = new T.CircleGeometry(1, 28);
+    const hazDiscs = [0, 1, 2].map(() => {
+      const mat = new T.MeshBasicMaterial({ color: 0xff5a14, transparent: true, opacity: 0, side: T.DoubleSide, depthWrite: false, blending: T.AdditiveBlending });
+      const mesh = new T.Mesh(hazGeo, mat);
+      mesh.rotation.x = -Math.PI * 0.5;
+      mesh.position.set(0, FLOOR_Y3D + 1.2, 6);
+      mesh.visible = false;
+      scene.add(mesh);
+      return { mesh, mat };
+    });
+
+    // 6) TRUE 2.5D DEPTH-LAYERED ATMOSPHERIC PARTICLES (z = -220 behind fighters -> +250 foreground lens!)
+    const makeGlowTex = () => {
+      const c = document.createElement('canvas'); c.width = 64; c.height = 64;
+      const g = c.getContext('2d');
+      const gr = g.createRadialGradient(32, 32, 2, 32, 32, 30);
+      gr.addColorStop(0, 'rgba(255,255,255,1)');
+      gr.addColorStop(0.38, 'rgba(255,255,255,0.75)');
+      gr.addColorStop(1, 'rgba(255,255,255,0)');
+      g.fillStyle = gr; g.fillRect(0, 0, 64, 64);
+      const tex = new T.CanvasTexture(c);
+      tex.colorSpace = T.SRGBColorSpace;
+      return tex;
+    };
+    const makeMapleTex = () => {
+      const c = document.createElement('canvas'); c.width = 64; c.height = 64;
+      const g = c.getContext('2d');
+      g.translate(32, 34);
+      const gr = g.createRadialGradient(0, -4, 4, 0, 0, 26);
+      gr.addColorStop(0, '#ff6838'); gr.addColorStop(0.55, '#c92418'); gr.addColorStop(1, '#7a120d');
+      g.fillStyle = gr;
+      g.beginPath();
+      g.moveTo(0, -26); g.lineTo(5, -8); g.lineTo(22, -16); g.lineTo(10, -1);
+      g.lineTo(24, 9); g.lineTo(6, 7); g.lineTo(3, 20); g.lineTo(0, 12);
+      g.lineTo(-3, 20); g.lineTo(-6, 7); g.lineTo(-24, 9); g.lineTo(-10, -1);
+      g.lineTo(-22, -16); g.lineTo(-5, -8); g.closePath(); g.fill();
+      g.strokeStyle = '#ff9860'; g.lineWidth = 1.4; g.beginPath(); g.moveTo(0, 12); g.lineTo(0, 24); g.stroke();
+      const tex = new T.CanvasTexture(c);
+      tex.colorSpace = T.SRGBColorSpace;
+      return tex;
+    };
+
+    const ATMO_COUNT = 72;
+    const atmoPos = new Float32Array(ATMO_COUNT * 3);
+    const atmoSeeds = new Float32Array(ATMO_COUNT * 4);
+    for (let i = 0; i < ATMO_COUNT; i++) {
+      atmoPos[i * 3] = (Math.random() - 0.5) * 1640;
+      atmoPos[i * 3 + 1] = -210 + Math.random() * 580;
+      atmoPos[i * 3 + 2] = -210 + Math.random() * 450; // true depth behind & in front of fighters!
+      atmoSeeds[i * 4] = 0.6 + Math.random() * 1.1;
+      atmoSeeds[i * 4 + 1] = Math.random() * Math.PI * 2;
+      atmoSeeds[i * 4 + 2] = (Math.random() - 0.5) * 1.6;
+      atmoSeeds[i * 4 + 3] = 0.5 + Math.random() * 0.9;
+    }
+    const atmoGeo = new T.BufferGeometry();
+    atmoGeo.setAttribute('position', new T.Float32BufferAttribute(atmoPos, 3));
+    const atmoMat = new T.PointsMaterial({
+      size: 16, map: makeGlowTex(), color: 0xffae42,
+      transparent: true, opacity: 0.72, depthWrite: false,
+      blending: T.AdditiveBlending, sizeAttenuation: true
+    });
+    const atmoPoints = new T.Points(atmoGeo, atmoMat);
+    scene.add(atmoPoints);
+
+    // 16 Real Tumbling 3D Crimson Maple Leaves (Eclipse Citadel & Main Menu!)
+    const leafGeo = new T.PlaneGeometry(24, 24);
+    const leafMat = new T.MeshBasicMaterial({ map: makeMapleTex(), transparent: true, opacity: 0.92, side: T.DoubleSide, depthWrite: false });
+    const mapleLeaves = [];
+    for (let i = 0; i < 16; i++) {
+      const m = new T.Mesh(leafGeo, leafMat);
+      m.position.set((Math.random() - 0.5) * 1500, -180 + Math.random() * 560, -160 + Math.random() * 410);
+      m.rotation.set(Math.random() * 6, Math.random() * 6, Math.random() * 6);
+      const sc = 0.65 + Math.random() * 0.75;
+      m.scale.setScalar(sc);
+      scene.add(m);
+      mapleLeaves.push({ mesh: m, spd: 0.8 + Math.random() * 1.1, ph: Math.random() * 6.28, rx: 0.02 + Math.random() * 0.03, ry: 0.025 + Math.random() * 0.035 });
+    }
+
+    let tiltYaw = 0, tiltPitch = 0, lastBiome = '';
+    const tmpCol = new T.Color();
+    let prevSeismic = [0, 0];
+
+    const clearTransients = () => {
+      rings.forEach(r => { r.active = false; r.mesh.visible = false; });
+      shards.forEach(s => { s.active = false; s.mesh.visible = false; });
+      skyFlashA = 0; skyFlashMesh.visible = false;
+    };
+    const setEnabled = (on) => {
+      fxCanvas.style.display = on ? 'block' : 'none';
+      if (!on) renderer.clear();
+    };
+    const flashSky = (hexCol, strength = 0.36) => {
+      if (!settings.fx3d) return;
+      skyFlashMat.color.set(hexCol || '#78e2ff');
+      skyFlashA = Math.max(skyFlashA, strength);
+    };
+
+    const render = (clampedCamX, curZoom, camYOffset, sx, sy) => {
+      if (!settings.fx3d) return;
+      const t = simFrame * 0.01667;
+      floorUniforms.uTime.value = t;
+
+      // Biome synchronization
+      const hz = getActiveBiome();
+      if (hz !== lastBiome) {
+        lastBiome = hz;
+        const isEclipse = hz === 'eclipse_sanctum';
+        const isVolc = hz === 'blazing_dojo' || hz === 'ember_updraft' || hz === 'obsidian_caldera';
+        const isWater = hz === 'dew_shrine';
+        const isIce = hz === 'glacier_floor';
+        const isWind = hz === 'gale_tailwind';
+        const isStorm = hz === 'storm_spire';
+        const isEarth = hz === 'seismic_tremor';
+        floorUniforms.uBiomeMode.value = isWater ? 1 : isVolc ? 2 : isIce ? 3 : isEclipse ? 4 : 0;
+        atmoMat.color.set(isVolc ? '#ff8e2e' : isIce ? '#dcfaff' : isWater ? '#9ceeff' : isWind ? '#9cffde' : isStorm ? '#b4dcff' : isEarth ? '#f2cc84' : '#ff9852');
+        atmoMat.size = isVolc ? 18 : isIce ? 15 : isStorm ? 12 : 16;
+        atmoMat.opacity = isEclipse ? 0.42 : (settings.vfx === 'low' ? 0.56 : 0.78);
+        atmoMat.blending = (isIce || isStorm) ? T.NormalBlending : T.AdditiveBlending;
+        mapleLeaves.forEach(l => { l.mesh.visible = isEclipse; });
+      }
+
+      // Sync Camera 1:1 with #game + Subtle Cinematic 2.5D Perspective Tilt on Ultimates, Clashes, 8-Arm Whip & Finishers!
+      const baseX = clampedCamX - W * 0.5 - sx / curZoom;
+      const baseY = -camYOffset + sy / curZoom;
+      const baseZ = CAM_Z / curZoom;
+      const actionEpic = (ultDimFrames > 0 || Boolean(bladeClash) || p1.octopusSwinging || p2.octopusSwinging || match.finishHim);
+      let targetYaw = ((clampedCamX - W * 0.5) / (W * 0.5)) * 0.012;
+      let targetPitch = 0;
+      if (actionEpic) {
+        const focalX = (p1.octopusSwinging ? p1.x : p2.octopusSwinging ? p2.x : (p1.x + p2.x) * 0.5) - W * 0.5;
+        targetYaw = (focalX >= 0 ? -1 : 1) * 0.068 + Math.sin(t * 2.4) * 0.014;
+        targetPitch = -0.026;
+      }
+      tiltYaw += (targetYaw - tiltYaw) * 0.1;
+      tiltPitch += (targetPitch - tiltPitch) * 0.1;
+      camera.position.set(
+        baseX + Math.sin(tiltYaw) * baseZ,
+        baseY + Math.sin(tiltPitch) * baseZ * 0.55,
+        Math.cos(tiltYaw) * baseZ
+      );
+      camera.lookAt(baseX, baseY, 0);
+
+      // Update 6 Real-Time Dynamic Dojo Floor Lights
+      const setLight = (idx, wx, wy, z, hex, intensity, rad) => {
+        lightPos[idx].set(to3X(wx), to3Y(wy), z);
+        tmpCol.set(hex).multiplyScalar(intensity);
+        lightCol[idx].copy(tmpCol);
+        lightRad[idx] = rad;
+      };
+      // Lights 0 & 1: P1 and P2 elemental auras
+      const p1Boost = (p1.octopusF > 0 || p1.airScooterF > 0 || p1.fireJetF > 0 || p1.reflectStanceF > 0 || p1.state === 'attack') ? 1.45 : 0.92;
+      const p2Boost = (p2.octopusF > 0 || p2.airScooterF > 0 || p2.fireJetF > 0 || p2.reflectStanceF > 0 || p2.phase2 || p2.state === 'attack') ? 1.45 : 0.92;
+      setLight(0, p1.x, p1.y - 72, 18, p1.el.glow, p1Boost, p1.octopusSwinging ? 320 : 230);
+      setLight(1, p2.x, p2.y - 72, 18, p2.el.glow, p2Boost, p2.octopusSwinging ? 320 : 230);
+
+      // Light 2: Most prominent bending wave / Blade Clash / Octopus Whip tip
+      if (bladeClash) {
+        setLight(2, (p1.x + p2.x) * 0.5, GROUND_Y - 110, 26, '#fde047', 1.9, 310);
+      } else if (bendingWaves.length > 0) {
+        const bw = bendingWaves[bendingWaves.length - 1];
+        const lx = bw.tipX !== undefined ? bw.tipX : bw.x;
+        const ly = bw.tipY !== undefined ? bw.tipY : bw.y;
+        setLight(2, lx, ly, 24, bw.el.glow, bw.ult || bw.kind === 'octopus_8_swing' ? 1.85 : 1.35, bw.ult ? 340 : 250);
+      } else {
+        setLight(2, 0, -9999, 0, '#000000', 0, 1);
+      }
+
+      // Light 3: Second bending wave OR active floor hazard
+      if (bendingWaves.length > 1) {
+        const bw2 = bendingWaves[0];
+        setLight(3, bw2.tipX !== undefined ? bw2.tipX : bw2.x, bw2.tipY !== undefined ? bw2.tipY : bw2.y, 20, bw2.el.glow, 1.25, 220);
+      } else if (hazards.length > 0) {
+        const h0 = hazards[0];
+        setLight(3, h0.x, GROUND_Y - 12, 24, h0.kind === 'ice' ? '#68eeff' : '#ff5514', 1.45, 240);
+      } else {
+        setLight(3, 0, -9999, 0, '#000000', 0, 1);
+      }
+
+      // Lights 4 & 5: Intact Corner Braziers (warm flickering firelight on wooden veranda!) or extra hazards
+      const flick = 0.88 + Math.sin(t * 14) * 0.14;
+      if (!match.inMenu && braziers[0] && braziers[0].intact) setLight(4, braziers[0].x, GROUND_Y - 56, 36, '#ff8e28', 1.05 * flick, 225);
+      else if (hazards.length > 1) setLight(4, hazards[1].x, GROUND_Y - 12, 24, hazards[1].kind === 'ice' ? '#68eeff' : '#ff5514', 1.25, 210);
+      else setLight(4, 0, -9999, 0, '#000000', 0, 1);
+
+      if (!match.inMenu && braziers[1] && braziers[1].intact) setLight(5, braziers[1].x, GROUND_Y - 56, 36, '#ff8e28', 1.05 * (1.76 - flick), 225);
+      else setLight(5, 0, -9999, 0, '#000000', 0, 1);
+
+      // Update Sky Impact Flash Wash
+      if (skyFlashA > 0.01) {
+        skyFlashMesh.visible = true;
+        skyFlashMat.opacity = skyFlashA;
+        skyFlashA *= 0.86;
+      } else {
+        skyFlashA = 0; skyFlashMesh.visible = false;
+      }
+
+      // Sync Volumetric 3D Signature Meshes for P1 & P2
+      const fighters = [p1, p2];
+      for (let fi = 0; fi < 2; fi++) {
+        const f = fighters[fi];
+        // Toph's Seismic Sense -> emit real 3D gold floor sonar ring on activation!
+        if (f.seismicWaveF > 28 && prevSeismic[fi] <= 28) {
+          spawnFloorRing(f.x, '#f5d061', 390, 32);
+        }
+        prevSeismic[fi] = f.seismicWaveF;
+
+        // Aang's 3D Air Scooter
+        const sc = airScooters[fi];
+        if (f.airScooterF > 0 && f.state !== 'ko') {
+          sc.group.visible = true;
+          sc.group.position.set(to3X(f.x), to3Y(f.y - 34 + Math.sin(simFrame * 0.35) * 3), 12);
+          sc.bands[0].rotation.x += 0.24; sc.bands[0].rotation.y += 0.16;
+          sc.bands[1].rotation.y -= 0.28; sc.bands[1].rotation.z += 0.18;
+          sc.bands[2].rotation.z -= 0.22; sc.bands[2].rotation.x += 0.14;
+        } else {
+          sc.group.visible = false;
+        }
+
+        // Katara's 3D Cryo Prison Crystal Cluster
+        const cp = cryoPrisons[fi];
+        if (f.frozenPrisonF > 0 && f.state !== 'ko') {
+          cp.group.visible = true;
+          cp.group.position.set(to3X(f.x), to3Y(f.y - 96), 20);
+          cp.group.rotation.y = Math.sin(t * 1.4 + fi) * 0.16;
+          const pulse = Math.min(1, f.frozenPrisonF / 20);
+          cp.mat.opacity = (0.40 + Math.sin(t * 7) * 0.05) * pulse;
+        } else {
+          cp.group.visible = false;
+        }
+
+        // Katara Octopus / Iroh Redirection 3D Orbital Energy Halos
+        const oh = orbitalHalos[fi];
+        const showOct = (f.octopusF > 0 || f.octopusSwinging) && f.state !== 'ko';
+        const showIroh = f.reflectStanceF > 0 && f.el.id === 'lightning' && f.state !== 'ko';
+        if (showOct || showIroh) {
+          oh.group.visible = true;
+          oh.group.position.set(to3X(f.x), to3Y(f.y - 98), 4);
+          oh.m1.color.set(showIroh ? '#ffe066' : '#38d8ff');
+          oh.m2.color.set(showIroh ? '#78e2ff' : '#e6fcff');
+          const spd = f.octopusSwinging ? 0.24 : 0.11;
+          oh.r1.rotation.z += spd; oh.r1.rotation.y += spd * 0.6;
+          oh.r2.rotation.z -= spd * 1.15; oh.r2.rotation.y -= spd * 0.5;
+        } else {
+          oh.group.visible = false;
+        }
+      }
+
+      // Sync 3D Hazard Glow Discs
+      for (let hi = 0; hi < hazDiscs.length; hi++) {
+        const hd = hazDiscs[hi];
+        if (hi < hazards.length) {
+          const h = hazards[hi];
+          const lr = Math.min(1, h.f / 45);
+          hd.mesh.visible = true;
+          hd.mesh.position.set(to3X(h.x), FLOOR_Y3D + 1.4, 8);
+          hd.mesh.scale.set(h.hw * 1.18, h.hw * 0.42, 1);
+          hd.mat.color.set(h.kind === 'ice' ? '#68eeff' : '#ff5514');
+          hd.mat.opacity = (0.34 + Math.sin(t * 8 + hi) * 0.08) * lr;
+        } else {
+          hd.mesh.visible = false;
+        }
+      }
+
+      // Tick 3D Floor Shockwave Rings
+      for (let i = 0; i < rings.length; i++) {
+        const r = rings[i];
+        if (!r.active) continue;
+        r.age++;
+        const u = r.age / r.dur;
+        if (u >= 1) { r.active = false; r.mesh.visible = false; continue; }
+        const ease = 1 - Math.pow(1 - u, 2.5);
+        const rad = 14 + ease * r.maxR;
+        r.mesh.scale.set(rad, rad * 0.72, 1);
+        r.mat.opacity = (1 - u) * 0.82;
+      }
+
+      // Tick 3D Tumbling Shards with Gravity & Floor Bounce
+      for (let i = 0; i < shards.length; i++) {
+        const s = shards[i];
+        if (!s.active) continue;
+        s.age++;
+        if (s.age >= s.max) { s.active = false; s.mesh.visible = false; continue; }
+        s.vy -= 0.58;
+        s.mesh.position.x += s.vx;
+        s.mesh.position.y += s.vy;
+        s.mesh.position.z += s.vz;
+        if (s.mesh.position.y < FLOOR_Y3D + 6) {
+          s.mesh.position.y = FLOOR_Y3D + 6;
+          s.vy = Math.abs(s.vy) * 0.48;
+          s.vx *= 0.78; s.vz *= 0.78;
+        }
+        s.mesh.rotation.x += s.rx;
+        s.mesh.rotation.y += s.ry;
+        s.mesh.rotation.z += s.rz;
+        const life = 1 - s.age / s.max;
+        s.mat.opacity = Math.min(0.92, life * 1.6);
+      }
+
+      // Tick 3D Depth-Layered Atmospheric Particles
+      const posAttr = atmoGeo.attributes.position;
+      const arr = posAttr.array;
+      const activeAtmo = settings.vfx === 'low' ? 42 : ATMO_COUNT;
+      atmoGeo.setDrawRange(0, activeAtmo);
+      const isVolc = hz === 'blazing_dojo' || hz === 'ember_updraft' || hz === 'obsidian_caldera';
+      const isWind = hz === 'gale_tailwind';
+      const isStorm = hz === 'storm_spire';
+      for (let i = 0; i < activeAtmo; i++) {
+        const spd = atmoSeeds[i * 4], ph = atmoSeeds[i * 4 + 1];
+        let x = arr[i * 3], y = arr[i * 3 + 1], z = arr[i * 3 + 2];
+        if (isVolc) {
+          y += 1.45 * spd; x += Math.sin(t * 2.2 + ph) * 0.85;
+          if (y > 390) { y = FLOOR_Y3D + 6; x = (Math.random() - 0.5) * 1500; }
+        } else if (isStorm) {
+          x -= 4.8 * spd; y -= 8.4 * spd;
+          if (y < FLOOR_Y3D) { y = 390; x = (Math.random() - 0.5) * 1600 + 200; }
+        } else if (isWind) {
+          x += 3.2 * spd; y += Math.sin(t * 3.0 + ph) * 1.1 - 0.4;
+          if (x > 820) { x = -820; y = -160 + Math.random() * 520; }
+        } else {
+          x += 0.65 * spd + Math.sin(t * 1.6 + ph) * 0.7;
+          y -= 0.92 * spd;
+          if (y < FLOOR_Y3D) { y = 380; x = (Math.random() - 0.5) * 1560; }
+        }
+        if (x > 840) x = -840; else if (x < -840) x = 840;
+        arr[i * 3] = x; arr[i * 3 + 1] = y; arr[i * 3 + 2] = z;
+      }
+      posAttr.needsUpdate = true;
+
+      // Tick 3D Tumbling Crimson Maple Leaves on Eclipse Citadel & Main Menu!
+      if (hz === 'eclipse_sanctum') {
+        for (let i = 0; i < mapleLeaves.length; i++) {
+          const l = mapleLeaves[i];
+          const m = l.mesh;
+          m.position.x += 1.15 * l.spd + Math.sin(t * 1.8 + l.ph) * 0.9;
+          m.position.y -= 1.05 * l.spd;
+          m.rotation.x += l.rx; m.rotation.y += l.ry; m.rotation.z += 0.015;
+          if (m.position.y < FLOOR_Y3D - 10) {
+            m.position.y = 390 + Math.random() * 60;
+            m.position.x = -760 + Math.random() * 1400;
+          }
+          if (m.position.x > 820) m.position.x = -820;
+        }
+      }
+
+      renderer.render(scene, camera);
+    };
+
+    const api = {
+      render, spawnFloorRing, spawnBurst, flashSky, clearTransients, setEnabled, syncQuality,
+      getStats: () => ({
+        revision: T.REVISION, enabled: settings.fx3d, biome: lastBiome,
+        activeRings: rings.filter(r => r.active).length,
+        activeShards: shards.filter(s => s.active).length,
+        canvasW: fxCanvas.width, canvasH: fxCanvas.height
+      })
+    };
+    window.__ES_FX3D = api;
+    return api;
+  }
+  FX3D = createFX3D();
+
   function renderScene() {
     ctx.setTransform(gameDpr, 0, 0, gameDpr, 0, 0);
     ctx.clearRect(0, 0, W, H);
@@ -6374,6 +7284,7 @@
       lines.forEach((l, i) => { ctx.strokeText(l, 16, 128 + i * 17); ctx.fillText(l, 16, 128 + i * 17); });
       ctx.restore();
     }
+    if (FX3D) FX3D.render(clampedCamX, camZoom, camYOffset, sx, sy);
   }
 
   // ===== HUD SYNC (100% Dirty-Checked — Zero Unnecessary DOM Writes or Reflows) =====
@@ -6967,6 +7878,7 @@
     } else if (pTab === 'graphics') {
       body = `
         <div class="sgroup"><div class="slabel">VFX Quality</div>${seg('vfx',[['low','Low (Boost)'],['medium','Medium'],['high','High']])}</div>
+        <div class="trow"><div><div class="slabel">2.5D WebGL FX (Three.js)</div></div><button class="tsw ${settings.fx3d?'on':''}" id="t-fx3d">${settings.fx3d?'ON':'OFF'}</button></div>
         <div class="sgroup"><div class="slabel">Hit-Stop &amp; Shake</div>${seg('feedback',[[0,'0%'],[0.5,'50%'],[1,'100%']])}</div>
         <div class="sgroup"><div class="slabel">Quick Duel AI</div>${seg('aiTier',[['novice','Novice'],['warrior','Warrior'],['master','Master'],['shadow','Shadow']])}</div>
         <div class="trow"><div><div class="slabel">Music (BGM)</div></div><button class="tsw ${settings.musicOn?'on':''}" id="t-bgm">${settings.musicOn?'ON':'OFF'}</button></div>
@@ -6978,7 +7890,7 @@
       `;
     } else {
       const mvs = [
-        ['8 Avatar Signatures (35% Meter · Instant Tap!)', 'Tap BEND (U / Space) or Swipe BEND on Touch', 'Water = Katara Octopus Form (whip follow-ups + deflect + 360° slam); Fire = Sozin Jet-Step; Earth = Toph Seismic Sense + Stone Gauntlets; Air = Aang Air Scooter (auto-glide + bowl); Lightning = Iroh Redirect 2x + Dragon Beam; Ice = Cryo Prison 2.2s Freeze; Shadow = Eclipse Swap Pincer Clone; Lava = 3-Hit Molten Shuriken.'],
+        ['8 Avatar Signatures (35% Meter · Instant Tap!)', 'Tap BEND (U / Space) or Swipe BEND on Touch', 'Water = Katara 8-Arm Octopus Multi-Slam (8 alternating whip-slams + deflect + GRAB re-trigger); Fire = Sozin Jet-Step; Earth = Toph Seismic Sense + Stone Gauntlets; Air = Aang Air Scooter (auto-glide + bowl); Lightning = Iroh Redirect 2x + Dragon Beam; Ice = Cryo Prison 2.2s Freeze; Shadow = Eclipse Swap Pincer Clone; Lava = 3-Hit Molten Shuriken.'],
         ['Free-Flow Cross-Combos & Recovery Cancels', 'P → K → W → BEND · ROLL / BLK Cancel', 'Fluidly link Punch, Kick, Weapon, and Bending Arts in any order! Cancel late attack recovery directly into Roll or Block to stay slippery.'],
         ['Style Rank & FINISH THEM! Eclipse Finishers', 'D → C → B → A → S → AVATAR · Final Round Execution', 'Varying strikes climbs Style Rank for faster meter & bonus coins. Dropping a foe on the final round opens FINISH THEM! — land any hit for +75 bonus coins!'],
         ['Guard Poise, Lethal Counter & Blade Clash', 'Timed Block (B) · Overlapping Weapon Swings', 'Blocking heavy strikes drains golden Guard Poise -> GUARD SHATTER. Interrupting startup deals LETHAL COUNTER. Clashing weapons triggers a rapid-tap Blade-Lock!'],
@@ -7013,6 +7925,7 @@
     pauseModal.querySelectorAll('[data-sk]').forEach(b => b.onclick = () => {
       const k = b.dataset.sk, v = b.dataset.sv;
       settings[k] = ['buffer','feedback','fps'].includes(k) ? Number(v) : v;
+      if (k === 'vfx' && FX3D) FX3D.syncQuality();
       applyTouchUI(); renderPause();
     });
     const rsc = pauseModal.querySelector('#r-sc'); if (rsc) rsc.oninput = e => { settings.scale = +e.target.value; applyTouchUI(); renderPause(); };
@@ -7021,6 +7934,7 @@
     const tdbg = pauseModal.querySelector('#t-dbg'); if (tdbg) tdbg.onclick = () => { settings.debug = !settings.debug; renderPause(); };
     const tbgm = pauseModal.querySelector('#t-bgm'); if (tbgm) tbgm.onclick = () => { toggleBgm(); renderPause(); };
     const tsfx = pauseModal.querySelector('#t-sfx'); if (tsfx) tsfx.onclick = () => { toggleSfx(); renderPause(); };
+    const tfx3d = pauseModal.querySelector('#t-fx3d'); if (tfx3d) tfx3d.onclick = () => { settings.fx3d = !settings.fx3d; if (FX3D) FX3D.setEnabled(settings.fx3d); renderPause(); };
     const thap = pauseModal.querySelector('#t-hap'); if (thap) thap.onclick = () => { settings.hapticsOn = !settings.hapticsOn; if (settings.hapticsOn) haptic('medium'); renderPause(); };
     const tsbx = pauseModal.querySelector('#t-sbx'); if (tsbx) tsbx.onclick = () => { PROG.sandboxUnlockAll = !PROG.sandboxUnlockAll; saveProg(); renderPause(); };
   }
