@@ -52,25 +52,25 @@ jobs:
       - name: Prepare APK deliverable
         run: |
           mkdir -p out
-          cp android/app/build/outputs/apk/release/app-release.apk out/ElementalShadows-v2.3.0-android.apk
-          ls -lh out/ElementalShadows-v2.3.0-android.apk
+          cp android/app/build/outputs/apk/release/app-release.apk out/ElementalShadows-v2.4.0-android.apk
+          ls -lh out/ElementalShadows-v2.4.0-android.apk
 
       - name: Upload APK workflow artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ElementalShadows-v2.3.0-android-apk
-          path: out/ElementalShadows-v2.3.0-android.apk
+          name: ElementalShadows-v2.4.0-android-apk
+          path: out/ElementalShadows-v2.4.0-android.apk
           retention-days: 90
 
       - name: Publish GitHub Release with direct APK download
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          TAG="v2.3.0-android"
+          TAG="v2.4.0-android"
           if gh release view "$TAG" >/dev/null 2>&1; then
-            gh release upload "$TAG" out/ElementalShadows-v2.3.0-android.apk --clobber
+            gh release upload "$TAG" out/ElementalShadows-v2.4.0-android.apk --clobber
           else
-            gh release create "$TAG" out/ElementalShadows-v2.3.0-android.apk \
-              --title "Elemental Shadows v2.3.0 (Android APK — Indie Visual Overhaul, 8 Avatar Tricks & Japanese Soundtrack)" \
-              --notes "Standalone offline Android APK of **Elemental Shadows — The Hollow Avatar**.\n\n### What's New in v2.3.0\n- **Hand-Inked Crimson Maple Visual Overhaul:** Completely replaced dark-navy HTML menus with warm obsidian-and-gold lacquer scroll plaques, hexagonal coin badges, octagonal settings seals, custom martial-arts SVG touch medallions, and a full-bleed crimson-maple World Map with glowing elemental pins & chamfered region banners.\n- **Zero Emojis / Zero Placeholders:** Purged every Unicode emoji & placeholder glyph across HUD, pause button, touch controls, Armory, and World Map.\n- **3 New Nano Banana Painted Realms:** Added dedicated hand-painted sumi-e arenas for **Eclipse Citadel**, **Storm Spire**, and **Iron Mountain** (plus volcanic magma-veined Obsidian Caldera) so all 8 realms + Main Menu showcase cohesive indie art.\n- **8 Unique *Avatar: The Last Airbender* Signature Bending Tricks:** Katara's **Octopus Form**, **Sozin's Jet-Step**, Toph's **Seismic Sense & Earth Armor**, Aang's **Air Scooter**, Iroh's **Lightning Redirection**, Katara's **Cryo Prison**, **Eclipse Swap**, and Ghazan's **Molten Shuriken & Magma Moat**.\n- **3-Round Master Battles (Best of 5) & Deeper Duel Mechanics:** Campaign Masters now fight first to 3 rounds, plus Boss Phase-2 **Eclipse Surge** awakenings, visible **Guard Poise** bars with Guard Shatter, **Lethal / Iaijutsu Counters**, rapid-tap **Blade-Lock Weapon Clashes**, **Elemental Weapon Infusions**, upgraded weapon class perks, and **Breakable Corner Braziers**.\n- **Offline Traditional Japanese Soundtrack:** Physical-modeled **Koto**, **Shamisen**, breathy **Shakuhachi** bamboo flute, **Taiko** war drums, and **Hyoshigi** clappers — zero external audio downloads and strictly voice-capped for smooth 60fps Android play."
+            gh release create "$TAG" out/ElementalShadows-v2.4.0-android.apk \
+              --title "Elemental Shadows v2.4.0 (Android APK — Overhauled Avatar Signatures, Free-Flow Cross-Combos, 60FPS Slow-Mo & Bespoke Art)" \
+              --notes "Standalone offline Android APK of **Elemental Shadows — The Hollow Avatar**.\n\n### What's New in v2.4.0\n- **All 8 *Avatar* Signature Abilities Trigger on Instant Tap BEND + Massive Physical Payoff:**\n  - **Water — Katara's Octopus Form (240f):** Every Punch/Kick/Weapon strike launches an extra mid-range Water Tentacle Whip + auto-intercepts projectiles + ends in a 360° **Octopus Tidal Slam**.\n  - **Fire — Sozin's Jet-Step:** Authentic airborne rocket flying-kick pose, zero ground-friction glide, roaring twin dragon-flame plumes, burning embers & guard-crushing flame blitz.\n  - **Earth — Toph's Seismic Sense & Stone Gauntlets:** Live-tracking white-gold wireframe sonar wave erupts a Rock Monolith directly under the opponent's live position + equips visible **Stone Gauntlets** (+30% melee dmg & +40% poise shred).\n  - **Air — Aang's Air Scooter:** Authentic crouched riding pose atop a layered spinning wind sphere, auto-gliding forward, wall-bouncing (**SCOOTER BOUNCE!**), bowling opponents skyward (**SCOOTER BOWL!**), and canceling into **Cyclone Dive**.\n  - **Lightning — Iroh's Lightning Redirection:** 56f golden-cyan stance absorbing ANY strike/projectile for 0 dmg + **2× Golden Dragon Counter-Bolt**, or auto-firing a Twin-Finger Dragon Lightning Beam on expiry so 35% meter is never wasted.\n  - **Ice — Katara's Cryo Prison (Sub-Zero Freeze):** Fast piercing frost wave freezes the enemy SOLID mid-animation for 2.2s inside a faceted Ice Crystal Block; heavy strikes trigger **CRYO SHATTER (+40% dmg)** with Sumi-e Ink Flash.\n  - **Shadow — Eclipse Swap (Noob Saibot Pincer):** Spawns a REAL pitch-black attacking warrior silhouette clone that sprints & slashes from the front while you teleport behind.\n  - **Lava — Ghazan's 4-Blade Molten Shuriken:** Sculpted spinning volcanic buzzsaw locks foes in a 3-hit grinding stagger, carves a Magma Moat, then boomerangs back.\n- **Zero Lag & Snappier Controls:** Replaced 20fps slow-mo stutter with buttery 60fps time-dilation, cropped Android rim buffer blitting, fixed Lightning's broken touch-swipe bug, added live trick names on the `BEND` button & swipe pill, and unlocked **Free-Flow `P → K → W → BEND` Cross-Combos** + **Roll/Block Recovery Cancels**.\n- **Addictive Combat Juice:** Live **Style Rank (`D → C → B → A → S → AVATAR`)**, Shadow Fight 2 **Monochrome Sumi-e Ink Flash** on crits/shatters/finishers, and **`FINISH THEM!`** final-round execution windows (**`ECLIPSE FINISHER! +75 COINS`**).\n- **100% Bespoke Nano Banana Art (8/8 Realms + Dojo Forge):** Brand-new hand-painted **Obsidian Caldera** volcanic veranda and candlelit **Armory Dojo Forge** backdrop.\n- **Fighter Winner Banners:** Displays **`{Player Name} WINS`** / **`{Opponent Name} WINS`** on every round and match victory (replacing `K.O.`)."
           fi

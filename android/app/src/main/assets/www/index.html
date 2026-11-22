@@ -842,7 +842,25 @@
     .is-touch .kb-hint { display: none; }
     @media (pointer: coarse) { .kb-hint { display: none; } }
 
+    .style-rank {
+      position: absolute; top: 120px; left: 16px; z-index: 6; pointer-events: none;
+      display: flex; align-items: center; gap: 7px; padding: 3px 10px 3px 7px;
+      background: linear-gradient(90deg, rgba(18, 12, 9, 0.9), rgba(28, 18, 12, 0.72));
+      border: 1px solid rgba(230, 178, 96, 0.55); border-left: 3px solid var(--gold);
+      border-radius: 3px; opacity: 0; transform: translateX(-10px) scale(0.92);
+      transition: opacity 0.16s, transform 0.16s;
+    }
+    .style-rank.show { opacity: 1; transform: translateX(0) scale(1); }
+    .style-rank .sr-grade { font-family: var(--font-head); font-size: 20px; font-weight: 900; line-height: 1; text-shadow: 0 0 12px currentColor; }
+    .style-rank .sr-lbl { font-family: var(--font-head); font-size: 9.5px; letter-spacing: 0.14em; color: var(--gold-light); line-height: 1.1; }
+    .combo.c1 { top: 162px; left: 16px; }
+    .bend-dir-pill { min-width: 24px; width: auto; padding: 0 6px; font-size: 9px; letter-spacing: 0.06em; white-space: nowrap; }
+    .b-magic .mt { font-size: 6.8px; letter-spacing: 0.01em; max-width: 96%; overflow: hidden; white-space: nowrap; }
+
     @media (max-height: 480px) {
+      .style-rank { top: 92px; left: 12px; padding: 2px 8px 2px 6px; }
+      .style-rank .sr-grade { font-size: 15px; }
+      .combo.c1 { top: 122px; left: 12px; }
       .mm-rule { width: 220px; margin: 2px 0; }
       .mm-nav { max-width: 242px; gap: 5px; }
       .mm-btn { padding: 5px 11px; gap: 8px; }
@@ -918,9 +936,10 @@
 
       <button class="pause-corner" id="btn-pause" title="Pause (Esc)" aria-label="Pause"><svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4.2" height="16" rx="1"/><rect x="13.8" y="4" width="4.2" height="16" rx="1"/></svg></button>
       <div class="tut-pill hidden" id="tut-pill"><b id="tut-step">DOJO LESSON 1 / 4</b><span id="tut-desc"></span></div>
+      <div class="style-rank" id="style-rank"><div class="sr-grade" id="sr-grade">D</div><div class="sr-lbl" id="sr-lbl">FLOW</div></div>
       <div class="combo c1" id="combo-p1"></div>
       <div class="combo c2" id="combo-p2"></div>
-      <div class="first-tip hidden" id="first-tip">WASD Move · J Punch · K Kick · L Weapon · G Throw · U / Space Bend (35% Quick · 100% Ult)</div>
+      <div class="first-tip hidden" id="first-tip">WASD Move · J Punch · K Kick · L Weapon · G Throw · U / Space Bend (35% Signature · 100% Ult)</div>
 
       <div class="banner hidden" id="banner">
         <div class="banner-title" id="banner-title">ROUND 1</div>
@@ -970,7 +989,7 @@
           <button class="cbtn b-magic" data-act="magic" id="btn-magic" title="Bending Art (U / Space or Swipe)">
             <span class="bend-dir-pill" id="bend-dir-pill"></span>
             <span class="mi" id="magic-icon"></span>
-            <span class="mt">BEND</span>
+            <span class="mt" id="bend-lbl">BEND</span>
           </button>
         </div>
         <div class="action-row">
@@ -1503,7 +1522,7 @@
     throw_fwd: { s:6, a:5, r:17, dmg:108, chip:0, hs:34, bs:0, stop:5, kb:13.4, ly:-9.5, kd:true, crit:false, h:'mid', ox:16, oy:-132, w:80, bh:84, imp:4, ifrm:2, isThrow:'fwd', inv:12, mg:18 },
     throw_back: { s:6, a:5, r:17, dmg:104, chip:0, hs:34, bs:0, stop:5, kb:-14.4, ly:-9.2, kd:true, crit:false, h:'mid', ox:16, oy:-132, w:80, bh:84, imp:3, ifrm:2, isThrow:'back', inv:12, mg:18 },
     suplex: { s:7, a:5, r:19, dmg:146, chip:0, hs:40, bs:0, stop:6, kb:-12.0, ly:-12.2, kd:true, crit:true, h:'mid', ox:14, oy:-136, w:84, bh:88, imp:3, ifrm:2, isThrow:'suplex', inv:16, mg:22 },
-    quick_bend: { s:6, a:7, r:12, dmg:76, chip:16, hs:24, bs:13, stop:4, kb:9.5, ly:-7.2, kd:false, crit:false, h:'mid', ox:34, oy:-140, w:96, bh:82, imp:4.5, ifrm:4, inv:6, elStatus:true, mg:0 },
+    quick_bend: { s:5, a:4, r:7, dmg:76, chip:16, hs:24, bs:13, stop:4, kb:9.5, ly:-7.2, kd:false, crit:false, h:'mid', ox:34, oy:-140, w:96, bh:82, imp:4.5, ifrm:3, inv:6, elStatus:true, mg:0 },
     magic_cast: { s:10, a:8, r:16, dmg:140, chip:32, hs:34, bs:18, stop:5, kb:14.0, ly:-11.0, kd:true, crit:true, h:'mid', ox:38, oy:-150, w:110, bh:95, imp:5.5, ifrm:8, inv:18, elStatus:true, mg:0 }
   };
 
@@ -1744,13 +1763,25 @@
     return { id: 'default', name: f.el.weapon, wType: f.el.wType, reach: f.el.reach, speedMod: f.el.speedMod, dmgMod: f.el.dmgMod, perk: '' };
   }
 
+  const BEND_TRICKS = {
+    water:     { fwd: 'OCTOPUS',  up: 'WHIP',    down: 'SLIDE',   back: 'HEAL' },
+    fire:      { fwd: 'JET-STEP', up: 'LAUNCH',  down: 'BREATH',  back: 'BURST' },
+    earth:     { fwd: 'SEISMIC',  up: 'PILLAR',  down: 'QUAKE',   back: 'WALL' },
+    air:       { fwd: 'SCOOTER',  up: 'CYCLONE', down: 'CYCLONE', back: 'VACUUM' },
+    lightning: { fwd: 'REDIRECT', up: 'BLINK',   down: 'ARC',     back: 'BOLT' },
+    ice:       { fwd: 'CRYO CAGE',up: 'SPEARS',  down: 'GLACIER', back: 'SHATTER' },
+    shadow:    { fwd: 'SWAP',     up: 'DRAIN',   down: 'BIND',    back: 'SINK' },
+    lava:      { fwd: 'SHURIKEN', up: 'GEYSER',  down: 'MOAT',    back: 'ARMOR' }
+  };
+
   function createFighter(id, elId) {
     const el = ELEMENTS[elId];
     return {
       id, el, x: id === 'p1' ? 405 : 875, y: GROUND_Y, vx: 0, vy: 0, facing: id === 'p1' ? 1 : -1,
       hp: el.hp, maxHp: el.hp, trailHp: el.hp, magic: 55,
       poise: 100, maxPoise: 100,
-      octopusF: 0, octopusCd: 0, airScooterF: 0, fireJetF: 0, seismicWaveF: 0, frozenPrisonF: 0,
+      octopusF: 0, octopusCd: 0, airScooterF: 0, scooterHitCd: 0, fireJetF: 0, seismicWaveF: 0, gauntletsF: 0, frozenPrisonF: 0, irohBeamReady: false,
+      dizzied: false, dizzyF: 0,
       phase2: false, phase2Used: false,
       artIdx: 0, castArtIdx: 0, quickBendDir: 'fwd', bendChargeF: 0, chargingBend: false,
       guardWear: 0, airJumpsLeft: 0, fireStreak: 0, fireStreakT: 0,
@@ -1768,7 +1799,7 @@
   }
 
   let simFrame = 0, hitstop = 0, slowMoFrames = 0, slowMoTick = 0, shake = 0, camX = W * 0.5, camZoom = 1.08, dramaticZoom = 0;
-  let ultDimFrames = 0, ultDimColor = '#0c7de8', stormFlashFrames = 0;
+  let ultDimFrames = 0, ultDimColor = '#0c7de8', stormFlashFrames = 0, inkFlashF = 0;
   let p1 = createFighter('p1', 'water');
   let p2 = createFighter('p2', 'fire');
   const match = {
@@ -1776,6 +1807,8 @@
     tutorialStep: 0, tutorialDone: false,
     round: 1, p1W: 0, p2W: 0, toWin: 2, timer: 99, tTick: 0, roundElapsed: 0, paused: false,
     screen: 'fighting', intro: 64, over: 0, winner: null,
+    finishHim: false, finishF: 0, eclipseFinished: false,
+    stylePts: 0, styleRank: '', styleT: 0, lastCat: '',
     c1: 0, c1t: 0, c1Live: false, c2: 0, c2t: 0, c2Live: false,
     maxComboP1: 0, headHitsP1: 0,
     p1Blocked: false, p1QuickBends: 0, p1AirWins: false, p1WallSplats: 0, p1Clashes: 0, p1Reactions: 0,
@@ -1784,6 +1817,16 @@
   };
   let bendingWaves = [], hazards = [], particles = [], ghosts = [], droppedWeapons = [], rockWalls = [], decoyClones = [];
   let braziers = [], bladeClash = null, bladeClashCd = 0;
+
+  function addStyle(pts, cat) {
+    if (match.inMenu) return;
+    const variety = (cat && cat !== match.lastCat) ? 1.35 : 0.72;
+    if (cat) match.lastCat = cat;
+    match.stylePts = Math.min(125, match.stylePts + pts * variety);
+    match.styleT = 220;
+    const p = match.stylePts;
+    match.styleRank = p >= 100 ? 'AVATAR' : p >= 76 ? 'S' : p >= 54 ? 'A' : p >= 34 ? 'B' : p >= 18 ? 'C' : p >= 8 ? 'D' : '';
+  }
 
   function showBanner(text, sub, color, dur = 64, isUlt = false) { match.banner = { text, sub, color, f: dur, isUlt }; }
   function pushCallout(text, color, x, y) {
@@ -1800,7 +1843,8 @@
     f.magic = full ? 55 : Math.min(100, Math.max(55, f.magic * 0.6 + 30));
     f.maxPoise = 100 + (f.id === 'p1' ? PROG.upgrades.body * 8 : (match.boss ? 20 : 0));
     f.poise = f.maxPoise;
-    f.octopusF = 0; f.octopusCd = 0; f.airScooterF = 0; f.fireJetF = 0; f.seismicWaveF = 0; f.frozenPrisonF = 0;
+    f.octopusF = 0; f.octopusCd = 0; f.airScooterF = 0; f.scooterHitCd = 0; f.fireJetF = 0; f.seismicWaveF = 0; f.gauntletsF = 0; f.frozenPrisonF = 0; f.irohBeamReady = false;
+    f.dizzied = false; f.dizzyF = 0;
     if (full) { f.phase2 = false; f.phase2Used = false; }
     f.state = 'idle'; f.sf = 0; f.inv = 0; f.armor = 0; f.stun = 0; f.freezeRec = 0; f.avatarFlash = 0;
     f.move = null; f.moveId = null; f.hitDone = false; f.flash = 0; f.afterTimer = 0; f.guardWear = 0;
@@ -1843,7 +1887,7 @@
 
   const TUTORIAL_STEPS = [
     { title: 'DOJO LESSON 1 / 4 · STRIKE COMBO', desc: 'Chain 3 strikes in a row (P / K / W or J / K / L)' },
-    { title: 'DOJO LESSON 2 / 4 · QUICK-BEND (35%)', desc: 'Tilt a direction + press BEND (or U / Space) at 35%+ meter' },
+    { title: 'DOJO LESSON 2 / 4 · SIGNATURE BEND (35%)', desc: 'Tap BEND (or U / Space) at 35%+ meter for your Avatar Signature!' },
     { title: 'DOJO LESSON 3 / 4 · GUARD & PARRY', desc: 'Hold or time BLK (or B) to block the incoming strike' },
     { title: 'DOJO LESSON 4 / 4 · CLOSE THROW', desc: 'Step close and press GRAB (or G / Forward + P) to throw' }
   ];
@@ -1892,6 +1936,8 @@
     // Campaign Masters fight Best of 5 (3 rounds to win)!
     match.toWin = (opts.mode === 'dojo' || opts.mode === 'tutorial') ? 999 : (bossStage ? 3 : (opts.mode === 'endless' ? 1 : (settings.format === 'bo3' ? 2 : settings.format === 'bo5' ? 3 : 999)));
     match.round = 1; match.p1W = 0; match.p2W = 0; match.winner = null; match.paused = false;
+    match.finishHim = false; match.finishF = 0; match.eclipseFinished = false;
+    match.stylePts = 0; match.styleRank = ''; match.styleT = 0; match.lastCat = '';
     match.maxComboP1 = 0; match.headHitsP1 = 0;
     match.p1Blocked = false; match.p1QuickBends = 0; match.p1AirWins = false;
     match.p1WallSplats = 0; match.p1Clashes = 0; match.p1Reactions = 0; match.allyUsed = false;
@@ -1922,7 +1968,8 @@
       { x: ARENA_R - 22, intact: true, hitFlash: 0 }
     ];
     bladeClash = null; bladeClashCd = 0;
-    hitstop = 0; slowMoFrames = 0; dramaticZoom = 0; ultDimFrames = 0; stormFlashFrames = 0;
+    hitstop = 0; slowMoFrames = 0; dramaticZoom = 0; ultDimFrames = 0; stormFlashFrames = 0; inkFlashF = 0;
+    match.finishHim = false; match.finishF = 0; match.eclipseFinished = false;
     match.timer = 99; match.tTick = 0; match.roundElapsed = 0; match.intro = 56; match.over = 0;
     match.c1 = 0; match.c1Live = false; match.c2 = 0; match.c2Live = false; match.callouts = []; match.screen = 'fighting';
     if (match.mode === 'endless') {
@@ -1937,7 +1984,7 @@
     sfx.gong();
   }
 
-  // ===== INPUT (Supports 35% Quick-Bends, Blade-Lock Clash & Lightning Hold-to-Charge) =====
+  // ===== INPUT (Supports 35% Avatar Signatures, Blade-Lock Clash & 4-Way Swipe Bending) =====
   function setDir(f, x, y) {
     if (x !== 0 && f.prevX === 0) {
       if (f.lastTapX === x && simFrame - f.lastTapF <= 16) { f.dblTap = { x, f: simFrame }; f.lastTapX = 0; }
@@ -1964,22 +2011,12 @@
         if (f.id === 'p1') { triggerDenyShake(document.getElementById('btn-magic')); sfx.deny(); }
         return;
       }
-      // Lightning sniper hold-to-charge when between 35% and 99% meter!
-      if (f.el.id === 'lightning' && f.magic < 100 && !relDir(f).up && !relDir(f).back && !relDir(f).down) {
-        f.chargingBend = true; f.bendChargeF = 0;
-        return;
-      }
     }
     f.buf.push({ btn, f: simFrame, dir: { ...f.dir }, used: false });
     if (f.buf.length > 14) f.buf.shift();
   }
   function releaseBtn(f, btn) {
     f.held.delete(btn);
-    if (btn === 'magic' && f.chargingBend) {
-      f.chargingBend = false;
-      f.buf.push({ btn: 'magic', f: simFrame, dir: { ...f.dir }, charge: f.bendChargeF, used: false });
-      f.bendChargeF = 0;
-    }
   }
   function triggerDenyShake(el) { if (!el) return; el.classList.remove('deny'); void el.offsetWidth; el.classList.add('deny'); }
   function consumeBtn(f, list) {
@@ -2125,158 +2162,152 @@
 
   function spawnQuickBend(f, opp, dirKey, chargeF = 0) {
     const el = f.el, dir = f.facing;
-    if (f.id === 'p1') match.p1QuickBends++;
+    if (f.id === 'p1') { match.p1QuickBends++; addStyle(12, 'bend'); }
     sfx.elemBend(el.id);
     // Lava passive: gains brief cooling rock armor after any bending move!
-    if (el.id === 'lava') { f.rockArmorF = Math.max(f.rockArmorF, 120); f.armor = Math.max(f.armor, 1); }
+    if (el.id === 'lava') { f.rockArmorF = Math.max(f.rockArmorF, 130); f.armor = Math.max(f.armor, 1); }
 
     if (el.id === 'water') {
       if (dirKey === 'back') {
-        const heal = Math.round(f.maxHp * 0.08);
+        const heal = Math.round(f.maxHp * 0.10);
         f.hp = Math.min(f.maxHp, f.hp + heal); f.trailHp = f.hp;
         spawnSparks(f.x, f.y - 95, '#38d8ff', '#ffffff', 1.4);
         pushCallout('WATER HEAL', '#7cf2ff', f.x, f.y - 188);
       } else if (dirKey === 'down') {
         // Ice-Floor Slide: low-profile dash that trips grounded opponents!
-        f.vx = dir * 18.5; f.inv = Math.max(f.inv, 9); f.afterTimer = 14;
-        bendingWaves.push({ owner: f.id, el, kind: 'ice_slide', x: f.x + dir * 48, y: GROUND_Y - 24, vx: dir * 16.5, dir, w: 112, h: 52, dmg: 64, ly: -9.5, low: true, f: 20, max: 20, hit: false, ult: false });
+        f.vx = dir * 19.5; f.inv = Math.max(f.inv, 10); f.afterTimer = 16;
+        bendingWaves.push({ owner: f.id, el, kind: 'ice_slide', x: f.x + dir * 48, y: GROUND_Y - 24, vx: dir * 17.5, dir, w: 120, h: 54, dmg: 68, ly: -9.5, low: true, f: 22, max: 22, hit: false, ult: false });
         pushCallout('ICE SLIDE', '#38d8ff', f.x, f.y - 185);
       } else if (dirKey === 'up') {
-        // ATLA SIGNATURE — Katara's Octopus Form: whirling 8-tentacle ring intercepting projectiles & lashing close foes!
-        f.octopusF = 165; f.octopusCd = 0; f.reflectStanceF = Math.max(f.reflectStanceF, 28);
-        spawnSparks(f.x, f.y - 100, '#38d8ff', '#ffffff', 1.5);
-        pushCallout('OCTOPUS FORM!', '#7cf2ff', f.x, f.y - 196);
-      } else {
-        // Water Tentacle Pull: drags retreating enemy right back into melee range!
-        bendingWaves.push({ owner: f.id, el, kind: 'water_pull', x: f.x + dir * 75, y: f.y - 106, vx: dir * 18.5, dir, w: 155, h: 92, dmg: 58, ly: -5.5, low: false, pullTo: f.id, f: 24, max: 24, hit: false, ult: false });
+        // Water Whip Pull: drags retreating enemy right back into melee range!
+        bendingWaves.push({ owner: f.id, el, kind: 'water_pull', x: f.x + dir * 75, y: f.y - 106, vx: dir * 19.5, dir, w: 165, h: 96, dmg: 62, ly: -5.5, low: false, pullTo: f.id, f: 24, max: 24, hit: false, ult: false });
         pushCallout('WATER WHIP PULL', '#38d8ff', f.x, f.y - 188);
+      } else {
+        // ATLA SIGNATURE (TAP / FWD) — Katara's Octopus Form: 240f whirling 8-tentacle ring!
+        // Every P/K/W strike launches an extra mid-range Octopus Tentacle Whip + auto-intercepts projectiles + ends in 360° Tidal Slam!
+        f.octopusF = 240; f.octopusCd = 0; f.reflectStanceF = Math.max(f.reflectStanceF, 24);
+        spawnSparks(f.x, f.y - 100, '#38d8ff', '#ffffff', 1.7);
+        pushCallout('OCTOPUS FORM!', '#7cf2ff', f.x, f.y - 202);
       }
     } else if (el.id === 'fire') {
       if (dirKey === 'down') {
         // Breath of Fire: wide blistering close-range flame cone!
-        bendingWaves.push({ owner: f.id, el, kind: 'fire_breath', x: f.x + dir * 110, y: f.y - 108, vx: dir * 6.5, dir, w: 205, h: 120, dmg: 76, ly: -6.5, low: false, f: 20, max: 20, hit: false, ult: false });
+        bendingWaves.push({ owner: f.id, el, kind: 'fire_breath', x: f.x + dir * 110, y: f.y - 108, vx: dir * 6.5, dir, w: 210, h: 124, dmg: 78, ly: -6.5, low: false, f: 20, max: 20, hit: false, ult: false });
         pushCallout('BREATH OF FIRE', '#ff8c2e', f.x, f.y - 188);
       } else if (dirKey === 'up') {
         // Flame-Kick Chain: soaring vertical fire launcher!
-        f.vy = -14.2; f.vx = dir * 9.5; f.afterTimer = 16;
-        bendingWaves.push({ owner: f.id, el, kind: 'fire_arc', x: f.x + dir * 56, y: f.y - 120, vx: dir * 10, dir, w: 128, h: 158, dmg: 78, ly: -14.8, low: false, launcher: true, f: 22, max: 22, hit: false, ult: false });
+        f.vy = -14.6; f.vx = dir * 10.2; f.afterTimer = 16;
+        bendingWaves.push({ owner: f.id, el, kind: 'fire_arc', x: f.x + dir * 56, y: f.y - 120, vx: dir * 10.5, dir, w: 132, h: 162, dmg: 80, ly: -15.0, low: false, launcher: true, f: 22, max: 22, hit: false, ult: false });
         pushCallout('FLAME LAUNCH', '#ff951a', f.x, f.y - 192);
       } else if (dirKey === 'back') {
         // Fire-Fist Burst: fast dual fireball punch barrage
-        bendingWaves.push({ owner: f.id, el, kind: 'fire_arc', x: f.x + dir * 65, y: f.y - 115, vx: dir * 17.5, dir, w: 108, h: 92, dmg: 46, ly: -4.5, low: false, f: 20, max: 20, hit: false, ult: false });
-        bendingWaves.push({ owner: f.id, el, kind: 'fire_arc', x: f.x + dir * 55, y: f.y - 105, vx: dir * 18.5, dir, w: 112, h: 96, dmg: 46, ly: -8.5, low: false, f: 22, max: 22, delay: 7, hit: false, ult: false });
+        bendingWaves.push({ owner: f.id, el, kind: 'fire_arc', x: f.x + dir * 65, y: f.y - 115, vx: dir * 18.0, dir, w: 112, h: 94, dmg: 48, ly: -4.5, low: false, f: 20, max: 20, hit: false, ult: false });
+        bendingWaves.push({ owner: f.id, el, kind: 'fire_arc', x: f.x + dir * 55, y: f.y - 105, vx: dir * 19.0, dir, w: 116, h: 98, dmg: 48, ly: -8.5, low: false, f: 22, max: 22, delay: 7, hit: false, ult: false });
         pushCallout('FIRE-FIST BURST', '#ff6a1a', f.x, f.y - 188);
       } else {
-        // ATLA SIGNATURE — Sozin's Jet-Step: twin roaring foot-jets aerial flame-glide + guard-breaking overhead drop!
-        f.fireJetF = 24; f.vx = dir * 20.5; f.vy = -10.5; f.afterTimer = 24; f.armor = Math.max(f.armor, 1);
-        bendingWaves.push({ owner: f.id, el, kind: 'fire_jet', x: f.x + dir * 48, y: f.y - 110, vx: dir * 19.5, dir, w: 136, h: 102, dmg: 88, ly: -10.5, low: false, guardCrush: true, f: 22, max: 22, hit: false, ult: false });
-        pushCallout("SOZIN'S JET-STEP!", '#ffb347', f.x, f.y - 196);
+        // ATLA SIGNATURE (TAP / FWD) — Sozin's Jet-Step: airborne rocket flying-kick glide (zero friction) + burning floor embers + guard-crushing blitz!
+        f.fireJetF = 28; f.vx = dir * 21.5; f.vy = -7.8; f.afterTimer = 28; f.armor = Math.max(f.armor, 1); f.inv = Math.max(f.inv, 6);
+        bendingWaves.push({ owner: f.id, el, kind: 'fire_jet', x: f.x + dir * 52, y: f.y - 112, vx: dir * 21.5, dir, w: 152, h: 110, dmg: 94, ly: -11.5, low: false, guardCrush: true, heavyHit: true, f: 24, max: 24, hit: false, ult: false });
+        pushCallout("SOZIN'S JET-STEP!", '#ffb347', f.x, f.y - 202);
       }
     } else if (el.id === 'earth') {
       if (dirKey === 'back') {
-        // ATLA SIGNATURE — Toph's Seismic Sense & Earth Armor: sonar floor ripple + orbiting rock armor + delayed pillar under foe!
-        f.seismicWaveF = 28; f.rockArmorF = 210; f.armor = Math.max(f.armor, 2);
-        const wx = Math.max(ARENA_L + 70, Math.min(ARENA_R - 70, f.x + dir * 84));
-        rockWalls.push({ owner: f.id, x: wx, y: GROUND_Y, w: 46, h: 162, hp: 2, f: 220, max: 220 });
+        // Earth Wall & Boulder Counter: raises protective stone monolith wall + throws boulder
+        const wx = Math.max(ARENA_L + 70, Math.min(ARENA_R - 70, f.x + dir * 86));
+        rockWalls.push({ owner: f.id, x: wx, y: GROUND_Y, w: 48, h: 166, hp: 2, f: 230, max: 230 });
         if (rockWalls.length > 2) rockWalls.shift();
-        const px = Math.max(ARENA_L + 50, Math.min(ARENA_R - 50, opp.x));
-        bendingWaves.push({ owner: f.id, el, kind: 'earth_spike', x: px, y: GROUND_Y, vx: 0, dir, w: 100, h: 196, dmg: 76, ly: -14.8, low: true, launcher: true, delay: 14, f: 28, max: 28, hit: false, ult: false });
-        spawnDust(f.x, GROUND_Y, 0, 14, '#e8b038');
-        pushCallout("SEISMIC SENSE!", '#f5d061', f.x, f.y - 196);
+        bendingWaves.push({ owner: f.id, el, kind: 'boulder', x: f.x + dir * 72, y: f.y - 108, vx: dir * 12.8, dir, w: 90, h: 90, dmg: 88, ly: -9.5, low: false, guardCrush: true, f: 42, max: 42, hit: false, ult: false });
+        pushCallout('STONE WALL!', '#e8b038', f.x, f.y - 188);
       } else if (dirKey === 'up') {
         // Stone Pillar Launcher: erupts under/near enemy to launch airborne!
-        const px = Math.max(ARENA_L + 50, Math.min(ARENA_R - 50, Math.abs(opp.x - f.x) < 290 ? opp.x : f.x + dir * 165));
-        bendingWaves.push({ owner: f.id, el, kind: 'earth_spike', x: px, y: GROUND_Y, vx: 0, dir, w: 102, h: 205, dmg: 82, ly: -16.2, low: true, launcher: true, f: 28, max: 28, hit: false, ult: false });
+        const px = Math.max(ARENA_L + 50, Math.min(ARENA_R - 50, Math.abs(opp.x - f.x) < 320 ? opp.x : f.x + dir * 165));
+        bendingWaves.push({ owner: f.id, el, kind: 'earth_spike', x: px, y: GROUND_Y, vx: 0, dir, w: 108, h: 210, dmg: 84, ly: -16.2, low: true, launcher: true, f: 28, max: 28, hit: false, ult: false });
         spawnDust(px, GROUND_Y, 0, 15, '#e8b038');
         pushCallout('STONE PILLAR', '#e8b038', px, GROUND_Y - 210);
       } else if (dirKey === 'down') {
         // Earthquake Stomp: full-floor ground shockwave!
         shake = Math.max(shake, 14 * settings.feedback);
-        bendingWaves.push({ owner: f.id, el, kind: 'ground_shockwave', x: f.x + dir * 70, y: GROUND_Y - 24, vx: dir * 15.0, dir, w: 140, h: 68, dmg: 76, ly: -11.5, low: true, f: 34, max: 34, hit: false, ult: false });
+        bendingWaves.push({ owner: f.id, el, kind: 'ground_shockwave', x: f.x + dir * 70, y: GROUND_Y - 24, vx: dir * 15.5, dir, w: 146, h: 72, dmg: 78, ly: -11.5, low: true, f: 34, max: 34, hit: false, ult: false });
         pushCallout('EARTHQUAKE STOMP', '#e8b038', f.x, f.y - 188);
       } else {
-        // Boulder Throw: heavy rolling/flying rock projectile!
-        bendingWaves.push({ owner: f.id, el, kind: 'boulder', x: f.x + dir * 72, y: f.y - 108, vx: dir * 12.2, dir, w: 88, h: 88, dmg: 92, ly: -9.5, low: false, guardCrush: true, f: 42, max: 42, hit: false, ult: false });
-        pushCallout('BOULDER THROW', '#e8b038', f.x, f.y - 188);
+        // ATLA SIGNATURE (TAP / FWD) — Toph's Seismic Sense & Stone Gauntlets!
+        // Races white-gold wireframe sonar wave along the floor -> tracks enemy LIVE position on arrival to erupt a Rock Monolith + equips Stone Gauntlets (+30% melee dmg & +40% poise shred) + Rock Armor!
+        f.seismicWaveF = 34; f.gauntletsF = 260; f.rockArmorF = 220; f.armor = Math.max(f.armor, 2);
+        bendingWaves.push({ owner: f.id, el, kind: 'seismic_sonar', x: f.x + dir * 32, y: GROUND_Y - 12, vx: dir * 16.5, dir, w: 96, h: 42, dmg: 0, ly: 0, low: true, f: 34, max: 34, hit: false, ult: false });
+        spawnDust(f.x, GROUND_Y, 0, 16, '#f5d061');
+        shake = Math.max(shake, 12 * settings.feedback);
+        pushCallout("SEISMIC SENSE + GAUNTLETS!", '#f5d061', f.x, f.y - 204);
       }
     } else if (el.id === 'air') {
-      if (dirKey === 'fwd') {
-        // ATLA SIGNATURE — Aang's Air Scooter: rides a spinning Air Sphere hovering over lows/hazards at 1.65x speed!
-        f.airScooterF = 115; f.inv = Math.max(f.inv, 12); f.vx = dir * 12.5; f.afterTimer = 22;
-        spawnDust(f.x, GROUND_Y, -dir * 3, 14, '#5effc8');
-        pushCallout("AIR SCOOTER!", '#5effc8', f.x, f.y - 196);
-      } else if (dirKey === 'up' || dirKey === 'down') {
+      if (dirKey === 'up' || dirKey === 'down') {
         // Wind-Blade Spin: 360° swirling gale launch!
-        f.vy = -10.5;
-        bendingWaves.push({ owner: f.id, el, kind: 'air_gust', x: f.x + dir * 48, y: f.y - 105, vx: dir * 16.5, dir, w: 158, h: 162, dmg: 74, ly: -15.6, low: false, launcher: true, f: 26, max: 26, hit: false, ult: false });
+        f.vy = -10.8;
+        bendingWaves.push({ owner: f.id, el, kind: 'air_gust', x: f.x + dir * 48, y: f.y - 105, vx: dir * 16.8, dir, w: 162, h: 166, dmg: 76, ly: -15.6, low: false, launcher: true, f: 26, max: 26, hit: false, ult: false });
         pushCallout('WIND-BLADE SPIN', '#5effc8', f.x, f.y - 190);
-      } else {
+      } else if (dirKey === 'back') {
         // Vacuum Pull: draws distant opponent straight inward!
         const vx = Math.max(ARENA_L + 60, Math.min(ARENA_R - 60, opp.x));
-        bendingWaves.push({ owner: f.id, el, kind: 'vacuum_pull', x: vx, y: opp.y - 98, vx: -dir * 6, dir, w: 170, h: 170, dmg: 52, ly: -9.0, low: false, pullTo: f.id, f: 22, max: 22, hit: false, ult: false });
+        bendingWaves.push({ owner: f.id, el, kind: 'vacuum_pull', x: vx, y: opp.y - 98, vx: -dir * 6, dir, w: 174, h: 174, dmg: 54, ly: -9.0, low: false, pullTo: f.id, f: 22, max: 22, hit: false, ult: false });
         pushCallout('VACUUM PULL', '#5effc8', vx, opp.y - 185);
+      } else {
+        // ATLA SIGNATURE (TAP / FWD) — Aang's Air Scooter: crouched ride atop swirling air sphere, auto-gliding forward, wall-bouncing, hovering over lows/hazards, and bowling through opponents!
+        f.airScooterF = 165; f.scooterHitCd = 0; f.inv = Math.max(f.inv, 14); f.vx = dir * 13.5; f.afterTimer = 28;
+        spawnDust(f.x, GROUND_Y, -dir * 3, 16, '#5effc8');
+        pushCallout("AIR SCOOTER!", '#5effc8', f.x, f.y - 202);
       }
     } else if (el.id === 'lightning') {
-      if (dirKey === 'back') {
-        // ATLA SIGNATURE — Iroh's Lightning Redirection: chest-loop redirect stance returning 1.5x overcharged bolt!
-        f.reflectStanceF = 42; f.guardFrame = simFrame + 24;
-        spawnSparks(f.x, f.y - 115, '#78e2ff', '#ffe878', 1.5);
-        pushCallout("IROH'S REDIRECT!", '#ffe878', f.x, f.y - 196);
-      } else if (dirKey === 'up') {
-        // Teleport Snap: short-range blink near opponent followed by stunning shock!
+      if (dirKey === 'up') {
+        // Teleport Snap: short-range blink behind opponent followed by stunning shock!
         const tx = Math.max(ARENA_L + 35, Math.min(ARENA_R - 35, opp.x - opp.facing * 86));
         spawnSparks(f.x, f.y - 95, '#66d0ff', '#ffffff', 1.3);
         f.x = tx; f.facing = opp.x >= f.x ? 1 : -1; f.inv = 10; f.afterTimer = 14;
-        bendingWaves.push({ owner: f.id, el, kind: 'bolt_lance', x: f.x + f.facing * 60, y: f.y - 106, vx: f.facing * 16, dir: f.facing, w: 132, h: 86, dmg: 72, ly: -5.5, low: false, microStun: true, f: 14, max: 14, hit: false, ult: false });
+        bendingWaves.push({ owner: f.id, el, kind: 'bolt_lance', x: f.x + f.facing * 60, y: f.y - 106, vx: f.facing * 18, dir: f.facing, w: 140, h: 88, dmg: 76, ly: -5.5, low: false, microStun: true, f: 14, max: 14, hit: false, ult: false });
         pushCallout('TELEPORT SNAP', '#78e2ff', f.x, f.y - 190);
       } else if (dirKey === 'down') {
         // Chain Arc Stun: snapping ground electric arc
-        bendingWaves.push({ owner: f.id, el, kind: 'bolt_lance', x: f.x + dir * 105, y: GROUND_Y - 38, vx: dir * 18.5, dir, w: 175, h: 66, dmg: 70, ly: -4.0, low: true, microStun: true, f: 18, max: 18, hit: false, ult: false });
+        bendingWaves.push({ owner: f.id, el, kind: 'bolt_lance', x: f.x + dir * 105, y: GROUND_Y - 38, vx: dir * 19.0, dir, w: 182, h: 68, dmg: 74, ly: -4.0, low: true, microStun: true, f: 18, max: 18, hit: false, ult: false });
         pushCallout('CHAIN ARC', '#ffe04a', f.x, f.y - 188);
-      } else {
-        // Charged Bolt: scales speed, damage & guard-break with charge duration!
-        const ch = Math.min(1, chargeF / 28);
+      } else if (dirKey === 'back') {
+        // Overcharged Bolt: fast piercing lightning lance!
         bendingWaves.push({
           owner: f.id, el, kind: 'bolt_lance', x: f.x + dir * 82, y: f.y - 112,
-          vx: dir * (20 + ch * 12), dir, w: 175 + ch * 75, h: 68 + ch * 26,
-          dmg: Math.round(74 + ch * 54), ly: -8.0, low: false,
-          guardCrush: ch > 0.55, microStun: true, f: 20, max: 20, hit: false, ult: false
+          vx: dir * 27, dir, w: 235, h: 86,
+          dmg: 106, ly: -8.5, low: false,
+          guardCrush: true, microStun: true, f: 22, max: 22, hit: false, ult: false
         });
-        pushCallout(ch > 0.55 ? 'OVERCHARGED BOLT!' : 'CHARGED BOLT', '#78e2ff', f.x, f.y - 190);
+        pushCallout('OVERCHARGED BOLT!', '#78e2ff', f.x, f.y - 190);
+      } else {
+        // ATLA SIGNATURE (TAP / FWD) — Iroh's Lightning Redirection: 56f golden-cyan chest-loop stance!
+        // Absorbs ANY melee/projectile for 0 dmg + 2x Golden Dragon Counter-Bolt! If unhit on expiry, auto-fires a Twin-Finger Dragon Lightning Beam!
+        f.reflectStanceF = 56; f.irohBeamReady = true; f.guardFrame = simFrame + 32;
+        spawnSparks(f.x, f.y - 115, '#78e2ff', '#ffe878', 1.7);
+        pushCallout("IROH'S REDIRECT!", '#ffe878', f.x, f.y - 202);
       }
     } else if (el.id === 'ice') {
       if (dirKey === 'down') {
         // Frozen Floor: slick cryo floor hazard zone!
-        hazards.push({ owner: f.id, kind: 'ice', x: Math.max(ARENA_L + 70, Math.min(ARENA_R - 70, f.x + dir * 145)), hw: 112, f: 260, t: 0 });
+        hazards.push({ owner: f.id, kind: 'ice', x: Math.max(ARENA_L + 70, Math.min(ARENA_R - 70, f.x + dir * 145)), hw: 118, f: 260, t: 0 });
         if (hazards.length > 3) hazards.shift();
         pushCallout('FROZEN FLOOR', '#78eeff', f.x + dir * 120, GROUND_Y - 82);
       } else if (dirKey === 'up') {
         // Ice-Spear Rain: 3 falling spears from above!
         for (let i = -1; i <= 1; i++) {
           const sx = Math.max(ARENA_L + 50, Math.min(ARENA_R - 50, opp.x + i * 74));
-          bendingWaves.push({ owner: f.id, el, kind: 'ice_rain', x: sx, y: 185, vx: 0, vy: 17.5, dir, w: 58, h: 110, dmg: 44, ly: -5.5, low: false, f: 26, max: 26, delay: (i + 1) * 4, hit: false, ult: false });
+          bendingWaves.push({ owner: f.id, el, kind: 'ice_rain', x: sx, y: 185, vx: 0, vy: 18.0, dir, w: 60, h: 114, dmg: 48, ly: -5.5, low: false, f: 26, max: 26, delay: (i + 1) * 4, hit: false, ult: false });
         }
         pushCallout('ICE-SPEAR RAIN', '#78eeff', opp.x, 220);
       } else if (dirKey === 'back') {
         // Shatter Burst: heavy close frost wave!
-        bendingWaves.push({ owner: f.id, el, kind: 'ice_spike', x: f.x + dir * 115, y: GROUND_Y, vx: 0, dir, w: 122, h: 168, dmg: 82, ly: -11.5, low: false, heavyHit: true, f: 24, max: 24, hit: false, ult: false });
+        bendingWaves.push({ owner: f.id, el, kind: 'ice_spike', x: f.x + dir * 115, y: GROUND_Y, vx: 0, dir, w: 128, h: 172, dmg: 86, ly: -11.5, low: false, heavyHit: true, f: 24, max: 24, hit: false, ult: false });
         pushCallout('FROST SHATTER', '#78eeff', f.x + dir * 110, GROUND_Y - 178);
       } else {
-        // ATLA SIGNATURE — Katara's Cryo Prison: encases enemy in a visible Ice Crystal Cage (+35% shatter dmg on heavy follow-up)!
-        const fx = Math.max(ARENA_L + 50, Math.min(ARENA_R - 50, opp.x));
-        bendingWaves.push({ owner: f.id, el, kind: 'ice_trap', x: fx, y: GROUND_Y, vx: 0, dir, w: 124, h: 140, dmg: 56, ly: 0, low: true, rootF: 36, freezePrison: true, f: 26, max: 26, hit: false, ult: false });
-        pushCallout('CRYO PRISON!', '#9ef6ff', fx, GROUND_Y - 150);
+        // ATLA SIGNATURE (TAP / FWD) — Katara's Cryo Prison (Sub-Zero Freeze!): fast piercing frost-wave freezing enemy SOLID for 2.2s (132f) inside a faceted Ice Crystal Cage! Heavy follow-up deals +40% CRYO SHATTER!
+        bendingWaves.push({ owner: f.id, el, kind: 'ice_trap', x: f.x + dir * 68, y: GROUND_Y - 68, vx: dir * 18.5, dir, w: 132, h: 136, dmg: 52, ly: 0, low: false, rootF: 132, freezePrison: true, f: 34, max: 34, hit: false, ult: false });
+        spawnSparks(f.x + dir * 50, f.y - 102, '#78eeff', '#ffffff', 1.4, true);
+        pushCallout('CRYO PRISON!', '#9ef6ff', f.x, f.y - 202);
       }
     } else if (el.id === 'shadow') {
       if (dirKey === 'back') {
-        // ATLA SIGNATURE — Eclipse Swap: drops exploding ink decoy at origin & teleports behind opponent!
-        decoyClones.push({ owner: f.id, x: f.x, y: GROUND_Y, facing: f.facing, f: 210, max: 210, el });
-        if (decoyClones.length > 2) decoyClones.shift();
-        const tx = Math.max(ARENA_L + 35, Math.min(ARENA_R - 35, opp.x - opp.facing * 92));
-        f.x = tx; f.facing = opp.x >= f.x ? 1 : -1; f.inv = 14; f.afterTimer = 16;
-        spawnSparks(f.x, f.y - 95, '#6348e8', '#f6f2ff', 1.4);
-        pushCallout('ECLIPSE SWAP!', '#c4b0ff', f.x, f.y - 196);
-      } else if (dirKey === 'fwd') {
         // Shadow Sink: sinks into floor and reappears behind opponent!
         spawnDust(f.x, GROUND_Y, 0, 12, '#6348e8');
         f.x = Math.max(ARENA_L + 35, Math.min(ARENA_R - 35, opp.x - opp.facing * 88));
@@ -2286,18 +2317,28 @@
       } else if (dirKey === 'down') {
         // Shadow Bind: dark tether rooting opponent briefly!
         const bx = Math.max(ARENA_L + 50, Math.min(ARENA_R - 50, opp.x));
-        bendingWaves.push({ owner: f.id, el, kind: 'shadow_slash', x: bx, y: GROUND_Y, vx: 0, dir, w: 112, h: 140, dmg: 54, ly: 0, low: true, rootF: 30, f: 22, max: 22, hit: false, ult: false });
+        bendingWaves.push({ owner: f.id, el, kind: 'shadow_slash', x: bx, y: GROUND_Y, vx: 0, dir, w: 118, h: 146, dmg: 58, ly: 0, low: true, rootF: 44, f: 22, max: 22, hit: false, ult: false });
         pushCallout('SHADOW BIND', '#b49cff', bx, GROUND_Y - 155);
-      } else {
+      } else if (dirKey === 'up') {
         // Life Drain: umbral wave stealing HP!
-        bendingWaves.push({ owner: f.id, el, kind: 'shadow_slash', x: f.x + dir * 82, y: f.y - 102, vx: dir * 15.0, dir, w: 132, h: 122, dmg: 68, ly: -7.5, low: false, lifeDrain: true, f: 24, max: 24, hit: false, ult: false });
+        bendingWaves.push({ owner: f.id, el, kind: 'shadow_slash', x: f.x + dir * 82, y: f.y - 102, vx: dir * 15.5, dir, w: 136, h: 126, dmg: 72, ly: -7.5, low: false, lifeDrain: true, f: 24, max: 24, hit: false, ult: false });
         pushCallout('LIFE DRAIN', '#b49cff', f.x, f.y - 188);
+      } else {
+        // ATLA SIGNATURE (TAP / FWD) — Eclipse Swap (Noob Saibot Pincer!): spawns a REAL pitch-black attacking silhouette shadow clone that sprints & slashes from the front while YOU teleport behind the enemy!
+        const originX = f.x, originFacing = opp.x >= f.x ? 1 : -1;
+        decoyClones.push({ owner: f.id, x: originX, y: GROUND_Y, facing: originFacing, vx: originFacing * 11.5, f: 110, max: 110, swung: false, swingF: 0, el, wType: getWeaponSpec(f).wType, gear: f.id === 'p1' ? (PROG.equippedGear || 'none') : (match.boss ? (match.boss.gear || 'none') : 'none') });
+        if (decoyClones.length > 2) decoyClones.shift();
+        const tx = Math.max(ARENA_L + 35, Math.min(ARENA_R - 35, opp.x - opp.facing * 92));
+        f.x = tx; f.facing = opp.x >= f.x ? 1 : -1; f.inv = 14; f.afterTimer = 18;
+        spawnSparks(originX, GROUND_Y - 95, '#6348e8', '#f6f2ff', 1.4);
+        spawnSparks(f.x, f.y - 95, '#6348e8', '#f6f2ff', 1.6);
+        pushCallout('ECLIPSE SWAP!', '#c4b0ff', f.x, f.y - 202);
       }
     } else {
       // LAVA
       if (dirKey === 'back') {
-        // Cooling Rock Armor: 40% damage reduction + poise!
-        f.rockArmorF = 210; f.armor = Math.max(f.armor, 2);
+        // Cooling Rock Armor: 35% damage reduction + poise!
+        f.rockArmorF = 230; f.armor = Math.max(f.armor, 2);
         spawnSparks(f.x, f.y - 95, '#ff7014', '#ffea80', 1.4);
         pushCallout('ROCK ARMOR', '#ffae34', f.x, f.y - 188);
       } else if (dirKey === 'down') {
@@ -2307,14 +2348,14 @@
       } else if (dirKey === 'up') {
         // Geyser Uppercut: erupts directly beneath enemy to launch airborne!
         const gx = Math.max(ARENA_L + 50, Math.min(ARENA_R - 50, opp.x));
-        bendingWaves.push({ owner: f.id, el, kind: 'ult_lava', x: gx, y: GROUND_Y, vx: 0, dir, w: 114, h: 225, dmg: 84, ly: -16.8, low: true, launcher: true, f: 28, max: 28, hit: false, ult: false });
+        bendingWaves.push({ owner: f.id, el, kind: 'ult_lava', x: gx, y: GROUND_Y, vx: 0, dir, w: 118, h: 230, dmg: 86, ly: -16.8, low: true, launcher: true, f: 28, max: 28, hit: false, ult: false });
         spawnHazard(f, gx);
         pushCallout('MAGMA GEYSER', '#ff7014', gx, GROUND_Y - 215);
       } else {
-        // ATLA SIGNATURE — Ghazan's Molten Shuriken & Magma Moat: boomerang spinning lava disc leaving a molten floor moat!
-        bendingWaves.push({ owner: f.id, el, kind: 'lava_disc', x: f.x + dir * 72, y: f.y - 98, vx: dir * 15.8, dir, w: 108, h: 88, dmg: 78, ly: -9.2, low: false, bounces: 1, boomerang: true, f: 52, max: 52, hit: false, ult: false });
+        // ATLA SIGNATURE (TAP / FWD) — Ghazan's Molten Shuriken & Magma Moat: sculpted 4-blade grinding buzzsaw (3-hit stagger lock!) carving a Magma Moat, then boomeranging back!
+        bendingWaves.push({ owner: f.id, el, kind: 'lava_disc', x: f.x + dir * 72, y: f.y - 100, vx: dir * 15.2, dir, w: 118, h: 102, dmg: 34, ly: -4.2, low: false, bounces: 1, boomerang: true, multiHits: 3, hitCd: 0, f: 56, max: 56, hit: false, ult: false });
         spawnHazard(f, f.x + dir * 175);
-        pushCallout("MOLTEN SHURIKEN!", '#ff8e2b', f.x, f.y - 196);
+        pushCallout("MOLTEN SHURIKEN!", '#ff8e2b', f.x, f.y - 202);
       }
     }
   }
@@ -2501,46 +2542,91 @@
     }
   }
 
-  // ===== TICK FIGHTER (All 8 Passives, ATLA Tricks, Guard Poise, Weapon Infusions) =====
+  // ===== TICK FIGHTER (All 8 Passives, ATLA Signatures, Guard Poise, Cross-Combos & Finishers) =====
   function tickFighter(f, opp, canCtrl) {
     if (f.trailHp > f.hp) f.trailHp = Math.max(f.hp, f.trailHp - Math.max(2.4, (f.trailHp - f.hp) * 0.09));
     else f.trailHp = f.hp;
     if (f.inv > 0) f.inv--; if (f.flash > 0) f.flash--; if (f.afterTimer > 0) f.afterTimer--; if (f.avatarFlash > 0) f.avatarFlash--;
     if (f.avengerF > 0) f.avengerF--; if (f.mirrorF > 0) f.mirrorF--;
     if (f.rockArmorF > 0) f.rockArmorF--;
-    if (f.reflectStanceF > 0) f.reflectStanceF--;
-    if (f.octopusF > 0) f.octopusF--;
+    if (f.gauntletsF > 0) f.gauntletsF--;
+    if (f.scooterHitCd > 0) f.scooterHitCd--;
+    if (f.reflectStanceF > 0) {
+      f.reflectStanceF--;
+      // Iroh's Lightning Redirection: if stance expires without being hit, auto-fires a Twin-Finger Dragon Lightning Beam!
+      if (f.reflectStanceF === 0 && f.irohBeamReady && f.el.id === 'lightning' && canCtrl && f.hp > 0 && f.state !== 'hitstun' && f.state !== 'knockdown_air' && f.state !== 'grounded' && f.state !== 'ko') {
+        f.irohBeamReady = false;
+        const dir = opp.x >= f.x ? 1 : -1;
+        f.facing = dir;
+        bendingWaves.push({
+          owner: f.id, el: f.el, kind: 'bolt_lance', x: f.x + dir * 78, y: f.y - 110,
+          vx: dir * 26, dir, w: 230, h: 86, dmg: 92, ly: -8.5, low: false,
+          guardCrush: true, microStun: true, f: 22, max: 22, hit: false, ult: false
+        });
+        sfx.elemBend('lightning');
+        spawnSparks(f.x + dir * 48, f.y - 112, '#78e2ff', '#ffe878', 1.8);
+        pushCallout('DRAGON LIGHTNING!', '#ffe878', f.x, f.y - 202);
+      }
+    }
+    if (f.octopusF > 0) {
+      f.octopusF--;
+      // Katara's Octopus Form expiration 360° Tidal Slam!
+      if (f.octopusF === 0 && canCtrl && opp.inv <= 0 && opp.state !== 'ko' && Math.abs(opp.x - f.x) < 175 && Math.abs(opp.y - f.y) < 120) {
+        const dirToOpp = opp.x >= f.x ? 1 : -1;
+        spawnSparks(f.x, f.y - 95, '#38d8ff', '#ffffff', 2.0);
+        resolveHit(f, opp, { dmg: 64, chip: 14, hs: 26, bs: 12, stop: 5, kb: 15.5, forceVx: dirToOpp * 15.5, ly: -10.5, kd: true, crit: true, h: 'mid', elStatus: true, mg: 8 }, opp.x, opp.y - 100, true);
+        pushCallout('OCTOPUS TIDAL SLAM!', '#7cf2ff', f.x, f.y - 206);
+      }
+    }
     if (f.octopusCd > 0) f.octopusCd--;
     if (f.airScooterF > 0) f.airScooterF--;
-    if (f.fireJetF > 0) f.fireJetF--;
+    if (f.fireJetF > 0) {
+      f.fireJetF--;
+      if (f.fireJetF % 3 === 0 && particles.length < 220) {
+        particles.push({ x: f.x - f.facing * 24, y: f.y - 12, vx: -f.facing * (3 + Math.random() * 4), vy: -1 - Math.random() * 2, sz: 5 + Math.random() * 4, c: Math.random() < 0.5 ? '#ffae34' : '#ff4514', age: 0, max: 16, g: -0.04, t: 'spark' });
+      }
+    }
     if (f.seismicWaveF > 0) f.seismicWaveF--;
     if (f.frozenPrisonF > 0) f.frozenPrisonF--;
     if (f.fireStreakT > 0 && --f.fireStreakT === 0) f.fireStreak = 0;
     if (f.multiHitCd > 0) f.multiHitCd--;
-    // Katara's Octopus Form: auto-lash any enemy who steps inside 124px!
-    if (canCtrl && f.octopusF > 0 && f.octopusCd <= 0 && opp.inv <= 0 && opp.state !== 'ko' && Math.abs(opp.x - f.x) < 124 && Math.abs(opp.y - f.y) < 110) {
-      f.octopusCd = 30;
+
+    // Katara's Octopus Form: auto-lash any enemy who steps inside 132px!
+    if (canCtrl && f.octopusF > 0 && f.octopusCd <= 0 && opp.inv <= 0 && opp.state !== 'ko' && Math.abs(opp.x - f.x) < 132 && Math.abs(opp.y - f.y) < 115) {
+      f.octopusCd = 28;
       const dirToOpp = opp.x >= f.x ? 1 : -1;
-      spawnSparks(opp.x, opp.y - 98, '#38d8ff', '#ffffff', 1.2);
-      resolveHit(f, opp, { dmg: 38, chip: 8, hs: 18, bs: 10, stop: 3, kb: 9.5, forceVx: dirToOpp * 10.5, ly: -4.5, kd: false, crit: false, h: 'mid', elStatus: true, mg: 6 }, opp.x, opp.y - 102, true);
+      spawnSparks(opp.x, opp.y - 98, '#38d8ff', '#ffffff', 1.3);
+      resolveHit(f, opp, { dmg: 40, chip: 8, hs: 18, bs: 10, stop: 3, kb: 9.5, forceVx: dirToOpp * 10.5, ly: -4.5, kd: false, crit: false, h: 'mid', elStatus: true, mg: 6 }, opp.x, opp.y - 102, true);
       pushCallout('OCTOPUS LASH!', '#7cf2ff', opp.x, opp.y - 178);
     }
-    if (f.chargingBend) {
-      f.bendChargeF = Math.min(34, f.bendChargeF + 1);
-      if (f.bendChargeF % 6 === 0) spawnSparks(f.x, f.y - 105, '#66d0ff', '#ffffff', 0.7);
-      if (f.bendChargeF >= 34) {
-        f.chargingBend = false;
-        f.buf.push({ btn: 'magic', f: simFrame, dir: { ...f.dir }, charge: 34, used: false });
-        f.bendChargeF = 0;
+
+    // Aang's Air Scooter: contact whirlwind bowl right through enemy + bounce off arena walls!
+    if (canCtrl && f.airScooterF > 0 && f.state !== 'ko' && f.state !== 'hitstun' && f.state !== 'knockdown_air' && f.state !== 'grounded') {
+      if (f.x <= ARENA_L + 12 && f.vx < 0) {
+        f.facing = 1; f.vx = 13.8;
+        spawnDust(ARENA_L + 14, GROUND_Y - 24, 1, 10, '#5effc8');
+        pushCallout('SCOOTER BOUNCE!', '#5effc8', f.x + 30, f.y - 186);
+      } else if (f.x >= ARENA_R - 12 && f.vx > 0) {
+        f.facing = -1; f.vx = -13.8;
+        spawnDust(ARENA_R - 14, GROUND_Y - 24, -1, 10, '#5effc8');
+        pushCallout('SCOOTER BOUNCE!', '#5effc8', f.x - 30, f.y - 186);
+      }
+      if (f.scooterHitCd <= 0 && opp.inv <= 0 && opp.state !== 'ko' && opp.state !== 'grabbed' && Math.abs(opp.x - f.x) < 74 && Math.abs(opp.y - f.y) < 105) {
+        f.scooterHitCd = 38; f.inv = Math.max(f.inv, 10);
+        spawnSparks(opp.x, opp.y - 88, '#5effc8', '#ffffff', 1.5);
+        resolveHit(f, opp, { dmg: 54, chip: 12, hs: 24, bs: 10, stop: 4, kb: 10.5, ly: -12.2, kd: true, launcher: true, crit: false, h: 'mid', elStatus: true, mg: 8 }, opp.x, opp.y - 96, true);
+        pushCallout('SCOOTER BOWL!', '#5effc8', opp.x, opp.y - 194);
       }
     }
+
     if (f.guardWear > 0 && f.state !== 'block_high' && f.state !== 'block_low' && simFrame % 45 === 0) f.guardWear = Math.max(0, f.guardWear - 1);
     if (f.state !== 'block_high' && f.state !== 'block_low' && f.state !== 'hitstun' && f.poise < f.maxPoise) {
       f.poise = Math.min(f.maxPoise, f.poise + 0.26);
     }
     f.desperate = f.hp > 0 && f.hp / f.maxHp < 0.2;
     const bossMagMult = (f.id === 'p2' && match.boss) ? (match.boss.magicGain || 1) : 1;
-    if (canCtrl && f.hp > 0) f.magic = Math.min(100, f.magic + 0.095 * (f.id === 'p1' ? p1FlowMult() : bossMagMult));
+    const styleFlow = (f.id === 'p1' && match.styleRank) ? (1 + ({ D: 0.04, C: 0.08, B: 0.14, A: 0.22, S: 0.30, AVATAR: 0.42 }[match.styleRank] || 0)) : 1;
+    if (canCtrl && f.hp > 0) f.magic = Math.min(100, f.magic + 0.095 * (f.id === 'p1' ? p1FlowMult() * styleFlow : bossMagMult));
 
     const isIceFloor = Boolean(match.boss && match.boss.hazardId === 'glacier_floor') || hazards.some(h => h.kind === 'ice' && Math.abs(f.x - h.x) < h.hw);
     const isTailwind = Boolean(match.boss && match.boss.hazardId === 'gale_tailwind' && (simFrame % 240 < 90));
@@ -2571,7 +2657,22 @@
     if (f.state === 'grabbed') { return; }
     if (f.state === 'ko' || f.state === 'victory') { f.vx *= 0.84; applyPhys(f, false); return; }
 
-    // Helper: Execute 35% Quick-Bend OR 100% Avatar Ultimate!
+    // Sub-Zero Cryo Prison Freeze-Solid Lock: victim is completely frozen inside the ice block!
+    if (f.frozenPrisonF > 0) {
+      f.vx *= 0.72;
+      applyPhys(f, f.y < GROUND_Y - 0.5);
+      return;
+    }
+
+    // Mortal Kombat "FINISH THEM!" Dizzy Swaying State!
+    if (f.dizzied) {
+      f.dizzyF++;
+      f.state = 'idle'; f.move = null; f.moveId = null;
+      f.vx *= 0.76; applyPhys(f, f.y < GROUND_Y - 0.5);
+      return;
+    }
+
+    // Helper: Execute 35% Avatar Signature Bend OR 100% Avatar Ultimate!
     const triggerBend = (mb) => {
       if (f.magic >= 100) {
         f.magic = 0;
@@ -2718,6 +2819,13 @@
         else if (f.moveId === 'quick_bend') { spawnQuickBend(f, opp, f.quickBendDir, f.quickBendCharge || 0); if (f.id === 'p1') advanceTutorial('quick_bend'); }
         else if (m.bendWave) spawnStrikeBending(f, opp, m.bendWave, f.moveId);
         else if (m.bendBurst) spawnSparks(f.x + f.facing * 72, f.y - 118, f.el.primary, f.el.core, 0.95, f.el.id === 'ice');
+        // Katara's Octopus Form: EVERY P/K/W strike launches an extra mid-range Water Tentacle Whip follow-up!
+        if (f.octopusF > 0 && f.moveId !== 'quick_bend' && f.moveId !== 'magic_cast' && !m.isThrow) {
+          bendingWaves.push({
+            owner: f.id, el: f.el, kind: 'water_whip', x: f.x + f.facing * 64, y: f.y - 104,
+            vx: f.facing * 20.5, dir: f.facing, w: 128, h: 64, dmg: 28, ly: -3.2, low: false, f: 14, max: 14, hit: false, ult: false
+          });
+        }
         // Elemental Weapon Infusion: heavy weapon finishers unleash an elemental wave when >=20% meter!
         if (m.wep && !f.disarmed && (f.moveId === 'super_slash' || f.moveId === 'weapon_over' || f.moveId === 'weapon_spin')) {
           if (wSpec.perk === 'hammer_crush') {
@@ -2730,24 +2838,40 @@
         }
       }
       if (f.el.moltenWake && (f.moveId === 'weapon_over' || f.moveId === 'throw_fwd' || f.moveId === 'suplex') && f.sf === f.ms + 2) spawnHazard(f, f.x + f.facing * 52);
-      if (f.y >= GROUND_Y - 0.5) f.vx *= isIceFloor ? 0.89 : 0.80;
-      applyPhys(f, f.y < GROUND_Y - 0.5);
+      // Zero ground braking during Sozin's Jet-Step or Air Scooter so launches fly effortlessly across the arena!
+      if (f.y >= GROUND_Y - 0.5 && f.fireJetF <= 0 && f.airScooterF <= 0) f.vx *= isIceFloor ? 0.89 : 0.80;
+      applyPhys(f, f.y < GROUND_Y - 0.5, f.fireJetF > 0 ? 0.38 : 1);
 
       const total = f.ms + f.ma + f.mr + f.freezeRec;
-      // Cancel normal attacks into 35% Quick-Bend OR 100% Avatar Ultimate on hit/active!
+      // Cancel normal attacks into 35% Avatar Signature OR 100% Avatar Ultimate on hit/active!
       if (canCtrl && f.moveId !== 'magic_cast' && f.moveId !== 'quick_bend' && f.magic >= 35 && f.sf >= f.ms && f.freezeRec === 0) {
         const mb = consumeBtn(f, ['magic']);
         if (mb && triggerBend(mb)) return;
       }
-      if (canCtrl && m.next && m.cw && f.sf >= m.cw && f.freezeRec === 0) {
+      // FREE-FLOW SHADOW FIGHT 2 / MORTAL KOMBAT CROSS-COMBOS (P -> K -> W + Same-Button Chains!)
+      if (canCtrl && m.cw && f.sf >= m.cw && f.freezeRec === 0 && f.moveId !== 'magic_cast' && f.moveId !== 'quick_bend' && !m.isThrow) {
         const exp = m.wep ? 'weapon' : m.leg ? 'kick' : 'punch';
-        if (consumeBtn(f, [exp])) {
-          // If disarmed mid-string, continue with barehanded chain
-          const nxt = (f.disarmed && m.next.startsWith('weapon')) ? 'bare_2' : m.next;
-          startMove(f, nxt, startMul); return;
+        const chainBtn = consumeBtn(f, [exp, 'weapon', 'kick', 'punch']);
+        if (chainBtn) {
+          if (chainBtn.btn === exp && m.next) {
+            const nxt = (f.disarmed && m.next.startsWith('weapon')) ? 'bare_2' : m.next;
+            startMove(f, nxt, startMul); return;
+          }
+          if (chainBtn.btn !== exp) {
+            const cr = relDir(f, chainBtn.dir);
+            let nextCross = null;
+            if (chainBtn.btn === 'kick') nextCross = cr.down ? 'low_sweep' : cr.up ? 'spin_jump_kick' : 'front_kick';
+            else if (chainBtn.btn === 'weapon') nextCross = f.disarmed ? 'bare_heavy' : (cr.up ? 'weapon_over' : cr.down ? 'weapon_low' : 'weapon_1');
+            else if (chainBtn.btn === 'punch') nextCross = cr.up ? 'uppercut' : 'cross';
+            if (nextCross) { startMove(f, nextCross, startMul); return; }
+          }
         }
       }
-      if (canCtrl && f.hitDone && f.sf >= f.ms + f.ma + 2 && f.freezeRec === 0) {
+      // Responsive Roll-Cancel & Block-Cancel out of late recovery so controls NEVER feel stiff!
+      if (canCtrl && f.sf >= f.ms + f.ma + 2 && f.freezeRec === 0 && f.moveId !== 'magic_cast') {
+        if (f.held.has('block') && f.y >= GROUND_Y - 0.5) {
+          f.move = null; f.moveId = null; f.armor = 0; f.state = rel.down ? 'block_low' : 'block_high'; f.sf = 0; return;
+        }
         const ev = consumeBtn(f, ['evade']);
         if (ev) { startDash(f, relDir(f, ev.dir).fwd); return; }
       }
@@ -2770,9 +2894,10 @@
       if (act.btn !== 'magic' && act.btn !== 'evade') {
         // Aang's Air Scooter attack exits smoothly into an aerial Cyclone Dive Strike!
         if (f.airScooterF > 0) {
-          f.airScooterF = 0; f.vy = -11.5; f.vx = f.facing * 14.5;
+          f.airScooterF = 0; f.vy = -12.0; f.vx = f.facing * 15.2;
           startMove(f, 'spin_jump_kick', startMul);
-          pushCallout('CYCLONE DIVE!', '#5effc8', f.x, f.y - 188);
+          spawnSparks(f.x, f.y - 78, '#5effc8', '#ffffff', 1.4);
+          pushCallout('CYCLONE DIVE!', '#5effc8', f.x, f.y - 196);
           return;
         }
         dispatchAttack(f, act, opp, dist, startMul); return;
@@ -2785,7 +2910,14 @@
       spawnDust(f.x, GROUND_Y, -f.dir.x, 7, f.el.glow);
       applyPhys(f, true); return;
     }
-    if (rel.down) { f.state = 'crouch'; f.vx *= isIceFloor ? 0.82 : 0.6; }
+    if (f.airScooterF > 0) {
+      // Auto-glide smoothly atop Aang's Air Scooter — steer left/right or cruise forward automatically!
+      const cruiseDir = f.dir.x !== 0 ? f.dir.x : f.facing;
+      f.facing = cruiseDir;
+      f.state = 'walk_fwd';
+      f.vx += (cruiseDir * 12.2 - f.vx) * 0.24;
+      if (f.sf % 6 === 0) spawnDust(f.x, GROUND_Y, -cruiseDir, 2, '#5effc8');
+    } else if (rel.down) { f.state = 'crouch'; f.vx *= isIceFloor ? 0.82 : 0.6; }
     else if (rel.fwd && !isRooted) { f.state = 'walk_fwd'; f.vx += (f.facing * moveSpd - f.vx) * (isIceFloor ? 0.25 : 0.45); if (f.sf % 10 === 0) spawnDust(f.x, GROUND_Y, -f.facing, 2, f.el.glow); }
     else if (rel.back && !isRooted) { f.state = 'walk_back'; f.vx += (-f.facing * moveSpd * 0.88 - f.vx) * (isIceFloor ? 0.25 : 0.45); if (opp.state === 'attack') f.guardFrame = simFrame; }
     else { f.state = 'idle'; f.vx *= isIceFloor ? 0.85 : 0.58; }
@@ -2864,29 +2996,30 @@
     f.statuses[id] = { id, lbl: lbls[id] || id.toUpperCase(), col: cols[id] || '#fff', f: dur, t: 0 };
   }
 
-  // ===== IMPACT RESOLUTION (Status Combos, Element Passives, Disarming, Redirection) =====
+  // ===== IMPACT RESOLUTION (Status Combos, Element Passives, Disarming, Redirection, Style Rank & Finishers) =====
   function resolveHit(atk, def, m, ix, iy, isProj = false) {
     // Aang's Air Scooter hovers cleanly over low attacks!
     if (def.airScooterF > 0 && m.h === 'low') {
       pushCallout('SCOOTER EVADE!', '#5effc8', def.x, def.y - 188);
       return;
     }
-    // Iroh's Lightning Redirection: absorbs any incoming strike/projectile for 0 dmg & fires back 1.5x overcharged bolt!
+    // Iroh's Lightning Redirection: absorbs any incoming strike/projectile for 0 dmg & fires back 2x Golden Dragon Counter-Bolt!
     if (def.el.id === 'lightning' && def.reflectStanceF > 0 && !m.isThrow) {
-      def.reflectStanceF = 0; def.poise = Math.min(def.maxPoise, def.poise + 20);
-      def.magic = Math.min(100, def.magic + 18);
+      def.reflectStanceF = 0; def.irohBeamReady = false;
+      def.poise = Math.min(def.maxPoise, def.poise + 24);
+      def.magic = Math.min(100, def.magic + 22);
       const dir = atk.x >= def.x ? 1 : -1;
       def.facing = dir;
       bendingWaves.push({
         owner: def.id, el: def.el, kind: 'bolt_lance', x: def.x + dir * 70, y: def.y - 110,
-        vx: dir * 26, dir, w: 215, h: 80, dmg: Math.min(145, Math.round(Math.max(76, m.dmg) * 1.5)),
-        ly: -9.5, low: false, guardCrush: true, microStun: true, deflected: true, f: 22, max: 22, hit: false, ult: false
+        vx: dir * 28, dir, w: 245, h: 92, dmg: Math.min(180, Math.round(Math.max(82, m.dmg) * 2.0)),
+        ly: -11.5, low: false, guardCrush: true, heavyHit: true, microStun: true, deflected: true, f: 24, max: 24, hit: false, ult: false
       });
-      if (def.id === 'p1') match.p1Clashes++;
+      if (def.id === 'p1') { match.p1Clashes++; addStyle(22, 'parry'); }
       sfx.elemBend('lightning'); sfx.guard(true); haptic('parry');
-      hitstop = 6; shake = Math.max(shake, 14 * settings.feedback);
-      spawnSparks(def.x, def.y - 112, '#78e2ff', '#ffe878', 2.0);
-      pushCallout('LIGHTNING REDIRECT!', '#ffe878', def.x, def.y - 205);
+      hitstop = 6; inkFlashF = 4; shake = Math.max(shake, 16 * settings.feedback);
+      spawnSparks(def.x, def.y - 112, '#78e2ff', '#ffe878', 2.3);
+      pushCallout('LIGHTNING REDIRECT 2x!', '#ffe878', def.x, def.y - 208);
       return;
     }
     const rel = relDir(def);
@@ -2897,7 +3030,7 @@
     const autoGuard = def.state === 'idle' && !m.unblockable && !m.overhead && m.h !== 'low';
     const holdingGuard = activeGuard || autoGuard;
     const overheadCrushesCrouch = m.overhead && (rel.down || def.state === 'crouch' || def.state === 'block_low');
-    const guarding = !m.isThrow && !m.unblockable && !overheadCrushesCrouch && def.y >= GROUND_Y - 0.5 && neutral && holdingGuard && (m.h === 'mid' || (m.h === 'low' && (rel.down || def.state === 'block_low')) || (m.h === 'high' && !rel.down));
+    const guarding = !def.dizzied && def.frozenPrisonF <= 0 && !m.isThrow && !m.unblockable && !overheadCrushesCrouch && def.y >= GROUND_Y - 0.5 && neutral && holdingGuard && (m.h === 'mid' || (m.h === 'low' && (rel.down || def.state === 'block_low')) || (m.h === 'high' && !rel.down));
 
     if (atk.id === 'p1' && m.h === 'low') aiMem.lows = Math.min(10, aiMem.lows + 2);
     if (atk.id === 'p1' && m.isThrow) { aiMem.throws = Math.min(10, aiMem.throws + 2); advanceTutorial('throw'); }
@@ -2914,9 +3047,10 @@
     if (guarding) {
       const perf = activeGuard && (simFrame - def.guardFrame <= 10 || def.reflectStanceF > 0);
       const guardMax = def.id === 'p1' && PROG.equippedGear === 'kasa' ? 4 : 3;
-      // Guard Poise System: heavy blocks drain poise -> GUARD SHATTER!
+      // Guard Poise System: heavy blocks & Earth Stone Gauntlets drain poise -> GUARD SHATTER!
       const chillWear = def.statuses.chill ? 1 : 0;
-      const poiseMult = (m.wep && wSpec.perk === 'naginata_chip') ? 1.6 : ((m.wep && wSpec.perk === 'cleaver_crush') || m.guardCrush ? 1.85 : 1.0);
+      const gauntletPoise = (!isProj && atk.gauntletsF > 0) ? 1.40 : 1.0;
+      const poiseMult = ((m.wep && wSpec.perk === 'naginata_chip') ? 1.6 : ((m.wep && wSpec.perk === 'cleaver_crush') || m.guardCrush ? 1.85 : 1.0)) * gauntletPoise;
       const poiseLoss = perf ? 0 : Math.round((12 + m.dmg * 0.22) * poiseMult * (chillWear ? 1.25 : 1));
       if (!perf) def.poise = Math.max(0, def.poise - poiseLoss);
       const wearAdd = ((m.wep && wSpec.perk === 'cleaver_crush') || m.guardCrush ? 2 : 1) + chillWear;
@@ -2925,8 +3059,8 @@
       if (poiseBroken) {
         def.guardWear = 0; def.poise = def.maxPoise;
         def.state = 'hitstun'; def.sf = 0; def.stun = 38; def.vx = atk.facing * 12.5;
-        if (atk.id === 'p1') match.p1WallSplats++;
-        sfx.headHit(); haptic('heavy'); hitstop = 6; slowMoFrames = Math.max(slowMoFrames, 8);
+        if (atk.id === 'p1') { match.p1WallSplats++; addStyle(18, 'crush'); }
+        sfx.headHit(); haptic('heavy'); hitstop = 6; inkFlashF = 4; slowMoFrames = Math.max(slowMoFrames, 8);
         shake = Math.max(shake, 14 * settings.feedback);
         spawnSparks(ix, iy, '#ffd84a', '#ffffff', 1.7);
         pushCallout('GUARD SHATTER!', '#ffd84a', def.x, def.y - 200);
@@ -2949,6 +3083,7 @@
       if (perf) {
         def.guardWear = 0; def.reflectStanceF = 0;
         def.poise = Math.min(def.maxPoise, def.poise + 24);
+        if (def.id === 'p1') addStyle(16, 'parry');
         pushCallout('PERFECT PARRY!', '#9cf4ff', def.x, def.y - 182);
         // Sai Class Perk: Perfect Parry against a weapon disarms the opponent!
         if (!isProj && !def.disarmed && defWSpec.perk === 'sai_flow' && m.wep && !atk.disarmed) {
@@ -2979,6 +3114,11 @@
     let crit = m.crit;
     if (atk.id === 'p1' && isProj && m.crit) mult *= p1FlowMult();
 
+    // Toph's Stone Gauntlets: +30% melee impact damage!
+    if (!isProj && atk.gauntletsF > 0) {
+      mult *= 1.30;
+      spawnSparks(ix, iy, '#e8b038', '#fff4d2', 1.15);
+    }
     // Fire Passive Trait: Bonus damage & meter gain during aggressive hit streaks!
     if (atk.el.id === 'fire') {
       atk.fireStreak = Math.min(6, atk.fireStreak + 1);
@@ -2995,6 +3135,7 @@
         const isKatana = Boolean(m.wep && wSpec.perk === 'katana_counter');
         mult *= isKatana ? 1.38 : 1.25;
         slowMoFrames = Math.max(slowMoFrames, 4);
+        if (atk.id === 'p1') addStyle(12, 'counter');
         pushCallout(isKatana ? 'IAIJUTSU COUNTER!' : 'LETHAL COUNTER!', isKatana ? '#ffe066' : '#38f2ff', def.x, def.y - 194);
       } else if (def.sf >= def.ms + def.ma) {
         mult *= 1.18;
@@ -3005,7 +3146,8 @@
     const isHeadHit = Boolean(m.headHit) && def.state !== 'crouch' && def.state !== 'grounded' && iy <= def.y - 110;
     if (isHeadHit) {
       mult *= (atk.id === 'p1' && PROG.equippedGear === 'kabuto') ? 1.48 : 1.35;
-      if (atk.id === 'p1') match.headHitsP1++;
+      if (atk.id === 'p1') { match.headHitsP1++; addStyle(12, 'head'); }
+      inkFlashF = Math.max(inkFlashF, 3);
       pushCallout('HEAD HIT!', '#ffe066', def.x, def.y - 212); sfx.headHit();
     }
     if (crit && atk.id === 'p1' && PROG.equippedGear === 'kabuto' && !isHeadHit) mult *= 1.10;
@@ -3017,36 +3159,40 @@
     let cCount;
     if (atk.id === 'p1') {
       match.c1 = match.c1Live ? match.c1 + 1 : 1;
-      match.c1Live = true; match.c1t = 48; cCount = match.c1;
+      match.c1Live = true; match.c1t = 54; cCount = match.c1;
       if (cCount > match.maxComboP1) match.maxComboP1 = cCount;
       if (cCount >= 3) advanceTutorial('combo3');
+      addStyle(isProj ? 10 : (m.isThrow ? 14 : (m.wep ? 9 : 7)), isProj ? 'proj' : (m.isThrow ? 'throw' : (m.wep ? 'wep' : (m.leg ? 'kick' : 'punch'))));
     } else {
       match.c2 = match.c2Live ? match.c2 + 1 : 1;
-      match.c2Live = true; match.c2t = 48; cCount = match.c2;
+      match.c2Live = true; match.c2t = 54; cCount = match.c2;
+      // Taking a clean hit dips Player 1's style gauge slightly
+      if (match.stylePts > 0) match.stylePts = Math.max(0, match.stylePts - 14);
     }
 
     // ===== INTERACTIVE ELEMENTAL STATUS EFFECT COMBOS! =====
     let extraLy = 0, extraKb = 0, extraReactionStun = 0;
-    const isHeavyStrike = Boolean(crit || m.kd || m.wep || m.heavyHit || m.dmg >= 78);
+    const isHeavyStrike = Boolean(crit || m.kd || m.wep || m.heavyHit || m.dmg >= 74);
     const isLauncherHit = Boolean(m.launcher || (m.ly && m.ly <= -9.5));
 
-    // 1) SHATTER / CRYO PRISON SHATTER: Heavy hit on Cryo-Caged, Frozen, or Stone-Crushed enemy!
-    if (isHeavyStrike && (def.frozenPrisonF > 0 || def.statuses.chill || def.statuses.crush)) {
+    // 1) SHATTER / CRYO PRISON SHATTER (+40% dmg + Monochrome Ink Flash + Wall Launch!)
+    if (isHeavyStrike && !m.freezePrison && (def.frozenPrisonF > 0 || def.statuses.chill || def.statuses.crush)) {
       const wasCage = def.frozenPrisonF > 0;
       const wasIce = wasCage || Boolean(def.statuses.chill);
       def.frozenPrisonF = 0;
       delete def.statuses.chill; delete def.statuses.crush;
-      mult *= wasCage ? 1.35 : 1.30; extraKb += 8.5; extraLy -= 4.0;
-      if (atk.id === 'p1') match.p1Reactions++;
-      sfx.slam(); shake = Math.max(shake, 16 * settings.feedback);
-      spawnSparks(ix, iy, wasIce ? '#78eeff' : '#e8b038', '#ffffff', 2.2, true);
-      pushCallout(wasCage ? 'CRYO SHATTER! +35%' : 'SHATTER! +30%', wasIce ? '#78eeff' : '#fde047', def.x, def.y - 226);
+      mult *= wasCage ? 1.40 : 1.30; extraKb += wasCage ? 12.5 : 8.5; extraLy -= wasCage ? 6.5 : 4.0;
+      if (atk.id === 'p1') { match.p1Reactions++; addStyle(24, 'reaction'); }
+      inkFlashF = Math.max(inkFlashF, 4);
+      sfx.slam(); shake = Math.max(shake, 18 * settings.feedback);
+      spawnSparks(ix, iy, wasIce ? '#78eeff' : '#e8b038', '#ffffff', 2.4, true);
+      pushCallout(wasCage ? 'CRYO SHATTER! +40%' : 'SHATTER! +30%', wasIce ? '#78eeff' : '#fde047', def.x, def.y - 228);
     }
     // 2) ELECTRO-CHARGE: Any Lightning attack hitting Soaked enemy -> arcing electric stun!
     if ((atk.el.id === 'lightning' || m.microStun) && def.statuses.soaked) {
       delete def.statuses.soaked;
       mult *= 1.22; extraReactionStun += 20;
-      if (atk.id === 'p1') match.p1Reactions++;
+      if (atk.id === 'p1') { match.p1Reactions++; addStyle(18, 'reaction'); }
       sfx.elemBend('lightning');
       spawnSparks(ix, iy, '#66d0ff', '#ffffff', 1.9);
       pushCallout('ELECTRO-CHARGE!', '#78e2ff', def.x, def.y - 224);
@@ -3055,7 +3201,7 @@
     if (isLauncherHit && (def.statuses.burn || def.statuses.scorched)) {
       delete def.statuses.burn; delete def.statuses.scorched;
       mult *= 1.25; extraLy -= 5.8;
-      if (atk.id === 'p1') match.p1Reactions++;
+      if (atk.id === 'p1') { match.p1Reactions++; addStyle(18, 'reaction'); }
       sfx.elemBend('fire'); shake = Math.max(shake, 15 * settings.feedback);
       spawnSparks(ix, iy, '#ff5210', '#fff5cc', 2.0);
       pushCallout('COMBUSTION!', '#ff951a', def.x, def.y - 224);
@@ -3066,18 +3212,29 @@
 
     // Earth Passive Trait: Super-Armor against light hits (cannot be staggered by light pokes)!
     let armored = false;
-    if (def.el.id === 'earth' && !crit && !m.kd && !m.isThrow && !m.overhead && m.dmg <= 62 && def.y >= GROUND_Y - 1) {
+    if (def.el.id === 'earth' && !crit && !m.kd && !m.isThrow && !m.overhead && m.dmg <= 62 && def.y >= GROUND_Y - 1 && !def.dizzied) {
       armored = true;
       dmg = Math.round(dmg * 0.72);
       pushCallout('STONE POISE', '#e8b038', def.x, def.y - 182);
     }
-    if (crit && def.rockReady) {
+    if (crit && def.rockReady && !def.dizzied) {
       def.rockReady = false; armored = true;
       atk.hp = Math.max(1, atk.hp - Math.round(dmg * 0.4));
       dmg = Math.round(dmg * 0.45);
       pushCallout('ROCK POISE!', '#f2c057', def.x, def.y - 194);
     }
-    if (def.armor > 0) { def.armor--; armored = true; pushCallout('POISE ARMOR', '#f2c057', def.x, def.y - 182); }
+    if (def.armor > 0 && !def.dizzied) { def.armor--; armored = true; pushCallout('POISE ARMOR', '#f2c057', def.x, def.y - 182); }
+
+    // Executing a dizzied opponent during "FINISH THEM!" -> ECLIPSE FINISHER!
+    if (def.dizzied) {
+      def.dizzied = false; match.finishHim = false; match.finishF = 0; match.eclipseFinished = true;
+      def.hp = 0; def.vx = atk.facing * 18.5; def.vy = -12.5; def.state = 'knockdown_air'; def.sf = 0;
+      inkFlashF = 6; slowMoFrames = 46; dramaticZoom = 0.16; shake = Math.max(shake, 22 * settings.feedback);
+      sfx.headHit(); sfx.slam(); haptic('ko');
+      spawnSparks(ix, iy, atk.el.glow, '#ffffff', 2.6, atk.el.id === 'ice');
+      pushCallout('ECLIPSE FINISHER! +75 COINS', '#fde047', def.x, def.y - 230);
+      return;
+    }
 
     let nextHp = def.hp - dmg;
     if (nextHp <= 0 && !def.enlightUsed) {
@@ -3087,6 +3244,18 @@
       showBanner('ENLIGHTENMENT!', 'SECOND WIND', '#ffe57f', 48, true);
       sfx.gong(); hitstop = Math.round(5 * settings.feedback);
       slowMoFrames = 24; dramaticZoom = 0.09; shake = Math.max(shake, 16 * settings.feedback);
+      return;
+    }
+
+    // Mortal Kombat "FINISH THEM!" Trigger on Match-Deciding Round when Player 1 drops Opponent to 0!
+    const endlessMode = settings.format === 'endless' || match.mode === 'dojo' || match.mode === 'tutorial' || match.mode === 'endless';
+    if (nextHp <= 0 && !endlessMode && atk.id === 'p1' && (match.p1W + 1 >= match.toWin) && !match.finishHim) {
+      def.hp = 1; def.trailHp = 1; def.dizzied = true; def.dizzyF = 0; def.frozenPrisonF = 0;
+      def.state = 'idle'; def.sf = 0; def.vx = 0; def.vy = 0; def.y = GROUND_Y; def.inv = 0; def.move = null; def.moveId = null;
+      match.finishHim = true; match.finishF = 150;
+      slowMoFrames = 14; dramaticZoom = 0.11; shake = Math.max(shake, 14 * settings.feedback);
+      sfx.gong(); haptic('heavy');
+      showBanner('FINISH THEM!', 'LAND ANY STRIKE FOR ECLIPSE FINISHER · +75 COINS', '#ff4d36', 110, true);
       return;
     }
 
@@ -3109,7 +3278,13 @@
     }
     if (m.elStatus) applyStatus(def, atk.el.status);
     if (m.rootF) applyStatus(def, 'rooted', m.rootF);
-    if (m.freezePrison) { def.frozenPrisonF = 72; applyStatus(def, 'chill', 160); }
+    if (m.freezePrison) {
+      def.frozenPrisonF = 132;
+      def.vx = 0; def.vy = 0; def.state = 'hitstun'; def.stun = 18;
+      applyStatus(def, 'chill', 180);
+      spawnSparks(def.x, def.y - 95, '#78eeff', '#ffffff', 1.8, true);
+      pushCallout('FROZEN SOLID!', '#9ef6ff', def.x, def.y - 210);
+    }
 
     // ===== WEAPON DISARMING (SF2 SHOCK! on critical HEAD HIT late in a combo!) =====
     if (isHeadHit && crit && cCount >= 3 && !def.disarmed && def.hp > 0) {
@@ -3124,7 +3299,9 @@
       pushCallout('DISARMED!', '#ff6b4a', def.x, def.y - 238);
     }
 
-    if (m.isThrow) {
+    if (m.freezePrison) {
+      // Keep frozen enemy locked upright in place so player can run up for CRYO SHATTER!
+    } else if (m.isThrow) {
       if (m.isThrow === 'air') {
         def.vx = atk.facing * 7.5; def.vy = 16.5; def.state = 'knockdown_air'; def.sf = 0;
         pushCallout('AIR SLAM THROW!', atk.el.glow, ix, iy - 52);
@@ -3161,7 +3338,7 @@
     haptic(heavy || isHeadHit ? 'heavy' : (m.dmg >= 75 ? 'medium' : 'light'));
     shake = Math.max(shake, (heavy ? 14 : 6.5) * settings.feedback);
     if (def.hp <= 0) {
-      slowMoFrames = 40; dramaticZoom = 0.14;
+      slowMoFrames = 40; dramaticZoom = 0.14; inkFlashF = Math.max(inkFlashF, 5);
       for (let k = 0; k < 22; k++) {
         const a = Math.random() * Math.PI * 2, sp = 4 + Math.random() * 14;
         particles.push({ x: ix, y: iy, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp - 3, sz: 4 + Math.random() * 8, c: k % 3 === 0 ? atk.el.glow : '#07090f', age: 0, max: 32, g: 0.25, t: 'spark' });
@@ -3493,6 +3670,14 @@
     tickMusic();
     if (dramaticZoom > 0.001) dramaticZoom *= 0.94; else dramaticZoom = 0;
     if (ultDimFrames > 0) ultDimFrames--;
+    if (inkFlashF > 0) inkFlashF--;
+    if (match.styleT > 0) {
+      match.styleT--;
+    } else if (match.stylePts > 0) {
+      match.stylePts = Math.max(0, match.stylePts - 0.16);
+      const p = match.stylePts;
+      match.styleRank = p >= 100 ? 'AVATAR' : p >= 76 ? 'S' : p >= 54 ? 'A' : p >= 34 ? 'B' : p >= 18 ? 'C' : p >= 8 ? 'D' : '';
+    }
 
     if (settings.vfx !== 'low' && simFrame % 4 === 0) {
       [p1, p2].forEach(f => {
@@ -3508,10 +3693,6 @@
       });
     }
 
-    if (slowMoFrames > 0) {
-      slowMoFrames--; slowMoTick++; updateParticles();
-      if (slowMoTick % 3 !== 0) return;
-    }
     if (hitstop > 0) { hitstop--; updateParticles(); return; }
     if (bladeClashCd > 0) bladeClashCd--;
 
@@ -3534,7 +3715,8 @@
         loseF.state = 'knockdown_air'; loseF.sf = 0; loseF.move = null;
         loseF.vx = (loseF.x >= winF.x ? 1 : -1) * 18.5; loseF.vy = -10.5;
         loseF.hp = Math.max(1, loseF.hp - 58); loseF.poise = Math.max(0, loseF.poise - 45);
-        if (p1Won) match.p1Clashes++;
+        if (p1Won) { match.p1Clashes++; addStyle(20, 'clash'); }
+        inkFlashF = 4;
         sfx.slam(); sfx.gong(); haptic('heavy'); shake = Math.max(shake, 18 * settings.feedback);
         spawnSparks((p1.x + p2.x) * 0.5, GROUND_Y - 115, winF.el.glow, '#ffffff', 2.4);
         pushCallout(p1Won ? 'CLASH VICTORY!' : 'CLASH BROKEN!', p1Won ? '#fde047' : '#ff6b4a', winF.x, winF.y - 205);
@@ -3547,8 +3729,8 @@
       match.callouts[i].f--; match.callouts[i].y -= 0.72;
       if (match.callouts[i].f <= 0) match.callouts.splice(i, 1);
     }
-    const p2InStun = p2.state === 'hitstun' || p2.state === 'knockdown_air' || p2.state === 'grabbed';
-    const p1InStun = p1.state === 'hitstun' || p1.state === 'knockdown_air' || p1.state === 'grabbed';
+    const p2InStun = p2.state === 'hitstun' || p2.state === 'knockdown_air' || p2.state === 'grabbed' || p2.frozenPrisonF > 0;
+    const p1InStun = p1.state === 'hitstun' || p1.state === 'knockdown_air' || p1.state === 'grabbed' || p1.frozenPrisonF > 0;
     if (!p2InStun && match.c1Live) { match.c1Live = false; match.c1t = Math.min(match.c1t, 28); }
     if (!p1InStun && match.c2Live) { match.c2Live = false; match.c2t = Math.min(match.c2t, 28); }
     if (match.c1t > 0 && --match.c1t === 0) { match.c1 = 0; match.c1Live = false; }
@@ -3569,7 +3751,11 @@
     const endless = settings.format === 'endless' || match.mode === 'dojo' || match.mode === 'tutorial';
     if (match.screen === 'fighting') {
       match.roundElapsed++;
-      if (match.intro > 0) {
+      if (match.finishHim) {
+        if (--match.finishF <= 0) {
+          match.finishHim = false; p2.dizzied = false; p2.hp = 0; p2.state = 'ko';
+        }
+      } else if (match.intro > 0) {
         match.intro--;
         if (match.intro === 18) { showBanner('FIGHT!', '', '#ffae34', 26); sfx.gong(); }
       } else if (!endless && ++match.tTick >= 60) {
@@ -3582,14 +3768,14 @@
     }
 
     const canFight = match.screen === 'fighting' && match.intro <= 18;
-    updateAI(canFight);
-    tickBossRules(canFight);
+    updateAI(canFight && !match.finishHim);
+    tickBossRules(canFight && !match.finishHim);
     tickFighter(p1, p2, canFight);
-    tickFighter(p2, p1, canFight);
+    tickFighter(p2, p1, canFight && !match.finishHim);
     animateFighter(p1);
     animateFighter(p2);
 
-    const bypass = ['roll_fwd','roll_back','shadow_step','wall_jump','grabbed'].includes(p1.state) || ['roll_fwd','roll_back','shadow_step','wall_jump','grabbed'].includes(p2.state);
+    const bypass = ['roll_fwd','roll_back','shadow_step','wall_jump','grabbed'].includes(p1.state) || ['roll_fwd','roll_back','shadow_step','wall_jump','grabbed'].includes(p2.state) || p1.airScooterF > 0 || p2.airScooterF > 0;
     if (!bypass) {
       const dx = p2.x - p1.x, overlap = 56 - Math.abs(dx);
       if (overlap > 0) {
@@ -3602,7 +3788,7 @@
     // Melee Hitbox Checks (+ Blade-Lock Weapon Clash, Nunchaku Deflect, Rock Walls, Shadow Decoys!)
     if (canFight) {
       const hb1 = getHitbox(p1), hb2 = getHitbox(p2);
-      if (hb1 && hb2 && bladeClashCd <= 0 && p1.move && p1.move.wep && p2.move && p2.move.wep && !p1.disarmed && !p2.disarmed && rectsHit(hb1, hb2)) {
+      if (hb1 && hb2 && bladeClashCd <= 0 && !match.finishHim && p1.move && p1.move.wep && p2.move && p2.move.wep && !p1.disarmed && !p2.disarmed && rectsHit(hb1, hb2)) {
         bladeClash = { f: 72, max: 72, meter: 0 };
         p1.hitDone = true; p2.hitDone = true;
         sfx.guard(true); sfx.gong(); haptic('heavy'); shake = Math.max(shake, 14 * settings.feedback);
@@ -3618,10 +3804,10 @@
         const aWSpec = getWeaponSpec(a);
         if (a.move && (a.move.deflects || (a.move.wep && !a.disarmed && aWSpec.perk === 'nunchaku_stun'))) {
           for (const b of bendingWaves) {
-            if (b.owner !== a.id && !b.ult && !b.hit && !b.deflected && rectsHit(hb, getWaveBox(b))) {
+            if (b.owner !== a.id && !b.ult && !b.hit && !b.deflected && b.kind !== 'seismic_sonar' && rectsHit(hb, getWaveBox(b))) {
               b.owner = a.id; b.dir = a.facing; b.vx = a.facing * Math.max(15, Math.abs(b.vx) * 1.25);
               b.deflected = true; b.f = Math.max(b.f, 24);
-              if (a.id === 'p1') match.p1Clashes++;
+              if (a.id === 'p1') { match.p1Clashes++; addStyle(16, 'parry'); }
               sfx.guard(true); hitstop = 4; shake = Math.max(shake, 10 * settings.feedback);
               spawnSparks(b.x, b.y, '#9cf4ff', '#ffffff', 1.6);
               pushCallout('REDIRECTED!', '#9cf4ff', b.x, b.y - 72);
@@ -3663,15 +3849,14 @@
       for (let i = 0; i < bendingWaves.length; i++) {
         if (toRemove.has(i)) continue;
         const b1 = bendingWaves[i];
-        if (b1.delay > 0 || b1.kind === 'ult_arm_swing') continue;
+        if (b1.delay > 0 || b1.kind === 'ult_arm_swing' || b1.kind === 'seismic_sonar') continue;
         const box1 = getWaveBox(b1);
         for (let j = i + 1; j < bendingWaves.length; j++) {
           if (toRemove.has(j)) continue;
           const b2 = bendingWaves[j];
-          if (b2.owner === b1.owner || b2.delay > 0 || b2.kind === 'ult_arm_swing') continue;
+          if (b2.owner === b1.owner || b2.delay > 0 || b2.kind === 'ult_arm_swing' || b2.kind === 'seismic_sonar') continue;
           if (!rectsHit(box1, getWaveBox(b2))) continue;
           if (b1.ult && !b2.ult) {
-            // Ultimate overpowers normal wave, loses ~20% power & continues!
             toRemove.add(j); b1.dmg = Math.round(b1.dmg * 0.82); b1.w *= 0.9;
             spawnSparks(b2.x, b2.y, b1.el.glow, b2.el.glow, 1.5);
             pushCallout('OVERPOWERED!', b1.el.glow, b2.x, b2.y - 68);
@@ -3681,7 +3866,6 @@
             pushCallout('OVERPOWERED!', b2.el.glow, b1.x, b1.y - 68);
             break;
           } else {
-            // Equal-tier clash (Normal vs Normal OR Ult vs Ult!)
             toRemove.add(i); toRemove.add(j);
             triggerWaveClash(b1, b2);
             break;
@@ -3697,7 +3881,7 @@
       const rBox = { x: rw.x - rw.w * 0.5, y: GROUND_Y - rw.h, w: rw.w, h: rw.h };
       for (let wi = bendingWaves.length - 1; wi >= 0; wi--) {
         const b = bendingWaves[wi];
-        if (b.owner !== rw.owner && !b.delay && b.kind !== 'ult_arm_swing' && rectsHit(rBox, getWaveBox(b))) {
+        if (b.owner !== rw.owner && !b.delay && b.kind !== 'ult_arm_swing' && b.kind !== 'seismic_sonar' && rectsHit(rBox, getWaveBox(b))) {
           if (!b.ult) { bendingWaves.splice(wi, 1); rw.hp--; }
           else { rw.hp = 0; b.dmg = Math.round(b.dmg * 0.65); }
           sfx.slam(); spawnDust(rw.x, GROUND_Y - 75, 0, 14, '#e8b038');
@@ -3709,15 +3893,53 @@
         rockWalls.splice(i, 1);
       }
     }
+
+    // Update Attacking Shadow Clones (Noob Saibot Pincer Sprint & Slash!)
     for (let i = decoyClones.length - 1; i >= 0; i--) {
-      if (--decoyClones[i].f <= 0) decoyClones.splice(i, 1);
+      const dc = decoyClones[i];
+      dc.f--;
+      const ownerF = dc.owner === 'p1' ? p1 : p2;
+      const tgt = dc.owner === 'p1' ? p2 : p1;
+      if (!dc.swung) {
+        dc.facing = tgt.x >= dc.x ? 1 : -1;
+        dc.x = Math.max(ARENA_L + 24, Math.min(ARENA_R - 24, dc.x + dc.facing * 10.5));
+        if (canFight && Math.abs(tgt.x - dc.x) < 92 && tgt.inv <= 0 && tgt.state !== 'ko') {
+          dc.swung = true; dc.swingF = 16; dc.f = Math.min(dc.f, 22);
+          sfx.whoosh(true);
+          spawnSparks(tgt.x, tgt.y - 102, '#6348e8', '#f6f2ff', 1.6);
+          resolveHit(ownerF, tgt, { dmg: 68, chip: 14, hs: 24, bs: 12, stop: 4, kb: 10.5, forceVx: dc.facing * 9.5, ly: -7.5, kd: false, crit: false, h: 'mid', elStatus: true, mg: 8 }, tgt.x, tgt.y - 102, true);
+          pushCallout('SHADOW PINCER!', '#c4b0ff', dc.x, GROUND_Y - 196);
+        }
+      } else if (dc.swingF > 0) {
+        dc.swingF--;
+      }
+      if (dc.f <= 0) {
+        spawnSparks(dc.x, GROUND_Y - 90, '#6348e8', '#f6f2ff', 0.9);
+        decoyClones.splice(i, 1);
+      }
     }
 
-    // Update Bending Waves, Vortexes & Elemental Arm Swings
+    // Update Bending Waves, Vortexes, Seismic Sonar & Elemental Arm Swings
     for (let i = bendingWaves.length - 1; i >= 0; i--) {
       const b = bendingWaves[i];
       if (b.delay && b.delay > 0) { b.delay--; continue; }
       const a = b.owner === 'p1' ? p1 : p2, d = b.owner === 'p1' ? p2 : p1;
+
+      // Toph's Seismic Sense Live-Tracking Sonar Wave -> erupts Rock Monolith straight underneath enemy's LIVE x!
+      if (b.kind === 'seismic_sonar') {
+        const dirToD = d.x >= b.x ? 1 : -1;
+        b.vx = dirToD * 17.5; b.dir = dirToD;
+        b.x += b.vx; b.f--;
+        if (Math.abs(b.x - d.x) < 42 || b.f <= 0) {
+          const px = Math.max(ARENA_L + 48, Math.min(ARENA_R - 48, d.x));
+          bendingWaves.splice(i, 1);
+          bendingWaves.push({ owner: b.owner, el: b.el, kind: 'earth_spike', x: px, y: GROUND_Y, vx: 0, dir: dirToD, w: 118, h: 224, dmg: 86, ly: -16.8, low: true, launcher: true, heavyHit: true, f: 28, max: 28, hit: false, ult: false });
+          sfx.slam(); shake = Math.max(shake, 16 * settings.feedback);
+          spawnDust(px, GROUND_Y, 0, 18, '#f5d061');
+          pushCallout('SEISMIC ERUPTION!', '#f5d061', px, GROUND_Y - 220);
+        }
+        continue;
+      }
 
       if (b.kind === 'ult_arm_swing') {
         b.age++; b.f--;
@@ -3797,10 +4019,12 @@
         continue;
       }
 
-      // Standard / Quick-Bend / Assault Waves (+ Ghazan Boomerang Lava Disc & Ice Rain!)
+      // Standard / Quick-Bend / Assault Waves (+ Ghazan 3-Hit Boomerang Lava Shuriken & Ice Rain!)
+      if (b.hitCd > 0) b.hitCd--;
       b.x += b.vx;
       if (b.boomerang && b.f === Math.floor(b.max * 0.48)) {
         b.vx = -b.vx * 1.05; b.dir = -b.dir; b.hit = false;
+        if (b.multiHits !== undefined) b.multiHits = Math.max(2, b.multiHits);
         spawnHazard(a, b.x);
         spawnSparks(b.x, b.y, '#ff7014', '#ffe478', 1.3);
       }
@@ -3819,14 +4043,14 @@
       if (settings.vfx !== 'low' && b.f % 2 === 0 && particles.length < 240) {
         particles.push({ x: b.x + (Math.random() - 0.5) * b.w * 0.6, y: b.y - Math.random() * b.h * 0.5, vx: -b.vx * 0.15 + (Math.random() - 0.5) * 3, vy: -1.5 - Math.random() * 2.5, sz: b.ult ? 5.5 : 3.5, c: Math.random() < 0.5 ? b.el.core : b.el.glow, age: 0, max: 18, g: 0.08, t: b.el.id === 'ice' || b.el.id === 'earth' ? 'shard' : 'spark' });
       }
-      if (canFight && !b.hit) {
+      if (canFight && !b.hit && !(b.hitCd > 0)) {
         const box = getWaveBox(b);
         if (d.inv <= 0 && d.state !== 'ko' && d.state !== 'grabbed' && rectsHit(box, getHurtbox(d))) {
           // Katara's Octopus Form intercepts & deflects enemy projectiles automatically!
           if (!b.ult && !b.deflected && d.octopusF > 0 && Math.abs(b.vx) > 0) {
             b.owner = d.id; b.dir = d.facing; b.vx = d.facing * Math.max(16, Math.abs(b.vx) * 1.18);
             b.deflected = true; b.f = Math.max(b.f, 22);
-            if (d.id === 'p1') match.p1Clashes++;
+            if (d.id === 'p1') { match.p1Clashes++; addStyle(16, 'parry'); }
             sfx.guard(true); hitstop = 4; spawnSparks(b.x, b.y, '#38d8ff', '#ffffff', 1.6);
             pushCallout('OCTOPUS INTERCEPT!', '#7cf2ff', d.x, d.y - 192);
             continue;
@@ -3836,17 +4060,21 @@
           const dParry = !b.ult && !b.deflected && (d.reflectStanceF > 0 || ((d.held.has('block') || dRel.back) && simFrame - d.guardFrame <= 10));
           if (dParry && Math.abs(b.vx) > 0) {
             b.owner = d.id; b.dir = d.facing; b.vx = d.facing * Math.max(16, Math.abs(b.vx) * 1.22);
-            b.deflected = true; b.f = Math.max(b.f, 24); d.reflectStanceF = 0;
-            if (d.id === 'p1') match.p1Clashes++;
+            b.deflected = true; b.f = Math.max(b.f, 24); d.reflectStanceF = 0; d.irohBeamReady = false;
+            if (d.id === 'p1') { match.p1Clashes++; addStyle(18, 'parry'); }
             sfx.guard(true); hitstop = 4; shake = Math.max(shake, 9 * settings.feedback);
             spawnSparks(b.x, b.y, '#9cf4ff', '#ffffff', 1.6);
             pushCallout('REDIRECTED!', '#9cf4ff', d.x, d.y - 188);
             continue;
           }
-          b.hit = true;
+          if (b.multiHits && b.multiHits > 1) {
+            b.multiHits--; b.hitCd = 6; b.vx *= 0.78;
+          } else {
+            b.hit = true;
+          }
           resolveHit(a, d, {
             dmg: b.dmg, chip: Math.round(b.dmg * 0.24), hs: b.ult ? 34 : 22, bs: b.ult ? 18 : 12,
-            stop: b.ult ? 6 : 4, kb: b.ult ? 15.5 : 10.5, ly: b.ly, kd: b.ult || b.ly < -8,
+            stop: b.ult ? 6 : 4, kb: b.ult ? 15.5 : (b.multiHits ? 5.2 : 10.5), ly: b.ly, kd: b.ult || b.ly < -8,
             crit: b.ult || b.heavyHit, launcher: b.launcher, guardCrush: b.guardCrush,
             microStun: b.microStun, pullTo: b.pullTo, rootF: b.rootF, freezePrison: b.freezePrison, lifeDrain: b.lifeDrain, heavyHit: b.heavyHit,
             h: b.low ? 'low' : 'mid', elStatus: true, mg: b.ult ? 0 : 8
@@ -3912,6 +4140,11 @@
     }
   }
 
+  function getFighterDisplayName(who) {
+    if (who === 'p1') return match.mode === 'campaign' ? (PROG.avatarUnlocked ? 'AVATAR SHADOW' : 'HOLLOW SHADOW') : p1.el.fighter;
+    return match.boss ? match.boss.title : p2.el.fighter;
+  }
+
   function checkRegionalTrial(st) {
     if (!st || !st.trial || PROG.completedTrials.includes(st.trial.id)) return 0;
     let done = false;
@@ -3953,20 +4186,27 @@
         };
         p2.el = ELEMENTS[nextEl];
         match.screen = 'round_over'; match.over = 100;
-        showBanner(`WAVE ${match.endlessWave} CLEARED`, `+${85 + match.endlessWave * 15} COINS · NEXT CHALLENGER APPROACHES`, '#fde68a', 96);
+        showBanner(`${getFighterDisplayName('p1')} WINS`, `WAVE ${match.endlessWave} CLEARED · +${85 + match.endlessWave * 15} COINS`, '#fde68a', 96);
         return;
       } else {
         match.screen = 'match_over'; match.winner = 'p2';
-        showBanner('TOWER FALLEN', `BEST STREAK: ${PROG.endlessBest} WAVES`, '#4be3ff', 99999);
+        showBanner(`${getFighterDisplayName('p2')} WINS`, `BEST STREAK: ${PROG.endlessBest} WAVES`, '#4be3ff', 99999);
         return;
       }
     }
 
     if (match.p1W >= match.toWin || match.p2W >= match.toWin) {
       match.screen = 'match_over'; match.winner = match.p1W >= match.toWin ? 'p1' : 'p2';
+      const styleBonus = ({ D: 10, C: 20, B: 35, A: 55, S: 80, AVATAR: 120 }[match.styleRank] || 0);
+      const finisherBonus = match.eclipseFinished ? 75 : 0;
       let reward = match.winner === 'p1' ? 120 : 35;
-      reward += match.maxComboP1 * 8 + match.headHitsP1 * 15;
-      let subTxt = `${match.p1W} — ${match.p2W} · +${reward} COINS`;
+      reward += match.maxComboP1 * 8 + match.headHitsP1 * 15 + styleBonus + finisherBonus;
+      const winName = getFighterDisplayName(match.winner);
+      const extraTags = [
+        match.eclipseFinished ? 'ECLIPSE FINISHER' : '',
+        match.styleRank ? `RANK ${match.styleRank}` : ''
+      ].filter(Boolean).join(' · ');
+      let subTxt = `${match.p1W} — ${match.p2W}${extraTags ? ' · ' + extraTags : ''} · +${reward} COINS`;
       let showMemoryStage = null;
 
       if (match.winner === 'p1' && match.boss) {
@@ -3985,12 +4225,12 @@
           if (!PROG.ownedGear.includes('crown')) { PROG.ownedGear.push('crown'); PROG.equippedGear = 'crown'; }
           subTxt = `THE ECLIPSE BROKEN · AVATAR STATE UNLOCKED · +${reward} COINS`;
         } else {
-          subTxt = `${ELEMENTS[st.el].name.toUpperCase()} RECLAIMED · +${reward} COINS${trialBonus ? ' · TRIAL COMPLETE!' : ''}`;
+          subTxt = `${ELEMENTS[st.el].name.toUpperCase()} RECLAIMED${extraTags ? ' · ' + extraTags : ''} · +${reward} COINS${trialBonus ? ' · TRIAL COMPLETE!' : ''}`;
         }
       }
       PROG.coins += reward;
       saveProg();
-      showBanner(match.winner === 'p1' ? (match.boss ? 'ELEMENT RECLAIMED' : 'VICTORY') : 'DEFEAT', subTxt, match.winner === 'p1' ? '#ffae34' : '#4be3ff', 99999);
+      showBanner(`${winName} WINS`, subTxt, match.winner === 'p1' ? '#ffae34' : '#4be3ff', 99999);
 
       // Show Post-Win Ink-Silhouette Memory Vignette on first Story clear!
       if (showMemoryStage && showMemoryStage.memory) {
@@ -4011,7 +4251,9 @@
     } else {
       match.screen = 'round_over'; match.over = 104;
       haptic('ko');
-      showBanner(w === 'draw' ? 'DOUBLE K.O.' : 'K.O.', w === 'p1' ? 'ROUND WON' : 'ROUND LOST', w === 'p1' ? '#ff7d29' : '#4be3ff', 100);
+      const titleTxt = w === 'draw' ? 'DRAW ROUND' : `${getFighterDisplayName(w)} WINS`;
+      const subRound = w === 'draw' ? `ROUND ${match.round} TIED` : `ROUND ${match.round} · ${match.p1W} — ${match.p2W}`;
+      showBanner(titleTxt, subRound, w === 'p1' ? '#ffae34' : '#4be3ff', 100);
     }
   }
   function updateParticles() {
@@ -4043,26 +4285,28 @@
   const bctx = bgBuf.getContext('2d');
   let lastBackdropPainted = false;
 
-  // Stamp a crisp zero-blur elemental rim outline from silBuf (60fps on Android without shadowBlur lag!)
+  // Stamp a crisp zero-blur elemental rim outline from cropped active fighter sub-rect in silBuf (cuts Android pixel fill ~50%!)
+  const SIL_RX = 30, SIL_RY = 12, SIL_RW = 420, SIL_RH = 408;
   function drawTintedRim(targetCtx, x, y, rimColor, spread = 2.2, alpha = 0.72) {
     rctx.save();
     rctx.globalCompositeOperation = 'source-over';
-    rctx.clearRect(0, 0, rimBuf.width, rimBuf.height);
-    rctx.drawImage(silBuf, 0, 0);
+    rctx.clearRect(SIL_RX, SIL_RY, SIL_RW, SIL_RH);
+    rctx.drawImage(silBuf, SIL_RX, SIL_RY, SIL_RW, SIL_RH, SIL_RX, SIL_RY, SIL_RW, SIL_RH);
     rctx.globalCompositeOperation = 'source-in';
     rctx.fillStyle = rimColor;
-    rctx.fillRect(0, 0, rimBuf.width, rimBuf.height);
+    rctx.fillRect(SIL_RX, SIL_RY, SIL_RW, SIL_RH);
     rctx.restore();
     targetCtx.save();
     targetCtx.globalAlpha = alpha;
-    targetCtx.drawImage(rimBuf, x - spread, y);
-    targetCtx.drawImage(rimBuf, x + spread, y);
-    targetCtx.drawImage(rimBuf, x, y - spread);
-    targetCtx.drawImage(rimBuf, x, y + spread * 0.65);
+    const dx = x + SIL_RX, dy = y + SIL_RY;
+    targetCtx.drawImage(rimBuf, SIL_RX, SIL_RY, SIL_RW, SIL_RH, dx - spread, dy, SIL_RW, SIL_RH);
+    targetCtx.drawImage(rimBuf, SIL_RX, SIL_RY, SIL_RW, SIL_RH, dx + spread, dy, SIL_RW, SIL_RH);
+    targetCtx.drawImage(rimBuf, SIL_RX, SIL_RY, SIL_RW, SIL_RH, dx, dy - spread, SIL_RW, SIL_RH);
+    targetCtx.drawImage(rimBuf, SIL_RX, SIL_RY, SIL_RW, SIL_RH, dx, dy + spread * 0.65, SIL_RW, SIL_RH);
     targetCtx.restore();
   }
 
-  // ===== COHESIVE VISUAL PIPELINE: 7 HAND-PAINTED NANO BANANA SUMI-E ARENAS + 8 ELEMENTAL REALMS =====
+  // ===== COHESIVE VISUAL PIPELINE: 8/8 BESPOKE HAND-PAINTED NANO BANANA SUMI-E REALMS + DOJO ARMORY FORGE =====
   const ART = {
     dojo: new Image(),
     tidal: new Image(),
@@ -4070,7 +4314,9 @@
     frozen: new Image(),
     iron: new Image(),
     storm: new Image(),
+    caldera: new Image(),
     eclipse: new Image(),
+    armoryForge: new Image(),
     worldMap: new Image()
   };
   let washiPattern = null;
@@ -4096,7 +4342,7 @@
     buildBackdrop();
     if (storyState && !storyOverlay.classList.contains('hidden')) renderStoryStep();
   };
-  ['dojo', 'tidal', 'sky', 'frozen', 'iron', 'storm', 'eclipse'].forEach(k => { ART[k].onload = onArenaImgLoad; });
+  ['dojo', 'tidal', 'sky', 'frozen', 'iron', 'storm', 'caldera', 'eclipse'].forEach(k => { ART[k].onload = onArenaImgLoad; });
   ART.worldMap.onload = () => { if (!campaignModal.classList.contains('hidden')) drawWorldMapCanvas(); };
   ART.dojo.src = 'assets/arena_blazing_dojo.webp';
   ART.tidal.src = 'assets/arena_tidal_shrine.webp';
@@ -4104,7 +4350,9 @@
   ART.frozen.src = 'assets/arena_frozen_peak.webp';
   ART.iron.src = 'assets/arena_iron_mountain.webp';
   ART.storm.src = 'assets/arena_storm_spire.webp';
+  ART.caldera.src = 'assets/arena_obsidian_caldera.webp';
   ART.eclipse.src = 'assets/arena_eclipse_citadel.webp';
+  ART.armoryForge.src = 'assets/armory_forge.webp';
   ART.worldMap.src = 'assets/world_map.webp';
 
   function getActiveBiome() {
@@ -4144,9 +4392,8 @@
     }
     if (biome === 'obsidian_caldera') {
       return {
-        img: ART.iron, flip: true,
-        glaze: ['rgba(116,22,14,0.52)', 'rgba(236,78,22,0.30)', 'rgba(46,10,8,0.56)'],
-        mist: 'rgba(255,186,114,0.22)', rim: 'rgba(255,124,42,0.55)', floorTint: 'rgba(22,7,5,0.54)', kind: 'lava'
+        img: ART.caldera, flip: false,
+        mist: 'rgba(255,216,162,0.18)', rim: 'rgba(255,154,72,0.52)', floorTint: 'rgba(24,10,6,0.46)', kind: 'lava'
       };
     }
     // eclipse_sanctum / avatar_convergence / Main Menu (Crimson Maple Dusk Veranda)
@@ -4163,29 +4410,6 @@
       if (spec.flip) { g.translate(W, 0); g.scale(-1, 1); }
       g.drawImage(spec.img, 0, 0, W, H);
       g.restore();
-
-      // Painterly volcanic multiply glaze for Obsidian Caldera
-      if (spec.glaze) {
-        g.save();
-        g.globalCompositeOperation = 'multiply';
-        const gl = g.createLinearGradient(0, 0, 0, H);
-        gl.addColorStop(0, spec.glaze[0]); gl.addColorStop(0.58, spec.glaze[1]); gl.addColorStop(1, spec.glaze[2]);
-        g.fillStyle = gl; g.fillRect(0, 0, W, H);
-        g.restore();
-      }
-
-      if (spec.kind === 'lava') {
-        g.save();
-        const glow = g.createLinearGradient(0, 320, 0, GROUND_Y);
-        glow.addColorStop(0, 'rgba(255,92,20,0)'); glow.addColorStop(0.7, 'rgba(255,102,28,0.24)'); glow.addColorStop(1, 'rgba(255,148,54,0.42)');
-        g.fillStyle = glow; g.fillRect(0, 320, W, GROUND_Y - 320);
-        // Glowing magma fissure veins along canyon cliffs
-        g.strokeStyle = 'rgba(255,150,48,0.72)'; g.lineWidth = 3.2;
-        [[260, 420, 340, 560], [520, 460, 495, 575], [880, 430, 935, 570], [1040, 465, 1005, 575]].forEach(([x1, y1, x2, y2]) => {
-          g.beginPath(); g.moveTo(x1, y1); g.quadraticCurveTo((x1 + x2) * 0.5 + 16, (y1 + y2) * 0.5, x2, y2); g.stroke();
-        });
-        g.restore();
-      }
 
       // Soft center-band mist luminance behind fighters for 10:1 Shadow Fight 2 contrast
       const mistBoost = g.createLinearGradient(0, 300, 0, GROUND_Y);
@@ -4251,6 +4475,19 @@
   function getPose(f) {
     const BASE = f.el.stance, eid = f.el.id;
     const sf = f.sf, br = Math.sin(sf * 0.095), velLean = Math.max(-0.26, Math.min(0.32, f.vx * f.facing * 0.032));
+    if (f.dizzied) {
+      const sw = Math.sin(f.dizzyF * 0.16);
+      return { ...BASE, py: -78 + Math.abs(sw) * 4, px: sw * 8, tr: -0.18 + sw * 0.24, hr: 0.28 + sw * 0.28, fs: -0.3 + sw * 0.25, fe: -0.5, bs: 0.35 - sw * 0.25, be: -0.4 };
+    }
+    if (f.fireJetF > 0 && f.state !== 'ko') {
+      // Sozin's Jet-Step: horizontal rocket flying-kick glide pose!
+      return { ...BASE, py: -96, px: 10, pr: 0.56, tr: 0.34, hr: -0.45, fh: -1.78, fk: 0.08, bh: 0.45, bk: 0.42, fs: -1.95, fe: -0.25, bs: 1.15, be: -0.3 };
+    }
+    if (f.airScooterF > 0 && f.state !== 'ko' && f.state !== 'hitstun' && f.state !== 'knockdown_air') {
+      // Aang's Air Scooter: authentic crouched balanced surf/riding pose atop spinning wind sphere!
+      const bob = Math.sin(simFrame * 0.34) * 3.5;
+      return { ...BASE, py: -56 + bob, px: 4, pr: 0.12 + velLean * 0.45, tr: 0.38, hr: -0.22, fh: -1.34, fk: 1.88, bh: -0.92, bk: 1.82, fs: -0.82, fe: -0.55, bs: 0.96, be: -0.62 };
+    }
     if (f.state === 'grabbed') return { ...BASE, py: -72, pr: -0.9 + simFrame * 0.22, tr: -0.35, hr: 0.22, fs: -0.6, fe: -0.9, bs: 0.7, be: -0.8, fh: -0.5, fk: 0.85, bh: 0.35, bk: 0.75 };
     if (f.state === 'idle') {
       // Distinct martial arts idle rhythm for each of the 8 elements!
@@ -4629,6 +4866,8 @@
   function animateFighter(f) {
     const BASE = { px: 0, sqx: 1, sqy: 1, ...f.el.stance };
     if (!f.pose) f.pose = { ...BASE };
+    // Sub-Zero Cryo Prison: freeze pose SOLID mid-animation (zero joint motion while encased in ice!)
+    if (f.frozenPrisonF > 0 && f.dpose) return;
     const dx = (f.x - (f.lastAX ?? f.x)) * f.facing; f.lastAX = f.x;
     if (f.state === 'walk_fwd' || f.state === 'walk_back') {
       f.walkPh = (f.walkPh || 0) + Math.max(0.28, Math.abs(dx) * 0.068);
@@ -4643,7 +4882,9 @@
     f.animSf = f.sf;
 
     let target, clip = true;
-    if (f.state === 'attack' && f.move) {
+    if (f.dizzied || f.fireJetF > 0 || (f.airScooterF > 0 && f.state !== 'attack')) {
+      target = { ...BASE, ...getPose(f) }; clip = false;
+    } else if (f.state === 'attack' && f.move) {
       target = sampleClip(getMoveClip(f), movePhase(f), f.animFrom, BASE, 3);
     } else if (f.state === 'hitstun') {
       target = sampleClip(hitClip(f.hitH || 'mid', f.animDur), f.sf, f.animFrom, BASE, f.animDur);
@@ -5315,16 +5556,53 @@
       ctx.strokeStyle = el.primary; ctx.lineWidth = 22; ctx.lineCap = 'round';
       ctx.beginPath(); ctx.moveTo(b.x - d * 75, b.y); ctx.quadraticCurveTo(b.x, b.y - 26, b.x + d * 70, b.y + 8); ctx.stroke();
       ctx.strokeStyle = el.core; ctx.lineWidth = 7; ctx.stroke();
-    } else if (b.kind === 'ice_slide' || b.kind === 'ice_trap') {
+    } else if (b.kind === 'seismic_sonar') {
+      // Toph's Seismic Sense: white-gold wireframe sonar arc racing along the arena floor!
+      ctx.strokeStyle = '#fff9df'; ctx.lineWidth = 3.2; ctx.globalAlpha = 0.92;
+      ctx.beginPath(); ctx.ellipse(b.x, GROUND_Y + 1, 44, 13, 0, Math.PI, Math.PI * 2); ctx.stroke();
+      ctx.strokeStyle = '#e8b038'; ctx.lineWidth = 2.2;
+      ctx.beginPath(); ctx.ellipse(b.x - d * 18, GROUND_Y + 1, 28, 9, 0, Math.PI, Math.PI * 2); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(b.x - d * 36, GROUND_Y); ctx.lineTo(b.x + d * 36, GROUND_Y); ctx.stroke();
+    } else if (b.kind === 'ice_slide') {
       ctx.fillStyle = '#38d8ffaa'; ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 2.5;
       ctx.beginPath(); ctx.moveTo(b.x - 52, GROUND_Y + 4); ctx.lineTo(b.x - 24, GROUND_Y - 56); ctx.lineTo(b.x, GROUND_Y - 26); ctx.lineTo(b.x + 24, GROUND_Y - 66); ctx.lineTo(b.x + 52, GROUND_Y + 4); ctx.closePath(); ctx.fill(); ctx.stroke();
+    } else if (b.kind === 'ice_trap') {
+      // Katara's Cryo Prison traveling crystalline freeze wave (Sub-Zero Ice Blast!)
+      ctx.save(); ctx.translate(b.x, b.y); ctx.scale(d, 1);
+      const cg = ctx.createLinearGradient(-56, 0, 62, 0);
+      cg.addColorStop(0, 'rgba(30,180,240,0.08)'); cg.addColorStop(0.55, 'rgba(110,235,255,0.82)'); cg.addColorStop(1, '#ffffff');
+      ctx.fillStyle = cg; ctx.strokeStyle = '#e6fcff'; ctx.lineWidth = 2.4;
+      ctx.beginPath();
+      ctx.moveTo(64, 0); ctx.lineTo(24, -46); ctx.lineTo(-42, -26); ctx.lineTo(-18, 0); ctx.lineTo(-42, 26); ctx.lineTo(24, 46);
+      ctx.closePath(); ctx.fill(); ctx.stroke();
+      ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(60, 0); ctx.lineTo(-22, 0); ctx.moveTo(22, -40); ctx.lineTo(4, 0); ctx.lineTo(22, 40); ctx.stroke();
+      ctx.restore();
     } else if (b.kind === 'ice_rain') {
       ctx.fillStyle = '#3cd7ff'; ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 2;
       ctx.beginPath(); ctx.moveTo(b.x, b.y + 42); ctx.lineTo(b.x - 10, b.y - 12); ctx.lineTo(b.x, b.y - 46); ctx.lineTo(b.x + 10, b.y - 12); ctx.closePath(); ctx.fill(); ctx.stroke();
     } else if (b.kind === 'fire_breath' || b.kind === 'fire_jet') {
-      const fg = ctx.createRadialGradient(b.x, b.y, 10, b.x, b.y, b.w * 0.6);
-      fg.addColorStop(0, '#fff5cc'); fg.addColorStop(0.5, '#ff8814cc'); fg.addColorStop(1, 'rgba(232,65,12,0)');
-      ctx.fillStyle = fg; ctx.beginPath(); ctx.ellipse(b.x, b.y, b.w * 0.56, b.h * 0.52, 0, 0, Math.PI * 2); ctx.fill();
+      // Sculpted jagged dragon-flame cone with dark sumi ink outline & licking flame tongues!
+      ctx.save(); ctx.translate(b.x, b.y); ctx.scale(d, 1);
+      const w = b.w * 0.54, h = b.h * 0.48, fl = Math.sin(simFrame * 0.7) * 8;
+      ctx.fillStyle = '#1b0704';
+      ctx.beginPath();
+      ctx.moveTo(-w * 1.05, -h * 0.25); ctx.quadraticCurveTo(-w * 0.2, -h * 1.08 + fl, w * 0.95, 0);
+      ctx.quadraticCurveTo(-w * 0.2, h * 1.08 - fl, -w * 1.05, h * 0.25); ctx.closePath(); ctx.fill();
+      const fg = ctx.createLinearGradient(-w, 0, w, 0);
+      fg.addColorStop(0, '#c82008'); fg.addColorStop(0.52, '#ff6814'); fg.addColorStop(0.88, '#ffd24a'); fg.addColorStop(1, '#fffbe0');
+      ctx.fillStyle = fg;
+      ctx.beginPath();
+      ctx.moveTo(-w * 0.92, -h * 0.18);
+      ctx.lineTo(-w * 0.35, -h * 0.85 + fl); ctx.lineTo(w * 0.15, -h * 0.56);
+      ctx.lineTo(w * 0.88, 0);
+      ctx.lineTo(w * 0.15, h * 0.56); ctx.lineTo(-w * 0.35, h * 0.85 - fl);
+      ctx.lineTo(-w * 0.92, h * 0.18); ctx.closePath(); ctx.fill();
+      ctx.fillStyle = '#fff9d6';
+      ctx.beginPath();
+      ctx.moveTo(-w * 0.45, 0); ctx.quadraticCurveTo(w * 0.12, -h * 0.42, w * 0.74, 0);
+      ctx.quadraticCurveTo(w * 0.12, h * 0.42, -w * 0.45, 0); ctx.closePath(); ctx.fill();
+      ctx.restore();
     } else if (b.kind === 'vacuum_pull') {
       for (let k = 0; k < 4; k++) {
         const rr = ((b.f * 4 + k * 24) % 90) + 12;
@@ -5342,8 +5620,23 @@
       }
     } else {
       if (b.kind === 'lava_disc') {
-        ctx.fillStyle = '#ff3010'; ctx.strokeStyle = '#ffea80'; ctx.lineWidth = 4;
-        ctx.beginPath(); ctx.ellipse(b.x, b.y, 44, 16, simFrame * 0.25, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+        // Ghazan's Sculpted 4-Blade Spinning Molten Shuriken Buzzsaw!
+        ctx.save(); ctx.translate(b.x, b.y); ctx.rotate(simFrame * 0.48 * d);
+        ctx.strokeStyle = 'rgba(255, 168, 48, 0.55)'; ctx.lineWidth = 4;
+        ctx.beginPath(); ctx.arc(0, 0, 44, 0, Math.PI * 2); ctx.stroke();
+        for (let s = 0; s < 4; s++) {
+          ctx.save(); ctx.rotate((s * Math.PI) / 2);
+          ctx.fillStyle = '#1b0b07'; ctx.strokeStyle = '#ff6b14'; ctx.lineWidth = 2.6;
+          ctx.beginPath();
+          ctx.moveTo(0, -11); ctx.quadraticCurveTo(26, -26, 48, -6); ctx.lineTo(28, 10); ctx.lineTo(8, 6); ctx.closePath();
+          ctx.fill(); ctx.stroke();
+          ctx.strokeStyle = '#fff2a6'; ctx.lineWidth = 1.8;
+          ctx.beginPath(); ctx.moveTo(14, -12); ctx.quadraticCurveTo(32, -16, 45, -6); ctx.stroke();
+          ctx.restore();
+        }
+        ctx.fillStyle = '#ff5412'; ctx.strokeStyle = '#fff2a6'; ctx.lineWidth = 2.4;
+        ctx.beginPath(); ctx.arc(0, 0, 12, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+        ctx.restore();
       } else {
         const rise = Math.min(1, t * 4.5);
         const curH = b.h * rise;
@@ -5354,6 +5647,17 @@
       }
     }
     ctx.restore();
+  }
+
+  function drawStoneGauntlet(g) {
+    g.save();
+    g.fillStyle = '#19130d'; g.strokeStyle = '#f5ba42'; g.lineWidth = 2.2;
+    g.beginPath();
+    g.moveTo(-10, -4); g.lineTo(10, -4); g.lineTo(13, 10); g.lineTo(7, 17); g.lineTo(-8, 17); g.lineTo(-12, 9);
+    g.closePath(); g.fill(); g.stroke();
+    g.strokeStyle = '#fff2c4'; g.lineWidth = 1.4;
+    g.beginPath(); g.moveTo(-5, 3); g.lineTo(1, 10); g.lineTo(6, 5); g.stroke();
+    g.restore();
   }
 
   function drawFighter(f) {
@@ -5408,7 +5712,9 @@
     }
     sctx.save(); sctx.translate(-5, -52); sctx.rotate(p.bs); drawHumanUpperArm(sctx);
     sctx.translate(0, 32); sctx.rotate(p.be); drawHumanForearm(sctx);
-    sctx.translate(0, 32); sctx.rotate(-0.4); drawWeaponShape(sctx, wSpec.wType, f.el.glow, f.el.core, false);
+    sctx.translate(0, 32);
+    if (f.gauntletsF > 0) drawStoneGauntlet(sctx);
+    sctx.rotate(-0.4); drawWeaponShape(sctx, wSpec.wType, f.el.glow, f.el.core, false);
     sctx.restore();
 
     sctx.fillStyle = '#05070c';
@@ -5439,7 +5745,9 @@
     sctx.fillStyle = '#05070c';
     sctx.save(); sctx.translate(7, -52); sctx.rotate(p.fs); drawHumanUpperArm(sctx);
     sctx.translate(0, 32); sctx.rotate(p.fe); drawHumanForearm(sctx);
-    sctx.translate(0, 32); sctx.rotate(p.fw); drawWeaponShape(sctx, wSpec.wType, f.el.glow, f.el.core, true);
+    sctx.translate(0, 32);
+    if (f.gauntletsF > 0) drawStoneGauntlet(sctx);
+    sctx.rotate(p.fw); drawWeaponShape(sctx, wSpec.wType, f.el.glow, f.el.core, true);
     sctx.restore();
     sctx.restore();
 
@@ -5470,8 +5778,8 @@
     const invPulse = isInvuln ? 1.0 + Math.abs(Math.sin(f.sf * 0.7)) * 0.65 : 1.0;
     const soulGlow = f.id === 'p1' ? (0.45 + Math.min(8, PROG.unlockedElements.length) * 0.11 + (PROG.avatarUnlocked ? 0.35 : 0)) : (f.phase2 ? 1.35 : 1.0);
     const boost = (f.avatarFlash > 0 || f.magic >= 100 || f.phase2 ? 1.38 : 1.0) * invPulse * soulGlow;
-    const rimCol = (f.flash > 0 || f.avatarFlash > 0 || (isInvuln && f.sf % 4 < 2)) ? '#ffffff' : (f.phase2 ? '#ff6a32' : (isInvuln ? '#8ef5ff' : (f.rockArmorF > 0 ? '#f5ba42' : f.el.glow)));
-    const airHoverY = f.airScooterF > 0 ? -24 + Math.sin(simFrame * 0.35) * 4 : 0;
+    const rimCol = (f.flash > 0 || f.avatarFlash > 0 || (isInvuln && f.sf % 4 < 2)) ? '#ffffff' : (f.phase2 ? '#ff6a32' : (isInvuln ? '#8ef5ff' : (f.rockArmorF > 0 || f.gauntletsF > 0 ? '#f5ba42' : f.el.glow)));
+    const airHoverY = f.airScooterF > 0 ? -42 + Math.sin(simFrame * 0.35) * 4 : 0;
     if (settings.vfx !== 'low') {
       ctx.shadowColor = rimCol;
       ctx.shadowBlur = (settings.vfx === 'high' ? 11 : 6) * boost;
@@ -5504,57 +5812,67 @@
       // 1) Katara's Octopus Form: 8 swirling animated water tentacles around fighter!
       if (f.octopusF > 0) {
         const fade = Math.min(1, f.octopusF / 24);
-        ctx.globalAlpha = 0.86 * fade;
+        ctx.globalAlpha = 0.88 * fade;
         for (let t = 0; t < 8; t++) {
-          const ang = (t / 8) * Math.PI * 2 + simFrame * 0.08;
+          const ang = (t / 8) * Math.PI * 2 + simFrame * 0.09;
           const ox = f.x + Math.cos(ang) * 26, oy = f.y - 98 + Math.sin(ang) * 32;
-          const tipX = f.x + Math.cos(ang + Math.sin(simFrame * 0.16 + t) * 0.42) * 96;
-          const tipY = f.y - 98 + Math.sin(ang + Math.cos(simFrame * 0.14 + t) * 0.38) * 76;
-          ctx.strokeStyle = '#1498e8'; ctx.lineWidth = 9; ctx.lineCap = 'round';
-          ctx.beginPath(); ctx.moveTo(ox, oy); ctx.quadraticCurveTo((ox + tipX) * 0.5, (oy + tipY) * 0.5 - 14, tipX, tipY); ctx.stroke();
-          ctx.strokeStyle = '#d8fbff'; ctx.lineWidth = 2.6; ctx.stroke();
+          const tipX = f.x + Math.cos(ang + Math.sin(simFrame * 0.16 + t) * 0.44) * 102;
+          const tipY = f.y - 98 + Math.sin(ang + Math.cos(simFrame * 0.14 + t) * 0.40) * 80;
+          ctx.strokeStyle = '#1498e8'; ctx.lineWidth = 10; ctx.lineCap = 'round';
+          ctx.beginPath(); ctx.moveTo(ox, oy); ctx.quadraticCurveTo((ox + tipX) * 0.5, (oy + tipY) * 0.5 - 16, tipX, tipY); ctx.stroke();
+          ctx.strokeStyle = '#d8fbff'; ctx.lineWidth = 2.8; ctx.stroke();
         }
       }
-      // 2) Aang's Air Scooter: spinning translucent glowing wind sphere beneath feet!
+      // 2) Aang's Air Scooter: large layered swirling wind sphere directly beneath crouched fighter!
       if (f.airScooterF > 0) {
-        const sy = f.y - 18 + Math.sin(simFrame * 0.35) * 3;
-        const sg = ctx.createRadialGradient(f.x, sy, 4, f.x, sy, 32);
-        sg.addColorStop(0, 'rgba(240,255,250,0.85)'); sg.addColorStop(0.65, 'rgba(94,255,200,0.42)'); sg.addColorStop(1, 'rgba(94,255,200,0)');
-        ctx.fillStyle = sg; ctx.beginPath(); ctx.arc(f.x, sy, 32, 0, Math.PI * 2); ctx.fill();
-        ctx.strokeStyle = '#b4ffe8'; ctx.lineWidth = 2.2;
-        for (let k = 0; k < 3; k++) {
-          const a = simFrame * 0.28 + k * 2.1;
-          ctx.beginPath(); ctx.arc(f.x, sy, 22 - k * 4, a, a + 2.4); ctx.stroke();
+        const sy = f.y - 34 + Math.sin(simFrame * 0.35) * 3;
+        const sg = ctx.createRadialGradient(f.x, sy, 5, f.x, sy, 44);
+        sg.addColorStop(0, 'rgba(246,255,252,0.92)'); sg.addColorStop(0.58, 'rgba(94,255,200,0.48)'); sg.addColorStop(1, 'rgba(94,255,200,0)');
+        ctx.fillStyle = sg; ctx.beginPath(); ctx.arc(f.x, sy, 44, 0, Math.PI * 2); ctx.fill();
+        ctx.strokeStyle = '#e8fff7'; ctx.lineWidth = 2.6;
+        for (let k = 0; k < 4; k++) {
+          const a = simFrame * 0.34 + k * 1.6;
+          ctx.beginPath(); ctx.arc(f.x, sy, 32 - k * 5.5, a, a + 2.5); ctx.stroke();
         }
+        ctx.strokeStyle = 'rgba(180,255,232,0.6)'; ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.ellipse(f.x, GROUND_Y + 1, 48, 9, 0, 0, Math.PI * 2); ctx.stroke();
       }
-      // 3) Sozin's Jet-Step: roaring twin foot flame plumes!
+      // 3) Sozin's Jet-Step: roaring twin sculpted foot dragon-flame plumes!
       if (f.fireJetF > 0) {
-        ctx.globalAlpha = 0.9;
+        ctx.globalAlpha = 0.94;
         for (let k = 0; k < 2; k++) {
-          const fx = f.x - f.facing * (14 + k * 14), fy = f.y - 20 - k * 12;
-          ctx.fillStyle = '#ff6a14';
-          ctx.beginPath(); ctx.moveTo(fx, fy - 12); ctx.lineTo(fx - f.facing * 72, fy + 8); ctx.lineTo(fx, fy + 16); ctx.closePath(); ctx.fill();
-          ctx.fillStyle = '#fff3b0';
-          ctx.beginPath(); ctx.moveTo(fx, fy - 5); ctx.lineTo(fx - f.facing * 42, fy + 4); ctx.lineTo(fx, fy + 8); ctx.closePath(); ctx.fill();
+          const fx = f.x - f.facing * (18 + k * 16), fy = f.y - 46 - k * 16;
+          const flick = Math.sin(simFrame * 0.9 + k * 2) * 14;
+          ctx.fillStyle = '#ff5210';
+          ctx.beginPath(); ctx.moveTo(fx, fy - 14); ctx.lineTo(fx - f.facing * (92 + flick), fy + 10); ctx.lineTo(fx, fy + 16); ctx.closePath(); ctx.fill();
+          ctx.fillStyle = '#fff5b8';
+          ctx.beginPath(); ctx.moveTo(fx, fy - 6); ctx.lineTo(fx - f.facing * (54 + flick * 0.5), fy + 4); ctx.lineTo(fx, fy + 8); ctx.closePath(); ctx.fill();
         }
       }
-      // 4) Toph's Seismic Sense: expanding sonar wave rings along the arena floor!
+      // 4) Toph's Seismic Sense: expanding white-gold sonar rings along the arena floor!
       if (f.seismicWaveF > 0) {
-        const prog = 1 - f.seismicWaveF / 28;
-        ctx.strokeStyle = '#f8f2d8'; ctx.lineWidth = 3.2 * (1 - prog * 0.6); ctx.globalAlpha = 0.85 * (1 - prog);
-        ctx.beginPath(); ctx.ellipse(f.x, GROUND_Y + 1, 34 + prog * 460, 10 + prog * 18, 0, 0, Math.PI * 2); ctx.stroke();
-        ctx.strokeStyle = '#e8b038'; ctx.lineWidth = 1.8;
-        ctx.beginPath(); ctx.ellipse(f.x, GROUND_Y + 1, 18 + prog * 310, 6 + prog * 12, 0, 0, Math.PI * 2); ctx.stroke();
+        const prog = 1 - f.seismicWaveF / 34;
+        ctx.strokeStyle = '#fff9df'; ctx.lineWidth = 3.5 * (1 - prog * 0.55); ctx.globalAlpha = 0.88 * (1 - prog);
+        ctx.beginPath(); ctx.ellipse(f.x, GROUND_Y + 1, 34 + prog * 480, 10 + prog * 20, 0, 0, Math.PI * 2); ctx.stroke();
+        ctx.strokeStyle = '#e8b038'; ctx.lineWidth = 2.0;
+        ctx.beginPath(); ctx.ellipse(f.x, GROUND_Y + 1, 18 + prog * 330, 6 + prog * 14, 0, 0, Math.PI * 2); ctx.stroke();
       }
-      // 5) Katara's Cryo Prison: faceted translucent Ice Crystal Cage encasing fighter!
+      // 5) Katara's Cryo Prison: faceted translucent Sub-Zero Ice Crystal Block encasing frozen fighter!
       if (f.frozenPrisonF > 0) {
-        ctx.globalAlpha = 0.68;
-        ctx.fillStyle = 'rgba(130, 240, 255, 0.34)'; ctx.strokeStyle = '#e6fcff'; ctx.lineWidth = 2.4;
+        ctx.globalAlpha = 0.78;
+        const ig = ctx.createLinearGradient(f.x - 46, f.y - 196, f.x + 48, GROUND_Y);
+        ig.addColorStop(0, 'rgba(215, 252, 255, 0.58)'); ig.addColorStop(0.5, 'rgba(72, 215, 255, 0.42)'); ig.addColorStop(1, 'rgba(18, 120, 192, 0.56)');
+        ctx.fillStyle = ig; ctx.strokeStyle = '#f0feff'; ctx.lineWidth = 2.8;
         ctx.beginPath();
-        ctx.moveTo(f.x - 42, GROUND_Y + 2); ctx.lineTo(f.x - 48, f.y - 115); ctx.lineTo(f.x - 16, f.y - 182);
-        ctx.lineTo(f.x + 18, f.y - 188); ctx.lineTo(f.x + 48, f.y - 112); ctx.lineTo(f.x + 40, GROUND_Y + 2);
+        ctx.moveTo(f.x - 48, GROUND_Y + 2); ctx.lineTo(f.x - 54, f.y - 118); ctx.lineTo(f.x - 20, f.y - 194);
+        ctx.lineTo(f.x + 22, f.y - 200); ctx.lineTo(f.x + 54, f.y - 114); ctx.lineTo(f.x + 46, GROUND_Y + 2);
         ctx.closePath(); ctx.fill(); ctx.stroke();
-        ctx.beginPath(); ctx.moveTo(f.x - 16, f.y - 182); ctx.lineTo(f.x + 8, f.y - 84); ctx.lineTo(f.x + 40, GROUND_Y); ctx.stroke();
+        // Specular diagonal frost plane & crystal crack lines
+        ctx.strokeStyle = 'rgba(255,255,255,0.82)'; ctx.lineWidth = 1.8;
+        ctx.beginPath();
+        ctx.moveTo(f.x - 20, f.y - 194); ctx.lineTo(f.x + 12, f.y - 96); ctx.lineTo(f.x + 46, GROUND_Y);
+        ctx.moveTo(f.x - 54, f.y - 118); ctx.lineTo(f.x + 12, f.y - 96); ctx.lineTo(f.x + 22, f.y - 200);
+        ctx.stroke();
       }
       // 6) Boss Phase-2 Eclipse Surge aura ring
       if (f.phase2) {
@@ -5917,12 +6235,31 @@
       ctx.restore();
     });
 
-    // Render Shadow Decoy Clones!
+    // Render Real Pitch-Black Attacking Shadow Clone Silhouettes (Zero placeholder ovals!)
     decoyClones.forEach(dc => {
-      ctx.save(); ctx.globalAlpha = 0.55 + Math.sin(simFrame * 0.25) * 0.15;
-      ctx.fillStyle = '#090616'; ctx.strokeStyle = '#b49cff'; ctx.lineWidth = 2.5;
-      ctx.beginPath(); ctx.ellipse(dc.x, GROUND_Y - 82, 24, 62, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-      ctx.beginPath(); ctx.arc(dc.x, GROUND_Y - 155, 16, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+      const fade = Math.min(1, dc.f / 16);
+      const swAmt = dc.swung ? Math.sin(((16 - dc.swingF) / 16) * Math.PI) * 1.1 : Math.sin(simFrame * 0.45) * 0.25;
+      const runSt = {
+        ...ELEMENTS.shadow.stance,
+        tr: dc.swung ? 0.56 : 0.46,
+        fh: dc.swung ? -0.9 : -0.7 + Math.sin(simFrame * 0.55) * 0.55,
+        bh: dc.swung ? 0.8 : 0.5 - Math.sin(simFrame * 0.55) * 0.55
+      };
+      renderStaticSilhouetteToBuf({
+        st: runSt, dir: dc.facing, sc: 1.15, wType: dc.wType || 'shadow_sickles',
+        rim: '#b49cff', core: '#f6f2ff', gearId: dc.gear || 'none',
+        glowingEyes: true, br: Math.sin(simFrame * 0.25), swingAmt: swAmt
+      });
+      ctx.save();
+      ctx.globalAlpha = 0.78 * fade;
+      drawTintedRim(ctx, dc.x - 240, GROUND_Y - 330, '#a882ff', 2.4, 0.85 * fade);
+      ctx.drawImage(silBuf, dc.x - 240, GROUND_Y - 330);
+      if (dc.swung && dc.swingF > 4) {
+        ctx.translate(dc.x + dc.facing * 42, GROUND_Y - 115);
+        ctx.scale(dc.facing, 1);
+        ctx.strokeStyle = '#c4b0ff'; ctx.lineWidth = 5;
+        ctx.beginPath(); ctx.arc(-14, 6, 74, -1.1, 0.85); ctx.stroke();
+      }
       ctx.restore();
     });
 
@@ -6000,6 +6337,14 @@
     }
     ctx.restore();
 
+    // Shadow Fight 2 Critical Monochrome Sumi-e Ink Flash on Head Crits, Shatters, Redirects & Finishers!
+    if (inkFlashF > 0) {
+      ctx.save();
+      ctx.fillStyle = inkFlashF >= 3 ? 'rgba(252, 245, 228, 0.34)' : 'rgba(18, 12, 8, 0.24)';
+      ctx.fillRect(0, 0, W, H);
+      ctx.restore();
+    }
+
     // Blade-Lock Weapon Clash Tug-of-War Bar (Screen-Space Center)
     if (bladeClash) {
       const bw = 340, bh = 22, bx = (W - bw) * 0.5, by = 152;
@@ -6062,9 +6407,11 @@
     banner: document.getElementById('banner'), bTitle: document.getElementById('banner-title'),
     bSub: document.getElementById('banner-sub'), mActs: document.getElementById('match-actions'),
     btnMag: document.getElementById('btn-magic'), magIcon: document.getElementById('magic-icon'),
+    bendLbl: document.getElementById('bend-lbl'),
+    styleRank: document.getElementById('style-rank'), srGrade: document.getElementById('sr-grade'), srLbl: document.getElementById('sr-lbl'),
     btnNextBoss: document.getElementById('btn-next-boss')
   };
-  let lastE1 = '', lastE2 = '', lastJw = '', lastWepIco = '';
+  let lastE1 = '', lastE2 = '', lastJw = '', lastWepIco = '', lastSR = '', lastBendLbl = '';
   let lastB1 = '', lastB2 = '', lastC1 = -1, lastC2 = -1, lastTmr = '', lastBanKey = '';
   let lastH1 = '', lastHT1 = '', lastH2 = '', lastHT2 = '', lastM1 = '', lastM2 = '', lastP1 = '', lastP2 = '';
 
@@ -6074,7 +6421,7 @@
       lastE1 = p1.el.id;
       elRefs.p1Crest.innerHTML = p1.el.svg; elRefs.p1Crest.style.color = p1.el.primary; elRefs.p1Crest.style.borderColor = p1.el.glow;
       elRefs.p1Crest.style.boxShadow = `0 0 14px ${p1.el.primary}88`;
-      elRefs.p1Name.textContent = match.mode === 'campaign' ? (PROG.avatarUnlocked ? 'AVATAR SHADOW' : 'HOLLOW SHADOW') : p1.el.fighter;
+      elRefs.p1Name.textContent = getFighterDisplayName('p1');
       elRefs.p1Mag.style.background = `linear-gradient(90deg, ${p1.el.primary}, ${p1.el.glow})`;
       elRefs.magIcon.innerHTML = p1.el.svg;
       elRefs.btnMag.style.setProperty('--mg-prim', p1.el.primary); elRefs.btnMag.style.setProperty('--mg-glow', p1.el.glow);
@@ -6090,7 +6437,7 @@
       lastE2 = p2Key;
       elRefs.p2Crest.innerHTML = p2.el.svg; elRefs.p2Crest.style.color = p2.el.primary; elRefs.p2Crest.style.borderColor = p2.el.glow;
       elRefs.p2Crest.style.boxShadow = `0 0 14px ${p2.el.primary}88`;
-      elRefs.p2Name.textContent = match.boss ? match.boss.title : p2.el.fighter;
+      elRefs.p2Name.textContent = getFighterDisplayName('p2');
       elRefs.p2Mag.style.background = `linear-gradient(270deg, ${p2.el.primary}, ${p2.el.glow})`;
     }
 
@@ -6108,6 +6455,8 @@
       elRefs.btnMag.classList.toggle('ready', ultRdy);
       elRefs.btnMag.classList.toggle('ex-ready', exRdy);
     }
+    const bl = p1.magic >= 100 ? 'ULTIMATE' : (p1.magic >= 35 ? (BEND_TRICKS[p1.el.id]?.fwd || 'BEND') : 'BEND');
+    if (elRefs.bendLbl && bl !== lastBendLbl) { lastBendLbl = bl; elRefs.bendLbl.textContent = bl; }
     const m2 = `${Math.min(100, p2.magic).toFixed(1)}%`;
     if (m2 !== lastM2) {
       lastM2 = m2; elRefs.p2Mag.style.width = m2;
@@ -6148,6 +6497,24 @@
       lastC2 = match.c2;
       elRefs.c2.classList.toggle('show', match.c2 >= 2);
       if (match.c2 >= 2) elRefs.c2.innerHTML = `<span class="w">COMBO</span> <span class="n">x${match.c2}</span>`;
+    }
+
+    if (elRefs.styleRank && match.styleRank !== lastSR) {
+      lastSR = match.styleRank;
+      elRefs.styleRank.classList.toggle('show', Boolean(match.styleRank));
+      if (match.styleRank) {
+        const srMeta = {
+          D:      { col: '#cfc0a8', lbl: 'DISCIPLE' },
+          C:      { col: '#7cf0bd', lbl: 'CRISP' },
+          B:      { col: '#5ad8ff', lbl: 'BLAZING' },
+          A:      { col: '#ffb347', lbl: 'ARTFUL' },
+          S:      { col: '#ff5238', lbl: 'SHOGUN' },
+          AVATAR: { col: '#fff1a8', lbl: 'MASTER' }
+        }[match.styleRank] || { col: '#f5ba42', lbl: 'FLOW' };
+        elRefs.srGrade.textContent = match.styleRank;
+        elRefs.srGrade.style.color = srMeta.col;
+        elRefs.srLbl.textContent = srMeta.lbl;
+      }
     }
 
     const banKey = match.banner ? `${match.banner.text}|${match.banner.sub||''}|${match.banner.color}|${match.banner.isUlt?1:0}|${match.screen}` : '';
@@ -6201,15 +6568,19 @@
     btnAvatar.addEventListener('pointerup', relA); btnAvatar.addEventListener('pointercancel', relA);
   }
   const keys = new Set(); let sPtr = null, sOx = 0, sOy = 0, sDx = 0, sDy = 0, kDx = 0, kDy = 0, lastTouchVis = null;
+  function getTrickPillText(dx, dy) {
+    const t = BEND_TRICKS[p1.el.id] || BEND_TRICKS.water;
+    if (dy === -1) return `↑ ${t.up}`;
+    if (dy === 1) return `↓ ${t.down}`;
+    return dx === p1.facing ? `→ ${t.fwd}` : `← ${t.back}`;
+  }
   function flushDir() {
     const dx = sDx !== 0 ? sDx : kDx, dy = sDy !== 0 ? sDy : kDy;
     setDir(p1, dx, dy);
     if (bendDirPill) {
       const hasDir = (dx !== 0 || dy !== 0) && p1.magic >= 35;
       bendDirPill.classList.toggle('show', hasDir);
-      if (hasDir) {
-        bendDirPill.textContent = dy === -1 ? '↑' : dy === 1 ? '↓' : (dx === p1.facing ? '→' : '←');
-      }
+      if (hasDir) bendDirPill.textContent = getTrickPillText(dx, dy);
     }
   }
   function resetInputs() {
@@ -6324,8 +6695,6 @@
         bendSwipePtr = e.pointerId; bendStartX = e.clientX; bendStartY = e.clientY;
         bendSwDx = 0; bendSwDy = 0; bendSwMoved = false;
         try { btn.setPointerCapture(e.pointerId); } catch {}
-        // Lightning supports hold-to-charge immediately; other elements support tap OR directional swipe on release
-        if (p1.el.id === 'lightning' && p1.magic >= 35) pressBtn(p1, 'magic');
       });
       btn.addEventListener('pointermove', e => {
         if (e.pointerId !== bendSwipePtr) return;
@@ -6337,7 +6706,7 @@
           else { bendSwDx = dx > 0 ? 1 : -1; bendSwDy = 0; }
           if (bendDirPill && p1.magic >= 35) {
             bendDirPill.classList.add('show');
-            bendDirPill.textContent = bendSwDy === -1 ? '↑' : bendSwDy === 1 ? '↓' : (bendSwDx === p1.facing ? '→' : '←');
+            bendDirPill.textContent = getTrickPillText(bendSwDx, bendSwDy);
           }
         }
       });
@@ -6345,10 +6714,7 @@
         if (e.pointerId !== bendSwipePtr) return;
         bendSwipePtr = null;
         btn.classList.remove('pressed', 'swiping');
-        if (p1.el.id === 'lightning' && p1.held.has('magic')) {
-          releaseBtn(p1, 'magic');
-          return;
-        }
+        if (bendDirPill) bendDirPill.classList.remove('show');
         if (match.inMenu || match.paused || match.screen !== 'fighting') return;
         if (bendSwMoved) {
           const prevX = p1.dir.x, prevY = p1.dir.y;
@@ -6612,11 +6978,11 @@
       `;
     } else {
       const mvs = [
-        ['8 Avatar Signature Tricks (35% Meter)', 'Tilt Direction + BEND (or Swipe BEND on touch)', 'Water Up = Octopus Form (intercepts projectiles); Fire Fwd = Sozin Jet-Step; Earth Back = Toph Seismic Sense; Air Fwd = Aang Air Scooter; Lightning Back = Iroh Redirect; Ice Fwd = Katara Cryo Prison; Shadow Back = Eclipse Swap; Lava Fwd = Ghazan Molten Shuriken.'],
-        ['100% Avatar Bending Arts', 'BEND at 100% (Neutral / Up Vortex / Down Arm Slam)', 'Full-screen signature bending arts that overpower normal projectiles.'],
+        ['8 Avatar Signatures (35% Meter · Instant Tap!)', 'Tap BEND (U / Space) or Swipe BEND on Touch', 'Water = Katara Octopus Form (whip follow-ups + deflect + 360° slam); Fire = Sozin Jet-Step; Earth = Toph Seismic Sense + Stone Gauntlets; Air = Aang Air Scooter (auto-glide + bowl); Lightning = Iroh Redirect 2x + Dragon Beam; Ice = Cryo Prison 2.2s Freeze; Shadow = Eclipse Swap Pincer Clone; Lava = 3-Hit Molten Shuriken.'],
+        ['Free-Flow Cross-Combos & Recovery Cancels', 'P → K → W → BEND · ROLL / BLK Cancel', 'Fluidly link Punch, Kick, Weapon, and Bending Arts in any order! Cancel late attack recovery directly into Roll or Block to stay slippery.'],
+        ['Style Rank & FINISH THEM! Eclipse Finishers', 'D → C → B → A → S → AVATAR · Final Round Execution', 'Varying strikes climbs Style Rank for faster meter & bonus coins. Dropping a foe on the final round opens FINISH THEM! — land any hit for +75 bonus coins!'],
         ['Guard Poise, Lethal Counter & Blade Clash', 'Timed Block (B) · Overlapping Weapon Swings', 'Blocking heavy strikes drains golden Guard Poise -> GUARD SHATTER. Interrupting startup deals LETHAL COUNTER. Clashing weapons triggers a rapid-tap Blade-Lock!'],
-        ['Weapons, Infusions & Corner Braziers', 'Heavy Finishers (>=20% Meter) · Wall Splats', 'Sai disarms on Parry, Katana boosts Iaijutsu Counters, Bo Staff Up+W Pole-Vaults, Kusarigama pulls & siphons meter. Smash foes into Corner Braziers for +45 dmg!'],
-        ['Elemental Status Combos', 'Cryo Shatter (+35%) · Electro-Charge · Combustion', 'Heavy vs Cryo-Caged/Frozen/Crushed = Shatter; Lightning vs Soaked = Stun; Launcher vs Burning = Super-Launch!']
+        ['Elemental Status Combos & Weapon Perks', 'Cryo Shatter (+40%) · Electro-Charge · Combustion', 'Heavy vs Cryo-Caged/Frozen = +40% CRYO SHATTER; Lightning vs Soaked = Stun; Launcher vs Burning = Super-Launch. Smash foes into Corner Braziers for +45 dmg!']
       ];
       body = mvs.map(([n, i, d]) => `<div class="mrow"><b>${n}</b><small>${i}</small><span>${d}</span></div>`).join('');
     }
@@ -7113,10 +7479,10 @@
       const el = p1.el;
       const floorY = ch * 0.84;
 
-      // Painted Warm Dojo Alcove Backdrop (eliminates dark-navy HTML look!)
-      const dojoImg = (ART.dojo.complete && ART.dojo.naturalWidth > 0) ? ART.dojo : null;
+      // Bespoke Candlelit Dojo Weapons Forge Backdrop (Nano Banana armory_forge.webp!)
+      const dojoImg = (ART.armoryForge.complete && ART.armoryForge.naturalWidth > 0) ? ART.armoryForge : ((ART.dojo.complete && ART.dojo.naturalWidth > 0) ? ART.dojo : null);
       if (dojoImg) {
-        const imgAspect = 16 / 9, boxAspect = cw / ch;
+        const imgAspect = dojoImg.naturalWidth / dojoImg.naturalHeight, boxAspect = cw / ch;
         let sx = 0, sy = 0, sw = dojoImg.naturalWidth, sh = dojoImg.naturalHeight;
         if (boxAspect < imgAspect) {
           sw = sh * boxAspect; sx = (dojoImg.naturalWidth - sw) * 0.5;
@@ -7124,10 +7490,10 @@
           sh = sw / boxAspect; sy = (dojoImg.naturalHeight - sh) * 0.5;
         }
         g.drawImage(dojoImg, sx, sy, sw, sh, 0, 0, cw, ch);
-        const veil = g.createRadialGradient(cw * 0.5, ch * 0.44, 18, cw * 0.5, ch * 0.5, Math.max(cw, ch) * 0.68);
-        veil.addColorStop(0, el.glow + '24');
-        veil.addColorStop(0.55, 'rgba(20, 14, 10, 0.32)');
-        veil.addColorStop(1, 'rgba(10, 7, 5, 0.78)');
+        const veil = g.createRadialGradient(cw * 0.5, ch * 0.44, 18, cw * 0.5, ch * 0.5, Math.max(cw, ch) * 0.72);
+        veil.addColorStop(0, el.glow + '1c');
+        veil.addColorStop(0.58, 'rgba(18, 12, 8, 0.24)');
+        veil.addColorStop(1, 'rgba(10, 7, 5, 0.68)');
         g.fillStyle = veil; g.fillRect(0, 0, cw, ch);
       } else {
         const bg = g.createRadialGradient(cw * 0.5, ch * 0.45, 20, cw * 0.5, ch * 0.5, Math.max(cw, ch) * 0.65);
@@ -7247,7 +7613,12 @@
     const rawDt = (now - lastT) / 1000; lastT = now;
     const dt = Math.min(0.1, Math.max(0, rawDt));
     if (rawDt > 0.001) curFps = curFps * 0.9 + (1 / rawDt) * 0.1;
-    if (!match.paused) { acc += dt; while (acc >= 1 / 60) { stepSim(); acc -= 1 / 60; } }
+    if (!match.paused) {
+      const ts = slowMoFrames > 0 ? 0.36 : 1;
+      if (slowMoFrames > 0) slowMoFrames = Math.max(0, slowMoFrames - dt * 60);
+      acc += dt * ts;
+      while (acc >= 1 / 60) { stepSim(); acc -= 1 / 60; }
+    }
     const rInt = settings.fps === 30 ? 1 / 30 : 0; rAcc += dt;
     if (rAcc >= rInt) { rAcc = rInt > 0 ? rAcc % rInt : 0; renderScene(); syncHud(); }
   }
