@@ -52,40 +52,54 @@ jobs:
       - name: Prepare APK deliverable
         run: |
           mkdir -p out
-          cp android/app/build/outputs/apk/release/app-release.apk out/ElementalShadows-v2.5.0-android.apk
-          ls -lh out/ElementalShadows-v2.5.0-android.apk
+          cp android/app/build/outputs/apk/release/app-release.apk out/ElementalShadows-v3.0.0-android.apk
+          ls -lh out/ElementalShadows-v3.0.0-android.apk
 
       - name: Upload APK workflow artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ElementalShadows-v2.5.0-android-apk
-          path: out/ElementalShadows-v2.5.0-android.apk
+          name: ElementalShadows-v3.0.0-android-apk
+          path: out/ElementalShadows-v3.0.0-android.apk
           retention-days: 90
 
       - name: Publish GitHub Release with direct APK download
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          TAG="v2.5.0-android"
+          TAG="v3.0.0-android"
           NOTES=$(cat <<'EOF'
           Standalone 100% offline Android APK of **Elemental Shadows — The Hollow Avatar**.
 
-          ### What's New in v2.5.0
-          - **Three.js 2.5D WebGL Visual Enhancer (100% Offline, Preserving 2D Sumi-e Silhouettes & Exact 60Hz Mechanics):**
-            - **Real-Time Dynamic 6-Light Elemental Dojo Floor Shader:** Live elemental lighting pools from both fighters, active bending waves, flickering Corner Braziers, Blade Clashes, and hazards sweep across the wooden veranda planks and basalt tiles — with animated water caustics on Tidal Shrine, volcanic heat-veins on Obsidian Caldera & Blazing Dojo, and crystalline frost glint on Frozen Peak.
-            - **3D Volumetric Signature Bending Effects:** Real 3D Fresnel wind sphere + 3 tilted gyroscopic torus wind bands for **Aang's Air Scooter**; translucent 3D faceted ice crystal prism + **24 physical tumbling 3D crystal shards** with floor bounce on **Katara's Cryo Prison & CRYO SHATTER! (+40%)**; 3D orbital energy halos for Octopus Form & Iroh's Lightning Redirection; and 3D perspective floor shockwave rings on slams, Seismic Sense/Eruption, Guard Shatters, Wall Splats, and Eclipse Finishers.
-            - **True 2.5D Depth-Layered Weather & Cinematic Camera Tilt:** Biome-reactive 3D particles spanning background-to-foreground (including tumbling 3D crimson Japanese maple leaves in Eclipse Citadel & Main Menu) plus subtle 2.5D perspective tilt during Ultimates, Blade Clashes, 8-Arm Octopus Multi-Slam, and `FINISH THEM!`.
-            - **Android-Optimized & Toggleable:** Bundled offline in `assets/three.min.js` (zero CDN), pre-allocated pools (zero GC stalls), and a live **`2.5D WebGL FX (Three.js): ON / OFF`** switch in Pause -> Audio & AI.
-          - **Katara's Overhauled 8-Arm Octopus Multi-Slam:**
-            - Water's Tap / Fwd + BEND (35% meter) now activates Octopus Form AND immediately surges forward with an articulated **8-Arm Octopus Whip** (`355px` reach, also re-triggerable via `GRAB` during Octopus Form!).
-            - On grab, ALL 8 sculpted ink-outlined water tentacles radiate from the caster in a Tai Chi stance and whip-slam the opponent **8 alternating times** left-to-right (`OCTOPUS SLAM 1/8` -> `7/8`), building an instant **`COMBO x8`**, before all 8 Kraken arms converge for the lethal **`8/8 OCTOPUS FINALE!`** with monochrome ink flash, slow-mo, and 3D floor water-ripple shockwaves!
-          - **Polish & Readability:** Upgraded combat callout anti-overlap stacking and crisp single-counter replacement during multi-slams.
+          ### What's New in v3.0.0
+          - **Shadow Fight 2 Ergonomic 4-Button Touch Cluster:**
+            - Removed redundant `GRAB`, `BLK`, `ROLL`, and duplicate `WEAPON` buttons, freeing the right-hand combat area for **4 large, generously spaced Shadow Fight 2 buttons** arranged in a natural thumb arc:
+              - **PUNCH (`68×68px`)**: Primary weapon / martial-arts strike, automatic close-range Fwd/Back throws, Water Octopus Grab when active, and instant bare-fist fallback if disarmed.
+              - **KICK (`68×68px`)**: Full directional leg arts, sweeps, jump kicks, and air combos.
+              - **ELEMENT BENDING (`62×62px`)**: Live directional Signature Bending & Ultimates.
+              - **SUB-BENDING (`62×62px`)**: Dedicated trigger for all 8 secret ATLA Sub-Bending Arts (glows gold when upgraded with a Grandmaster Scroll).
+              - Optional floating **SHIFT** orb appears above the cluster once Avatar State is unlocked.
+            - Guard & timed parry happen natively via idle/hold-Back, and dash/evade roll triggers cleanly on stick double-tap.
+          - **8 Secret ATLA Sub-Bending Arts & Unlockable Grandmaster Scrolls:**
+            - Every element now has its own iconic sub-discipline — **Bloodbending** (Water, crimson moon puppet lift + slam), **Combustion Beam** (Fire, third-eye spark-spark-boom detonation), **Zaheer's Vacuum Sphere** (Air, breath-drain vortex pull), **Cryo Spear Dome** (Ice, 7-spear radial freeze), **Metalbending Cables** (Earth, dual Lin Beifong grapple reels), **Arc Lightning Storm** (Lightning, 3-bolt chain surge), **Eclipse Soul-Bind** (Shadow, twin-tether drain), and **Caldera Magma Rift** (Magma, twin erupting fissures).
+            - Unlock Grandmaster Scrolls via Regional Trials or the new **Armory Forge -> Scrolls** tab (`350 coins`) to empower Sub-Bending damage, range, and golden HUD aura.
+          - **Armory Forge Weapon Enchantment Seals & 3D Volumetric Slash Ribbons:**
+            - Craft and equip 5 permanent Weapon Enchantment Seals (**Frost-Edge**, **Thunder-Forged**, **Scorched-Ember**, **Umbral-Drain**, **Seismic-Crush**) in the new **Armory Forge -> Enchants** tab (`320-480 coins`), adding elemental combat procs, blade tip glints, and seal-tinted **Three.js 3D Volumetric Weapon Slash Ribbons** sweeping through 2.5D depth on every swing.
+          - **Sculpted Tapered Hokusai Ink Tentacles:**
+            - Upgraded Katara's 8-Arm Octopus Form & 8-Slam Whip with tapered calligraphic sumi-e water tentacles featuring dark ink outlines, indigo-to-cyan gradients, white specular foam spines, curled Hokusai wave crests, and 3-taloned water claws.
+          - **All 8 Per-Element "FINISH THEM!" Cinematic Executions:**
+            - Every element now delivers a bespoke 1.5-second choreographed execution on decisive finishers (`TIDAL ABYSS EXECUTION`, `SOZIN TWIN DRAGON INFERNO`, `SKY TEMPEST ASCENSION`, `ABSOLUTE ZERO SHATTER`, `EARTH COFFIN CRUSH`, `HEAVEN'S JUDGMENT BOLT`, `ECLIPSE ABYSS DRAG`, `CALDERA MAGMA ERUPTION`).
+          - **Boss Phase-2 Awakening Cut-Ins & Distinct 8-Element Archetype AI Brains:**
+            - Campaign Masters now erupt into Phase 2 with a 48-frame freeze, camera zoom, sumi-e ink-brush awakening plaque, and 3D floor shockwave, backed by bespoke per-element AI tactics (Volt Iroh Redirect, Terra Stone Wall, Frost Cryo Shatter rush, Zephyr wall-jump & Air Scooter, Mizu Octopus Whip & Water Heal, Umbra Eclipse Swap, plus High-Dan Sub-Bending casts).
+          - **Dynamic 3-Tier Round-Escalating Japanese Soundtrack & Layered Impact SFX:**
+            - Procedural Shakuhachi, Shamisen, Koto, Hyoshigi clappers, and Taiko drums automatically intensify from Round 1 tension -> Round 2 clash -> Round 3 / Match Point / Phase-2 war drums, paired with layered water whips, crystal shatters, blade clashes, awakening surges, and sub-bending SFX.
+          - **Shadow Tower Rotating Mutators & Today's Daily Trial (`2x COINS`):**
+            - Four rotating combat mutators (`AVATAR ROULETTE`, `BENDING SUPREMACY`, `SHATTERED GUARD`, `VOLCANIC FLOOR`) cycle every 3 waves in Endless Shadow Tower and power the new **DAILY TRIAL (`2x COINS`)** mode in the Roster menu.
           EOF
           )
           if gh release view "$TAG" >/dev/null 2>&1; then
-            gh release upload "$TAG" out/ElementalShadows-v2.5.0-android.apk --clobber
+            gh release upload "$TAG" out/ElementalShadows-v3.0.0-android.apk --clobber
           else
-            gh release create "$TAG" out/ElementalShadows-v2.5.0-android.apk \
-              --title "Elemental Shadows v2.5.0 (Android APK — Three.js 2.5D Visual Enhancer & Katara 8-Arm Octopus Multi-Slam)" \
+            gh release create "$TAG" out/ElementalShadows-v3.0.0-android.apk \
+              --title "Elemental Shadows v3.0.0 (Android APK — SF2 4-Button Controls, Sub-Bending Scrolls, Weapon Enchants & 8 Executions)" \
               --notes "$NOTES"
           fi

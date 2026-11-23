@@ -225,116 +225,138 @@
       pointer-events: auto; touch-action: none;
     }
     .stick-base {
-      position: absolute; left: clamp(20px, 3.2vw, 44px); bottom: clamp(16px, 3.2vh, 34px);
-      width: clamp(86px, 16vh, 114px); height: clamp(86px, 16vh, 114px);
+      position: absolute; left: clamp(22px, 3.6vw, 48px); bottom: clamp(20px, 4.2vh, 38px);
+      width: clamp(98px, 19vh, 130px); height: clamp(98px, 19vh, 130px);
       border-radius: 9999px;
-      background: radial-gradient(circle, rgba(28, 20, 14, 0.22) 0%, rgba(14, 10, 8, 0.54) 100%);
-      border: 2px solid rgba(244, 224, 188, 0.28);
+      background: radial-gradient(circle, rgba(28, 20, 14, 0.24) 0%, rgba(14, 10, 8, 0.56) 100%);
+      border: 2px solid rgba(244, 224, 188, 0.34);
       display: flex; align-items: center; justify-content: center;
-      opacity: 0.38; pointer-events: none;
+      opacity: 0.48; pointer-events: none;
       transition: opacity 0.16s ease;
       transform-origin: center center;
     }
-    .stick-base.active { opacity: 0.9; border-color: rgba(242, 188, 86, 0.78); }
+    .stick-base.active { opacity: 0.92; border-color: rgba(242, 188, 86, 0.85); }
     .stick-ring {
       position: absolute; inset: 16%; border-radius: 9999px;
-      border: 1px dashed rgba(244, 224, 188, 0.24); pointer-events: none;
+      border: 1px dashed rgba(244, 224, 188, 0.28); pointer-events: none;
     }
     .s-arr {
       position: absolute; font-size: 9px; font-weight: 900;
-      color: rgba(244, 224, 188, 0.42); pointer-events: none;
+      color: rgba(244, 224, 188, 0.45); pointer-events: none;
     }
     .s-arr.active { color: #f6c95e; transform: scale(1.25); }
-    .s-arr.u { top: 5px; } .s-arr.d { bottom: 5px; } .s-arr.l { left: 6px; } .s-arr.r { right: 6px; }
+    .s-arr.u { top: 6px; } .s-arr.d { bottom: 6px; } .s-arr.l { left: 7px; } .s-arr.r { right: 7px; }
     .stick-knob {
       width: 40%; height: 40%; border-radius: 9999px;
-      background: radial-gradient(circle at 35% 30%, rgba(252, 240, 214, 0.92), rgba(180, 146, 104, 0.74));
-      border: 2px solid rgba(24, 16, 10, 0.8);
+      background: radial-gradient(circle at 35% 30%, rgba(252, 240, 214, 0.94), rgba(180, 146, 104, 0.78));
+      border: 2px solid rgba(24, 16, 10, 0.84);
       pointer-events: none; will-change: transform;
     }
 
+    /* Authentic Shadow Fight 2 Ergonomic 4-Button Arc (Large, Zero Clutter, Easy Thumb Reach!) */
     .action-cluster {
-      position: absolute; right: clamp(12px, 2vw, 24px); bottom: clamp(12px, 2.2vh, 22px);
+      position: absolute; right: clamp(18px, 3vw, 36px); bottom: clamp(20px, 4.2vh, 38px);
       pointer-events: none;
       display: flex; flex-direction: column; align-items: flex-end;
-      gap: clamp(7px, 1.3vh, 11px);
+      gap: clamp(10px, 2.2vh, 16px);
       transform-origin: bottom right;
     }
-    .action-row { display: flex; align-items: center; justify-content: flex-end; gap: clamp(8px, 1.4vw, 13px); pointer-events: none; }
+    .action-row { display: flex; align-items: center; justify-content: flex-end; gap: clamp(14px, 2.6vw, 24px); pointer-events: none; }
     .action-row .cbtn { pointer-events: auto; }
-    .action-row.top-row { padding-right: 2px; }
+    .action-row.shift-row { margin-bottom: -4px; padding-right: 4px; }
+    .action-row.top-row { transform: translateX(clamp(-14px, -2vw, -8px)); }
+    .action-row.bot-row { padding-right: 2px; }
     .cbtn {
       position: relative; border-radius: 9999px;
-      border: 2px solid rgba(246, 224, 184, 0.36);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.46);
-      color: #fff8eb; opacity: 0.78;
+      border: 2.2px solid rgba(246, 224, 184, 0.48);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.54), inset 0 1px 0 rgba(255, 248, 225, 0.24);
+      color: #fff8eb; opacity: 0.86;
       font-family: var(--font-head); font-weight: 800;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
       cursor: pointer; touch-action: none;
       transition: transform 0.06s ease, opacity 0.08s ease;
     }
     .cbtn > * { pointer-events: none; }
-    .cbtn:active, .cbtn.pressed { transform: scale(0.88); opacity: 1; border-color: #fff6de; }
+    .cbtn:active, .cbtn.pressed { transform: scale(0.90); opacity: 1; border-color: #fff6de; }
     .cbtn.deny { animation: btnDeny 0.22s ease; }
     @keyframes btnDeny { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
-    .cbtn .l { font-size: clamp(14px, 2.1vh, 19px); line-height: 1; text-shadow: 0 1px 4px rgba(0,0,0,0.65); }
-    .cbtn .h { font-family: var(--font-ui); font-size: clamp(7.5px, 1.05vh, 9px); font-weight: 700; opacity: 0.88; margin-top: 1px; }
-    .cbtn .kb-hint { font-family: var(--font-ui); font-size: 8.5px; font-weight: 700; opacity: 0.75; margin-top: 1px; }
-    body.is-touch .kb-hint { display: none; }
-    .b-punch { width: clamp(46px, 9.6vh, 62px); height: clamp(46px, 9.6vh, 62px); background: radial-gradient(circle at 35% 30%, rgba(214,66,42,0.9), rgba(132,26,18,0.9)); }
-    .b-kick { width: clamp(46px, 9.6vh, 62px); height: clamp(46px, 9.6vh, 62px); background: radial-gradient(circle at 35% 30%, rgba(226,144,32,0.9), rgba(148,74,12,0.9)); }
-    .b-weapon { width: clamp(48px, 10vh, 64px); height: clamp(48px, 10vh, 64px); background: radial-gradient(circle at 35% 30%, rgba(42,148,176,0.9), rgba(16,82,108,0.9)); }
-    .b-block { width: clamp(36px, 7.6vh, 48px); height: clamp(36px, 7.6vh, 48px); background: radial-gradient(circle at 35% 30%, rgba(112,96,78,0.84), rgba(46,37,29,0.88)); }
-    .b-evade { width: clamp(36px, 7.6vh, 48px); height: clamp(36px, 7.6vh, 48px); background: radial-gradient(circle at 35% 30%, rgba(84,72,58,0.84), rgba(32,26,20,0.88)); }
-    .b-grab { width: clamp(36px, 7.6vh, 48px); height: clamp(36px, 7.6vh, 48px); background: radial-gradient(circle at 35% 30%, rgba(146,72,118,0.86), rgba(78,28,62,0.9)); }
-    .b-avatar {
-      width: clamp(34px, 7vh, 44px); height: clamp(34px, 7vh, 44px);
-      background: radial-gradient(circle at 35% 30%, rgba(246,196,72,0.94), rgba(166,86,14,0.94));
-      border-color: #fde9a8; color: #1b0c04; margin-right: 4px;
+    .cbtn .act-ico { width: 44%; height: 44%; display: flex; align-items: center; justify-content: center; }
+    .cbtn .act-ico svg { width: 100%; height: 100%; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.65)); }
+    .cbtn .h { font-family: var(--font-ui); font-size: clamp(8px, 1.2vh, 10px); font-weight: 800; opacity: 0.92; margin-top: 1px; }
+    .b-punch {
+      width: clamp(68px, 16.4vh, 84px); height: clamp(68px, 16.4vh, 84px);
+      background: radial-gradient(circle at 35% 28%, rgba(218, 62, 38, 0.92), rgba(124, 22, 16, 0.94));
+      border-color: rgba(255, 198, 134, 0.65);
     }
-    .b-evade svg, .b-block svg, .b-grab svg { width: 42%; height: 42%; }
-    .b-magic {
-      width: clamp(48px, 10vh, 64px); height: clamp(48px, 10vh, 64px);
-      background: radial-gradient(circle at 35% 30%, rgba(78,68,58,0.84), rgba(34,27,22,0.88));
-      border-color: rgba(246, 224, 184, 0.3); opacity: 0.56; filter: grayscale(0.45);
+    .b-kick {
+      width: clamp(68px, 16.4vh, 84px); height: clamp(68px, 16.4vh, 84px);
+      background: radial-gradient(circle at 35% 28%, rgba(232, 146, 30, 0.92), rgba(140, 68, 10, 0.94));
+      border-color: rgba(255, 218, 138, 0.65);
+    }
+    .b-avatar {
+      width: clamp(38px, 8vh, 48px); height: clamp(38px, 8vh, 48px);
+      background: radial-gradient(circle at 35% 30%, rgba(246,196,72,0.94), rgba(166,86,14,0.94));
+      border-color: #fde9a8; color: #1b0c04;
+    }
+    .b-magic, .b-sub {
+      width: clamp(62px, 14.8vh, 76px); height: clamp(62px, 14.8vh, 76px);
+      background: radial-gradient(circle at 35% 30%, rgba(76, 66, 56, 0.84), rgba(30, 24, 20, 0.9));
+      border-color: rgba(246, 224, 184, 0.34); opacity: 0.58; filter: grayscale(0.45);
     }
     .b-magic.ex-ready {
-      opacity: 0.9; filter: none; border-color: var(--mg-glow, #56daf5);
+      opacity: 0.94; filter: none; border-color: var(--mg-glow, #56daf5);
       background: radial-gradient(circle at 38% 30%, var(--mg-prim, #0c7de8), #1d1510);
-      box-shadow: 0 0 12px var(--mg-prim, #0c7de8);
+      box-shadow: 0 0 14px var(--mg-prim, #0c7de8);
     }
     .b-magic.ready {
       opacity: 1; filter: none; border-color: #fae08c;
       background: radial-gradient(circle at 38% 30%, var(--mg-glow, #f5aa34), var(--mg-prim, #c93b24));
       animation: orbPulse 0.85s ease-in-out infinite alternate;
     }
+    .b-sub.sub-ready {
+      opacity: 0.96; filter: none; border-color: var(--sb-glow, #e4b8ff);
+      background: radial-gradient(circle at 38% 28%, var(--sb-prim, #7c3aed), #1b1124);
+      box-shadow: 0 0 14px var(--sb-glow, rgba(168, 85, 247, 0.72));
+    }
+    .b-sub.sub-gm {
+      border-color: #fde047;
+      box-shadow: 0 0 18px rgba(253, 224, 71, 0.85), inset 0 0 10px rgba(253, 224, 71, 0.35);
+    }
     .b-magic.swiping { transform: scale(1.08); opacity: 1; border-color: #fff6dc; }
     @keyframes orbPulse {
       from { transform: scale(1); box-shadow: 0 0 12px rgba(245, 188, 66, 0.82); }
       to { transform: scale(1.08); box-shadow: 0 0 22px rgba(252, 224, 134, 1); }
     }
-    .b-magic .mi { width: 42%; height: 42%; color: #fff8dc; }
-    .b-magic .mi svg { width: 100%; height: 100%; }
-    .b-magic .mt { font-size: clamp(7.5px, 1.05vh, 9px); letter-spacing: 0.08em; margin-top: 1px; }
+    .b-magic .mi, .b-sub .mi { width: 40%; height: 40%; color: #fff8dc; display: flex; align-items: center; justify-content: center; }
+    .b-magic .mi svg, .b-sub .mi svg { width: 100%; height: 100%; }
+    .cbtn .mt { font-size: clamp(7.2px, 1.45vh, 9.5px); letter-spacing: 0.03em; margin-top: 2px; text-shadow: 0 1px 3px rgba(0,0,0,0.85); white-space: nowrap; }
     .bend-dir-pill {
-      position: absolute; top: -8px; right: -4px;
-      min-width: 19px; height: 19px; padding: 0 4px; border-radius: 999px;
+      position: absolute; top: -10px; right: -6px;
+      min-width: 22px; height: 20px; padding: 0 6px; border-radius: 999px;
       background: #1a130e; border: 1.5px solid #f6d068; color: #f8e2b5;
       font-family: var(--font-ui); font-size: 10px; font-weight: 900;
       display: none; align-items: center; justify-content: center; line-height: 1;
     }
     .bend-dir-pill.show { display: flex; }
 
-    /* Guided Dojo Tutorial Objective Pill */
-    .tut-pill {
-      position: absolute; top: clamp(68px, 11.5vh, 92px); left: 50%; transform: translateX(-50%);
+    /* Guided Dojo Tutorial Objective Pill & Shadow Tower / Daily Mutator Pill */
+    .tut-pill, .mutator-pill {
+      position: absolute; top: clamp(66px, 11.2vh, 90px); left: 50%; transform: translateX(-50%);
       background: linear-gradient(180deg, rgba(26, 20, 15, 0.94), rgba(14, 10, 8, 0.96));
       border: 1.5px solid rgba(230, 178, 92, 0.55); border-radius: 6px;
-      padding: 7px 16px; text-align: center; pointer-events: none; z-index: 11;
+      padding: 6px 15px; text-align: center; pointer-events: none; z-index: 11;
       max-width: min(500px, 86%); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
     }
-    .tut-pill b { font-family: var(--font-head); font-size: clamp(11px, 1.2vw, 13px); letter-spacing: 0.12em; color: var(--gold-light); display: block; }
-    .tut-pill span { font-size: clamp(11px, 1.15vw, 13px); color: #f4ead8; display: block; margin-top: 2px; }
+    .mutator-pill {
+      top: clamp(58px, 9.8vh, 80px);
+      border-color: rgba(244, 102, 46, 0.68);
+      padding: 3px 12px; max-width: min(460px, 84%);
+      background: rgba(18, 12, 9, 0.86);
+    }
+    .tut-pill b, .mutator-pill b { font-family: var(--font-head); font-size: clamp(10.5px, 1.15vw, 12.5px); letter-spacing: 0.12em; color: var(--gold-light); display: block; }
+    .mutator-pill b { color: #ffb347; font-size: clamp(9px, 1.0vw, 11px); letter-spacing: 0.11em; }
+    .tut-pill span, .mutator-pill span { font-size: clamp(10.5px, 1.1vw, 12.5px); color: #f4ead8; display: block; margin-top: 2px; }
+    .mutator-pill span { font-size: clamp(8.5px, 0.95vw, 10.5px); margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
     /* ===== MAIN MENU (HAND-INKED SUMI-E TITLE SCREEN) ===== */
     .main-menu {
@@ -547,11 +569,14 @@
 
     /* ===== SHADOW FIGHT 2 3-COLUMN ARMORY SHOWCASE (Zero Squashing, Auto-Fit Full Weapon!) ===== */
     .armory-head {
-      display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-shrink: 0;
-      border-bottom: 1px solid var(--ink-border-soft); padding-bottom: 8px;
+      display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-shrink: 0;
+      border-bottom: 1px solid var(--ink-border-soft); padding-bottom: 7px;
     }
-    .armory-head-left { display: flex; align-items: center; gap: 12px; min-width: 0; }
-    .armory-head h1 { font-family: var(--font-head); font-size: clamp(15px, 1.8vw, 21px); letter-spacing: 0.14em; color: var(--gold-light); white-space: nowrap; }
+    .armory-head-left { display: flex; align-items: center; gap: 8px; min-width: 0; flex: 1; }
+    .armory-head .tabs { gap: 3px; padding: 3px; }
+    .armory-head .tab { padding: 4px 8px; font-size: clamp(10px, 1.15vw, 12px); }
+    .armory-head .pill-row { flex-wrap: nowrap; flex-shrink: 0; gap: 6px; }
+    .armory-head h1 { font-family: var(--font-head); font-size: clamp(13px, 1.6vw, 19px); letter-spacing: 0.11em; color: var(--gold-light); white-space: nowrap; }
     .armory-showcase {
       flex: 1; min-height: 0;
       display: grid; grid-template-columns: minmax(175px, 0.92fr) 1.4fr minmax(185px, 0.92fr);
@@ -938,10 +963,11 @@
 
       <button class="pause-corner" id="btn-pause" title="Pause (Esc)" aria-label="Pause"><svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4.2" height="16" rx="1"/><rect x="13.8" y="4" width="4.2" height="16" rx="1"/></svg></button>
       <div class="tut-pill hidden" id="tut-pill"><b id="tut-step">DOJO LESSON 1 / 4</b><span id="tut-desc"></span></div>
+      <div class="mutator-pill hidden" id="mutator-pill"><b id="mut-title">TRIAL MUTATOR</b><span id="mut-desc"></span></div>
       <div class="style-rank" id="style-rank"><div class="sr-grade" id="sr-grade">D</div><div class="sr-lbl" id="sr-lbl">FLOW</div></div>
       <div class="combo c1" id="combo-p1"></div>
       <div class="combo c2" id="combo-p2"></div>
-      <div class="first-tip hidden" id="first-tip">WASD Move · J Punch · K Kick · L Weapon · G Throw · U / Space Bend (35% Signature · 100% Ult)</div>
+      <div class="first-tip hidden" id="first-tip">WASD Move · J / L Punch &amp; Weapon · K Kick · U / Space Element Bend · I / O Sub-Bend · Double-Tap Dash</div>
 
       <div class="banner hidden" id="banner">
         <div class="banner-title" id="banner-title">ROUND 1</div>
@@ -969,43 +995,31 @@
       </div>
 
       <div class="action-cluster" id="action-cluster">
-        <div class="action-row">
+        <div class="action-row shift-row">
           <button class="cbtn b-avatar hidden" id="btn-avatar" title="Avatar Element Shift (Q)">
             <span class="act-ico" style="color:#1b0c04"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 7.6L22 12l-7.6 2.4L12 22l-2.4-7.6L2 12l7.6-2.4z"/></svg></span>
             <span class="h" style="color:#1b0c04">SHIFT</span>
           </button>
         </div>
         <div class="action-row top-row">
-          <button class="cbtn b-grab" data-act="grab" id="btn-grab" title="Throw / Air Throw (G)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11V6a2 2 0 0 0-4 0v4"/><path d="M14 10V4a2 2 0 0 0-4 0v6"/><path d="M10 10.5V6a2 2 0 0 0-4 0v8"/><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.8-5.9-2.2L3.3 17a2 2 0 0 1 2.8-2.8L8 16"/></svg>
-            <span class="h">GRAB</span>
-          </button>
-          <button class="cbtn b-block" data-act="block" id="btn-block" title="Guard / Parry (B)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-            <span class="h">BLK</span>
-          </button>
-          <button class="cbtn b-evade" data-act="evade" title="Roll / Dash (I / Shift)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>
-            <span class="h">ROLL</span>
-          </button>
-          <button class="cbtn b-magic" data-act="magic" id="btn-magic" title="Bending Art (U / Space or Swipe)">
+          <button class="cbtn b-magic" data-act="magic" id="btn-magic" title="Element Bending (U / Space or Swipe)">
             <span class="bend-dir-pill" id="bend-dir-pill"></span>
             <span class="mi" id="magic-icon"></span>
             <span class="mt" id="bend-lbl">BEND</span>
           </button>
+          <button class="cbtn b-sub" data-act="subbend" id="btn-sub" title="Secret Sub-Bending Art (I / O)">
+            <span class="mi" id="sub-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="8"/><path d="M12 4v16M4 12h16"/><circle cx="12" cy="12" r="3" fill="currentColor"/></svg></span>
+            <span class="mt" id="sub-lbl">SUB</span>
+          </button>
         </div>
-        <div class="action-row">
-          <button class="cbtn b-punch" data-act="punch" title="Punch (J)">
-            <span class="act-ico"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7.5 11V7.2a1.7 1.7 0 0 1 3.4 0v2.1h.6V6.5a1.7 1.7 0 0 1 3.4 0v2.8h.6V7.5a1.6 1.6 0 0 1 3.2 0v5.8c0 4-2.7 6.7-6.7 6.7H10c-3.4 0-5.8-2.4-5.8-5.9v-2.6a1.7 1.7 0 0 1 3.3-.5z"/></svg></span>
-            <span class="kb-hint">J</span>
+        <div class="action-row bot-row">
+          <button class="cbtn b-punch" data-act="weapon" id="btn-punch" title="Punch / Weapon Strike &amp; Close Throw (J / L)">
+            <span class="act-ico" id="weapon-btn-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"><path d="M5 19L19 5"/><path d="M8 12l4 4"/></svg></span>
+            <span class="mt">PUNCH</span>
           </button>
-          <button class="cbtn b-kick" data-act="kick" title="Kick (K)">
+          <button class="cbtn b-kick" data-act="kick" id="btn-kick" title="Kick / Sweep / Jump Kick (K)">
             <span class="act-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17l7-4 6.5-5.5"/><path d="M15 5.5l5 2.5-2.2 3.8"/><path d="M4 13c3.5-4.2 8.5-7 14-7.8" stroke-dasharray="2.5 2.5"/></svg></span>
-            <span class="kb-hint">K</span>
-          </button>
-          <button class="cbtn b-weapon" data-act="weapon" title="Weapon (L)">
-            <span class="act-ico" id="weapon-btn-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 19L19 5"/><path d="M8 12l4 4"/></svg></span>
-            <span class="kb-hint">L</span>
+            <span class="mt">KICK</span>
           </button>
         </div>
       </div>
@@ -1411,62 +1425,97 @@
     }
     const isFinalBoss = Boolean(match.boss && match.boss.isFinal);
     const isPhase2 = Boolean(p2 && p2.phase2);
+    const isMatchPt = (match.toWin < 10) && (match.p1W >= match.toWin - 1 || match.p2W >= match.toWin - 1);
     const reg = REGION_BGM[(match.boss ? match.boss.el : p2.el.id)] || REGION_BGM.water;
-    const intense = isFinalBoss || isPhase2 || (p1.hp / p1.maxHp < 0.32) || (p2.hp / p2.maxHp < 0.32) || (match.round >= 3) || (match.boss && match.boss.id >= 6);
-    const stepFrames = (isFinalBoss || isPhase2) ? 8 : (intense ? Math.max(8, reg.baseStep - 3) : reg.baseStep);
+    // Dynamic 3-Tier Round Escalation: Tier 1 (Round 1 tension) -> Tier 2 (Round 2 Shamisen drive) -> Tier 3 (Round 3 / Match Point / Phase 2 war drums!)
+    const tier = (isFinalBoss || isPhase2 || isMatchPt || match.round >= 3 || (p1.hp / p1.maxHp < 0.28) || (p2.hp / p2.maxHp < 0.28)) ? 3 : (match.round >= 2 || (match.boss && match.boss.id >= 4)) ? 2 : 1;
+    const stepFrames = tier === 3 ? 8 : (tier === 2 ? Math.max(9, reg.baseStep - 2) : reg.baseStep + 1);
     if (++bgmTick < stepFrames) return;
     bgmTick = 0;
     const s = bgmStep % 16;
     const bar = Math.floor(bgmStep / 16) % 4;
     bgmStep++;
-    // O-daiko & Shime-daiko war drums + wooden Hyoshigi clappers
-    if (s === 0 || s === 6 || s === 8 || (intense && (s === 12 || s === 14))) {
-      playTaiko(s === 0 ? reg.drum + 14 : reg.drum, false, s === 0 ? 0.15 : 0.105);
-    } else if (s === 4 || s === 12 || (intense && s % 2 === 1)) {
-      playTaiko(reg.drum, true, 0.048);
-    }
-    if (intense && (s === 2 || s === 10)) playHyoshigi(0.032);
-    // Plucked Shamisen / Koto Japanese pentatonic lead
-    const motif = (isFinalBoss || isPhase2) ? ECLIPSE_MOTIF : ((bar >= 2 || intense) ? SHAMISEN_MOTIF_B : SHAMISEN_MOTIF_A);
-    if (s % 2 === 0 || (intense && (s === 3 || s === 7 || s === 11 || s === 15))) {
-      const noteIdx = motif[s];
-      const freq = reg.scale[noteIdx] * (isPhase2 ? 1.08 : (isFinalBoss ? 1.05 : 1.0));
-      playKoto(freq, intense ? 0.22 : 0.34, intense ? 0.058 : 0.048, reg.shamisen || intense);
-    }
-    // Breathy Shakuhachi bamboo flute phrasing
-    if ((s === 0 && bar % 2 === 0) || (s === 8 && bar === 1)) {
-      const flIdx = bar === 0 ? 5 : (bar === 1 ? 7 : 3);
-      playShakuhachi(reg.scale[flIdx], 1.05, 0.038);
+    if (tier === 1) {
+      // Round 1: Tense solo Shakuhachi flute + sparse atmospheric koto + deep heartbeat O-daiko
+      if (s === 0 || (s === 8 && bar % 2 === 1)) playTaiko(reg.drum, false, s === 0 ? 0.12 : 0.08);
+      if (s === 12) playTaiko(reg.drum, true, 0.038);
+      const idx = KOTO_MENU_MOTIF[s];
+      if (idx >= 0) playKoto(reg.scale[idx], 0.44, 0.044, false);
+      if ((s === 0 && bar % 2 === 0) || (s === 8 && bar === 2)) {
+        playShakuhachi(reg.scale[bar === 0 ? 5 : (bar === 2 ? 7 : 3)], 1.35, 0.044);
+      }
+    } else if (tier === 2) {
+      // Round 2: Driving Shamisen plucking + wooden Hyoshigi clappers + steady Taiko battle pulse
+      if (s === 0 || s === 6 || s === 8) playTaiko(s === 0 ? reg.drum + 10 : reg.drum, false, s === 0 ? 0.145 : 0.10);
+      else if (s === 4 || s === 12) playTaiko(reg.drum, true, 0.048);
+      if (s === 2 || s === 10) playHyoshigi(0.032);
+      const motif = bar >= 2 ? SHAMISEN_MOTIF_B : SHAMISEN_MOTIF_A;
+      if (s % 2 === 0 || s === 7 || s === 15) {
+        playKoto(reg.scale[motif[s]], 0.28, 0.052, true);
+      }
+      if (s === 0 && bar === 0) playShakuhachi(reg.scale[5], 1.05, 0.038);
+    } else {
+      // Round 3 / Match Point / Phase-2 Awakening: Rapid Taiko war-drums + deep sub-bass + blistering Shamisen + soaring Shakuhachi!
+      if (s === 0 || s === 4 || s === 6 || s === 8 || s === 12 || s === 14) {
+        playTaiko(s === 0 ? Math.max(48, reg.drum * 0.56) : reg.drum + 12, false, s === 0 ? 0.175 : 0.115);
+      } else if (s % 2 === 1) {
+        playTaiko(reg.drum + 24, true, 0.052);
+      }
+      if (s === 2 || s === 10 || s === 14) playHyoshigi(0.038);
+      const motif = (isFinalBoss || isPhase2) ? ECLIPSE_MOTIF : (bar % 2 === 0 ? SHAMISEN_MOTIF_B : SHAMISEN_MOTIF_A);
+      if (s % 2 === 0 || s === 3 || s === 7 || s === 11 || s === 15) {
+        const freq = reg.scale[motif[s]] * (isPhase2 ? 1.08 : (isFinalBoss ? 1.05 : 1.0));
+        playKoto(freq, 0.20, 0.062, true);
+      }
+      if ((s === 0 && bar % 2 === 0) || (s === 8 && bar === 1)) {
+        playShakuhachi(reg.scale[bar === 1 ? 8 : 7], 0.95, 0.044);
+      }
     }
   }
 
+  function playNoiseBurst(dur = 0.14, freq = 1400, q = 2.0, vol = 0.22) {
+    if (!settings.sfxOn || !audioCtx || audioCtx.state !== 'running' || settings.volume < 0.02) return;
+    const nb = getNoiseBuf(); if (!nb) return;
+    const t = audioCtx.currentTime;
+    const ns = audioCtx.createBufferSource(), f = audioCtx.createBiquadFilter(), g = audioCtx.createGain();
+    ns.buffer = nb; f.type = 'bandpass'; f.frequency.setValueAtTime(freq, t); f.frequency.exponentialRampToValueAtTime(Math.max(180, freq * 0.45), t + dur); f.Q.value = q;
+    g.gain.setValueAtTime(vol * settings.volume, t); g.gain.exponentialRampToValueAtTime(0.001, t + dur);
+    ns.connect(f).connect(g).connect(audioCtx.destination);
+    ns.start(t); ns.stop(t + dur + 0.02);
+  }
+
   const sfx = {
-    whoosh: (h) => playTone(h ? 340 : 580, h ? 95 : 175, h ? 0.16 : 0.1, 'triangle', 0.15),
+    whoosh: (h) => { playTone(h ? 340 : 580, h ? 95 : 175, h ? 0.16 : 0.1, 'triangle', 0.15); if (h) playNoiseBurst(0.11, 1100, 1.4, 0.11); },
     bend: () => { playTone(320, 680, 0.14, 'sine', 0.14); playTone(180, 90, 0.18, 'triangle', 0.16); },
+    waterWhip: () => { playNoiseBurst(0.18, 1650, 2.2, 0.24); playTone(480, 175, 0.16, 'sine', 0.18); playTone(760, 290, 0.12, 'triangle', 0.12); },
+    crystalShatter: () => { playNoiseBurst(0.22, 3400, 1.8, 0.28); [2480, 3120, 1960].forEach((f, i) => playTone(f, f * 0.62, 0.16 + i * 0.04, 'sine', 0.14)); playTone(160, 42, 0.24, 'triangle', 0.34); },
+    bladeClash: () => { playNoiseBurst(0.14, 2800, 3.0, 0.22); playTone(1940, 1420, 0.26, 'sawtooth', 0.14); playTone(2680, 2120, 0.22, 'triangle', 0.16); },
+    awakening: () => { [112, 168, 224, 336].forEach((f, i) => playTone(f, f * 1.18, 0.72 + i * 0.08, i % 2 ? 'sawtooth' : 'sine', 0.11)); playNoiseBurst(0.32, 900, 1.2, 0.18); },
+    subBend: (elId) => { playTone(260, 780, 0.22, 'sawtooth', 0.16); playTone(145, 55, 0.28, 'triangle', 0.24); playNoiseBurst(0.18, elId === 'fire' || elId === 'lava' ? 900 : 2100, 1.8, 0.18); },
     elemBend: (elId) => {
-      if (elId === 'water') { playTone(260, 540, 0.18, 'sine', 0.16); playTone(420, 210, 0.20, 'triangle', 0.12); }
-      else if (elId === 'fire') { playTone(380, 115, 0.20, 'sawtooth', 0.16); playTone(620, 240, 0.15, 'triangle', 0.13); }
-      else if (elId === 'ice') { playTone(1380, 1880, 0.14, 'sine', 0.14); playTone(920, 580, 0.16, 'triangle', 0.12); }
-      else if (elId === 'earth') { playTone(105, 32, 0.24, 'triangle', 0.24); playTone(175, 52, 0.18, 'square', 0.11); }
-      else if (elId === 'air') { playTone(480, 920, 0.18, 'sine', 0.14); playTone(740, 380, 0.16, 'triangle', 0.10); }
-      else if (elId === 'lightning') { playTone(1680, 420, 0.11, 'square', 0.13); playTone(920, 1540, 0.10, 'sawtooth', 0.11); }
-      else if (elId === 'shadow') { playTone(215, 72, 0.22, 'sine', 0.18); playTone(320, 108, 0.20, 'triangle', 0.13); }
-      else { playTone(150, 38, 0.25, 'sawtooth', 0.18); playTone(280, 82, 0.20, 'triangle', 0.14); }
+      if (elId === 'water') { sfx.waterWhip(); }
+      else if (elId === 'fire') { playNoiseBurst(0.18, 820, 1.3, 0.20); playTone(380, 115, 0.20, 'sawtooth', 0.16); playTone(620, 240, 0.15, 'triangle', 0.13); }
+      else if (elId === 'ice') { playTone(1480, 2120, 0.14, 'sine', 0.15); playTone(920, 580, 0.16, 'triangle', 0.12); playNoiseBurst(0.12, 3200, 2.5, 0.14); }
+      else if (elId === 'earth') { playTone(105, 32, 0.24, 'triangle', 0.26); playTone(175, 52, 0.18, 'square', 0.12); playNoiseBurst(0.16, 420, 1.2, 0.20); }
+      else if (elId === 'air') { playNoiseBurst(0.22, 1850, 2.6, 0.20); playTone(480, 920, 0.18, 'sine', 0.14); }
+      else if (elId === 'lightning') { playTone(1880, 420, 0.12, 'square', 0.14); playTone(920, 1640, 0.10, 'sawtooth', 0.12); playNoiseBurst(0.12, 3600, 1.5, 0.16); }
+      else if (elId === 'shadow') { playTone(215, 72, 0.22, 'sine', 0.18); playTone(320, 108, 0.20, 'triangle', 0.14); }
+      else { playNoiseBurst(0.20, 580, 1.2, 0.22); playTone(150, 38, 0.25, 'sawtooth', 0.18); }
     },
     hit: (h, w, elId) => {
       playTone(h ? 155 : 220, 36, h ? 0.19 : 0.12, 'triangle', h ? 0.45 : 0.3);
-      if (w) playTone(1240, 460, 0.13, 'sawtooth', 0.1);
+      if (w) { playTone(1380, 520, 0.14, 'sawtooth', 0.12); if (h) playNoiseBurst(0.09, 2600, 2.4, 0.15); }
       if (elId && h) {
-        if (elId === 'ice') playTone(1560, 880, 0.11, 'sine', 0.12);
-        else if (elId === 'lightning') playTone(1480, 360, 0.09, 'square', 0.11);
-        else if (elId === 'earth' || elId === 'lava') playTone(92, 28, 0.22, 'triangle', 0.22);
-        else if (elId === 'fire') playTone(460, 140, 0.14, 'sawtooth', 0.12);
-        else if (elId === 'water') playTone(380, 190, 0.14, 'sine', 0.12);
+        if (elId === 'ice') playTone(1680, 880, 0.12, 'sine', 0.14);
+        else if (elId === 'lightning') playTone(1580, 360, 0.09, 'square', 0.12);
+        else if (elId === 'earth' || elId === 'lava') playTone(92, 28, 0.22, 'triangle', 0.24);
+        else if (elId === 'fire') playNoiseBurst(0.12, 900, 1.4, 0.16);
+        else if (elId === 'water') playNoiseBurst(0.12, 1500, 2.0, 0.16);
       }
     },
-    headHit: () => { playTone(420, 95, 0.22, 'sawtooth', 0.22); playTone(980, 260, 0.14, 'triangle', 0.18); },
-    slam: () => { playTone(130, 28, 0.34, 'triangle', 0.55); playTone(260, 52, 0.26, 'sawtooth', 0.22); },
-    guard: (p) => playTone(p ? 1360 : 520, p ? 880 : 210, p ? 0.25 : 0.09, p ? 'sine' : 'square', p ? 0.28 : 0.16),
+    headHit: () => { playTone(420, 95, 0.22, 'sawtooth', 0.22); playTone(980, 260, 0.14, 'triangle', 0.18); playNoiseBurst(0.10, 2200, 1.8, 0.18); },
+    slam: () => { playTone(130, 28, 0.34, 'triangle', 0.55); playTone(260, 52, 0.26, 'sawtooth', 0.22); playNoiseBurst(0.18, 480, 1.1, 0.22); },
+    guard: (p) => { playTone(p ? 1480 : 520, p ? 920 : 210, p ? 0.26 : 0.09, p ? 'sine' : 'square', p ? 0.28 : 0.16); if (p) playNoiseBurst(0.10, 3100, 3.0, 0.14); },
     ultimate: () => { playTone(520, 110, 0.55, 'sawtooth', 0.24); [196, 294, 440].forEach(f => playTone(f, f * 0.72, 0.6, 'triangle', 0.11)); },
     deny: () => playTone(190, 120, 0.09, 'square', 0.1),
     gong: () => { [142, 214, 319].forEach(f => playTone(f, f * 0.98, 0.95, 'sine', 0.09)); }
@@ -1526,6 +1575,7 @@
     throw_back: { s:6, a:5, r:17, dmg:104, chip:0, hs:34, bs:0, stop:5, kb:-14.4, ly:-9.2, kd:true, crit:false, h:'mid', ox:16, oy:-132, w:80, bh:84, imp:3, ifrm:2, isThrow:'back', inv:12, mg:18 },
     suplex: { s:7, a:5, r:19, dmg:146, chip:0, hs:40, bs:0, stop:6, kb:-12.0, ly:-12.2, kd:true, crit:true, h:'mid', ox:14, oy:-136, w:84, bh:88, imp:3, ifrm:2, isThrow:'suplex', inv:16, mg:22 },
     quick_bend: { s:5, a:4, r:7, dmg:76, chip:16, hs:24, bs:13, stop:4, kb:9.5, ly:-7.2, kd:false, crit:false, h:'mid', ox:34, oy:-140, w:96, bh:82, imp:4.5, ifrm:3, inv:6, elStatus:true, mg:0 },
+    sub_bend: { s:6, a:4, r:9, dmg:88, chip:18, hs:26, bs:14, stop:5, kb:10.5, ly:-8.5, kd:false, crit:true, h:'mid', ox:36, oy:-144, w:100, bh:86, imp:5.0, ifrm:4, inv:9, elStatus:true, mg:0 },
     magic_cast: { s:10, a:8, r:16, dmg:140, chip:32, hs:34, bs:18, stop:5, kb:14.0, ly:-11.0, kd:true, crit:true, h:'mid', ox:38, oy:-150, w:110, bh:95, imp:5.5, ifrm:8, inv:18, elStatus:true, mg:0 }
   };
 
@@ -1721,6 +1771,8 @@
       upgrades: { edge: 0, body: 0, flow: 0 },
       ownedGear: ['none'], equippedGear: 'none',
       ownedWeapons: ['default'], equippedWeapon: 'default',
+      ownedEnchants: ['none'], equippedEnchant: 'none',
+      unlockedScrolls: [],
       storyIntroSeen: false, tutorialSeen: false, dojoLessonDone: false, avatarUnlocked: false,
       endlessBest: 0, allySelected: '', sandboxUnlockAll: false
     };
@@ -1738,6 +1790,9 @@
         equippedGear: d.equippedGear || 'none',
         ownedWeapons: Array.isArray(d.ownedWeapons) ? d.ownedWeapons : ['default'],
         equippedWeapon: d.equippedWeapon || 'default',
+        ownedEnchants: Array.isArray(d.ownedEnchants) && d.ownedEnchants.length ? d.ownedEnchants : ['none'],
+        equippedEnchant: d.equippedEnchant || 'none',
+        unlockedScrolls: Array.isArray(d.unlockedScrolls) ? d.unlockedScrolls : [],
         storyIntroSeen: Boolean(d.storyIntroSeen),
         tutorialSeen: Boolean(d.tutorialSeen),
         dojoLessonDone: Boolean(d.dojoLessonDone),
@@ -1751,6 +1806,11 @@
   const PROG = loadSave();
   function saveProg() { try { localStorage.setItem(SAVE_KEY, JSON.stringify(PROG)); } catch {} }
   function isElUnlocked(elId) { return PROG.sandboxUnlockAll || PROG.avatarUnlocked || PROG.unlockedElements.includes(elId); }
+  function hasScrollMastery(elId) { return PROG.unlockedScrolls.includes(elId); }
+  function getActiveEnchant(f) {
+    if (!f || f.id !== 'p1' || !PROG.equippedEnchant || PROG.equippedEnchant === 'none') return null;
+    return ENCHANT_CATALOG.find(e => e.id === PROG.equippedEnchant) || null;
+  }
   function p1DmgMult() { return 1 + PROG.upgrades.edge * 0.06; }
   function p1HpBonus() { return PROG.upgrades.body * 65; }
   function p1FlowMult() { return 1 + PROG.upgrades.flow * 0.10 + (PROG.equippedGear === 'crown' ? 0.15 : 0); }
@@ -1765,6 +1825,62 @@
     }
     return { id: 'default', name: f.el.weapon, wType: f.el.wType, reach: f.el.reach, speedMod: f.el.speedMod, dmgMod: f.el.dmgMod, perk: '' };
   }
+
+  // ===== ARMORY FORGE WEAPON ENCHANTMENT SEALS (Endgame Coin Sink + 3D Blade Trails!) =====
+  const ENCHANT_CATALOG = [
+    { id: 'none', name: 'Unsealed Steel', col: '#d8ccb8', prim: '#8a7a64', cost: 0, speed: 3, power: 3, reachPip: 3, ico: SVG_ICONS.default, bonus: 'Pure forged steel with your native elemental aura.' },
+    { id: 'frost_edge', name: 'Frost-Edge Seal', col: '#78eeff', prim: '#0c9ae0', cost: 320, speed: 3, power: 4, reachPip: 4, ico: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3v18M4.2 7.5l15.6 9M19.8 7.5L4.2 16.5"/></svg>`, bonus: 'Heavy & critical weapon strikes chill foes solid + cyan 3D blade ribbon.' },
+    { id: 'thunder_forged', name: 'Thunder-Forged Seal', col: '#ffe066', prim: '#2b7aff', cost: 360, speed: 5, power: 4, reachPip: 3, ico: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L4 14h6l-1 8 9-12h-6z"/></svg>`, bonus: 'Heavy weapon strikes discharge +18% shock arc + golden 3D bolt ribbon.' },
+    { id: 'scorched_ember', name: 'Scorched-Ember Seal', col: '#ff7b24', prim: '#d9260a', cost: 380, speed: 4, power: 5, reachPip: 3, ico: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c2 4 6 6.2 6 11a6 6 0 1 1-12 0c0-2.7 1.4-5 3-6.6-.2 2.2 1 3.6 2.5 3.6 0-3 .5-5.8.5-8z"/></svg>`, bonus: 'Heavy weapon strikes ignite blazing burn-over-time + ember 3D blade ribbon.' },
+    { id: 'umbral_drain', name: 'Umbral-Drain Seal', col: '#c4a6ff', prim: '#6348e8', cost: 440, speed: 4, power: 4, reachPip: 4, ico: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 4a8 8 0 1 0 4 14.9A6.5 6.5 0 1 1 16 4z"/></svg>`, bonus: 'Weapon strikes siphon +6% bending energy & +3% vitality + violet 3D trail.' },
+    { id: 'seismic_crush', name: 'Seismic-Crush Seal', col: '#f2c057', prim: '#9c6c22', cost: 480, speed: 2, power: 5, reachPip: 4, ico: `<svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12,3 20,9 17,20 7,20 4,9"/></svg>`, bonus: 'Weapon blows shred +35% Guard Poise for instant Guard Shatters + gold trail.' }
+  ];
+
+  // ===== 8 SECRET ATLA SUB-BENDING ARTS & UNLOCKABLE GRANDMASTER SCROLLS =====
+  const SUB_BEND_ARTS = {
+    water:     { id: 'water', lbl: 'BLOODBEND', name: 'Full-Moon Puppet Grip', prim: '#991b2e', glow: '#ff4b6b', cost: 350, speed: 4, power: 5, reachPip: 4, ico: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/><path d="M12 7c2.4 3 3.6 5.2 3.6 7a3.6 3.6 0 1 1-7.2 0c0-1.8 1.2-4 3.6-7z" fill="currentColor"/></svg>`, bonus: 'Seizes foe under a crimson full moon, suspends & slams them down. Scroll: 35% cost & +35% dmg.' },
+    fire:      { id: 'fire', lbl: 'COMBUSTION', name: 'Third-Eye Combustion Beam', prim: '#c23616', glow: '#ffae34', cost: 350, speed: 5, power: 5, reachPip: 5, ico: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s4-6 10-6 10 6 10 6-4 6-10 6S2 12 2 12z"/><circle cx="12" cy="12" r="2.8" fill="currentColor"/></svg>`, bonus: 'Fires psychic shock-rings that detonate on impact in a colossal 3D blast. Scroll: 35% cost & +35% dmg.' },
+    earth:     { id: 'earth', lbl: 'METAL WIRE', name: 'Metalbending Cable Grapple', prim: '#64748b', glow: '#e2e8f0', cost: 350, speed: 5, power: 4, reachPip: 5, ico: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"><path d="M4 20L19 5"/><path d="M14 5h5v5"/><path d="M7 13l4 4"/></svg>`, bonus: 'Twin Republic-City steel cables snare distant enemies & yank them into melee. Scroll: 35% cost & +35% dmg.' },
+    air:       { id: 'air', lbl: 'VACUUM', name: 'Zaheer Vacuum Breath Sphere', prim: '#0f766e', glow: '#78ffd6', cost: 350, speed: 4, power: 4, reachPip: 4, ico: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4" stroke-dasharray="3 2"/></svg>`, bonus: 'Pulls foe into an airless sphere draining HP & meter before launching skyward. Scroll: 35% cost & +35% dmg.' },
+    ice:       { id: 'ice', lbl: 'FROST DOME', name: 'Thousand-Needles Frost Dome', prim: '#0369a1', glow: '#9ef6ff', cost: 350, speed: 4, power: 5, reachPip: 4, ico: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 4l2 14M12 3v17M18 4l-2 14M4 18h16"/></svg>`, bonus: 'Summons 7 jagged glacier spears overhead that rain down & chill foes. Scroll: 35% cost & +35% dmg.' },
+    lightning: { id: 'lightning', lbl: 'ARC STORM', name: "Heaven's Arc Field", prim: '#1d4ed8', glow: '#fde047', cost: 350, speed: 5, power: 5, reachPip: 5, ico: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M11 2L4 13h5l-1 9 9-12h-5l3-8z"/></svg>`, bonus: 'Calls 3 rapid staggered sky-to-floor lightning bolts across the arena. Scroll: 35% cost & +35% dmg.' },
+    shadow:    { id: 'shadow', lbl: 'SOUL BIND', name: 'Eclipse Tether Bind', prim: '#4c1d95', glow: '#d8b4fe', cost: 350, speed: 4, power: 4, reachPip: 4, ico: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="9" width="7" height="6" rx="3"/><rect x="14" y="9" width="7" height="6" rx="3"/><path d="M10 12h4"/></svg>`, bonus: 'Erupts shadow chains beneath the foe, rooting them & stealing 20% meter. Scroll: 35% cost & +35% dmg.' },
+    lava:      { id: 'lava', lbl: 'MAGMA RIFT', name: 'Tectonic Caldera Rift', prim: '#b91c1c', glow: '#ff951a', cost: 350, speed: 3, power: 5, reachPip: 4, ico: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M3 19l5-11 4 6 4-8 5 13z"/></svg>`, bonus: 'Splits the floor with twin erupting volcanic geysers & molten pools. Scroll: 35% cost & +35% dmg.' }
+  };
+  const SCROLL_CATALOG = EL_ORDER.map(id => SUB_BEND_ARTS[id]);
+
+  // ===== SHADOW TOWER & DAILY TRIAL ROTATING MUTATORS (2x COINS!) =====
+  const TOWER_MUTATORS = [
+    { id: 'roulette',  name: 'AVATAR ROULETTE',   desc: 'Both fighters shift to a new element every 15 seconds · 2× COINS', col: '#fde047' },
+    { id: 'supremacy', name: 'BENDING SUPREMACY', desc: '3× Bending regen · Normal strikes deal 50% dmg · 2× COINS',        col: '#38d8ff' },
+    { id: 'shattered', name: 'SHATTERED GUARD',   desc: 'Any blocked heavy blow causes instant Guard Shatter · 2× COINS',    col: '#ff951a' },
+    { id: 'volcanic',  name: 'VOLCANIC FLOOR',    desc: 'Standing still >2s erupts a magma geyser under you · 2× COINS',     col: '#ff4d2e' }
+  ];
+  function getDailyMutator() {
+    const dayStr = new Date().toISOString().slice(0, 10);
+    let h = 0; for (let i = 0; i < dayStr.length; i++) h = (h * 31 + dayStr.charCodeAt(i)) >>> 0;
+    return TOWER_MUTATORS[h % TOWER_MUTATORS.length];
+  }
+  const BOSS_AWAKEN_QUOTES = {
+    water:     'THE TIDE CONSUMES ALL!',
+    fire:      "BURN IN SOZIN'S FLAME!",
+    air:       'UNBOUND BY GRAVITY!',
+    ice:       'WINTER CLAIMS YOUR BONES!',
+    earth:     'UNMOVABLE AS THE MOUNTAIN!',
+    lightning: "WITNESS HEAVEN'S WRATH!",
+    shadow:    'SWALLOWED BY ECLIPSE!',
+    lava:      'THE CALDERA ERUPTS!'
+  };
+  const ELEMENT_EXECUTION_TITLES = {
+    water:     'TIDAL ABYSS EXECUTION',
+    fire:      'SOZIN TWIN DRAGON INFERNO',
+    air:       'SKY TEMPEST ASCENSION',
+    ice:       'ABSOLUTE ZERO SHATTER',
+    earth:     'EARTH COFFIN CRUSH',
+    lightning: "HEAVEN'S JUDGMENT BOLT",
+    shadow:    'ECLIPSE ABYSS DRAG',
+    lava:      'CALDERA MAGMA ERUPTION'
+  };
 
   const BEND_TRICKS = {
     water:     { fwd: 'OCTOPUS',  up: 'WHIP',    down: 'SLIDE',   back: 'HEAL' },
@@ -1783,7 +1899,7 @@
       id, el, x: id === 'p1' ? 405 : 875, y: GROUND_Y, vx: 0, vy: 0, facing: id === 'p1' ? 1 : -1,
       hp: el.hp, maxHp: el.hp, trailHp: el.hp, magic: 55,
       poise: 100, maxPoise: 100,
-      octopusF: 0, octopusCd: 0, octopusGrabReady: false, octopusGrabCd: 0, octopusSwinging: false, airScooterF: 0, scooterHitCd: 0, fireJetF: 0, seismicWaveF: 0, gauntletsF: 0, frozenPrisonF: 0, irohBeamReady: false,
+      octopusF: 0, octopusCd: 0, octopusGrabReady: false, octopusGrabCd: 0, octopusSwinging: false, airScooterF: 0, scooterHitCd: 0, fireJetF: 0, seismicWaveF: 0, gauntletsF: 0, frozenPrisonF: 0, irohBeamReady: false, stillF: 0,
       dizzied: false, dizzyF: 0,
       phase2: false, phase2Used: false,
       artIdx: 0, castArtIdx: 0, quickBendDir: 'fwd', bendChargeF: 0, chargingBend: false,
@@ -1812,6 +1928,7 @@
     round: 1, p1W: 0, p2W: 0, toWin: 2, timer: 99, tTick: 0, roundElapsed: 0, paused: false,
     screen: 'fighting', intro: 64, over: 0, winner: null,
     finishHim: false, finishF: 0, eclipseFinished: false,
+    finisherAnim: null, awakening: null, mutator: null, dailyTrial: false, mutTimer: 0,
     stylePts: 0, styleRank: '', styleT: 0, lastCat: '',
     c1: 0, c1t: 0, c1Live: false, c2: 0, c2t: 0, c2Live: false,
     maxComboP1: 0, headHitsP1: 0,
@@ -1835,11 +1952,10 @@
   function showBanner(text, sub, color, dur = 64, isUlt = false) { match.banner = { text, sub, color, f: dur, isUlt }; }
   function pushCallout(text, color, x, y) {
     let cy = y;
-    for (let i = match.callouts.length - 1; i >= 0; i--) {
-      const c = match.callouts[i];
-      if (c.f > 8 && Math.abs(c.x - x) < 135 && Math.abs(c.y - cy) < 26) {
-        cy -= 26;
-      }
+    for (let guard = 0; guard < 6; guard++) {
+      const hit = match.callouts.some(c => c.f > 8 && Math.abs(c.x - x) < 230 && Math.abs(c.y - cy) < 26);
+      if (!hit) break;
+      cy -= 26;
     }
     cy = Math.max(82, cy);
     match.callouts.push({ text, color, x, y: cy, f: 46, max: 46 });
@@ -1855,7 +1971,7 @@
     f.magic = full ? 55 : Math.min(100, Math.max(55, f.magic * 0.6 + 30));
     f.maxPoise = 100 + (f.id === 'p1' ? PROG.upgrades.body * 8 : (match.boss ? 20 : 0));
     f.poise = f.maxPoise;
-    f.octopusF = 0; f.octopusCd = 0; f.octopusGrabReady = false; f.octopusGrabCd = 0; f.octopusSwinging = false; f.airScooterF = 0; f.scooterHitCd = 0; f.fireJetF = 0; f.seismicWaveF = 0; f.gauntletsF = 0; f.frozenPrisonF = 0; f.irohBeamReady = false;
+    f.octopusF = 0; f.octopusCd = 0; f.octopusGrabReady = false; f.octopusGrabCd = 0; f.octopusSwinging = false; f.airScooterF = 0; f.scooterHitCd = 0; f.fireJetF = 0; f.seismicWaveF = 0; f.gauntletsF = 0; f.frozenPrisonF = 0; f.irohBeamReady = false; f.stillF = 0;
     f.dizzied = false; f.dizzyF = 0;
     if (full) { f.phase2 = false; f.phase2Used = false; }
     f.state = 'idle'; f.sf = 0; f.inv = 0; f.armor = 0; f.stun = 0; f.freezeRec = 0; f.avatarFlash = 0;
@@ -1898,10 +2014,10 @@
   }
 
   const TUTORIAL_STEPS = [
-    { title: 'DOJO LESSON 1 / 4 · STRIKE COMBO', desc: 'Chain 3 strikes in a row (P / K / W or J / K / L)' },
-    { title: 'DOJO LESSON 2 / 4 · SIGNATURE BEND (35%)', desc: 'Tap BEND (or U / Space) at 35%+ meter for your Avatar Signature!' },
-    { title: 'DOJO LESSON 3 / 4 · GUARD & PARRY', desc: 'Hold or time BLK (or B) to block the incoming strike' },
-    { title: 'DOJO LESSON 4 / 4 · CLOSE THROW', desc: 'Step close and press GRAB (or G / Forward + P) to throw' }
+    { title: 'DOJO LESSON 1 / 4 · STRIKE COMBO', desc: 'Chain 3 strikes with PUNCH & KICK (or J / K / L)' },
+    { title: 'DOJO LESSON 2 / 4 · ELEMENT & SUB-BENDING', desc: 'Tap BEND (35%+) or SUB-BEND (45%+, key U / I) to bend!' },
+    { title: 'DOJO LESSON 3 / 4 · SHADOW GUARD & PARRY', desc: 'Stand neutral or hold Back on the stick as the attack lands' },
+    { title: 'DOJO LESSON 4 / 4 · CLOSE THROW', desc: 'Step close and press Forward + PUNCH to throw your opponent' }
   ];
   function syncTutorialPill() {
     const pill = document.getElementById('tut-pill');
@@ -1939,6 +2055,11 @@
     match.boss = bossStage;
     match.campaignStageIdx = bossStage ? bossStage.id : -1;
     match.tutorialStep = 0; match.tutorialDone = false;
+    match.mutator = opts.mutator || null;
+    match.dailyTrial = Boolean(opts.dailyTrial);
+    match.mutTimer = 0;
+    match.finisherAnim = null;
+    match.awakening = null;
     p1.el = ELEMENTS[e1];
     p2.el = ELEMENTS[bossStage ? bossStage.el : e2];
     p2.avatarElIdx = 0;
@@ -1983,10 +2104,14 @@
     bladeClash = null; bladeClashCd = 0;
     hitstop = 0; slowMoFrames = 0; dramaticZoom = 0; ultDimFrames = 0; stormFlashFrames = 0; inkFlashF = 0;
     match.finishHim = false; match.finishF = 0; match.eclipseFinished = false;
+    match.finisherAnim = null; match.awakening = null; match.mutTimer = 0;
     match.timer = 99; match.tTick = 0; match.roundElapsed = 0; match.intro = 56; match.over = 0;
     match.c1 = 0; match.c1Live = false; match.c2 = 0; match.c2Live = false; match.callouts = []; match.screen = 'fighting';
     if (match.mode === 'endless') {
-      showBanner(`SHADOW TOWER · WAVE ${match.endlessWave}`, p2.el.fighter, p2.el.glow, 48);
+      const mSub = match.mutator ? `${p2.el.fighter} · ${match.mutator.name}` : p2.el.fighter;
+      showBanner(`SHADOW TOWER · WAVE ${match.endlessWave}`, mSub, match.mutator ? match.mutator.col : p2.el.glow, 48);
+    } else if (match.dailyTrial && match.mutator) {
+      showBanner(match.round === 1 ? 'DAILY TRIAL · 2× COINS' : `ROUND ${match.round}`, `${match.mutator.name} · VS ${p2.el.fighter}`, match.mutator.col, 52);
     } else if (match.boss) {
       showBanner(match.round === 1 ? match.boss.title : `ROUND ${match.round}`, `${match.boss.rank} · ${match.boss.region} · FIRST TO ${match.toWin}`, match.boss.isFinal ? '#f472b6' : p2.el.glow, 52);
     } else if (match.mode === 'dojo') {
@@ -1997,7 +2122,7 @@
     sfx.gong();
   }
 
-  // ===== INPUT (Supports 35% Avatar Signatures, Blade-Lock Clash & 4-Way Swipe Bending) =====
+  // ===== INPUT (Supports 35% Avatar Signatures, Secret Sub-Bending, Blade-Lock Clash & 4-Button SF2 Controls) =====
   function setDir(f, x, y) {
     if (x !== 0 && f.prevX === 0) {
       if (f.lastTapX === x && simFrame - f.lastTapF <= 16) { f.dblTap = { x, f: simFrame }; f.lastTapX = 0; }
@@ -2010,7 +2135,7 @@
     if (f.held.has(btn)) return;
     f.held.add(btn);
     // Blade-Lock Weapon Clash tug-of-war mashing!
-    if (bladeClash && (btn === 'punch' || btn === 'kick' || btn === 'weapon' || btn === 'magic')) {
+    if (bladeClash && (btn === 'punch' || btn === 'kick' || btn === 'weapon' || btn === 'magic' || btn === 'subbend')) {
       bladeClash.meter = Math.max(-100, Math.min(100, bladeClash.meter + (f.id === 'p1' ? 16 : -14)));
       const mx = (p1.x + p2.x) * 0.5, my = Math.min(p1.y, p2.y) - 118;
       spawnSparks(mx, my, f.el.glow, '#ffffff', 0.85);
@@ -2022,6 +2147,13 @@
     if (btn === 'magic') {
       if (f.magic < 35) {
         if (f.id === 'p1') { triggerDenyShake(document.getElementById('btn-magic')); sfx.deny(); }
+        return;
+      }
+    }
+    if (btn === 'subbend') {
+      const need = (f.id === 'p1' && hasScrollMastery(f.el.id)) ? 35 : 45;
+      if (f.magic < need) {
+        if (f.id === 'p1') { triggerDenyShake(document.getElementById('btn-sub')); sfx.deny(); }
         return;
       }
     }
@@ -2398,6 +2530,92 @@
     }
   }
 
+  // ===== 8 SECRET ATLA SUB-BENDING ARTS (Dedicated SUB Button + Grandmaster Scroll Bonus!) =====
+  function spawnSubBend(f, opp) {
+    const el = f.el, dir = opp && Math.abs(opp.x - f.x) > 8 ? (opp.x >= f.x ? 1 : -1) : f.facing;
+    f.facing = dir;
+    const art = SUB_BEND_ARTS[el.id] || SUB_BEND_ARTS.water;
+    const mastered = (f.id === 'p1' && hasScrollMastery(el.id));
+    const gmMult = mastered ? 1.35 : 1.0;
+    const tag = mastered ? `GRANDMASTER ${art.lbl}!` : `${art.lbl}!`;
+    if (f.id === 'p1') { match.p1QuickBends++; addStyle(16, 'bend'); }
+    sfx.subBend(el.id);
+    ultDimFrames = Math.max(ultDimFrames, 14); ultDimColor = art.prim;
+    dramaticZoom = Math.max(dramaticZoom, 0.085);
+    shake = Math.max(shake, 11 * settings.feedback);
+    spawnSparks(f.x + dir * 48, f.y - 108, art.glow, '#ffffff', 1.7);
+    if (FX3D) FX3D.spawnFloorRing(f.x, art.glow, 185, 24);
+    pushCallout(tag, art.glow, f.x, f.y - 210);
+
+    if (el.id === 'water') {
+      bendingWaves.push({
+        owner: f.id, el, kind: 'sub_bloodbend', noClash: true,
+        x: opp.x, y: opp.y - 100, vx: 0, dir, w: 150, h: 180,
+        dmg: Math.round(115 * gmMult), age: 0, f: 46, max: 46, grabbed: false, hit: false, ult: false
+      });
+    } else if (el.id === 'fire') {
+      bendingWaves.push({
+        owner: f.id, el, kind: 'sub_combustion', noClash: true,
+        x: f.x + dir * 56, y: f.y - 122, vx: dir * 24.5, dir, w: 94, h: 74,
+        dmg: Math.round(122 * gmMult), age: 0, f: 34, max: 34, hit: false, ult: false
+      });
+    } else if (el.id === 'earth') {
+      bendingWaves.push({
+        owner: f.id, el, kind: 'sub_metal_wire', noClash: true,
+        x: f.x + dir * 28, y: f.y - 108, tipX: f.x + dir * 56, tipY: f.y - 108,
+        vx: 0, dir, w: 470, h: 130, phase: 'shoot',
+        dmg: Math.round(86 * gmMult), age: 0, f: 30, max: 30, grabbed: false, hit: false, ult: false
+      });
+    } else if (el.id === 'air') {
+      const vx = Math.max(ARENA_L + 65, Math.min(ARENA_R - 65, opp.x));
+      bendingWaves.push({
+        owner: f.id, el, kind: 'sub_vacuum', noClash: true,
+        x: vx, y: opp.y - 104, vx: 0, dir, w: 165, h: 165,
+        dmg: Math.round(110 * gmMult), ticksLeft: 4, hitCd: 0, age: 0, f: 46, max: 46, hit: false, ult: false
+      });
+    } else if (el.id === 'ice') {
+      for (let k = -3; k <= 3; k++) {
+        const sx = Math.max(ARENA_L + 44, Math.min(ARENA_R - 44, opp.x + k * 56));
+        bendingWaves.push({
+          owner: f.id, el, kind: 'ice_rain', x: sx, y: 140, vx: 0, vy: 20.5, dir,
+          w: 54, h: 112, dmg: Math.round(32 * gmMult), ly: -5.5, low: false,
+          f: 28, max: 28, delay: Math.abs(k) * 3, hit: false, ult: false
+        });
+      }
+      if (FX3D) FX3D.spawnFloorRing(opp.x, '#9ef6ff', 250, 28);
+    } else if (el.id === 'lightning') {
+      stormFlashFrames = 6;
+      for (let k = -1; k <= 1; k++) {
+        const bx = Math.max(ARENA_L + 50, Math.min(ARENA_R - 50, opp.x + k * 92));
+        bendingWaves.push({
+          owner: f.id, el, kind: 'ult_thunder', x: bx, y: GROUND_Y - 220, vx: 0, dir,
+          w: 108, h: 450, dmg: Math.round(62 * gmMult), ly: -10.5, low: false,
+          microStun: true, f: 24 + (k + 1) * 6, max: 24, delay: (k + 1) * 6, hit: false, ult: false
+        });
+      }
+      if (FX3D) FX3D.flashSky('#fde047', 0.42);
+    } else if (el.id === 'shadow') {
+      const bx = Math.max(ARENA_L + 55, Math.min(ARENA_R - 55, opp.x));
+      bendingWaves.push({
+        owner: f.id, el, kind: 'sub_soul_bind', noClash: true,
+        x: bx, y: GROUND_Y, vx: 0, dir, w: 150, h: 185,
+        dmg: Math.round(90 * gmMult), age: 0, f: 30, max: 30, hit: false, ult: false
+      });
+    } else {
+      // LAVA: Tectonic Caldera Rift (twin erupting geysers + molten pools)
+      for (const offset of [-64, 64]) {
+        const lx = Math.max(ARENA_L + 52, Math.min(ARENA_R - 52, opp.x + offset));
+        bendingWaves.push({
+          owner: f.id, el, kind: 'ult_lava', x: lx, y: GROUND_Y, vx: 0, dir,
+          w: 118, h: 255, dmg: Math.round(74 * gmMult), ly: -15.6, low: true,
+          launcher: true, f: 30, max: 30, delay: offset > 0 ? 5 : 0, hit: false, ult: false
+        });
+        spawnHazard(f, lx);
+      }
+      if (FX3D) FX3D.spawnFloorRing(opp.x, '#ff951a', 270, 32);
+    }
+  }
+
   // ===== 24 DIFFERENTIATED AVATAR-STATE BENDING ARTS =====
   function getActiveArtIndex(f, dirOverride) {
     const d = dirOverride || f.dir;
@@ -2673,7 +2891,8 @@
     f.desperate = f.hp > 0 && f.hp / f.maxHp < 0.2;
     const bossMagMult = (f.id === 'p2' && match.boss) ? (match.boss.magicGain || 1) : 1;
     const styleFlow = (f.id === 'p1' && match.styleRank) ? (1 + ({ D: 0.04, C: 0.08, B: 0.14, A: 0.22, S: 0.30, AVATAR: 0.42 }[match.styleRank] || 0)) : 1;
-    if (canCtrl && f.hp > 0) f.magic = Math.min(100, f.magic + 0.095 * (f.id === 'p1' ? p1FlowMult() * styleFlow : bossMagMult));
+    const mutMagMult = (match.mutator && match.mutator.id === 'supremacy') ? 3.0 : 1.0;
+    if (canCtrl && f.hp > 0) f.magic = Math.min(100, f.magic + 0.095 * mutMagMult * (f.id === 'p1' ? p1FlowMult() * styleFlow : bossMagMult));
 
     const isIceFloor = Boolean(match.boss && match.boss.hazardId === 'glacier_floor') || hazards.some(h => h.kind === 'ice' && Math.abs(f.x - h.x) < h.hw);
     const isTailwind = Boolean(match.boss && match.boss.hazardId === 'gale_tailwind' && (simFrame % 240 < 90));
@@ -2740,6 +2959,18 @@
         startMove(f, 'quick_bend', startMul);
         return true;
       }
+      return false;
+    };
+
+    // Helper: Execute Secret ATLA Sub-Bending Art (45% meter, or 35% + 35% power with Grandmaster Scroll!)
+    const triggerSubBend = () => {
+      const cost = (f.id === 'p1' && hasScrollMastery(f.el.id)) ? 35 : 45;
+      if (f.magic >= cost) {
+        f.magic = Math.max(0, f.magic - cost);
+        startMove(f, 'sub_bend', startMul);
+        return true;
+      }
+      if (f.id === 'p1') { triggerDenyShake(document.getElementById('btn-sub')); sfx.deny(); }
       return false;
     };
 
@@ -2826,9 +3057,13 @@
       return;
     }
     if (f.state === 'jump' || f.state === 'wall_jump') {
-      if (canCtrl && f.magic >= 35) {
-        const mb = consumeBtn(f, ['magic']);
-        if (mb && triggerBend(mb)) return;
+      if (canCtrl) {
+        const sb = consumeBtn(f, ['subbend']);
+        if (sb && triggerSubBend()) return;
+        if (f.magic >= 35) {
+          const mb = consumeBtn(f, ['magic']);
+          if (mb && triggerBend(mb)) return;
+        }
       }
       // Air Passive Trait: Mid-Air Double Jump!
       if (canCtrl && f.el.id === 'air' && f.airJumpsLeft > 0 && f.sf >= 9 && rel.up && !f.prevUpAir) {
@@ -2840,12 +3075,12 @@
       if (canCtrl && f.state === 'jump' && nearWall !== 0 && f.sf >= 3 && f.sf <= 20 && f.dir.y === -1 && ((nearWall === -1 && f.dir.x === 1) || (nearWall === 1 && f.dir.x === -1))) {
         triggerWallJump(f, nearWall); return;
       }
-      // Expanded Air Combat: Air Throw (GRAB or close + Punch), Downward Air Slam (Down + Kick/Weapon), Air Weapon / Air Kick
+      // Expanded Air Combat: Air Throw (close Fwd+Punch/Weapon), Downward Air Slam (Down + Kick/Weapon), Air Weapon / Air Kick
       if (canCtrl && f.y < GROUND_Y - 30) {
         const ab = consumeBtn(f, ['grab', 'weapon', 'kick', 'punch']);
         if (ab) {
           const rA = relDir(f, ab.dir);
-          if ((ab.btn === 'grab' || ab.btn === 'punch') && dist < 110 && opp.y < GROUND_Y - 24) { startMove(f, 'air_throw', startMul); return; }
+          if ((ab.btn === 'grab' || ab.btn === 'punch' || (ab.btn === 'weapon' && rA.fwd)) && dist < 110 && opp.y < GROUND_Y - 24) { startMove(f, 'air_throw', startMul); return; }
           if (ab.btn === 'grab') { startMove(f, 'air_kick', startMul); return; }
           if (rA.down && (ab.btn === 'kick' || ab.btn === 'weapon')) { startMove(f, 'air_slam', startMul); return; }
           startMove(f, (ab.btn === 'weapon' && !f.disarmed) ? 'air_weapon' : 'air_kick', startMul);
@@ -2869,10 +3104,11 @@
         const wSpec = getWeaponSpec(f);
         if (f.moveId === 'magic_cast') spawnAvatarUltimate(f, opp);
         else if (f.moveId === 'quick_bend') { spawnQuickBend(f, opp, f.quickBendDir, f.quickBendCharge || 0); if (f.id === 'p1') advanceTutorial('quick_bend'); }
+        else if (f.moveId === 'sub_bend') { spawnSubBend(f, opp); if (f.id === 'p1') advanceTutorial('quick_bend'); }
         else if (m.bendWave) spawnStrikeBending(f, opp, m.bendWave, f.moveId);
         else if (m.bendBurst) spawnSparks(f.x + f.facing * 72, f.y - 118, f.el.primary, f.el.core, 0.95, f.el.id === 'ice');
         // Katara's Octopus Form: EVERY P/K/W strike launches an extra mid-range Water Tentacle Whip follow-up!
-        if (f.octopusF > 0 && f.moveId !== 'quick_bend' && f.moveId !== 'magic_cast' && !m.isThrow) {
+        if (f.octopusF > 0 && f.moveId !== 'quick_bend' && f.moveId !== 'magic_cast' && f.moveId !== 'sub_bend' && !m.isThrow) {
           bendingWaves.push({
             owner: f.id, el: f.el, kind: 'water_whip', x: f.x + f.facing * 64, y: f.y - 104,
             vx: f.facing * 20.5, dir: f.facing, w: 128, h: 64, dmg: 28, ly: -3.2, low: false, f: 14, max: 14, hit: false, ult: false
@@ -2895,13 +3131,17 @@
       applyPhys(f, f.y < GROUND_Y - 0.5, f.fireJetF > 0 ? 0.38 : 1);
 
       const total = f.ms + f.ma + f.mr + f.freezeRec;
-      // Cancel normal attacks into 35% Avatar Signature OR 100% Avatar Ultimate on hit/active!
-      if (canCtrl && f.moveId !== 'magic_cast' && f.moveId !== 'quick_bend' && f.magic >= 35 && f.sf >= f.ms && f.freezeRec === 0) {
-        const mb = consumeBtn(f, ['magic']);
-        if (mb && triggerBend(mb)) return;
+      // Cancel normal attacks into Secret Sub-Bending, 35% Avatar Signature, OR 100% Avatar Ultimate on hit/active!
+      if (canCtrl && f.moveId !== 'magic_cast' && f.moveId !== 'quick_bend' && f.moveId !== 'sub_bend' && f.sf >= f.ms && f.freezeRec === 0) {
+        const sb = consumeBtn(f, ['subbend']);
+        if (sb && triggerSubBend()) return;
+        if (f.magic >= 35) {
+          const mb = consumeBtn(f, ['magic']);
+          if (mb && triggerBend(mb)) return;
+        }
       }
       // FREE-FLOW SHADOW FIGHT 2 / MORTAL KOMBAT CROSS-COMBOS (P -> K -> W + Same-Button Chains!)
-      if (canCtrl && m.cw && f.sf >= m.cw && f.freezeRec === 0 && f.moveId !== 'magic_cast' && f.moveId !== 'quick_bend' && !m.isThrow) {
+      if (canCtrl && m.cw && f.sf >= m.cw && f.freezeRec === 0 && f.moveId !== 'magic_cast' && f.moveId !== 'quick_bend' && f.moveId !== 'sub_bend' && !m.isThrow) {
         const exp = m.wep ? 'weapon' : m.leg ? 'kick' : 'punch';
         const chainBtn = consumeBtn(f, [exp, 'weapon', 'kick', 'punch']);
         if (chainBtn) {
@@ -2939,8 +3179,9 @@
     if (f.held.has('block')) { f.state = rel.down ? 'block_low' : 'block_high'; f.vx *= isIceFloor ? 0.82 : 0.65; applyPhys(f, false); return; }
     if (!isRooted && f.dblTap && simFrame - f.dblTap.f <= settings.buffer) { const dt = f.dblTap; f.dblTap = null; startDash(f, dt.x === f.facing); return; }
 
-    const act = consumeBtn(f, ['magic', 'grab', 'evade', 'weapon', 'punch', 'kick']);
+    const act = consumeBtn(f, ['subbend', 'magic', 'grab', 'evade', 'weapon', 'punch', 'kick']);
     if (act) {
+      if (act.btn === 'subbend') { if (triggerSubBend()) return; }
       if (act.btn === 'magic') { if (triggerBend(act)) return; }
       if (act.btn === 'evade' && !isRooted) { startDash(f, relDir(f, act.dir).fwd); return; }
       if (act.btn === 'grab' && f.el.id === 'water' && f.octopusF > 0 && f.octopusGrabReady && f.octopusGrabCd <= 0 && !f.octopusSwinging) {
@@ -2950,7 +3191,7 @@
           return;
         }
       }
-      if (act.btn !== 'magic' && act.btn !== 'evade') {
+      if (act.btn !== 'magic' && act.btn !== 'subbend' && act.btn !== 'evade') {
         // Aang's Air Scooter attack exits smoothly into an aerial Cyclone Dive Strike!
         if (f.airScooterF > 0) {
           f.airScooterF = 0; f.vy = -12.0; f.vx = f.facing * 15.2;
@@ -3029,7 +3270,18 @@
       else if (r.fwd) id = 'front_kick';
       else id = 'high_kick';
     } else if (act.btn === 'weapon') {
-      if (f.disarmed) {
+      // Shadow Fight 2 Ergonomic PUNCH Button: close Fwd/Back triggers seamless Throws (and Water 8-Arm Octopus Grab)!
+      if (close && r.fwd && f.el.id === 'water' && f.octopusF > 0 && f.octopusGrabReady && f.octopusGrabCd <= 0 && !f.octopusSwinging) {
+        if (spawnOctopus8Swing(f, opp)) {
+          f.octopusGrabReady = false;
+          pushCallout('8-ARM OCTOPUS WHIP!', '#7cf2ff', f.x, f.y - 206);
+          return;
+        }
+      }
+      if (behind && r.back) id = 'suplex';
+      else if (close && r.back) id = 'throw_back';
+      else if (close && r.fwd) id = 'throw_fwd';
+      else if (f.disarmed) {
         id = r.up ? 'uppercut' : r.down ? 'low_punch' : 'bare_1';
       } else {
         const ws = getWeaponSpec(f);
@@ -3107,15 +3359,18 @@
     if (guarding) {
       const perf = activeGuard && (simFrame - def.guardFrame <= 10 || def.reflectStanceF > 0);
       const guardMax = def.id === 'p1' && PROG.equippedGear === 'kasa' ? 4 : 3;
-      // Guard Poise System: heavy blocks & Earth Stone Gauntlets drain poise -> GUARD SHATTER!
+      const atkEnch = getActiveEnchant(atk);
+      // Guard Poise System: heavy blocks, Earth Stone Gauntlets & Seismic-Crush Seal drain poise -> GUARD SHATTER!
       const chillWear = def.statuses.chill ? 1 : 0;
       const gauntletPoise = (!isProj && atk.gauntletsF > 0) ? 1.40 : 1.0;
-      const poiseMult = ((m.wep && wSpec.perk === 'naginata_chip') ? 1.6 : ((m.wep && wSpec.perk === 'cleaver_crush') || m.guardCrush ? 1.85 : 1.0)) * gauntletPoise;
+      const enchantPoise = (!isProj && m.wep && atkEnch && atkEnch.id === 'seismic_crush') ? 1.35 : 1.0;
+      const poiseMult = ((m.wep && wSpec.perk === 'naginata_chip') ? 1.6 : ((m.wep && wSpec.perk === 'cleaver_crush') || m.guardCrush ? 1.85 : 1.0)) * gauntletPoise * enchantPoise;
       const poiseLoss = perf ? 0 : Math.round((12 + m.dmg * 0.22) * poiseMult * (chillWear ? 1.25 : 1));
       if (!perf) def.poise = Math.max(0, def.poise - poiseLoss);
       const wearAdd = ((m.wep && wSpec.perk === 'cleaver_crush') || m.guardCrush ? 2 : 1) + chillWear;
       if (!perf && (m.crit || m.wep || m.overhead || m.guardCrush || chillWear)) def.guardWear += wearAdd;
-      const poiseBroken = !perf && (def.poise <= 0 || (def.guardWear >= guardMax && (m.crit || m.overhead || m.dmg >= 84 || m.guardCrush || wSpec.perk === 'cleaver_crush')));
+      const mutShatter = Boolean(match.mutator && match.mutator.id === 'shattered' && (m.crit || m.overhead || m.dmg >= 72 || m.guardCrush));
+      const poiseBroken = !perf && (mutShatter || def.poise <= 0 || (def.guardWear >= guardMax && (m.crit || m.overhead || m.dmg >= 84 || m.guardCrush || wSpec.perk === 'cleaver_crush')));
       if (poiseBroken) {
         def.guardWear = 0; def.poise = def.maxPoise;
         def.state = 'hitstun'; def.sf = 0; def.stun = 38; def.vx = atk.facing * 12.5;
@@ -3170,6 +3425,7 @@
     if (def.invisible) { def.invisible = false; pushCallout('VEIL BROKEN!', '#c4b5fd', def.x, def.y - 190); }
 
     let mult = atk.id === 'p1' ? p1DmgMult() : (match.boss ? (match.boss.dmgMult || 1) : 1);
+    if (match.mutator && match.mutator.id === 'supremacy' && !isProj) mult *= 0.50;
     if (atk.phase2) mult *= 1.12;
     if (def.id === 'p2' && match.boss && match.boss.defMult) mult /= match.boss.defMult;
     let crit = m.crit;
@@ -3179,6 +3435,29 @@
     if (!isProj && atk.gauntletsF > 0) {
       mult *= 1.30;
       spawnSparks(ix, iy, '#e8b038', '#fff4d2', 1.15);
+    }
+    // Armory Forge Weapon Enchantment Seal Procs!
+    const atkEnch = (!isProj && m.wep && !atk.disarmed) ? getActiveEnchant(atk) : null;
+    if (atkEnch) {
+      const heavyWep = Boolean(crit || m.kd || m.overhead || m.dmg >= 72);
+      if (atkEnch.id === 'frost_edge' && heavyWep) {
+        applyStatus(def, 'chill', 150);
+        spawnSparks(ix, iy, '#78eeff', '#ffffff', 1.35, true);
+      } else if (atkEnch.id === 'thunder_forged' && heavyWep) {
+        mult *= 1.18; applyStatus(def, 'shock', 140);
+        spawnSparks(ix, iy, '#ffe066', '#78e2ff', 1.45);
+      } else if (atkEnch.id === 'scorched_ember' && heavyWep) {
+        applyStatus(def, 'burn', 210);
+        spawnSparks(ix, iy, '#ff7b24', '#fff2a6', 1.35);
+      } else if (atkEnch.id === 'umbral_drain') {
+        atk.magic = Math.min(100, atk.magic + 6);
+        atk.hp = Math.min(atk.maxHp, atk.hp + Math.round(atk.maxHp * 0.03));
+        atk.trailHp = atk.hp;
+        spawnSparks(ix, iy, '#c4a6ff', '#ffffff', 1.05);
+      } else if (atkEnch.id === 'seismic_crush') {
+        mult *= 1.10;
+        spawnSparks(ix, iy, '#f2c057', '#fff4cc', 1.15, true);
+      }
     }
     // Fire Passive Trait: Bonus damage & meter gain during aggressive hit streaks!
     if (atk.el.id === 'fire') {
@@ -3245,6 +3524,7 @@
       mult *= wasCage ? 1.40 : 1.30; extraKb += wasCage ? 12.5 : 8.5; extraLy -= wasCage ? 6.5 : 4.0;
       if (atk.id === 'p1') { match.p1Reactions++; addStyle(24, 'reaction'); }
       inkFlashF = Math.max(inkFlashF, 4);
+      if (wasIce) sfx.crystalShatter();
       sfx.slam(); shake = Math.max(shake, 18 * settings.feedback);
       spawnSparks(ix, iy, wasIce ? '#78eeff' : '#e8b038', '#ffffff', 2.4, true);
       if (FX3D) { FX3D.spawnFloorRing(def.x, wasIce ? '#78eeff' : '#e8b038', 235, 30); FX3D.spawnBurst(def.x, def.y - 95, wasIce ? '#9ef6ff' : '#e8b038', 24, true); if (wasIce) FX3D.flashSky('#78eeff', 0.35); }
@@ -3289,15 +3569,17 @@
     }
     if (def.armor > 0 && !def.dizzied) { def.armor--; armored = true; pushCallout('POISE ARMOR', '#f2c057', def.x, def.y - 182); }
 
-    // Executing a dizzied opponent during "FINISH THEM!" -> ECLIPSE FINISHER!
+    // Executing a dizzied opponent during "FINISH THEM!" -> 1.5s UNIQUE PER-ELEMENT EXECUTION!
     if (def.dizzied) {
       def.dizzied = false; match.finishHim = false; match.finishF = 0; match.eclipseFinished = true;
-      def.hp = 0; def.vx = atk.facing * 18.5; def.vy = -12.5; def.state = 'knockdown_air'; def.sf = 0;
-      inkFlashF = 6; slowMoFrames = 46; dramaticZoom = 0.16; shake = Math.max(shake, 22 * settings.feedback);
-      sfx.headHit(); sfx.slam(); haptic('ko');
+      const execTitle = ELEMENT_EXECUTION_TITLES[atk.el.id] || 'ECLIPSE EXECUTION';
+      match.finisherAnim = { elId: atk.el.id, atkId: atk.id, defId: def.id, f: 90, max: 90, title: execTitle };
+      def.hp = 1; def.vx = 0; def.vy = 0; def.state = 'grabbed'; def.sf = 0;
+      inkFlashF = 6; dramaticZoom = 0.16; shake = Math.max(shake, 18 * settings.feedback);
+      sfx.gong(); sfx.awakening(); haptic('ko');
       spawnSparks(ix, iy, atk.el.glow, '#ffffff', 2.6, atk.el.id === 'ice');
-      if (FX3D) { FX3D.spawnFloorRing(def.x, atk.el.glow, 290, 38); FX3D.spawnBurst(ix, iy, atk.el.glow, 24, true); FX3D.flashSky(atk.el.glow, 0.55); }
-      pushCallout('ECLIPSE FINISHER! +75 COINS', '#fde047', def.x, def.y - 230);
+      if (FX3D) { FX3D.spawnFloorRing(def.x, atk.el.glow, 290, 38); FX3D.flashSky(atk.el.glow, 0.50); }
+      showBanner(execTitle, '+75 EXECUTION COINS', atk.el.glow, 88, true);
       return;
     }
 
@@ -3321,7 +3603,7 @@
       match.finishHim = true; match.finishF = 150;
       slowMoFrames = 14; dramaticZoom = 0.11; shake = Math.max(shake, 14 * settings.feedback);
       sfx.gong(); haptic('heavy');
-      showBanner('FINISH THEM!', 'LAND ANY STRIKE FOR ECLIPSE FINISHER · +75 COINS', '#ff4d36', 110, true);
+      showBanner('FINISH THEM!', 'LAND ANY STRIKE FOR ELEMENTAL EXECUTION · +75 COINS', '#ff4d36', 110, true);
       return;
     }
 
@@ -3422,13 +3704,19 @@
     p2.bossTimer++;
     // Boss Phase-2 Awakening ("Eclipse Surge") below 45% HP in Round 2+ / decisive rounds!
     if (!p2.phase2Used && p2.hp > 0 && p2.hp / p2.maxHp < 0.45 && (match.round >= 2 || match.p1W >= 2)) {
-      p2.phase2 = true; p2.phase2Used = true; p2.inv = 26; p2.avatarFlash = 38;
-      p2.poise = p2.maxPoise; p2.magic = Math.min(100, p2.magic + 45);
+      p2.phase2 = true; p2.phase2Used = true; p2.inv = 28; p2.avatarFlash = 44;
+      p2.poise = p2.maxPoise; p2.magic = Math.min(100, p2.magic + 50);
       p1.vx = (p1.x >= p2.x ? 1 : -1) * 18;
-      sfx.gong(); sfx.ultimate(); haptic('heavy');
-      slowMoFrames = 18; dramaticZoom = 0.10; shake = Math.max(shake, 18 * settings.feedback);
-      spawnSparks(p2.x, p2.y - 110, '#f4432a', '#fde047', 2.4);
-      showBanner('ECLIPSE SURGE!', `${match.boss.title} AWAKENED`, '#ff6a3a', 64, true);
+      match.awakening = {
+        f: 48, max: 48,
+        title: match.boss.title,
+        quote: BOSS_AWAKEN_QUOTES[p2.el.id] || 'BEHOLD TRUE MASTERY!',
+        col: p2.el.glow || '#ff6a3a'
+      };
+      sfx.gong(); sfx.awakening(); haptic('heavy');
+      slowMoFrames = 14; dramaticZoom = 0.22; shake = Math.max(shake, 20 * settings.feedback);
+      spawnSparks(p2.x, p2.y - 110, p2.el.glow, '#fde047', 2.6);
+      if (FX3D) { FX3D.spawnFloorRing(p2.x, p2.el.glow, 260, 32); FX3D.flashSky(p2.el.glow, 0.45); }
     }
     const rule = match.boss.ruleId;
     const hazard = match.boss.hazardId;
@@ -3494,7 +3782,7 @@
   function updateAI(canFight) {
     if (match.inMenu) {
       // Gentle atmospheric silhouette sparring showcase behind the Main Menu
-      ['punch','kick','weapon','magic','evade','block'].forEach(b => { releaseBtn(p1, b); releaseBtn(p2, b); });
+      ['punch','kick','weapon','magic','subbend','evade','block'].forEach(b => { releaseBtn(p1, b); releaseBtn(p2, b); });
       const dist = Math.abs(p1.x - p2.x);
       setDir(p2, dist > 230 ? (p1.x >= p2.x ? 1 : -1) : dist < 130 ? (p1.x >= p2.x ? -1 : 1) : 0, 0);
       setDir(p1, dist > 230 ? (p2.x >= p1.x ? 1 : -1) : dist < 120 ? (p2.x >= p1.x ? -1 : 1) : 0, 0);
@@ -3504,13 +3792,13 @@
     }
     if (!canFight || p2.state === 'ko' || p2.state === 'victory' || p2.state === 'grabbed') { setDir(p2, 0, 0); return; }
     if (match.mode === 'tutorial') {
-      ['punch','kick','weapon','magic','evade','block'].forEach(b => releaseBtn(p2, b));
+      ['punch','kick','weapon','magic','subbend','evade','block'].forEach(b => releaseBtn(p2, b));
       const dist = Math.abs(p1.x - p2.x), toP1 = p1.x >= p2.x ? 1 : -1;
       if (p1.hp < p1.maxHp * 0.5) p1.hp = p1.maxHp;
       if (p2.hp < p2.maxHp * 0.35) p2.hp = p2.maxHp;
       if (match.tutorialStep === 1 && p1.magic < 55) p1.magic = 65;
       if (match.tutorialStep === 2 && !match.tutorialDone) {
-        // Step 3: walk into strike range and throw a telegraphed punch so player can practice BLK / Parry!
+        // Step 3: walk into strike range and throw a telegraphed punch so player can practice Block / Parry!
         setDir(p2, dist > 105 ? toP1 : 0, 0);
         if (dist <= 125 && simFrame % 75 === 0) pressBtn(p2, 'punch');
       } else {
@@ -3523,7 +3811,7 @@
     const sty = AI_STYLE[p2.el.id] || AI_STYLE.fire;
     const dist = Math.abs(p1.x - p2.x);
     const toP1 = p1.x >= p2.x ? 1 : -1, away = -toP1;
-    ['punch','kick','weapon','magic','evade','block'].forEach(b => releaseBtn(p2, b));
+    ['punch','kick','weapon','magic','subbend','evade','block'].forEach(b => releaseBtn(p2, b));
 
     if (simFrame % 120 === 0) {
       aiMem.lows *= 0.8; aiMem.blocks *= 0.8; aiMem.bends *= 0.8; aiMem.jumps *= 0.8; aiMem.throws *= 0.8;
@@ -3569,17 +3857,26 @@
       }
     }
 
-    // 3) Active Guard, Timed Perfect Parry, & High-Dan Projectile Redirection!
+    // 3) Active Guard, Timed Perfect Parry, & Archetype Projectile Counters!
     if (aiGuard > 0) {
       aiGuard--;
       const blockLow = p1.move && p1.move.h === 'low' && !p1.move.overhead;
       setDir(p2, away, blockLow ? 1 : 0);
       return;
     }
-    const threatWave = bendingWaves.find(b => b.owner === 'p1' && !b.ult && Math.abs(b.x - p2.x) < 170);
+    const threatWave = bendingWaves.find(b => b.owner === 'p1' && !b.ult && Math.abs(b.x - p2.x) < 185);
     if (threatWave && aiCd <= 6) {
+      // Master Volt uses Iroh Lightning Redirection; Master Umbra Eclipse-Swaps behind projectiles; Master Terra raises Stone Wall!
+      if (p2.el.id === 'lightning' && p2.magic >= 35 && Math.random() < (cfg.reflect || 0.35) + 0.25) {
+        setDir(p2, toP1, 0); pressBtn(p2, 'magic'); aiCd = Math.max(6, cfg.react); return;
+      }
+      if (p2.el.id === 'shadow' && p2.magic >= 35 && Math.random() < (cfg.evade || 0.35) + 0.2) {
+        setDir(p2, toP1, 0); pressBtn(p2, 'magic'); aiCd = Math.max(6, cfg.react); return;
+      }
+      if (p2.el.id === 'earth' && p2.magic >= 35 && rockWalls.length === 0 && Math.random() < 0.65) {
+        setDir(p2, away, 0); pressBtn(p2, 'magic'); aiCd = Math.max(8, cfg.react); return;
+      }
       if (Math.random() < (cfg.reflect || 0)) {
-        // High-Dan Masters time Perfect Parry to redirect incoming bending waves!
         p2.guardFrame = simFrame;
         aiGuard = 10; setDir(p2, away, 0); aiCd = Math.max(4, Math.round(cfg.react * 0.7));
         return;
@@ -3599,7 +3896,14 @@
       }
     }
 
-    // 4) Wall-Splat Follow-Up Juggle for Mid/High-Dan Masters!
+    // 4) Wall-Splat Follow-Up Juggle & Cryo-Shatter Execution!
+    if (p1.frozenPrisonF > 0 && dist < 240) {
+      // Master Frost (or any Ice boss) aggressively smashes Cryo-Frozen players for CRYO SHATTER!
+      if (dist > p2.el.reach + 20) { setDir(p2, toP1, 0); return; }
+      setDir(p2, toP1, 0); pressBtn(p2, 'weapon');
+      aiCd = Math.max(5, Math.round(cfg.react * 0.5));
+      return;
+    }
     if (p1.wallSplatted && p1.state === 'hitstun' && dist < 175 && Math.random() < (cfg.wallJuggle || 0)) {
       setDir(p2, 0, -1);
       pressBtn(p2, dist < 110 ? 'punch' : 'weapon');
@@ -3613,6 +3917,17 @@
     }
     if (aiCd > 0) { aiCd--; setDir(p2, aiDir, 0); return; }
     aiCd = cfg.react + Math.floor(Math.random() * Math.max(3, Math.round(cfg.react * 0.6)));
+
+    // 4b) Element-Specific Archetype Tactics (Mizu Octopus/Heal, Zephyr Wall-Jump/Scooter, Terra Wall!)
+    if (p2.el.id === 'water') {
+      if (p2.octopusGrabReady && dist < 215 && Math.random() < 0.75) { setDir(p2, toP1, 0); pressBtn(p2, 'weapon'); return; }
+      if (p2.hp / p2.maxHp < 0.48 && dist > 235 && p2.magic >= 35 && Math.random() < 0.48) { setDir(p2, away, 0); pressBtn(p2, 'magic'); return; }
+    } else if (p2.el.id === 'air') {
+      if ((p2.x < ARENA_L + 105 || p2.x > ARENA_R - 105) && Math.random() < 0.58) { setDir(p2, away, -1); return; }
+      if (dist > 220 && p2.magic >= 35 && p2.airScooterF <= 0 && Math.random() < 0.45) { setDir(p2, toP1, 0); pressBtn(p2, 'magic'); return; }
+    } else if (p2.el.id === 'earth' && dist > 250 && p2.magic >= 35 && rockWalls.length === 0 && Math.random() < 0.38) {
+      setDir(p2, away, 0); pressBtn(p2, 'magic'); return;
+    }
 
     // 5) Anti-Air Reflex
     if (p1.y < GROUND_Y - 46 && dist < 180 && Math.random() < (cfg.antiAir || 0.3)) {
@@ -3629,7 +3944,7 @@
       return;
     }
 
-    // 7) 100% Ultimate Art Selection OR 35% Element-Authentic Quick-Bend!
+    // 7) 100% Ultimate Art, Secret Sub-Bending Art (45%), OR 35% Element-Authentic Quick-Bend!
     if (p2.magic >= 100 && dist > 95 && dist < 500 && Math.random() < cfg.mag * 0.62) {
       const [w0, w1] = sty.magStyle;
       const pick = Math.random();
@@ -3638,6 +3953,11 @@
       else if (dist < 420) setDir(p2, 0, 1);
       else setDir(p2, toP1, 0);
       pressBtn(p2, 'magic'); return;
+    }
+    if (p2.magic >= 45 && dist > 95 && dist < 440 && Math.random() < (cfg.quickBend || 0.15) * (p2.phase2 ? 0.52 : 0.26)) {
+      setDir(p2, toP1, 0);
+      pressBtn(p2, 'subbend');
+      return;
     }
     if (p2.magic >= 35 && p2.magic < 100 && dist > 85 && dist < 440 && Math.random() < (cfg.quickBend || 0.15) * 0.52) {
       const pickDir = sty.qbBias[Math.floor(Math.random() * sty.qbBias.length)];
@@ -3763,6 +4083,141 @@
     if (hitstop > 0) { hitstop--; updateParticles(); return; }
     if (bladeClashCd > 0) bladeClashCd--;
 
+    // ===== BOSS PHASE-2 AWAKENING CUT-IN (0.8s Cinematic Freeze) =====
+    if (match.awakening) {
+      const aw = match.awakening;
+      aw.f--;
+      dramaticZoom = 0.22;
+      ultDimFrames = Math.max(ultDimFrames, 2);
+      ultDimColor = aw.col || '#ff6a3a';
+      if (aw.f === 34) {
+        sfx.awakening();
+        shake = Math.max(shake, 16 * settings.feedback);
+        spawnSparks(p2.x, p2.y - 110, aw.col, '#ffffff', 2.4);
+        if (FX3D) { FX3D.spawnFloorRing(p2.x, aw.col, 280, 32); FX3D.flashSky(aw.col, 0.45); FX3D.spawnBurst(p2.x, p2.y - 110, aw.col, 24, false); }
+      }
+      updateParticles();
+      if (aw.f <= 0) { match.awakening = null; dramaticZoom = 0.08; }
+      return;
+    }
+
+    // ===== 8 UNIQUE PER-ELEMENT "FINISH THEM!" CINEMATIC EXECUTIONS (1.5s) =====
+    if (match.finisherAnim) {
+      const fa = match.finisherAnim;
+      fa.f--;
+      const atk = fa.atkId === 'p1' ? p1 : p2;
+      const def = fa.defId === 'p1' ? p1 : p2;
+      const el = ELEMENTS[fa.elId] || atk.el;
+      const prog = 1 - fa.f / fa.max;
+      dramaticZoom = 0.16 + Math.sin(prog * Math.PI) * 0.10;
+      ultDimFrames = 4; ultDimColor = el.primary;
+      atk.vx = 0; atk.vy = 0; atk.facing = def.x >= atk.x ? 1 : -1;
+      def.vx = 0; def.vy = 0; def.state = 'grabbed';
+
+      // Per-element choreography milestones
+      if (fa.elId === 'water') {
+        if (fa.f > 28) {
+          def.y = GROUND_Y - Math.sin(((fa.max - fa.f) / 62) * Math.PI) * 165;
+          if (fa.f % 4 === 0) spawnSparks(def.x + (Math.random() - 0.5) * 80, def.y - 70, '#0c7de8', '#e6fcff', 1.2);
+          if (fa.f === 68 || fa.f === 48) { sfx.waterWhip(); if (FX3D) FX3D.spawnFloorRing(def.x, '#38d8ff', 210, 22); }
+        } else if (fa.f === 28) {
+          def.y = GROUND_Y; inkFlashF = 8; shake = 28 * settings.feedback;
+          sfx.slam(); sfx.gong(); haptic('ko');
+          spawnSparks(def.x, GROUND_Y - 40, '#38d8ff', '#ffffff', 3.2);
+          spawnDust(def.x, GROUND_Y, 0, 28, '#7cf2ff');
+          if (FX3D) { FX3D.spawnFloorRing(def.x, '#7cf2ff', 360, 40); FX3D.spawnBurst(def.x, GROUND_Y - 50, '#38d8ff', 32, false); FX3D.flashSky('#38d8ff', 0.65); }
+        }
+      } else if (fa.elId === 'fire') {
+        if (fa.f > 26) {
+          def.y = GROUND_Y - Math.min(90, (fa.max - fa.f) * 1.6);
+          if (fa.f % 3 === 0) spawnSparks(def.x + Math.cos(fa.f * 0.4) * 75, def.y - 80, '#ff4d14', '#ffe57f', 1.4);
+          if (fa.f === 70 || fa.f === 48) { sfx.elemBend('fire'); if (FX3D) FX3D.spawnFloorRing(def.x, '#ff6a14', 220, 20); }
+        } else if (fa.f === 26) {
+          def.y = GROUND_Y; inkFlashF = 8; shake = 30 * settings.feedback;
+          sfx.slam(); sfx.ultimate(); haptic('ko');
+          spawnSparks(def.x, GROUND_Y - 90, '#ff3514', '#fff2a6', 3.6);
+          if (FX3D) { FX3D.spawnFloorRing(def.x, '#ff951a', 380, 42); FX3D.spawnBurst(def.x, GROUND_Y - 90, '#ff5514', 34, false); FX3D.flashSky('#ff5514', 0.72); }
+        }
+      } else if (fa.elId === 'air') {
+        if (fa.f > 24) {
+          const lift = Math.min(1, (fa.max - fa.f) / 48);
+          def.y = GROUND_Y - lift * 210;
+          if (fa.f % 3 === 0) spawnSparks(def.x + Math.sin(fa.f * 0.6) * 85, def.y - 60, '#5effc8', '#ffffff', 1.1);
+          if (fa.f === 68) { sfx.elemBend('air'); if (FX3D) FX3D.spawnFloorRing(def.x, '#5effc8', 240, 28); }
+        } else if (fa.f === 24) {
+          def.y = GROUND_Y; inkFlashF = 8; shake = 26 * settings.feedback;
+          sfx.slam(); sfx.gong(); haptic('ko');
+          spawnDust(def.x, GROUND_Y, 0, 30, '#5effc8');
+          if (FX3D) { FX3D.spawnFloorRing(def.x, '#5effc8', 380, 40); FX3D.spawnBurst(def.x, GROUND_Y - 30, '#a8ffe0', 30, false); FX3D.flashSky('#5effc8', 0.58); }
+        }
+      } else if (fa.elId === 'ice') {
+        if (fa.f > 26) {
+          def.frozenPrisonF = 30; def.y = GROUND_Y;
+          if (fa.f === 74) { sfx.elemBend('ice'); spawnSparks(def.x, GROUND_Y - 95, '#78eeff', '#ffffff', 2.0, true); if (FX3D) FX3D.spawnFloorRing(def.x, '#78eeff', 220, 26); }
+        } else if (fa.f === 26) {
+          def.frozenPrisonF = 0; inkFlashF = 9; shake = 28 * settings.feedback;
+          sfx.crystalShatter(); sfx.slam(); haptic('ko');
+          spawnSparks(def.x, GROUND_Y - 100, '#78eeff', '#ffffff', 3.6, true);
+          if (FX3D) { FX3D.spawnFloorRing(def.x, '#9ef6ff', 360, 38); FX3D.spawnBurst(def.x, GROUND_Y - 100, '#9ef6ff', 36, true); FX3D.flashSky('#9ef6ff', 0.68); }
+        }
+      } else if (fa.elId === 'earth') {
+        def.y = GROUND_Y;
+        if (fa.f === 72) { sfx.elemBend('earth'); shake = 14 * settings.feedback; spawnDust(def.x - 110, GROUND_Y, 1, 14, '#e8b038'); spawnDust(def.x + 110, GROUND_Y, -1, 14, '#e8b038'); }
+        if (fa.f === 28) {
+          inkFlashF = 8; shake = 32 * settings.feedback;
+          sfx.slam(); sfx.gong(); haptic('ko');
+          spawnSparks(def.x, GROUND_Y - 90, '#e8b038', '#fff4cc', 3.2, true);
+          spawnDust(def.x, GROUND_Y, 0, 30, '#e8b038');
+          if (FX3D) { FX3D.spawnFloorRing(def.x, '#f5d061', 370, 42); FX3D.spawnBurst(def.x, GROUND_Y - 85, '#e8b038', 32, true); FX3D.flashSky('#e8b038', 0.55); }
+        }
+      } else if (fa.elId === 'lightning') {
+        def.y = GROUND_Y;
+        if (fa.f === 68 || fa.f === 46 || fa.f === 24) {
+          const finalBolt = fa.f === 24;
+          stormFlashFrames = finalBolt ? 10 : 5;
+          inkFlashF = finalBolt ? 9 : 3;
+          shake = (finalBolt ? 30 : 15) * settings.feedback;
+          sfx.elemBend('lightning'); if (finalBolt) { sfx.slam(); haptic('ko'); }
+          spawnSparks(def.x, GROUND_Y - 105, '#ffe066', '#ffffff', finalBolt ? 3.5 : 1.8);
+          if (FX3D) { FX3D.spawnFloorRing(def.x, '#ffe066', finalBolt ? 380 : 210, 34); FX3D.spawnBurst(def.x, GROUND_Y - 105, '#ffe066', finalBolt ? 32 : 14, false); FX3D.flashSky('#ffe066', finalBolt ? 0.78 : 0.35); }
+        }
+      } else if (fa.elId === 'shadow') {
+        if (fa.f > 24) {
+          const sink = Math.min(1, (fa.max - fa.f) / 60);
+          def.y = GROUND_Y + sink * 48;
+          if (fa.f % 4 === 0) spawnSparks(def.x + (Math.random() - 0.5) * 70, GROUND_Y - 40, '#8b5cf6', '#f6f2ff', 1.2);
+          if (fa.f === 70) { sfx.elemBend('shadow'); if (FX3D) FX3D.spawnFloorRing(def.x, '#8b5cf6', 240, 34); }
+        } else if (fa.f === 24) {
+          def.y = GROUND_Y; inkFlashF = 9; shake = 28 * settings.feedback;
+          sfx.ultimate(); sfx.slam(); haptic('ko');
+          spawnSparks(def.x, GROUND_Y - 85, '#8b5cf6', '#ffffff', 3.4);
+          if (FX3D) { FX3D.spawnFloorRing(def.x, '#c4a6ff', 370, 42); FX3D.spawnBurst(def.x, GROUND_Y - 85, '#8b5cf6', 32, false); FX3D.flashSky('#8b5cf6', 0.68); }
+        }
+      } else if (fa.elId === 'lava') {
+        if (fa.f > 28) {
+          def.y = GROUND_Y - Math.max(0, (44 - fa.f) * 3.5);
+          if (fa.f % 3 === 0) spawnSparks(def.x + (Math.random() - 0.5) * 90, GROUND_Y - 18, '#ff4514', '#ffe478', 1.5);
+          if (fa.f === 70) { sfx.elemBend('lava'); shake = 14 * settings.feedback; }
+        } else if (fa.f === 28) {
+          def.y = GROUND_Y - 110; inkFlashF = 9; shake = 32 * settings.feedback;
+          sfx.slam(); sfx.ultimate(); haptic('ko');
+          spawnSparks(def.x, GROUND_Y - 80, '#ff4514', '#fff0a0', 3.6);
+          if (FX3D) { FX3D.spawnFloorRing(def.x, '#ff7b1a', 390, 44); FX3D.spawnBurst(def.x, GROUND_Y - 70, '#ff5514', 36, true); FX3D.flashSky('#ff5514', 0.72); }
+        } else {
+          def.y = Math.min(GROUND_Y, def.y + 5.5);
+        }
+      }
+      updateParticles();
+      if (fa.f <= 0) {
+        match.finisherAnim = null;
+        def.y = GROUND_Y; def.dizzied = false; def.frozenPrisonF = 0;
+        def.hp = 0; def.trailHp = 0; def.state = 'ko'; def.sf = 0;
+        atk.state = 'victory'; atk.sf = 0;
+        concludeRound(fa.atkId);
+      }
+      return;
+    }
+
     // ===== BLADE-LOCK WEAPON CLASH MINIGAME =====
     if (bladeClash) {
       bladeClash.f--;
@@ -3784,7 +4239,7 @@
         loseF.hp = Math.max(1, loseF.hp - 58); loseF.poise = Math.max(0, loseF.poise - 45);
         if (p1Won) { match.p1Clashes++; addStyle(20, 'clash'); }
         inkFlashF = 4;
-        sfx.slam(); sfx.gong(); haptic('heavy'); shake = Math.max(shake, 18 * settings.feedback);
+        sfx.bladeClash(); sfx.slam(); sfx.gong(); haptic('heavy'); shake = Math.max(shake, 18 * settings.feedback);
         spawnSparks((p1.x + p2.x) * 0.5, GROUND_Y - 115, winF.el.glow, '#ffffff', 2.4);
         if (FX3D) { FX3D.spawnFloorRing((p1.x + p2.x) * 0.5, winF.el.glow, 240, 28); FX3D.spawnBurst((p1.x + p2.x) * 0.5, GROUND_Y - 115, '#fde047', 18, true); }
         pushCallout(p1Won ? 'CLASH VICTORY!' : 'CLASH BROKEN!', p1Won ? '#fde047' : '#ff6b4a', winF.x, winF.y - 205);
@@ -3836,6 +4291,37 @@
     }
 
     const canFight = match.screen === 'fighting' && match.intro <= 18;
+    // ===== ACTIVE TOWER / DAILY TRIAL MUTATOR RULES =====
+    if (canFight && match.mutator && !match.finishHim) {
+      match.mutTimer++;
+      if (match.mutator.id === 'roulette' && match.mutTimer % 900 === 0) {
+        const next1 = EL_ORDER[(EL_ORDER.indexOf(p1.el.id) + 1 + Math.floor(Math.random() * 6)) % EL_ORDER.length];
+        const next2 = EL_ORDER[(EL_ORDER.indexOf(p2.el.id) + 1 + Math.floor(Math.random() * 6)) % EL_ORDER.length];
+        p1.el = ELEMENTS[next1]; p2.el = ELEMENTS[next2];
+        p1.avatarFlash = 28; p2.avatarFlash = 28;
+        sfx.gong(); sfx.elemBend(next1);
+        if (FX3D) { FX3D.spawnFloorRing(p1.x, p1.el.glow, 220, 26); FX3D.spawnFloorRing(p2.x, p2.el.glow, 220, 26); FX3D.flashSky('#fde047', 0.32); }
+        pushCallout(`ROULETTE: ${p1.el.name.toUpperCase()}`, p1.el.glow, p1.x, p1.y - 210);
+        pushCallout(`ROULETTE: ${p2.el.name.toUpperCase()}`, p2.el.glow, p2.x, p2.y - 210);
+      } else if (match.mutator.id === 'volcanic') {
+        [p1, p2].forEach(f => {
+          if (f.y >= GROUND_Y - 2 && Math.abs(f.x - f.lastX) < 1.2 && f.state !== 'ko' && f.state !== 'grabbed') {
+            f.stillF = (f.stillF || 0) + 1;
+            if (f.stillF >= 120) {
+              f.stillF = 0;
+              hazards.push({ owner: f.id === 'p1' ? 'p2' : 'p1', kind: 'lava', x: f.x, hw: 74, f: 180, t: 0 });
+              bendingWaves.push({ owner: f.id === 'p1' ? 'p2' : 'p1', el: ELEMENTS.lava, kind: 'lava_pillar', x: f.x, y: GROUND_Y, vx: 0, dir: -f.facing, w: 96, h: 190, dmg: 64, ly: -14.2, low: true, launcher: true, f: 22, max: 22, hit: false, ult: false });
+              sfx.elemBend('lava'); shake = Math.max(shake, 14 * settings.feedback);
+              if (FX3D) FX3D.spawnFloorRing(f.x, '#ff5514', 210, 24);
+              pushCallout('VOLCANIC ERUPTION!', '#ff6a28', f.x, GROUND_Y - 200);
+            }
+          } else {
+            f.stillF = 0;
+          }
+        });
+      }
+    }
+
     updateAI(canFight && !match.finishHim);
     tickBossRules(canFight && !match.finishHim);
     tickFighter(p1, p2, canFight);
@@ -3859,7 +4345,7 @@
       if (hb1 && hb2 && bladeClashCd <= 0 && !match.finishHim && p1.move && p1.move.wep && p2.move && p2.move.wep && !p1.disarmed && !p2.disarmed && rectsHit(hb1, hb2)) {
         bladeClash = { f: 72, max: 72, meter: 0 };
         p1.hitDone = true; p2.hitDone = true;
-        sfx.guard(true); sfx.gong(); haptic('heavy'); shake = Math.max(shake, 14 * settings.feedback);
+        sfx.bladeClash(); sfx.gong(); haptic('heavy'); shake = Math.max(shake, 14 * settings.feedback);
         spawnSparks((p1.x + p2.x) * 0.5, Math.min(p1.y, p2.y) - 118, '#fde047', '#ffffff', 2.2);
         pushCallout('BLADE CLASH! TAP FAST!', '#fde047', (p1.x + p2.x) * 0.5, Math.min(p1.y, p2.y) - 210);
         return;
@@ -3872,11 +4358,11 @@
         const aWSpec = getWeaponSpec(a);
         if (a.move && (a.move.deflects || (a.move.wep && !a.disarmed && aWSpec.perk === 'nunchaku_stun'))) {
           for (const b of bendingWaves) {
-            if (b.owner !== a.id && !b.ult && !b.hit && !b.deflected && b.kind !== 'seismic_sonar' && b.kind !== 'octopus_8_swing' && rectsHit(hb, getWaveBox(b))) {
+            if (b.owner !== a.id && !b.ult && !b.hit && !b.deflected && !b.noClash && b.kind !== 'seismic_sonar' && b.kind !== 'octopus_8_swing' && rectsHit(hb, getWaveBox(b))) {
               b.owner = a.id; b.dir = a.facing; b.vx = a.facing * Math.max(15, Math.abs(b.vx) * 1.25);
               b.deflected = true; b.f = Math.max(b.f, 24);
               if (a.id === 'p1') { match.p1Clashes++; addStyle(16, 'parry'); }
-              sfx.guard(true); hitstop = 4; shake = Math.max(shake, 10 * settings.feedback);
+              sfx.bladeClash(); hitstop = 4; shake = Math.max(shake, 10 * settings.feedback);
               spawnSparks(b.x, b.y, '#9cf4ff', '#ffffff', 1.6);
               pushCallout('REDIRECTED!', '#9cf4ff', b.x, b.y - 72);
             }
@@ -3917,12 +4403,12 @@
       for (let i = 0; i < bendingWaves.length; i++) {
         if (toRemove.has(i)) continue;
         const b1 = bendingWaves[i];
-        if (b1.delay > 0 || b1.kind === 'ult_arm_swing' || b1.kind === 'octopus_8_swing' || b1.kind === 'seismic_sonar') continue;
+        if (b1.delay > 0 || b1.noClash || b1.kind === 'ult_arm_swing' || b1.kind === 'octopus_8_swing' || b1.kind === 'seismic_sonar') continue;
         const box1 = getWaveBox(b1);
         for (let j = i + 1; j < bendingWaves.length; j++) {
           if (toRemove.has(j)) continue;
           const b2 = bendingWaves[j];
-          if (b2.owner === b1.owner || b2.delay > 0 || b2.kind === 'ult_arm_swing' || b2.kind === 'octopus_8_swing' || b2.kind === 'seismic_sonar') continue;
+          if (b2.owner === b1.owner || b2.delay > 0 || b2.noClash || b2.kind === 'ult_arm_swing' || b2.kind === 'octopus_8_swing' || b2.kind === 'seismic_sonar') continue;
           if (!rectsHit(box1, getWaveBox(b2))) continue;
           if (b1.ult && !b2.ult) {
             toRemove.add(j); b1.dmg = Math.round(b1.dmg * 0.82); b1.w *= 0.9;
@@ -3949,7 +4435,7 @@
       const rBox = { x: rw.x - rw.w * 0.5, y: GROUND_Y - rw.h, w: rw.w, h: rw.h };
       for (let wi = bendingWaves.length - 1; wi >= 0; wi--) {
         const b = bendingWaves[wi];
-        if (b.owner !== rw.owner && !b.delay && b.kind !== 'ult_arm_swing' && b.kind !== 'octopus_8_swing' && b.kind !== 'seismic_sonar' && rectsHit(rBox, getWaveBox(b))) {
+        if (b.owner !== rw.owner && !b.delay && !b.noClash && b.kind !== 'ult_arm_swing' && b.kind !== 'octopus_8_swing' && b.kind !== 'seismic_sonar' && rectsHit(rBox, getWaveBox(b))) {
           if (!b.ult) { bendingWaves.splice(wi, 1); rw.hp--; }
           else { rw.hp = 0; b.dmg = Math.round(b.dmg * 0.65); }
           sfx.slam(); spawnDust(rw.x, GROUND_Y - 75, 0, 14, '#e8b038');
@@ -3993,6 +4479,157 @@
       if (b.delay && b.delay > 0) { b.delay--; continue; }
       const a = b.owner === 'p1' ? p1 : p2, d = b.owner === 'p1' ? p2 : p1;
 
+      // ===== SECRET ATLA SUB-BENDING ARTS SIMULATION =====
+      if (b.kind === 'sub_bloodbend') {
+        b.age++; b.f--;
+        const u = Math.min(1, b.age / b.max);
+        if (b.age === 1 && canFight && d.inv <= 0 && d.state !== 'ko') {
+          d.state = 'grabbed'; d.sf = 0; d.vx = 0; d.vy = 0; d.frozenPrisonF = 0;
+          b.grabbed = true;
+          dramaticZoom = Math.max(dramaticZoom, 0.11);
+          sfx.subBend('water');
+          if (FX3D) { FX3D.spawnFloorRing(d.x, '#ff4b6b', 220, 32); FX3D.flashSky('#991b2e', 0.36); }
+        }
+        if (b.grabbed) {
+          b.x = d.x; b.y = d.y - 100;
+          if (u < 0.72) {
+            const lift = Math.sin((u / 0.72) * Math.PI * 0.5);
+            d.y = GROUND_Y - lift * 155;
+            d.x = Math.max(ARENA_L + 40, Math.min(ARENA_R - 40, d.x + Math.sin(b.age * 0.55) * 3.2));
+            if (b.age % 5 === 0) spawnSparks(d.x, d.y - 90, '#991b2e', '#ff8aa1', 0.9);
+          } else if (!b.hit) {
+            b.hit = true; d.y = GROUND_Y; d.state = 'idle';
+            inkFlashF = Math.max(inkFlashF, 5); slowMoFrames = Math.max(slowMoFrames, 10);
+            sfx.slam(); sfx.headHit(); haptic('heavy'); shake = Math.max(shake, 22 * settings.feedback);
+            spawnSparks(d.x, GROUND_Y - 26, '#991b2e', '#ff4b6b', 2.4);
+            spawnDust(d.x, GROUND_Y, 0, 20, '#ff4b6b');
+            if (FX3D) { FX3D.spawnFloorRing(d.x, '#ff4b6b', 270, 32); FX3D.spawnBurst(d.x, GROUND_Y - 28, '#ff4b6b', 20, false); }
+            resolveHit(a, d, {
+              dmg: b.dmg, chip: 0, hs: 34, bs: 0, stop: 6,
+              kb: 11, ly: -12.5, kd: true, crit: true, unblockable: true, h: 'mid', elStatus: true, mg: 0
+            }, d.x, GROUND_Y - 40, true);
+          }
+        }
+        if (b.f <= 0 || !canFight) {
+          if (d.state === 'grabbed') { d.state = 'knockdown_air'; d.vy = -8; }
+          bendingWaves.splice(i, 1);
+        }
+        continue;
+      }
+
+      if (b.kind === 'sub_metal_wire') {
+        b.age++; b.f--;
+        const ox = a.x + b.dir * 26, oy = a.y - 108;
+        b.x = ox; b.y = oy;
+        if (b.phase === 'shoot') {
+          const prog = Math.min(1, b.age / 10);
+          b.tipX = Math.max(ARENA_L + 16, Math.min(ARENA_R - 16, ox + b.dir * (55 + prog * (b.w - 40))));
+          b.tipY = oy + Math.sin(prog * Math.PI) * -14;
+          const tipBox = { x: Math.min(ox, b.tipX) - 18, y: oy - 68, w: Math.abs(b.tipX - ox) + 36, h: 136 };
+          if (canFight && d.inv <= 0 && d.state !== 'ko' && d.state !== 'grabbed' && rectsHit(tipBox, getHurtbox(d))) {
+            b.phase = 'yank'; b.f = 18; b.grabbed = true;
+            d.state = 'grabbed'; d.sf = 0; d.vx = 0; d.vy = 0;
+            sfx.bladeClash(); shake = Math.max(shake, 10 * settings.feedback);
+            spawnSparks(d.x, d.y - 98, '#94a3b8', '#ffffff', 1.8);
+            if (FX3D) FX3D.spawnFloorRing(d.x, '#e2e8f0', 175, 22);
+            pushCallout('METAL SNARED!', '#e2e8f0', d.x, d.y - 185);
+          } else if (b.age >= 13) {
+            bendingWaves.splice(i, 1); continue;
+          }
+        } else if (b.phase === 'yank') {
+          const destX = Math.max(ARENA_L + 42, Math.min(ARENA_R - 42, a.x + b.dir * 86));
+          d.x += (destX - d.x) * 0.34;
+          d.y = Math.min(GROUND_Y, d.y + 8);
+          b.tipX = d.x; b.tipY = d.y - 96;
+          if (b.age % 2 === 0) spawnSparks(d.x, d.y - 96, '#94a3b8', '#ffffff', 0.9);
+          if (Math.abs(d.x - destX) < 18 || b.f <= 2) {
+            d.x = destX; d.y = GROUND_Y; d.state = 'idle';
+            b.f = 0;
+            sfx.slam(); haptic('heavy');
+            resolveHit(a, d, {
+              dmg: b.dmg, chip: 0, hs: 32, bs: 0, stop: 5,
+              kb: 1.5, ly: 0, kd: false, crit: true, unblockable: true, h: 'mid', elStatus: true, mg: 0
+            }, d.x, d.y - 100, true);
+          }
+        }
+        if (b.f <= 0 || !canFight) {
+          if (d.state === 'grabbed') { d.state = 'hitstun'; d.stun = 22; }
+          bendingWaves.splice(i, 1);
+        }
+        continue;
+      }
+
+      if (b.kind === 'sub_combustion') {
+        b.age++; b.f--;
+        b.x += b.vx;
+        if (b.age % 2 === 0 && particles.length < 240) {
+          particles.push({ x: b.x, y: b.y, vx: -b.vx * 0.1, vy: (Math.random() - 0.5) * 2, sz: 5.2, c: '#ffae34', age: 0, max: 14, g: 0, t: 'spark' });
+        }
+        const box = { x: b.x - b.w * 0.5, y: b.y - b.h * 0.5, w: b.w, h: b.h };
+        const hitTarget = canFight && d.inv <= 0 && d.state !== 'ko' && d.state !== 'grabbed' && rectsHit(box, getHurtbox(d));
+        if (hitTarget || b.f <= 0 || b.x < ARENA_L + 24 || b.x > ARENA_R - 24) {
+          const ex = b.x, ey = b.y;
+          bendingWaves.splice(i, 1);
+          inkFlashF = Math.max(inkFlashF, 5);
+          sfx.slam(); sfx.ultimate(); haptic('heavy');
+          shake = Math.max(shake, 24 * settings.feedback);
+          spawnSparks(ex, ey, '#ff4514', '#fff2a6', 3.0);
+          spawnDust(ex, GROUND_Y, 0, 20, '#ff7b1a');
+          if (FX3D) { FX3D.spawnFloorRing(ex, '#ffae34', 320, 34); FX3D.spawnBurst(ex, ey, '#ff5514', 28, false); FX3D.flashSky('#ff7b1a', 0.48); }
+          pushCallout('COMBUSTION DETONATION!', '#ffae34', ex, ey - 95);
+          if (canFight && d.inv <= 0 && d.state !== 'ko' && Math.abs(d.x - ex) < 168) {
+            resolveHit(a, d, {
+              dmg: b.dmg, chip: Math.round(b.dmg * 0.3), hs: 32, bs: 18, stop: 6,
+              kb: 16.5, ly: -11.8, kd: true, crit: true, guardCrush: true, heavyHit: true, h: 'mid', elStatus: true, mg: 0
+            }, d.x, d.y - 98, true);
+          }
+          continue;
+        }
+        continue;
+      }
+
+      if (b.kind === 'sub_vacuum') {
+        b.age++; b.f--;
+        b.x += (d.x - b.x) * 0.14;
+        if (b.hitCd > 0) b.hitCd--;
+        if (b.age % 2 === 0 && particles.length < 240) {
+          const ang = b.age * 0.55;
+          particles.push({ x: b.x + Math.cos(ang) * 76, y: b.y + Math.sin(ang) * 58, vx: -Math.cos(ang) * 4.5, vy: -Math.sin(ang) * 3.5, sz: 4.4, c: '#78ffd6', age: 0, max: 14, g: 0, t: 'spark' });
+        }
+        if (canFight && d.inv <= 0 && d.state !== 'ko' && Math.abs(d.x - b.x) < 128) {
+          d.x += (b.x - d.x) * 0.12;
+          if (b.hitCd <= 0 && b.ticksLeft > 0) {
+            b.ticksLeft--; b.hitCd = 10;
+            const lastTick = b.ticksLeft === 0;
+            d.magic = Math.max(0, d.magic - 5);
+            if (lastTick && FX3D) { FX3D.spawnFloorRing(b.x, '#78ffd6', 240, 28); FX3D.spawnBurst(b.x, b.y, '#78ffd6', 18, false); }
+            resolveHit(a, d, {
+              dmg: lastTick ? Math.round(b.dmg * 0.42) : Math.round(b.dmg * 0.2), chip: 8, hs: 20, bs: 10, stop: lastTick ? 5 : 2,
+              kb: lastTick ? 8 : 1, ly: lastTick ? -15.4 : -3.2, kd: lastTick, crit: lastTick, launcher: lastTick, h: 'mid', elStatus: true, mg: 0
+            }, d.x, d.y - 102, true);
+          }
+        }
+        if (b.f <= 0) bendingWaves.splice(i, 1);
+        continue;
+      }
+
+      if (b.kind === 'sub_soul_bind') {
+        b.age++; b.f--;
+        if (b.age === 6 && canFight && d.inv <= 0 && d.state !== 'ko' && Math.abs(d.x - b.x) < 118) {
+          const stolen = Math.min(20, d.magic);
+          d.magic = Math.max(0, d.magic - stolen);
+          a.magic = Math.min(100, a.magic + stolen + 6);
+          if (FX3D) { FX3D.spawnFloorRing(d.x, '#d8b4fe', 230, 30); FX3D.spawnBurst(d.x, GROUND_Y - 70, '#8b5cf6', 18, false); }
+          pushCallout('SOUL BOUND · -20% METER!', '#d8b4fe', d.x, GROUND_Y - 205);
+          resolveHit(a, d, {
+            dmg: b.dmg, chip: 18, hs: 34, bs: 14, stop: 5,
+            kb: 1.2, ly: 0, kd: false, crit: true, rootF: 36, h: 'low', elStatus: true, mg: 0
+          }, d.x, GROUND_Y - 60, true);
+        }
+        if (b.f <= 0) bendingWaves.splice(i, 1);
+        continue;
+      }
+
       // Toph's Seismic Sense Live-Tracking Sonar Wave -> erupts Rock Monolith straight underneath enemy's LIVE x!
       if (b.kind === 'seismic_sonar') {
         const dirToD = d.x >= b.x ? 1 : -1;
@@ -4029,7 +4666,7 @@
             a.octopusSwinging = true; a.octopusGrabReady = false; a.octopusGrabCd = 180; a.octopusF = Math.max(a.octopusF, 150);
             d.state = 'grabbed'; d.sf = 0; d.vx = 0; d.vy = 0; d.inv = 0; d.frozenPrisonF = 0;
             dramaticZoom = Math.max(dramaticZoom, 0.08);
-            sfx.bend(); shake = Math.max(shake, 8 * settings.feedback);
+            sfx.waterWhip(); shake = Math.max(shake, 8 * settings.feedback);
             spawnSparks(d.x, d.y - 95, '#38d8ff', '#e6fcff', 1.6);
             if (FX3D) FX3D.spawnFloorRing(d.x, '#38d8ff', 165, 22);
             pushCallout('8-ARM GRAB!', '#7cf2ff', d.x, d.y - 186);
@@ -4071,7 +4708,7 @@
                 match.c2 = match.c2Live ? match.c2 + 1 : 1;
                 match.c2Live = true; match.c2t = 60;
               }
-              sfx.slam(); haptic('medium');
+              sfx.waterWhip(); sfx.slam(); haptic('medium');
               shake = Math.max(shake, (10 + slamNum * 1.2) * settings.feedback);
               spawnSparks(d.x, GROUND_Y - 22, '#0c7de8', '#e6fcff', 1.5);
               spawnDust(d.x, GROUND_Y, fromSide, 10, '#38d8ff');
@@ -4082,7 +4719,7 @@
             } else {
               b.phase = 'slam'; b.f = 12; a.octopusSwinging = false;
               d.state = 'idle';
-              sfx.slam(); sfx.headHit(); haptic('heavy');
+              sfx.waterWhip(); sfx.slam(); sfx.headHit(); haptic('heavy');
               inkFlashF = Math.max(inkFlashF, 5); slowMoFrames = Math.max(slowMoFrames, 16);
               dramaticZoom = 0.14; shake = Math.max(shake, 24 * settings.feedback);
               spawnSparks(d.x, GROUND_Y - 26, '#0c7de8', '#ffffff', 2.6);
@@ -4325,6 +4962,9 @@
     else if (st.trial.id === 't_eclipse') done = true;
     if (done) {
       PROG.completedTrials.push(st.trial.id);
+      if (st.el && SUB_BEND_ARTS[st.el] && !PROG.unlockedScrolls.includes(st.el)) {
+        PROG.unlockedScrolls.push(st.el);
+      }
       return st.trial.reward;
     }
     return 0;
@@ -4334,12 +4974,14 @@
     if (w === 'p1') match.p1W++; else if (w === 'p2') match.p2W++;
     sfx.gong();
 
-    // Endless Shadow Tower escalating survival!
+    // Endless Shadow Tower escalating survival + Rotating Mutators every 3 waves!
     if (match.mode === 'endless') {
       if (w === 'p1') {
         match.endlessWave++;
         if (match.endlessWave > PROG.endlessBest) PROG.endlessBest = match.endlessWave;
-        PROG.coins += 85 + match.endlessWave * 15;
+        const mutMult = match.mutator ? 2 : 1;
+        const waveCoins = (85 + match.endlessWave * 15) * mutMult;
+        PROG.coins += waveCoins;
         saveProg();
         const nextEl = EL_ORDER[match.endlessWave % EL_ORDER.length];
         const waveScale = 1 + match.endlessWave * 0.08;
@@ -4350,9 +4992,13 @@
           magicGain: 1.15, theme: match.endlessWave % 3,
           ai: AI_CFG[match.endlessWave < 3 ? 'warrior' : match.endlessWave < 6 ? 'master' : 'shadow']
         };
+        if (match.endlessWave >= 2) {
+          match.mutator = TOWER_MUTATORS[Math.floor((match.endlessWave - 2) / 3) % TOWER_MUTATORS.length];
+        }
         p2.el = ELEMENTS[nextEl];
         match.screen = 'round_over'; match.over = 100;
-        showBanner(`${getFighterDisplayName('p1')} WINS`, `WAVE ${match.endlessWave} CLEARED · +${85 + match.endlessWave * 15} COINS`, '#fde68a', 96);
+        const nextMutTag = match.mutator ? ` · NEXT: ${match.mutator.name}` : '';
+        showBanner(`${getFighterDisplayName('p1')} WINS`, `WAVE ${match.endlessWave} CLEARED · +${waveCoins} COINS${nextMutTag}`, '#fde68a', 96);
         return;
       } else {
         match.screen = 'match_over'; match.winner = 'p2';
@@ -4367,9 +5013,11 @@
       const finisherBonus = match.eclipseFinished ? 75 : 0;
       let reward = match.winner === 'p1' ? 120 : 35;
       reward += match.maxComboP1 * 8 + match.headHitsP1 * 15 + styleBonus + finisherBonus;
+      if (match.dailyTrial || match.mutator) reward *= 2;
       const winName = getFighterDisplayName(match.winner);
       const extraTags = [
-        match.eclipseFinished ? 'ECLIPSE FINISHER' : '',
+        match.dailyTrial ? 'DAILY 2×' : (match.mutator ? 'MUTATOR 2×' : ''),
+        match.eclipseFinished ? 'EXECUTION' : '',
         match.styleRank ? `RANK ${match.styleRank}` : ''
       ].filter(Boolean).join(' · ');
       let subTxt = `${match.p1W} — ${match.p2W}${extraTags ? ' · ' + extraTags : ''} · +${reward} COINS`;
@@ -4391,7 +5039,7 @@
           if (!PROG.ownedGear.includes('crown')) { PROG.ownedGear.push('crown'); PROG.equippedGear = 'crown'; }
           subTxt = `THE ECLIPSE BROKEN · AVATAR STATE UNLOCKED · +${reward} COINS`;
         } else {
-          subTxt = `${ELEMENTS[st.el].name.toUpperCase()} RECLAIMED${extraTags ? ' · ' + extraTags : ''} · +${reward} COINS${trialBonus ? ' · TRIAL COMPLETE!' : ''}`;
+          subTxt = `${ELEMENTS[st.el].name.toUpperCase()} RECLAIMED${extraTags ? ' · ' + extraTags : ''} · +${reward} COINS${trialBonus ? ' · SCROLL MASTERED!' : ''}`;
         }
       }
       PROG.coins += reward;
@@ -5423,11 +6071,173 @@
     ctx.restore();
   }
 
-  // ===== DRAW DRAMATIC AVATAR BENDING WAVES, TORNADOS & ELEMENTAL ARMS (ZERO-BLUR FAST PATH) =====
+  // ===== SCULPTED TAPERED HOKUSAI SUMI-E WATER TENTACLE (Thick Calligraphic Base -> Razor Tapered Tip + Foam Crests!) =====
+  function drawHokusaiTentacle(sx, sy, cx, cy, ex, ey, baseW, tipW, withCrests = false) {
+    const segs = 10;
+    const pts = [];
+    for (let i = 0; i <= segs; i++) {
+      const u = i / segs, iu = 1 - u;
+      const px = iu * iu * sx + 2 * iu * u * cx + u * u * ex;
+      const py = iu * iu * sy + 2 * iu * u * cy + u * u * ey;
+      const tx = 2 * iu * (cx - sx) + 2 * u * (ex - cx);
+      const ty = 2 * iu * (cy - sy) + 2 * u * (ey - cy);
+      const len = Math.hypot(tx, ty) || 1;
+      const nx = -ty / len, ny = tx / len;
+      const w = baseW * Math.pow(1 - u, 0.85) + tipW * u;
+      pts.push({ px, py, nx, ny, w, u });
+    }
+    // 1) Sumi-e deep indigo-black tapered ink polygon body
+    ctx.beginPath();
+    for (let i = 0; i <= segs; i++) {
+      const p = pts[i];
+      const x = p.px + p.nx * p.w, y = p.py + p.ny * p.w;
+      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    }
+    for (let i = segs; i >= 0; i--) {
+      const p = pts[i];
+      ctx.lineTo(p.px - p.nx * p.w, p.py - p.ny * p.w);
+    }
+    ctx.closePath();
+    const grad = ctx.createLinearGradient(sx, sy, ex, ey);
+    grad.addColorStop(0, '#074896');
+    grad.addColorStop(0.55, '#1298e8');
+    grad.addColorStop(0.92, '#4ee4ff');
+    grad.addColorStop(1, '#e6fcff');
+    ctx.fillStyle = grad;
+    ctx.fill();
+    ctx.strokeStyle = '#031528';
+    ctx.lineWidth = 2.6;
+    ctx.lineJoin = 'round';
+    ctx.stroke();
+
+    // 2) Crisp calligraphy specular highlight spine along the upper contour
+    ctx.strokeStyle = '#e6fcff';
+    ctx.lineWidth = Math.max(1.5, baseW * 0.16);
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    for (let i = 0; i <= segs; i++) {
+      const p = pts[i];
+      const hx = p.px + p.nx * (p.w * 0.36), hy = p.py + p.ny * (p.w * 0.36);
+      i === 0 ? ctx.moveTo(hx, hy) : ctx.lineTo(hx, hy);
+    }
+    ctx.stroke();
+
+    // 3) Curled Hokusai Great-Wave foam crests peeling off the mid-body!
+    if (withCrests) {
+      for (let i = 3; i <= 7; i += 2) {
+        const p = pts[i], pPrev = pts[i - 1];
+        const side = (i % 4 === 3) ? 1 : -1;
+        const bx = p.px + p.nx * p.w * side, by = p.py + p.ny * p.w * side;
+        const dx = (pPrev.px - p.px) * 0.65, dy = (pPrev.py - p.py) * 0.65;
+        ctx.fillStyle = '#e6fcff';
+        ctx.strokeStyle = '#0a5eb5';
+        ctx.lineWidth = 1.2;
+        ctx.beginPath();
+        ctx.moveTo(bx, by);
+        ctx.quadraticCurveTo(bx + p.nx * 10 * side + dx * 0.6, by + p.ny * 10 * side + dy * 0.6, bx + p.nx * 14 * side + dx * 1.1, by + p.ny * 14 * side + dy * 1.1);
+        ctx.quadraticCurveTo(bx + p.nx * 5 * side + dx * 0.4, by + p.ny * 5 * side + dy * 0.4, p.px + p.nx * (p.w * 0.5) * side, p.py + p.ny * (p.w * 0.5) * side);
+        ctx.closePath(); ctx.fill(); ctx.stroke();
+      }
+    }
+  }
+
+  // ===== DRAW DRAMATIC AVATAR BENDING WAVES, TORNADOS, SUB-BENDING & ELEMENTAL ARMS (ZERO-BLUR FAST PATH) =====
   function drawBendingWave(b) {
     if (b.delay && b.delay > 0) return;
     const t = 1 - b.f / b.max, d = b.dir, el = b.el;
     ctx.save();
+
+    // 0) SECRET ATLA SUB-BENDING ARTS RENDERERS (Bloodbend, Metal Wire, Combustion, Vacuum, Soul Bind!)
+    if (b.kind === 'sub_bloodbend') {
+      const fade = Math.min(1, b.f / 8) * Math.min(1, b.age / 6);
+      // Giant Crimson Full Moon looming behind the puppet-gripped enemy!
+      ctx.globalAlpha = 0.72 * fade;
+      const mg = ctx.createRadialGradient(b.x, b.y - 125, 14, b.x, b.y - 125, 118);
+      mg.addColorStop(0, '#ffe4ea'); mg.addColorStop(0.55, '#d61c3d'); mg.addColorStop(1, 'rgba(130,12,32,0)');
+      ctx.fillStyle = mg; ctx.beginPath(); ctx.arc(b.x, b.y - 125, 118, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = '#d61c3d'; ctx.strokeStyle = '#ff98ab'; ctx.lineWidth = 3;
+      ctx.beginPath(); ctx.arc(b.x, b.y - 125, 62, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+      // Taut crimson bloodbending puppet strings radiating from caster's hands to victim's limbs!
+      const caster = b.owner === 'p1' ? p1 : p2;
+      ctx.globalAlpha = 0.92 * fade;
+      const targets = [[0, -28], [-22, 4], [22, 4], [-14, 42], [14, 42]];
+      targets.forEach(([ox, oy], idx) => {
+        ctx.strokeStyle = idx === 0 ? '#ffe4ea' : '#ff385c'; ctx.lineWidth = idx === 0 ? 3.2 : 2.1;
+        ctx.beginPath(); ctx.moveTo(caster.x + caster.facing * 36, caster.y - 115);
+        ctx.quadraticCurveTo((caster.x + b.x) * 0.5, b.y - 140 + Math.sin(simFrame * 0.5 + idx) * 14, b.x + ox, b.y + oy);
+        ctx.stroke();
+      });
+      ctx.restore(); return;
+    }
+
+    if (b.kind === 'sub_metal_wire') {
+      // Twin Republic-City Police Metalbending Steel Grapple Cables!
+      const ox = b.x, oy = b.y, tx = b.tipX, ty = b.tipY;
+      ctx.globalAlpha = 0.96;
+      for (const dy of [-7, 7]) {
+        ctx.strokeStyle = '#0f172a'; ctx.lineWidth = 6.5;
+        ctx.beginPath(); ctx.moveTo(ox, oy + dy); ctx.lineTo(tx, ty + dy * 0.6); ctx.stroke();
+        ctx.strokeStyle = '#cbd5e1'; ctx.lineWidth = 3.0; ctx.stroke();
+        ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 1.2; ctx.stroke();
+      }
+      // Razor steel grapple clamp at tip
+      ctx.save(); ctx.translate(tx, ty); ctx.scale(d, 1);
+      ctx.fillStyle = '#334155'; ctx.strokeStyle = '#f8fafc'; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(16, 0); ctx.lineTo(-4, -14); ctx.lineTo(4, -4); ctx.lineTo(-10, 0); ctx.lineTo(4, 4); ctx.lineTo(-4, 14); ctx.closePath();
+      ctx.fill(); ctx.stroke();
+      ctx.restore();
+      ctx.restore(); return;
+    }
+
+    if (b.kind === 'sub_combustion') {
+      // Third-Eye Psychic Combustion Shock-Rings streaking toward impact!
+      ctx.save(); ctx.translate(b.x, b.y);
+      for (let k = 0; k < 4; k++) {
+        const ox = -d * k * 24;
+        const r = 34 - k * 6;
+        ctx.strokeStyle = k === 0 ? '#ffffff' : (k === 1 ? '#ffae34' : '#ff4514');
+        ctx.lineWidth = 5 - k * 0.9;
+        ctx.globalAlpha = 0.95 - k * 0.18;
+        ctx.beginPath(); ctx.ellipse(ox, 0, r * 0.42, r, 0, 0, Math.PI * 2); ctx.stroke();
+      }
+      const cg = ctx.createRadialGradient(0, 0, 2, 0, 0, 32);
+      cg.addColorStop(0, '#ffffff'); cg.addColorStop(0.5, '#ffae34'); cg.addColorStop(1, 'rgba(255,60,0,0)');
+      ctx.fillStyle = cg; ctx.beginPath(); ctx.arc(0, 0, 32, 0, Math.PI * 2); ctx.fill();
+      ctx.restore();
+      ctx.restore(); return;
+    }
+
+    if (b.kind === 'sub_vacuum') {
+      // Zaheer's Airless Vacuum Breath Sphere imploding around the target!
+      const fade = Math.min(1, b.f / 10);
+      const rad = 64 + Math.sin(simFrame * 0.5) * 6;
+      ctx.globalAlpha = 0.88 * fade;
+      const vg = ctx.createRadialGradient(b.x, b.y, 12, b.x, b.y, rad);
+      vg.addColorStop(0, 'rgba(3, 14, 18, 0.82)'); vg.addColorStop(0.72, 'rgba(15, 118, 110, 0.55)'); vg.addColorStop(1, 'rgba(120, 255, 214, 0.92)');
+      ctx.fillStyle = vg; ctx.beginPath(); ctx.arc(b.x, b.y, rad, 0, Math.PI * 2); ctx.fill();
+      for (let k = 0; k < 3; k++) {
+        const ang = simFrame * (0.28 + k * 0.08) + k * 2.1;
+        ctx.strokeStyle = k === 0 ? '#ffffff' : '#78ffd6'; ctx.lineWidth = 3 - k * 0.5;
+        ctx.beginPath(); ctx.arc(b.x, b.y, rad - k * 14, ang, ang + Math.PI * 1.35); ctx.stroke();
+      }
+      ctx.restore(); return;
+    }
+
+    if (b.kind === 'sub_soul_bind') {
+      // Eclipse Soul Bind: Dark floor seal + erupting violet shadow chains!
+      const fade = Math.min(1, b.f / 10);
+      const rise = Math.min(1, b.age / 8);
+      ctx.globalAlpha = 0.94 * fade;
+      ctx.fillStyle = '#070312'; ctx.strokeStyle = '#d8b4fe'; ctx.lineWidth = 3;
+      ctx.beginPath(); ctx.ellipse(b.x, GROUND_Y + 2, 86, 18, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+      for (const side of [-1, 1]) {
+        const sx = b.x + side * 66, ex = b.x - side * 26, ey = GROUND_Y - 148 * rise;
+        ctx.strokeStyle = '#090414'; ctx.lineWidth = 10;
+        ctx.beginPath(); ctx.moveTo(sx, GROUND_Y); ctx.quadraticCurveTo(b.x + side * 46, GROUND_Y - 82 * rise, ex, ey); ctx.stroke();
+        ctx.strokeStyle = '#c084fc'; ctx.lineWidth = 3.2; ctx.setLineDash([10, 6]); ctx.stroke(); ctx.setLineDash([]);
+      }
+      ctx.restore(); return;
+    }
 
     // 1) LIFTING ELEMENTAL VORTEX / TORNADO (Water Tornado, Phoenix Pillar, Stone Cyclone, Blizzard Vortex, etc.)
     if (b.kind === 'ult_vortex') {
@@ -5493,7 +6303,7 @@
       return;
     }
 
-    // 1b) KATARA'S 8-ARM OCTOPUS MULTI-SWING (ALL 8 Articulated Sumi-e Water Tentacles Whipping Opponent 8 Times!)
+    // 1b) KATARA'S 8-ARM OCTOPUS MULTI-SWING (Sculpted Tapered Hokusai Sumi-e Water Tentacles Whipping Opponent 8 Times!)
     if (b.kind === 'octopus_8_swing') {
       const ox = b.x, oy = b.y, tx = b.tipX, ty = b.tipY;
       const fade = b.phase === 'slam' ? Math.max(0.18, b.f / 12) : 1;
@@ -5502,32 +6312,7 @@
       const isFinale = b.phase === 'slam' || b.swingIdx === 7;
       ctx.globalAlpha = 0.96 * fade;
 
-      const drawTentacle = (sx, sy, cx, cy, ex, ey, thick, isMain) => {
-        ctx.lineCap = 'round';
-        ctx.strokeStyle = '#03182e'; ctx.lineWidth = thick + 5;
-        ctx.beginPath(); ctx.moveTo(sx, sy); ctx.quadraticCurveTo(cx, cy, ex, ey); ctx.stroke();
-        ctx.strokeStyle = '#0c7de8'; ctx.lineWidth = thick;
-        ctx.beginPath(); ctx.moveTo(sx, sy); ctx.quadraticCurveTo(cx, cy, ex, ey); ctx.stroke();
-        ctx.strokeStyle = '#38d8ff'; ctx.lineWidth = thick * 0.56;
-        ctx.beginPath(); ctx.moveTo(sx, sy); ctx.quadraticCurveTo(cx, cy, ex, ey); ctx.stroke();
-        ctx.strokeStyle = '#e6fcff'; ctx.lineWidth = Math.max(2.2, thick * 0.22);
-        ctx.beginPath(); ctx.moveTo(sx, sy); ctx.quadraticCurveTo(cx, cy, ex, ey); ctx.stroke();
-        if (isMain) {
-          for (let s = 1; s <= 5; s++) {
-            const u = s / 6;
-            const px = (1 - u) * (1 - u) * sx + 2 * (1 - u) * u * cx + u * u * ex;
-            const py = (1 - u) * (1 - u) * sy + 2 * (1 - u) * u * cy + u * u * ey;
-            ctx.strokeStyle = '#e6fcff'; ctx.lineWidth = 2.2;
-            ctx.beginPath(); ctx.arc(px, py, (12 - u * 4), 0, Math.PI * 2); ctx.stroke();
-          }
-        } else {
-          // Curled Hokusai foam claw at tip of each coiling octopus arm
-          ctx.fillStyle = '#38d8ff'; ctx.strokeStyle = '#e6fcff'; ctx.lineWidth = 1.8;
-          ctx.beginPath(); ctx.arc(ex, ey, thick * 0.45, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-        }
-      };
-
-      // Draw all 7 secondary / relay-coiling water tentacles radiating from caster's back & shoulders
+      // Draw all 7 secondary / relay-coiling tapered Hokusai tentacles radiating from caster's back & shoulders
       for (let k = 0; k < 8; k++) {
         if (k === activeIdx) continue;
         const side = k < 4 ? -1 : 1;
@@ -5538,41 +6323,40 @@
         const wave = Math.sin(simFrame * 0.28 + k * 1.15);
         const sx = ox + Math.cos(baseAng) * 18, sy = oy + Math.sin(baseAng) * 20;
         if (isFinale) {
-          // 8/8 FINALE: ALL 8 octopus arms fan out wide like a Kraken before converging onto the victim!
           const spreadX = side * (110 + slot * 42);
           const spreadY = -92 + (slot - 1.5) * 46 + wave * 18;
-          drawTentacle(sx, sy, (sx + tx) * 0.5 + spreadX, Math.min(GROUND_Y - 26, (sy + ty) * 0.5 + spreadY), tx + Math.cos(k * 0.8) * 18, ty + Math.sin(k * 0.8) * 14, 11, false);
+          drawHokusaiTentacle(sx, sy, (sx + tx) * 0.5 + spreadX, Math.min(GROUND_Y - 26, (sy + ty) * 0.5 + spreadY), tx + Math.cos(k * 0.8) * 18, ty + Math.sin(k * 0.8) * 14, 14, 3.2, true);
         } else if (b.phase === 'swing' && k === nextIdx) {
-          // Relay arm reaches eagerly toward the landing zone to catch & whip back!
           const aimX = ox + (tx >= ox ? -1 : 1) * 155;
           const aimY = oy - 55 + wave * 28;
-          drawTentacle(sx, sy, (sx + aimX) * 0.5, oy - 135, aimX, aimY, 13, false);
+          drawHokusaiTentacle(sx, sy, (sx + aimX) * 0.5, oy - 135, aimX, aimY, 15, 2.8, true);
         } else {
-          const len = 104 + (slot % 2) * 32 + Math.sin(simFrame * 0.22 + k) * 16;
+          const len = 108 + (slot % 2) * 32 + Math.sin(simFrame * 0.22 + k) * 16;
           const ex = ox + Math.cos(baseAng + wave * 0.28) * len;
           const ey = Math.min(GROUND_Y - 14, oy + Math.sin(baseAng + wave * 0.24) * (len * 0.85));
           const cx = (sx + ex) * 0.5 + side * 32;
           const cy = (sy + ey) * 0.5 - 36 + wave * 14;
-          drawTentacle(sx, sy, cx, cy, ex, ey, 11, false);
+          drawHokusaiTentacle(sx, sy, cx, cy, ex, ey, 12.5, 2.2, true);
         }
       }
 
-      // Draw the PRIMARY active whipping octopus arm gripping & slamming the opponent!
+      // Draw the PRIMARY active whipping tapered Hokusai tentacle gripping & slamming the opponent!
       const mx = (ox + tx) * 0.5;
-      const arcLift = b.phase === 'swing' ? -112 : Math.sin(simFrame * 0.55) * 38;
+      const arcLift = b.phase === 'swing' ? -114 : Math.sin(simFrame * 0.55) * 38;
       const my = Math.min(GROUND_Y - 22, (oy + ty) * 0.5 + arcLift);
-      drawTentacle(ox, oy, mx, my, tx, ty, isFinale ? 24 : 21, true);
+      drawHokusaiTentacle(ox, oy, mx, my, tx, ty, isFinale ? 23 : 20, 6.5, true);
 
-      // Grasping Hokusai Water Claw & Coiling Bands wrapped around the grabbed opponent
+      // 3-Taloned Hokusai Great-Wave Foam Claw gripping the target!
       ctx.save(); ctx.translate(tx, ty);
-      ctx.fillStyle = '#0c7de8'; ctx.strokeStyle = '#e6fcff'; ctx.lineWidth = 2.8;
-      ctx.beginPath(); ctx.arc(0, 0, b.grabbed ? 30 : 22, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-      for (let f = -2; f <= 2; f++) {
-        const fa = f * 0.58 + simFrame * 0.22;
-        ctx.strokeStyle = '#e6fcff'; ctx.lineWidth = 4;
-        ctx.beginPath(); ctx.moveTo(0, 0);
-        ctx.quadraticCurveTo(Math.cos(fa) * 28, Math.sin(fa) * 28, Math.cos(fa + 0.5) * 44, Math.sin(fa + 0.5) * 44);
-        ctx.stroke();
+      const clawAng = Math.atan2(ty - my, tx - mx);
+      ctx.rotate(clawAng);
+      for (let f = -1; f <= 1; f++) {
+        ctx.fillStyle = '#1298e8'; ctx.strokeStyle = '#e6fcff'; ctx.lineWidth = 2.0;
+        ctx.beginPath();
+        ctx.moveTo(-6, f * 10);
+        ctx.quadraticCurveTo(18, f * 24, 42, f * 16 + Math.sin(simFrame * 0.35 + f) * 5);
+        ctx.quadraticCurveTo(16, f * 10, -4, f * 4);
+        ctx.closePath(); ctx.fill(); ctx.stroke();
       }
       ctx.restore();
 
@@ -5599,29 +6383,30 @@
       const fade = b.phase === 'slam' ? Math.max(0.2, b.f / 10) : 1;
       ctx.globalAlpha = 0.95 * fade;
 
-      // Sinuous multi-layered elemental arm / tentacle / whip body
       const armColorOuter = el.id === 'shadow' ? '#0b0618' : el.id === 'earth' ? '#261a10' : el.primary;
-      const drawCurve = (col, lw, offY = 0) => {
-        ctx.strokeStyle = col; ctx.lineWidth = lw; ctx.lineCap = 'round';
-        ctx.beginPath(); ctx.moveTo(ox, oy + offY); ctx.quadraticCurveTo(mx, my + offY, tx, ty + offY); ctx.stroke();
-      };
-      drawCurve(armColorOuter, el.id === 'water' || el.id === 'earth' ? 36 : 26);
-      drawCurve(el.glow, el.id === 'water' || el.id === 'earth' ? 20 : 14);
-      drawCurve(el.core, 7);
-
-      // Articulated elemental segments / joints along the curve (water crest rings / rock gauntlet chunks / lightning forks!)
-      for (let s = 1; s <= 6; s++) {
-        const u = s / 7;
-        const px = (1 - u) * (1 - u) * ox + 2 * (1 - u) * u * mx + u * u * tx;
-        const py = (1 - u) * (1 - u) * oy + 2 * (1 - u) * u * my + u * u * ty;
-        ctx.fillStyle = el.id === 'earth' ? '#1f160e' : el.id === 'shadow' ? '#0a0616' : el.core;
-        ctx.strokeStyle = el.glow; ctx.lineWidth = 2.4;
-        if (el.id === 'earth' || el.id === 'lava') {
-          ctx.beginPath(); ctx.rect(px - 14, py - 14, 28, 28); ctx.fill(); ctx.stroke();
-        } else if (el.id === 'lightning') {
-          ctx.beginPath(); ctx.moveTo(px - 18, py - 14); ctx.lineTo(px + 6, py + 2); ctx.lineTo(px - 8, py + 16); ctx.stroke();
-        } else {
-          ctx.beginPath(); ctx.arc(px, py, 14 - u * 4, 0, Math.PI * 2); ctx.stroke();
+      if (el.id === 'water') {
+        drawHokusaiTentacle(ox, oy, mx, my, tx, ty, 24, 7.5, true);
+      } else {
+        const drawCurve = (col, lw, offY = 0) => {
+          ctx.strokeStyle = col; ctx.lineWidth = lw; ctx.lineCap = 'round';
+          ctx.beginPath(); ctx.moveTo(ox, oy + offY); ctx.quadraticCurveTo(mx, my + offY, tx, ty + offY); ctx.stroke();
+        };
+        drawCurve(armColorOuter, el.id === 'earth' ? 34 : 26);
+        drawCurve(el.glow, el.id === 'earth' ? 18 : 14);
+        drawCurve(el.core, 6.5);
+        for (let s = 1; s <= 6; s++) {
+          const u = s / 7;
+          const px = (1 - u) * (1 - u) * ox + 2 * (1 - u) * u * mx + u * u * tx;
+          const py = (1 - u) * (1 - u) * oy + 2 * (1 - u) * u * my + u * u * ty;
+          ctx.fillStyle = el.id === 'earth' ? '#1f160e' : el.id === 'shadow' ? '#0a0616' : el.core;
+          ctx.strokeStyle = el.glow; ctx.lineWidth = 2.4;
+          if (el.id === 'earth' || el.id === 'lava') {
+            ctx.beginPath(); ctx.rect(px - 14, py - 14, 28, 28); ctx.fill(); ctx.stroke();
+          } else if (el.id === 'lightning') {
+            ctx.beginPath(); ctx.moveTo(px - 18, py - 14); ctx.lineTo(px + 6, py + 2); ctx.lineTo(px - 8, py + 16); ctx.stroke();
+          } else {
+            ctx.beginPath(); ctx.arc(px, py, 14 - u * 4, 0, Math.PI * 2); ctx.stroke();
+          }
         }
       }
 
@@ -5629,7 +6414,6 @@
       ctx.save(); ctx.translate(tx, ty);
       ctx.fillStyle = armColorOuter; ctx.strokeStyle = el.core; ctx.lineWidth = 3;
       ctx.beginPath(); ctx.arc(0, 0, b.grabbed ? 34 : 24, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-      // Curling elemental grasping tendrils/fingers around the opponent
       for (let f = -2; f <= 2; f++) {
         const fa = f * 0.52 + simFrame * 0.14;
         ctx.strokeStyle = el.core; ctx.lineWidth = 4.5;
@@ -5932,6 +6716,10 @@
     if (!f.dpose) animateFighter(f);
     const p = f.dpose, sc = 1.18;
     const wSpec = getWeaponSpec(f);
+    const ench = (!f.disarmed) ? getActiveEnchant(f) : null;
+    const wepPrim = ench ? ench.prim : f.el.primary;
+    const wepRim = ench ? ench.col : f.el.glow;
+    const wepCore = ench ? '#ffffff' : f.el.core;
     // Hit-stop impact vibration on the struck fighter (Shadow Fight-style weight)
     const struck = hitstop > 0 && f.sf < 3 && (f.state === 'hitstun' || f.state === 'knockdown_air' || f.state === 'block_high' || f.state === 'block_low');
     const jx = struck ? (Math.random() - 0.5) * (f.state === 'hitstun' || f.state === 'knockdown_air' ? 7 : 4) : 0;
@@ -5945,7 +6733,7 @@
       if (f.wTrail.length > 13) f.wTrail.shift();
     }
     for (let i = f.wTrail.length - 1; i >= 0; i--) if (++f.wTrail[i].a >= f.wTrail[i].max) f.wTrail.splice(i, 1);
-    drawRibbon(f.wTrail, f.el.primary, f.el.glow, f.el.core);
+    drawRibbon(f.wTrail, wepPrim, wepRim, wepCore);
 
     sctx.clearRect(0, 0, silBuf.width, silBuf.height);
     sctx.save(); sctx.translate(240, 330); sctx.scale(f.facing * sc * (p.sqx || 1), sc * (p.sqy || 1)); sctx.fillStyle = '#05070c';
@@ -5982,7 +6770,7 @@
     sctx.translate(0, 32); sctx.rotate(p.be); drawHumanForearm(sctx);
     sctx.translate(0, 32);
     if (f.gauntletsF > 0) drawStoneGauntlet(sctx);
-    sctx.rotate(-0.4); drawWeaponShape(sctx, wSpec.wType, f.el.glow, f.el.core, false);
+    sctx.rotate(-0.4); drawWeaponShape(sctx, wSpec.wType, wepRim, wepCore, false);
     sctx.restore();
 
     sctx.fillStyle = '#05070c';
@@ -5991,7 +6779,7 @@
     sctx.save(); sctx.translate(2, -64); sctx.rotate(p.hr || 0);
     const tx = -12 - Math.cos(f.pTail) * 46, ty = -18 + Math.sin(f.pTail) * 46;
     sctx.beginPath(); sctx.moveTo(-10,-22); sctx.quadraticCurveTo(-30, -26 + f.pTail * 11, tx, ty); sctx.quadraticCurveTo(-24, -10 + f.pTail * 13, -11, -12); sctx.fill();
-    drawHumanHead(sctx, f.el.core, f.avatarFlash > 0 || f.magic >= 100 || (f.id === 'p2' && match.boss && match.boss.isFinal));
+    drawHumanHead(sctx, f.el.core, f.avatarFlash > 0 || f.magic >= 100 || f.phase2 || (f.id === 'p2' && match.boss && match.boss.isFinal));
     // Silhouette Headgear (Ronin Bamboo Kasa, Oni Horned Kabuto, Avatar Eclipse Crown!)
     sctx.fillStyle = '#05070c';
     if (activeGear === 'kasa') {
@@ -6015,7 +6803,7 @@
     sctx.translate(0, 32); sctx.rotate(p.fe); drawHumanForearm(sctx);
     sctx.translate(0, 32);
     if (f.gauntletsF > 0) drawStoneGauntlet(sctx);
-    sctx.rotate(p.fw); drawWeaponShape(sctx, wSpec.wType, f.el.glow, f.el.core, true);
+    sctx.rotate(p.fw); drawWeaponShape(sctx, wSpec.wType, wepRim, wepCore, true);
     sctx.restore();
     sctx.restore();
 
@@ -6060,6 +6848,15 @@
     }
     ctx.restore();
 
+    // Armory Forge Weapon Enchantment Seal Glint right at the fighter's blade tip!
+    if (ench && f.state !== 'ko' && !f.invisible) {
+      ctx.save();
+      const eg = ctx.createRadialGradient(wx, wy + airHoverY, 1, wx, wy + airHoverY, 20);
+      eg.addColorStop(0, '#ffffff'); eg.addColorStop(0.35, ench.col + 'cc'); eg.addColorStop(1, ench.col + '00');
+      ctx.fillStyle = eg; ctx.beginPath(); ctx.arc(wx, wy + airHoverY, 20, 0, Math.PI * 2); ctx.fill();
+      ctx.restore();
+    }
+
     // Sumi-e Brushstroke Ink Slash Arc on Heavy / Finisher / Overhead Weapon Strikes
     if (f.state === 'attack' && f.move && f.move.wep && (f.move.finisher || f.move.overhead || f.move.crit) && f.sf >= f.ms - 1 && f.sf <= f.ms + f.ma + 4) {
       const prog = Math.min(1, Math.max(0, (f.sf - f.ms + 1) / (f.ma + 5)));
@@ -6069,7 +6866,7 @@
       ctx.globalAlpha = (1 - prog * 0.7) * 0.85;
       ctx.strokeStyle = '#05070c'; ctx.lineWidth = 10 * (1 - prog * 0.5);
       ctx.beginPath(); ctx.arc(-18, 6, 78, -1.15, 0.85); ctx.stroke();
-      ctx.strokeStyle = f.el.glow; ctx.lineWidth = 4.2 * (1 - prog * 0.45);
+      ctx.strokeStyle = wepRim; ctx.lineWidth = 4.2 * (1 - prog * 0.45);
       ctx.beginPath(); ctx.arc(-18, 6, 80, -1.10, 0.82); ctx.stroke();
       ctx.restore();
     }
@@ -6077,18 +6874,16 @@
     // Live ATLA Signature Bending Visuals + Status Effects Directly on Silhouette
     if (f.state !== 'ko') {
       ctx.save();
-      // 1) Katara's Octopus Form: 8 swirling animated water tentacles around fighter (replaced by full 8-arm whip during multi-swing)!
+      // 1) Katara's Octopus Form: 8 sculpted tapered Hokusai ink tentacles orbiting fighter!
       if (f.octopusF > 0 && !bendingWaves.some(w => w.owner === f.id && w.kind === 'octopus_8_swing')) {
         const fade = Math.min(1, f.octopusF / 24);
-        ctx.globalAlpha = 0.88 * fade;
+        ctx.globalAlpha = 0.90 * fade;
         for (let t = 0; t < 8; t++) {
-          const ang = (t / 8) * Math.PI * 2 + simFrame * 0.09;
-          const ox = f.x + Math.cos(ang) * 26, oy = f.y - 98 + Math.sin(ang) * 32;
-          const tipX = f.x + Math.cos(ang + Math.sin(simFrame * 0.16 + t) * 0.44) * 102;
-          const tipY = f.y - 98 + Math.sin(ang + Math.cos(simFrame * 0.14 + t) * 0.40) * 80;
-          ctx.strokeStyle = '#1498e8'; ctx.lineWidth = 10; ctx.lineCap = 'round';
-          ctx.beginPath(); ctx.moveTo(ox, oy); ctx.quadraticCurveTo((ox + tipX) * 0.5, (oy + tipY) * 0.5 - 16, tipX, tipY); ctx.stroke();
-          ctx.strokeStyle = '#d8fbff'; ctx.lineWidth = 2.8; ctx.stroke();
+          const ang = (t / 8) * Math.PI * 2 + simFrame * 0.085;
+          const ox = f.x + Math.cos(ang) * 24, oy = f.y - 98 + Math.sin(ang) * 28;
+          const tipX = f.x + Math.cos(ang + Math.sin(simFrame * 0.16 + t) * 0.42) * 108;
+          const tipY = f.y - 98 + Math.sin(ang + Math.cos(simFrame * 0.14 + t) * 0.38) * 84;
+          drawHokusaiTentacle(ox, oy, (ox + tipX) * 0.5, (oy + tipY) * 0.5 - 20, tipX, tipY, 12, 2.2, true);
         }
       }
       // 2) Aang's Air Scooter: large layered swirling wind sphere directly beneath crouched fighter!
@@ -6685,6 +7480,48 @@
       return { mesh, mat };
     });
 
+    // 5e) 2x 3D VOLUMETRIC WEAPON SLASH RIBBONS (Dynamic 2.5D Blade Arcs tinted by Armory Enchantment Seals!)
+    const RIBBON_MAX = 14;
+    const slashRibbons = [0, 1].map(() => {
+      const positions = new Float32Array(RIBBON_MAX * 2 * 3);
+      const uvs = new Float32Array(RIBBON_MAX * 2 * 2);
+      const indices = [];
+      for (let i = 0; i < RIBBON_MAX - 1; i++) {
+        const a = i * 2, b = a + 1, c = a + 2, d = a + 3;
+        indices.push(a, b, c, b, d, c);
+      }
+      const geo = new T.BufferGeometry();
+      geo.setAttribute('position', new T.Float32BufferAttribute(positions, 3));
+      geo.setAttribute('uv', new T.Float32BufferAttribute(uvs, 2));
+      geo.setIndex(indices);
+      const mat = new T.ShaderMaterial({
+        uniforms: { uColor: { value: new T.Color('#38d8ff') }, uCore: { value: new T.Color('#ffffff') } },
+        vertexShader: `
+          varying vec2 vUv;
+          void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }
+        `,
+        fragmentShader: `
+          uniform vec3 uColor;
+          uniform vec3 uCore;
+          varying vec2 vUv;
+          void main() {
+            float edge = 1.0 - abs(vUv.y * 2.0 - 1.0);
+            float core = smoothstep(0.62, 1.0, edge);
+            float tail = smoothstep(0.0, 0.85, vUv.x);
+            vec3 col = mix(uColor, uCore, core * 0.85);
+            float alpha = pow(edge, 1.35) * tail * 0.86;
+            gl_FragColor = vec4(col, alpha);
+          }
+        `,
+        transparent: true, depthWrite: false, side: T.DoubleSide, blending: T.AdditiveBlending
+      });
+      const mesh = new T.Mesh(geo, mat);
+      mesh.frustumCulled = false;
+      mesh.visible = false;
+      scene.add(mesh);
+      return { mesh, geo, mat, positions, uvs };
+    });
+
     // 6) TRUE 2.5D DEPTH-LAYERED ATMOSPHERIC PARTICLES (z = -220 behind fighters -> +250 foreground lens!)
     const makeGlowTex = () => {
       const c = document.createElement('canvas'); c.width = 64; c.height = 64;
@@ -6759,6 +7596,7 @@
     const clearTransients = () => {
       rings.forEach(r => { r.active = false; r.mesh.visible = false; });
       shards.forEach(s => { s.active = false; s.mesh.visible = false; });
+      slashRibbons.forEach(sr => { sr.mesh.visible = false; });
       skyFlashA = 0; skyFlashMesh.visible = false;
     };
     const setEnabled = (on) => {
@@ -6795,17 +7633,17 @@
         mapleLeaves.forEach(l => { l.mesh.visible = isEclipse; });
       }
 
-      // Sync Camera 1:1 with #game + Subtle Cinematic 2.5D Perspective Tilt on Ultimates, Clashes, 8-Arm Whip & Finishers!
+      // Sync Camera 1:1 with #game + Subtle Cinematic 2.5D Perspective Tilt on Ultimates, Clashes, 8-Arm Whip, Awakenings & Finishers!
       const baseX = clampedCamX - W * 0.5 - sx / curZoom;
       const baseY = -camYOffset + sy / curZoom;
       const baseZ = CAM_Z / curZoom;
-      const actionEpic = (ultDimFrames > 0 || Boolean(bladeClash) || p1.octopusSwinging || p2.octopusSwinging || match.finishHim);
+      const actionEpic = (ultDimFrames > 0 || Boolean(bladeClash) || p1.octopusSwinging || p2.octopusSwinging || match.finishHim || Boolean(match.finisherAnim) || Boolean(match.awakening));
       let targetYaw = ((clampedCamX - W * 0.5) / (W * 0.5)) * 0.012;
       let targetPitch = 0;
       if (actionEpic) {
-        const focalX = (p1.octopusSwinging ? p1.x : p2.octopusSwinging ? p2.x : (p1.x + p2.x) * 0.5) - W * 0.5;
-        targetYaw = (focalX >= 0 ? -1 : 1) * 0.068 + Math.sin(t * 2.4) * 0.014;
-        targetPitch = -0.026;
+        const focalX = (match.awakening ? p2.x : p1.octopusSwinging ? p1.x : p2.octopusSwinging ? p2.x : (p1.x + p2.x) * 0.5) - W * 0.5;
+        targetYaw = (focalX >= 0 ? -1 : 1) * 0.072 + Math.sin(t * 2.4) * 0.014;
+        targetPitch = -0.028;
       }
       tiltYaw += (targetYaw - tiltYaw) * 0.1;
       tiltPitch += (targetPitch - tiltPitch) * 0.1;
@@ -6823,10 +7661,11 @@
         lightCol[idx].copy(tmpCol);
         lightRad[idx] = rad;
       };
-      // Lights 0 & 1: P1 and P2 elemental auras
+      // Lights 0 & 1: P1 and P2 elemental auras (tinted by equipped Armory Weapon Enchantment Seal!)
+      const p1Ench = getActiveEnchant(p1);
       const p1Boost = (p1.octopusF > 0 || p1.airScooterF > 0 || p1.fireJetF > 0 || p1.reflectStanceF > 0 || p1.state === 'attack') ? 1.45 : 0.92;
       const p2Boost = (p2.octopusF > 0 || p2.airScooterF > 0 || p2.fireJetF > 0 || p2.reflectStanceF > 0 || p2.phase2 || p2.state === 'attack') ? 1.45 : 0.92;
-      setLight(0, p1.x, p1.y - 72, 18, p1.el.glow, p1Boost, p1.octopusSwinging ? 320 : 230);
+      setLight(0, p1.x, p1.y - 72, 18, p1Ench ? p1Ench.col : p1.el.glow, p1Boost, p1.octopusSwinging ? 320 : 230);
       setLight(1, p2.x, p2.y - 72, 18, p2.el.glow, p2Boost, p2.octopusSwinging ? 320 : 230);
 
       // Light 2: Most prominent bending wave / Blade Clash / Octopus Whip tip
@@ -6870,7 +7709,7 @@
         skyFlashA = 0; skyFlashMesh.visible = false;
       }
 
-      // Sync Volumetric 3D Signature Meshes for P1 & P2
+      // Sync Volumetric 3D Signature Meshes + 3D Weapon Slash Ribbons for P1 & P2
       const fighters = [p1, p2];
       for (let fi = 0; fi < 2; fi++) {
         const f = fighters[fi];
@@ -6879,6 +7718,44 @@
           spawnFloorRing(f.x, '#f5d061', 390, 32);
         }
         prevSeismic[fi] = f.seismicWaveF;
+
+        // 3D Volumetric Weapon Slash Ribbon arched forward into +Z space!
+        const sr = slashRibbons[fi];
+        const tr = f.wTrail;
+        if (tr && tr.length >= 3) {
+          const cnt = Math.min(RIBBON_MAX, tr.length);
+          const ench = getActiveEnchant(f);
+          sr.mat.uniforms.uColor.value.set(ench ? ench.col : f.el.glow);
+          sr.mat.uniforms.uCore.value.set(ench ? '#ffffff' : f.el.core);
+          for (let k = 0; k < cnt; k++) {
+            const pt = tr[k];
+            const prev = tr[Math.max(0, k - 1)];
+            const next = tr[Math.min(cnt - 1, k + 1)];
+            let dx = next.x - prev.x, dy = next.y - prev.y;
+            const len = Math.hypot(dx, dy) || 1;
+            const nx = -dy / len, ny = dx / len;
+            const u = cnt > 1 ? k / (cnt - 1) : 1;
+            const halfW = (pt.w || 22) * 0.85 * Math.sin(u * Math.PI * 0.88) * (1 - pt.a / pt.max);
+            const zArch = 12 + Math.sin(u * Math.PI) * 26;
+            const cx3 = to3X(pt.x), cy3 = to3Y(pt.y);
+            const vi = k * 6;
+            sr.positions[vi]     = cx3 + nx * halfW;
+            sr.positions[vi + 1] = cy3 - ny * halfW;
+            sr.positions[vi + 2] = zArch + 4;
+            sr.positions[vi + 3] = cx3 - nx * halfW;
+            sr.positions[vi + 4] = cy3 + ny * halfW;
+            sr.positions[vi + 5] = zArch - 4;
+            const uvi = k * 4;
+            sr.uvs[uvi] = u; sr.uvs[uvi + 1] = 0;
+            sr.uvs[uvi + 2] = u; sr.uvs[uvi + 3] = 1;
+          }
+          sr.geo.setDrawRange(0, (cnt - 1) * 6);
+          sr.geo.attributes.position.needsUpdate = true;
+          sr.geo.attributes.uv.needsUpdate = true;
+          sr.mesh.visible = true;
+        } else {
+          sr.mesh.visible = false;
+        }
 
         // Aang's 3D Air Scooter
         const sc = airScooters[fi];
@@ -7027,6 +7904,7 @@
         revision: T.REVISION, enabled: settings.fx3d, biome: lastBiome,
         activeRings: rings.filter(r => r.active).length,
         activeShards: shards.filter(s => s.active).length,
+        activeRibbons: slashRibbons.filter(s => s.mesh.visible).length,
         canvasW: fxCanvas.width, canvasH: fxCanvas.height
       })
     };
@@ -7035,11 +7913,164 @@
   }
   FX3D = createFX3D();
 
+  function drawFinisherAnim() {
+    const fa = match.finisherAnim;
+    if (!fa) return;
+    const def = fa.defId === 'p1' ? p1 : p2;
+    const el = ELEMENTS[fa.elId] || ELEMENTS.water;
+    const prog = 1 - fa.f / fa.max;
+    const x = def.x, y = GROUND_Y;
+    ctx.save();
+    if (fa.elId === 'water') {
+      // Towering Hokusai tidal whirlpool funnel + crashing wave crests!
+      const h = 340 * Math.min(1, prog * 2.2);
+      const wg = ctx.createLinearGradient(x, y, x, y - h);
+      wg.addColorStop(0, 'rgba(6,72,158,0.88)'); wg.addColorStop(0.6, 'rgba(56,216,255,0.72)'); wg.addColorStop(1, 'rgba(230,252,255,0.2)');
+      ctx.fillStyle = wg;
+      ctx.beginPath();
+      ctx.moveTo(x - 42, y + 6); ctx.quadraticCurveTo(x - 105, y - h * 0.55, x - 165, y - h);
+      ctx.lineTo(x + 165, y - h); ctx.quadraticCurveTo(x + 105, y - h * 0.55, x + 42, y + 6); ctx.closePath(); ctx.fill();
+      for (let k = 0; k < 8; k++) {
+        const u = k / 7;
+        ctx.strokeStyle = k % 2 === 0 ? '#e6fcff' : '#38d8ff'; ctx.lineWidth = 4.5 - u * 2;
+        ctx.beginPath(); ctx.ellipse(x + Math.sin(simFrame * 0.4 + k) * 14, y - 16 - u * h, 46 + u * 110, 14 + u * 10, 0, 0, Math.PI * 2); ctx.stroke();
+      }
+    } else if (fa.elId === 'fire') {
+      // Twin coiled Sozin Fire Dragons spiraling inward + solar burst!
+      for (let s = -1; s <= 1; s += 2) {
+        ctx.strokeStyle = '#c81c04'; ctx.lineWidth = 26; ctx.lineCap = 'round';
+        ctx.beginPath();
+        for (let i = 0; i <= 14; i++) {
+          const u = i / 14;
+          const ang = simFrame * 0.28 + u * 5.2 + (s === 1 ? 0 : Math.PI);
+          const r = (1 - prog * 0.55) * (150 - u * 60);
+          const px = x + Math.cos(ang) * r, py = y - 10 - u * 290;
+          i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+        }
+        ctx.stroke();
+        ctx.strokeStyle = '#ffae24'; ctx.lineWidth = 11; ctx.stroke();
+        ctx.strokeStyle = '#fff9d6'; ctx.lineWidth = 4; ctx.stroke();
+      }
+      if (fa.f <= 28) {
+        const bp = 1 - fa.f / 28;
+        const bg = ctx.createRadialGradient(x, y - 95, 10, x, y - 95, 290 * (0.4 + bp));
+        bg.addColorStop(0, 'rgba(255,250,210,0.92)'); bg.addColorStop(0.5, 'rgba(255,95,20,0.65)'); bg.addColorStop(1, 'rgba(255,40,0,0)');
+        ctx.fillStyle = bg; ctx.beginPath(); ctx.arc(x, y - 95, 290 * (0.4 + bp), 0, Math.PI * 2); ctx.fill();
+      }
+    } else if (fa.elId === 'air') {
+      // Sky Tempest emerald ascension cyclone
+      const h = 380;
+      for (let k = 0; k < 11; k++) {
+        const u = k / 10;
+        ctx.strokeStyle = k % 2 === 0 ? '#eafff7' : '#5effc8'; ctx.lineWidth = 3.5;
+        ctx.globalAlpha = 0.85 * (1 - u * 0.35);
+        ctx.beginPath(); ctx.ellipse(x + Math.sin(simFrame * 0.45 + k) * 18, y - 12 - u * h, 38 + u * 130, 12 + u * 12, 0, 0, Math.PI * 2); ctx.stroke();
+      }
+    } else if (fa.elId === 'ice') {
+      // Colossal Absolute-Zero diamond glacier pillar
+      if (fa.f > 26) {
+        const grow = Math.min(1, prog * 2.5);
+        const ig = ctx.createLinearGradient(x - 85, y - 260 * grow, x + 85, y);
+        ig.addColorStop(0, 'rgba(230,253,255,0.88)'); ig.addColorStop(0.5, 'rgba(72,216,255,0.68)'); ig.addColorStop(1, 'rgba(8,90,156,0.82)');
+        ctx.fillStyle = ig; ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 3.5;
+        ctx.beginPath();
+        ctx.moveTo(x - 78, y + 4); ctx.lineTo(x - 92, y - 135 * grow); ctx.lineTo(x - 24, y - 265 * grow);
+        ctx.lineTo(x + 28, y - 275 * grow); ctx.lineTo(x + 92, y - 130 * grow); ctx.lineTo(x + 76, y + 4); ctx.closePath();
+        ctx.fill(); ctx.stroke();
+      }
+    } else if (fa.elId === 'earth') {
+      // Twin massive closing stone monolith slabs (Earth Coffin Crush!)
+      const close = fa.f > 28 ? Math.min(1, (fa.max - fa.f) / 60) : 1;
+      const gap = (1 - close) * 175 + 26;
+      for (const side of [-1, 1]) {
+        const sx = x + side * gap;
+        ctx.fillStyle = '#1b150e'; ctx.strokeStyle = '#f5d061'; ctx.lineWidth = 3.5;
+        ctx.beginPath();
+        ctx.moveTo(sx, y + 6); ctx.lineTo(sx + side * 86, y + 6);
+        ctx.lineTo(sx + side * 74, y - 235); ctx.lineTo(sx + side * 12, y - 250); ctx.lineTo(sx, y - 220);
+        ctx.closePath(); ctx.fill(); ctx.stroke();
+      }
+    } else if (fa.elId === 'lightning') {
+      // Heaven's Judgment multi-bolt sky strike pillar
+      if (fa.f < 72) {
+        const thick = fa.f <= 26 ? 26 : 14;
+        ctx.strokeStyle = '#2b7aff'; ctx.lineWidth = thick + 16; ctx.globalAlpha = 0.65;
+        ctx.beginPath(); ctx.moveTo(x, 0);
+        for (let seg = 1; seg <= 9; seg++) ctx.lineTo(x + Math.sin(simFrame * 1.4 + seg * 2.1) * 28, (y / 9) * seg);
+        ctx.stroke();
+        ctx.strokeStyle = '#ffe066'; ctx.lineWidth = thick; ctx.globalAlpha = 0.96; ctx.stroke();
+        ctx.strokeStyle = '#ffffff'; ctx.lineWidth = thick * 0.42; ctx.stroke();
+      }
+    } else if (fa.elId === 'shadow') {
+      // Eclipse Abyss Portal dragging opponent below the floor
+      ctx.fillStyle = '#06030e'; ctx.strokeStyle = '#c4a6ff'; ctx.lineWidth = 4;
+      ctx.beginPath(); ctx.ellipse(x, y + 2, 138, 28, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+      for (let k = -2; k <= 2; k++) {
+        const hx = x + k * 34;
+        ctx.strokeStyle = '#0b0618'; ctx.lineWidth = 14; ctx.lineCap = 'round';
+        ctx.beginPath(); ctx.moveTo(hx, y + 2); ctx.quadraticCurveTo(hx + Math.sin(simFrame * 0.3 + k) * 20, y - 90, x + k * 14, y - 165); ctx.stroke();
+        ctx.strokeStyle = '#a882ff'; ctx.lineWidth = 3; ctx.stroke();
+      }
+    } else {
+      // Caldera Magma Eruption pillar
+      const erupt = fa.f <= 34 ? 1 : Math.min(1, prog * 1.4);
+      const colH = 350 * erupt;
+      const lg = ctx.createLinearGradient(x, y, x, y - colH);
+      lg.addColorStop(0, '#9a1100'); lg.addColorStop(0.5, '#ff4800'); lg.addColorStop(1, '#fff0a0');
+      ctx.fillStyle = lg; ctx.strokeStyle = '#ffe478'; ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.moveTo(x - 95, y + 6); ctx.quadraticCurveTo(x - 58, y - colH * 0.6, x - 72, y - colH);
+      ctx.lineTo(x + 72, y - colH); ctx.quadraticCurveTo(x + 58, y - colH * 0.6, x + 95, y + 6); ctx.closePath(); ctx.fill(); ctx.stroke();
+    }
+    ctx.restore();
+  }
+
+  function drawAwakeningCutIn() {
+    const aw = match.awakening;
+    if (!aw) return;
+    const u = 1 - aw.f / aw.max;
+    const alpha = Math.min(1, u * 5) * Math.min(1, aw.f / 8);
+    ctx.save();
+    ctx.globalAlpha = alpha;
+    // Diagonal sumi-e ink slash across screen
+    ctx.fillStyle = 'rgba(6, 5, 10, 0.84)';
+    ctx.beginPath();
+    ctx.moveTo(0, H * 0.31); ctx.lineTo(W, H * 0.23);
+    ctx.lineTo(W, H * 0.56); ctx.lineTo(0, H * 0.64); ctx.closePath(); ctx.fill();
+    // Top & bottom glowing brush borders
+    ctx.strokeStyle = aw.col; ctx.lineWidth = 4;
+    ctx.beginPath(); ctx.moveTo(0, H * 0.31); ctx.lineTo(W, H * 0.23); ctx.moveTo(0, H * 0.64); ctx.lineTo(W, H * 0.56); ctx.stroke();
+    // Anime kinetic speedlines
+    ctx.strokeStyle = 'rgba(255,255,255,0.22)'; ctx.lineWidth = 2;
+    for (let i = 0; i < 14; i++) {
+      const ly = H * 0.28 + (i / 14) * (H * 0.30);
+      const off = ((simFrame * 42 + i * 190) % (W + 300)) - 150;
+      ctx.beginPath(); ctx.moveTo(off, ly); ctx.lineTo(off + 180, ly - 10); ctx.stroke();
+    }
+    // Master Awakening Title + Battle Cry Quote
+    const slide = Math.max(0, 1 - u * 4) * 90;
+    ctx.textAlign = 'center';
+    ctx.font = '900 18px "Palatino Linotype", Georgia, serif';
+    ctx.fillStyle = '#fde68a';
+    ctx.fillText('PHASE II · ECLIPSE AWAKENING', W * 0.5 - slide, H * 0.38);
+    ctx.font = '900 42px "Palatino Linotype", Georgia, serif';
+    ctx.strokeStyle = '#050408'; ctx.lineWidth = 7;
+    ctx.strokeText(aw.title, W * 0.5 + slide, H * 0.465);
+    ctx.fillStyle = aw.col;
+    ctx.fillText(aw.title, W * 0.5 + slide, H * 0.465);
+    ctx.font = 'italic 800 22px "Palatino Linotype", Georgia, serif';
+    ctx.fillStyle = '#f8f2e4';
+    ctx.strokeText(`"${aw.quote}"`, W * 0.5 - slide * 0.5, H * 0.535);
+    ctx.fillText(`"${aw.quote}"`, W * 0.5 - slide * 0.5, H * 0.535);
+    ctx.restore();
+  }
+
   function renderScene() {
     ctx.setTransform(gameDpr, 0, 0, gameDpr, 0, 0);
     ctx.clearRect(0, 0, W, H);
-    const midX = (p1.x + p2.x) * 0.5, dist = Math.abs(p1.x - p2.x);
-    const tz = Math.max(1.05, Math.min(1.22, 1.18 - dist / 2600 + dramaticZoom));
+    const focusX = match.awakening ? p2.x : (match.finisherAnim ? (match.finisherAnim.defId === 'p1' ? p1.x : p2.x) : (p1.x + p2.x) * 0.5);
+    const midX = focusX, dist = Math.abs(p1.x - p2.x);
+    const tz = Math.max(1.05, Math.min(1.28, 1.18 - dist / 2600 + dramaticZoom));
     camZoom += (tz - camZoom) * 0.08;
     const halfViewW = W / (2 * camZoom);
     const minCamX = halfViewW + 18, maxCamX = W - halfViewW - 18;
@@ -7195,6 +8226,7 @@
     drawFighter(p2);
 
     bendingWaves.forEach(drawBendingWave);
+    drawFinisherAnim();
 
     particles.forEach(p => {
       const life = 1 - p.age / p.max;
@@ -7254,6 +8286,9 @@
       ctx.fillRect(0, 0, W, H);
       ctx.restore();
     }
+
+    // Boss Phase-2 Awakening Cut-In Plaque (Screen-Space)
+    drawAwakeningCutIn();
 
     // Blade-Lock Weapon Clash Tug-of-War Bar (Screen-Space Center)
     if (bladeClash) {
@@ -7319,12 +8354,15 @@
     bSub: document.getElementById('banner-sub'), mActs: document.getElementById('match-actions'),
     btnMag: document.getElementById('btn-magic'), magIcon: document.getElementById('magic-icon'),
     bendLbl: document.getElementById('bend-lbl'),
+    btnSub: document.getElementById('btn-sub'), subIcon: document.getElementById('sub-icon'), subLbl: document.getElementById('sub-lbl'),
+    mutPill: document.getElementById('mutator-pill'), mutTitle: document.getElementById('mut-title'), mutDesc: document.getElementById('mut-desc'),
     styleRank: document.getElementById('style-rank'), srGrade: document.getElementById('sr-grade'), srLbl: document.getElementById('sr-lbl'),
     btnNextBoss: document.getElementById('btn-next-boss')
   };
-  let lastE1 = '', lastE2 = '', lastJw = '', lastWepIco = '', lastSR = '', lastBendLbl = '';
+  let lastE1 = '', lastE2 = '', lastJw = '', lastWepIco = '', lastSR = '', lastBendLbl = '', lastSubKey = '', lastMutKey = '';
   let lastB1 = '', lastB2 = '', lastC1 = -1, lastC2 = -1, lastTmr = '', lastBanKey = '';
   let lastH1 = '', lastHT1 = '', lastH2 = '', lastHT2 = '', lastM1 = '', lastM2 = '', lastP1 = '', lastP2 = '';
+  const FIST_SVG = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M7 11V7a1.5 1.5 0 0 1 3 0v3M10 10V6a1.5 1.5 0 0 1 3 0v4M13 10V7a1.5 1.5 0 0 1 3 0v3M16 11V9a1.5 1.5 0 0 1 3 0v5a6 6 0 0 1-6 6h-2a5 5 0 0 1-5-5v-3.5a1.5 1.5 0 0 1 3 0"/></svg>`;
 
   function syncHud() {
     if (match.inMenu) return;
@@ -7337,11 +8375,36 @@
       elRefs.magIcon.innerHTML = p1.el.svg;
       elRefs.btnMag.style.setProperty('--mg-prim', p1.el.primary); elRefs.btnMag.style.setProperty('--mg-glow', p1.el.glow);
     }
-    const wKey = `${PROG.equippedWeapon || 'default'}:${p1.el.id}`;
+    const subArt = SUB_BEND_ARTS[p1.el.id] || SUB_BEND_ARTS.water;
+    const gmMastered = hasScrollMastery(p1.el.id);
+    const subKey = `${p1.el.id}:${gmMastered ? 1 : 0}`;
+    if (elRefs.btnSub && subKey !== lastSubKey) {
+      lastSubKey = subKey;
+      if (elRefs.subIcon) elRefs.subIcon.innerHTML = subArt.ico;
+      if (elRefs.subLbl) elRefs.subLbl.textContent = subArt.lbl;
+      elRefs.btnSub.style.setProperty('--sb-prim', subArt.prim);
+      elRefs.btnSub.style.setProperty('--sb-glow', subArt.glow);
+      elRefs.btnSub.classList.toggle('sub-gm', gmMastered);
+    }
+    const wKey = `${PROG.equippedWeapon || 'default'}:${p1.el.id}:${p1.disarmed ? 1 : 0}`;
     if (elRefs.wepBtnIco && wKey !== lastWepIco) {
       lastWepIco = wKey;
-      const wObj = WEAPON_CATALOG.find(x => x.id === (PROG.equippedWeapon || 'default'));
-      elRefs.wepBtnIco.innerHTML = (wObj && wObj.ico) ? wObj.ico : SVG_ICONS.default;
+      if (p1.disarmed) {
+        elRefs.wepBtnIco.innerHTML = FIST_SVG;
+      } else {
+        const wObj = WEAPON_CATALOG.find(x => x.id === (PROG.equippedWeapon || 'default'));
+        elRefs.wepBtnIco.innerHTML = (wObj && wObj.ico) ? wObj.ico : SVG_ICONS.default;
+      }
+    }
+    const mutKey = match.mutator ? `${match.mutator.id}:${match.dailyTrial ? 1 : 0}` : '';
+    if (elRefs.mutPill && mutKey !== lastMutKey) {
+      lastMutKey = mutKey;
+      elRefs.mutPill.classList.toggle('hidden', !match.mutator);
+      if (match.mutator) {
+        elRefs.mutTitle.textContent = `${match.dailyTrial ? 'DAILY TRIAL · ' : ''}${match.mutator.name}`;
+        elRefs.mutTitle.style.color = match.mutator.col;
+        elRefs.mutDesc.textContent = match.mutator.desc;
+      }
     }
     const p2Key = `${p2.el.id}:${match.boss ? match.boss.id : -1}`;
     if (lastE2 !== p2Key) {
@@ -7361,10 +8424,12 @@
     if (m1 !== lastM1) {
       lastM1 = m1; elRefs.p1Mag.style.width = m1;
       const ultRdy = p1.magic >= 100, exRdy = p1.magic >= 35 && !ultRdy;
+      const subCost = gmMastered ? 35 : 45;
       elRefs.p1MagW.classList.toggle('ready', ultRdy);
       elRefs.p1MagW.classList.toggle('ex-ready', exRdy);
       elRefs.btnMag.classList.toggle('ready', ultRdy);
       elRefs.btnMag.classList.toggle('ex-ready', exRdy);
+      if (elRefs.btnSub) elRefs.btnSub.classList.toggle('sub-ready', p1.magic >= subCost);
     }
     const bl = p1.magic >= 100 ? 'ULTIMATE' : (p1.magic >= 35 ? (BEND_TRICKS[p1.el.id]?.fwd || 'BEND') : 'BEND');
     if (elRefs.bendLbl && bl !== lastBendLbl) { lastBendLbl = bl; elRefs.bendLbl.textContent = bl; }
@@ -7541,7 +8606,8 @@
     else if (e.code === 'KeyL') pressBtn(p1, 'weapon');
     else if (e.code === 'KeyG') pressBtn(p1, 'grab');
     else if (e.code === 'KeyU' || e.code === 'Space') pressBtn(p1, 'magic');
-    else if (e.code === 'KeyI' || e.code === 'ShiftLeft') pressBtn(p1, 'evade');
+    else if (e.code === 'KeyI' || e.code === 'KeyO') pressBtn(p1, 'subbend');
+    else if (e.code === 'ShiftLeft') pressBtn(p1, 'evade');
     else if (e.code === 'KeyB') pressBtn(p1, 'block');
   });
   window.addEventListener('keyup', e => {
@@ -7554,7 +8620,8 @@
     else if (e.code === 'KeyL') releaseBtn(p1, 'weapon');
     else if (e.code === 'KeyG') releaseBtn(p1, 'grab');
     else if (e.code === 'KeyU' || e.code === 'Space') releaseBtn(p1, 'magic');
-    else if (e.code === 'KeyI' || e.code === 'ShiftLeft') releaseBtn(p1, 'evade');
+    else if (e.code === 'KeyI' || e.code === 'KeyO') releaseBtn(p1, 'subbend');
+    else if (e.code === 'ShiftLeft') releaseBtn(p1, 'evade');
     else if (e.code === 'KeyB') releaseBtn(p1, 'block');
   });
 
@@ -7702,11 +8769,12 @@
 
   function openMainMenu() {
     closeAllModals();
-    match.inMenu = true; match.paused = false; match.boss = null;
+    match.inMenu = true; match.paused = false; match.boss = null; match.mutator = null; match.dailyTrial = false;
     buildBackdrop();
     document.getElementById('hud').classList.add('hidden');
     document.getElementById('touch-layer').classList.add('hidden');
     document.getElementById('tut-pill')?.classList.add('hidden');
+    document.getElementById('mutator-pill')?.classList.add('hidden');
     mainMenuEl.classList.remove('hidden');
     const elCount = Math.min(8, PROG.cleared.filter(id => id < 8).length);
     document.getElementById('mm-rank-sub').textContent = PROG.avatarUnlocked
@@ -7890,11 +8958,11 @@
       `;
     } else {
       const mvs = [
-        ['8 Avatar Signatures (35% Meter · Instant Tap!)', 'Tap BEND (U / Space) or Swipe BEND on Touch', 'Water = Katara 8-Arm Octopus Multi-Slam (8 alternating whip-slams + deflect + GRAB re-trigger); Fire = Sozin Jet-Step; Earth = Toph Seismic Sense + Stone Gauntlets; Air = Aang Air Scooter (auto-glide + bowl); Lightning = Iroh Redirect 2x + Dragon Beam; Ice = Cryo Prison 2.2s Freeze; Shadow = Eclipse Swap Pincer Clone; Lava = 3-Hit Molten Shuriken.'],
-        ['Free-Flow Cross-Combos & Recovery Cancels', 'P → K → W → BEND · ROLL / BLK Cancel', 'Fluidly link Punch, Kick, Weapon, and Bending Arts in any order! Cancel late attack recovery directly into Roll or Block to stay slippery.'],
-        ['Style Rank & FINISH THEM! Eclipse Finishers', 'D → C → B → A → S → AVATAR · Final Round Execution', 'Varying strikes climbs Style Rank for faster meter & bonus coins. Dropping a foe on the final round opens FINISH THEM! — land any hit for +75 bonus coins!'],
-        ['Guard Poise, Lethal Counter & Blade Clash', 'Timed Block (B) · Overlapping Weapon Swings', 'Blocking heavy strikes drains golden Guard Poise -> GUARD SHATTER. Interrupting startup deals LETHAL COUNTER. Clashing weapons triggers a rapid-tap Blade-Lock!'],
-        ['Elemental Status Combos & Weapon Perks', 'Cryo Shatter (+40%) · Electro-Charge · Combustion', 'Heavy vs Cryo-Caged/Frozen = +40% CRYO SHATTER; Lightning vs Soaked = Stun; Launcher vs Burning = Super-Launch. Smash foes into Corner Braziers for +45 dmg!']
+        ['Shadow Fight 2 4-Button Cluster', 'PUNCH · KICK · BEND · SUB-BEND', 'Streamlined 4 large buttons: PUNCH (Weapon/Fist + close Fwd/Back Throw), KICK, BEND (35% Signature / 100% Ultimate), and SUB-BEND (45% Secret Art). Stand neutral or hold Back to Block & Parry; double-tap stick to Dash/Roll!'],
+        ['8 Secret ATLA Sub-Bending Arts & Scrolls', 'Tap SUB (or Key I / O) at 45%+ Meter (35% with Scroll)', 'Water = Bloodbend; Fire = Combustion Beam; Earth = Metal Wire Grapple; Air = Vacuum Sphere; Ice = Frost Dome; Lightning = Arc Storm; Shadow = Soul Bind; Lava = Magma Rift. Master Scrolls via Regional Trials or Armory Forge!'],
+        ['8 Avatar Signatures (35% Meter · Instant Tap!)', 'Tap or Swipe BEND (U / Space)', 'Water = Sculpted 8-Arm Octopus Multi-Slam (8 alternating whip-slams + close Fwd+PUNCH re-trigger); Fire = Sozin Jet-Step; Earth = Toph Seismic Sense + Stone Gauntlets; Air = Aang Air Scooter; Lightning = Iroh Redirect 2x; Ice = Cryo Prison; Shadow = Eclipse Swap Clone; Lava = Molten Shuriken.'],
+        ['Armory Forge Weapon Enchantment Seals', 'Armory -> Enchants Tab (3D Volumetric Blade Ribbons)', 'Engrave Frost-Edge, Thunder-Forged, Scorched-Ember, Umbral-Drain, or Seismic-Crush Seals onto your weapon for glowing 3D blade slash ribbons and elemental combat procs!'],
+        ['8 Unique Elemental Executions & Daily Trials', 'FINISH THEM! · Boss Phase-2 Awakenings · 2x Coins', 'Every element performs its own 1.5s cinematic execution when defeating a dizzied foe! Challenge Today\'s Daily Trial Mutator or Endless Shadow Tower for 2x Coins!']
       ];
       body = mvs.map(([n, i, d]) => `<div class="mrow"><b>${n}</b><small>${i}</small><span>${d}</span></div>`).join('');
     }
@@ -7939,7 +9007,7 @@
     const tsbx = pauseModal.querySelector('#t-sbx'); if (tsbx) tsbx.onclick = () => { PROG.sandboxUnlockAll = !PROG.sandboxUnlockAll; saveProg(); renderPause(); };
   }
 
-  // ===== QUICK DUEL / DOJO ALLY SPARRING / ENDLESS SHADOW TOWER PICKER =====
+  // ===== QUICK DUEL / DOJO ALLY SPARRING / DAILY TRIAL / ENDLESS SHADOW TOWER PICKER =====
   function openRoster(mode = 'duel') {
     closeAllModals(); match.paused = true; rosterMode = mode;
     sel1 = isElUnlocked(p1.el.id) ? p1.el.id : 'water';
@@ -7948,12 +9016,13 @@
   }
   function renderRoster() {
     const freedAllies = CAMPAIGN_STAGES.filter(s => s.honorable && PROG.cleared.includes(s.id));
+    const dailyMut = getDailyMutator();
     rosterModal.innerHTML = `
       <section class="panel-modal">
         <div class="panel-head">
           <div>
-            <h1>${rosterMode === 'dojo' ? 'DOJO TRAINING & ALLY SPARRING' : 'QUICK DUEL & SHADOW TOWER'}</h1>
-            <p>${rosterMode === 'dojo' ? 'Practice combos freely or spar against freed honorable Masters.' : 'Choose your element and opponent, or climb the Endless Shadow Tower.'}</p>
+            <h1>${rosterMode === 'dojo' ? 'DOJO TRAINING & ALLY SPARRING' : 'QUICK DUEL, DAILY TRIAL & TOWER'}</h1>
+            <p>${rosterMode === 'dojo' ? 'Practice combos freely or spar against freed honorable Masters.' : `Today's Daily Trial: ${dailyMut.name} (${dailyMut.desc})`}</p>
           </div>
           <div class="pill-row">
             <button class="pill ${picking==='p1'?'primary':''}" id="pk1">You: ${ELEMENTS[sel1].name}</button>
@@ -7980,7 +9049,9 @@
           </div>` : ''}
         <div class="pill-row" style="justify-content:space-between">
           <div class="pill-row">
-            ${rosterMode === 'duel' ? `<button class="pill ${PROG.avatarUnlocked || PROG.sandboxUnlockAll ? 'primary' : ''}" id="r-tower" ${!(PROG.avatarUnlocked || PROG.sandboxUnlockAll) ? 'disabled' : ''}>ENDLESS SHADOW TOWER ${PROG.endlessBest ? `(Best ${PROG.endlessBest})` : ''}</button>` : `<button class="pill primary" id="r-tut">${PROG.dojoLessonDone ? 'REPLAY DOJO LESSON' : 'GUIDED LESSON (+100 COINS)'}</button>`}
+            ${rosterMode === 'duel' ? `
+              <button class="pill primary" id="r-daily" style="border-color:${dailyMut.col};color:#fff6dc">DAILY TRIAL: ${dailyMut.name} (2× COINS)</button>
+              <button class="pill ${PROG.avatarUnlocked || PROG.sandboxUnlockAll ? '' : ''}" id="r-tower" ${!(PROG.avatarUnlocked || PROG.sandboxUnlockAll) ? 'disabled' : ''}>SHADOW TOWER ${PROG.endlessBest ? `(Best ${PROG.endlessBest})` : ''}</button>` : `<button class="pill primary" id="r-tut">${PROG.dojoLessonDone ? 'REPLAY DOJO LESSON' : 'GUIDED LESSON (+100 COINS)'}</button>`}
             <button class="pill" id="r-theme">Arena: ${THEMES[themeIdx].label}</button>
           </div>
           <div class="pill-row">
@@ -8001,13 +9072,20 @@
     rosterModal.querySelector('#r-theme').onclick = () => { cycleTheme(); renderRoster(); };
     const rTut = rosterModal.querySelector('#r-tut');
     if (rTut) rTut.onclick = () => { closeAllModals(); startMatch(sel1, 'water', null, { mode: 'tutorial' }); };
+    const rDaily = rosterModal.querySelector('#r-daily');
+    if (rDaily) rDaily.onclick = () => {
+      closeAllModals();
+      const dayIdx = new Date().getDate() % EL_ORDER.length;
+      const dailyFoe = EL_ORDER[dayIdx] === sel1 ? EL_ORDER[(dayIdx + 1) % EL_ORDER.length] : EL_ORDER[dayIdx];
+      startMatch(sel1, dailyFoe, null, { mode: 'duel', mutator: dailyMut, dailyTrial: true });
+    };
     const rTower = rosterModal.querySelector('#r-tower');
     if (rTower) rTower.onclick = () => {
       closeAllModals(); match.endlessWave = 1;
       startMatch(sel1, EL_ORDER[0], {
         id: 100, el: EL_ORDER[0], title: 'SHADOW WAVE 1', region: 'Shadow Tower', rank: 'Wave 1',
         hpMult: 1.0, dmgMult: 0.95, defMult: 1.0, magicGain: 1.1, theme: 2, ai: AI_CFG.warrior
-      }, { mode: 'endless' });
+      }, { mode: 'endless', mutator: null });
     };
     rosterModal.querySelector('#r-back').onclick = closeAllModals;
     rosterModal.querySelector('#r-go').onclick = () => { closeAllModals(); startMatch(sel1, sel2, null, { mode: rosterMode }); };
@@ -8239,11 +9317,18 @@
     });
   }
 
-  // ===== SHADOW FIGHT 2 3-COLUMN ARMORY SHOWCASE (Scrollable Left List + Auto-Fit Center Preview + Compact Right Stats) =====
+  // ===== SHADOW FIGHT 2 3-COLUMN ARMORY FORGE (Weapons | Enchants | Scrolls | Gear | Mastery) =====
   let armorySwingAt = 0;
+  function getDefaultArmorySel(tab) {
+    if (tab === 'weapons') return PROG.equippedWeapon || 'default';
+    if (tab === 'enchants') return PROG.equippedEnchant || 'none';
+    if (tab === 'scrolls') return p1.el.id || 'water';
+    if (tab === 'gear') return PROG.equippedGear || 'none';
+    return 'edge';
+  }
   function openArmory() {
     closeAllModals(); match.paused = true;
-    armorySelId = armoryTab === 'weapons' ? (PROG.equippedWeapon || 'default') : armoryTab === 'gear' ? (PROG.equippedGear || 'none') : 'edge';
+    armorySelId = getDefaultArmorySel(armoryTab);
     armorySwingAt = performance.now();
     armoryModal.classList.remove('hidden');
     renderArmory();
@@ -8254,14 +9339,30 @@
   }
 
   function renderArmory() {
-    const items = armoryTab === 'weapons' ? WEAPON_CATALOG : armoryTab === 'gear' ? GEAR_CATALOG : UPGRADE_SPECS;
+    const items = armoryTab === 'weapons' ? WEAPON_CATALOG
+      : armoryTab === 'enchants' ? ENCHANT_CATALOG
+      : armoryTab === 'scrolls' ? SCROLL_CATALOG
+      : armoryTab === 'gear' ? GEAR_CATALOG
+      : UPGRADE_SPECS;
     let sel = items.find(x => x.id === armorySelId) || items[0];
     armorySelId = sel.id;
 
-    let actionBtn = '', catLabel = armoryTab === 'weapons' ? 'WEAPON CLASS' : armoryTab === 'gear' ? 'SILHOUETTE GEAR' : 'DOJO MASTERY';
+    let actionBtn = '';
+    const catLabel = armoryTab === 'weapons' ? 'WEAPON CLASS'
+      : armoryTab === 'enchants' ? 'FORGED WEAPON SEAL'
+      : armoryTab === 'scrolls' ? 'GRANDMASTER SCROLL'
+      : armoryTab === 'gear' ? 'SILHOUETTE GEAR'
+      : 'DOJO MASTERY';
+
     if (armoryTab === 'weapons') {
       const owned = PROG.ownedWeapons.includes(sel.id), eq = PROG.equippedWeapon === sel.id;
       actionBtn = `<button class="pill ${eq ? '' : 'primary'}" id="arm-act" ${!owned && PROG.coins < sel.cost ? 'disabled' : ''}>${eq ? 'EQUIPPED' : owned ? 'EQUIP' : `BUY · ${sel.cost}`}</button>`;
+    } else if (armoryTab === 'enchants') {
+      const owned = PROG.ownedEnchants.includes(sel.id), eq = PROG.equippedEnchant === sel.id;
+      actionBtn = `<button class="pill ${eq ? '' : 'primary'}" id="arm-act" ${!owned && PROG.coins < sel.cost ? 'disabled' : ''}>${eq ? 'SEALED' : owned ? 'ENGRAVE' : `FORGE · ${sel.cost}`}</button>`;
+    } else if (armoryTab === 'scrolls') {
+      const mastered = hasScrollMastery(sel.id);
+      actionBtn = `<button class="pill ${mastered ? '' : 'primary'}" id="arm-act" ${mastered || PROG.coins < sel.cost ? 'disabled' : ''}>${mastered ? 'MASTERED' : `UNLOCK · ${sel.cost}`}</button>`;
     } else if (armoryTab === 'gear') {
       const owned = PROG.ownedGear.includes(sel.id), eq = PROG.equippedGear === sel.id;
       actionBtn = `<button class="pill ${eq ? '' : 'primary'}" id="arm-act" ${!owned && PROG.coins < sel.cost ? 'disabled' : ''}>${eq ? 'EQUIPPED' : owned ? 'EQUIP' : `BUY · ${sel.cost}`}</button>`;
@@ -8274,9 +9375,11 @@
       <section class="panel-modal armory-modal-panel">
         <div class="armory-head">
           <div class="armory-head-left">
-            <h1>ARMORY</h1>
+            <h1>ARMORY FORGE</h1>
             <div class="tabs">
               <button class="tab ${armoryTab==='weapons'?'active':''}" data-at="weapons">Weapons</button>
+              <button class="tab ${armoryTab==='enchants'?'active':''}" data-at="enchants">Enchants</button>
+              <button class="tab ${armoryTab==='scrolls'?'active':''}" data-at="scrolls">Scrolls</button>
               <button class="tab ${armoryTab==='gear'?'active':''}" data-at="gear">Gear</button>
               <button class="tab ${armoryTab==='mastery'?'active':''}" data-at="mastery">Mastery</button>
             </div>
@@ -8294,6 +9397,12 @@
               if (armoryTab === 'weapons') {
                 isEq = PROG.equippedWeapon === it.id;
                 statusTxt = isEq ? 'EQUIPPED' : PROG.ownedWeapons.includes(it.id) ? 'OWNED' : `${it.cost} COINS`;
+              } else if (armoryTab === 'enchants') {
+                isEq = PROG.equippedEnchant === it.id;
+                statusTxt = isEq ? 'ENGRAVED' : PROG.ownedEnchants.includes(it.id) ? 'OWNED' : `${it.cost} COINS`;
+              } else if (armoryTab === 'scrolls') {
+                isEq = hasScrollMastery(it.id);
+                statusTxt = isEq ? 'MASTERED' : `${it.cost} COINS · OR TRIAL`;
               } else if (armoryTab === 'gear') {
                 isEq = PROG.equippedGear === it.id;
                 statusTxt = isEq ? 'EQUIPPED' : PROG.ownedGear.includes(it.id) ? 'OWNED' : `${it.cost} COINS`;
@@ -8301,10 +9410,11 @@
                 const lv = PROG.upgrades[it.id] || 0;
                 statusTxt = `LV ${lv} / ${it.max}`;
               }
+              const icoStyle = (armoryTab === 'enchants' && it.col) ? `style="color:${it.col}"` : (armoryTab === 'scrolls' && it.glow) ? `style="color:${it.glow}"` : '';
               return `<button class="item-row ${isSel?'selected':''} ${isEq?'equipped':''}" data-aid="${it.id}">
-                <span class="ir-ico">${it.ico || SVG_ICONS.default}</span>
+                <span class="ir-ico" ${icoStyle}>${it.ico || SVG_ICONS.default}</span>
                 <span class="ir-meta">
-                  <span class="ir-nm">${it.name}</span>
+                  <span class="ir-nm">${armoryTab === 'scrolls' ? `${ELEMENTS[it.id].name}: ${it.lbl}` : it.name}</span>
                   <span class="ir-st">${statusTxt}</span>
                 </span>
               </button>`;
@@ -8312,7 +9422,7 @@
           </div>
           <div class="armory-preview-box" id="armory-preview-box">
             <canvas id="armory-preview"></canvas>
-            <span class="armory-tap-hint">${armoryTab === 'weapons' ? 'TAP TO TEST SWING' : p1.el.fighter}</span>
+            <span class="armory-tap-hint">${armoryTab === 'weapons' || armoryTab === 'enchants' ? 'TAP TO TEST SWING' : (armoryTab === 'scrolls' ? `${ELEMENTS[sel.id].name.toUpperCase()} SUB-ART` : p1.el.fighter)}</span>
           </div>
           <div class="armory-info">
             <div>
@@ -8339,7 +9449,7 @@
 
     armoryModal.querySelectorAll('[data-at]').forEach(b => b.onclick = () => {
       armoryTab = b.dataset.at;
-      armorySelId = armoryTab === 'weapons' ? (PROG.equippedWeapon || 'default') : armoryTab === 'gear' ? (PROG.equippedGear || 'none') : 'edge';
+      armorySelId = getDefaultArmorySel(armoryTab);
       armorySwingAt = performance.now();
       renderArmory();
     });
@@ -8352,6 +9462,13 @@
       if (armoryTab === 'weapons') {
         if (PROG.ownedWeapons.includes(sel.id)) { PROG.equippedWeapon = sel.id; saveProg(); sfx.elemBend(p1.el.id); haptic('light'); }
         else if (PROG.coins >= sel.cost) { PROG.coins -= sel.cost; PROG.ownedWeapons.push(sel.id); PROG.equippedWeapon = sel.id; saveProg(); sfx.gong(); haptic('medium'); }
+      } else if (armoryTab === 'enchants') {
+        if (PROG.ownedEnchants.includes(sel.id)) { PROG.equippedEnchant = sel.id; saveProg(); sfx.bladeClash(); haptic('light'); }
+        else if (PROG.coins >= sel.cost) { PROG.coins -= sel.cost; PROG.ownedEnchants.push(sel.id); PROG.equippedEnchant = sel.id; saveProg(); sfx.gong(); sfx.bladeClash(); haptic('medium'); }
+      } else if (armoryTab === 'scrolls') {
+        if (!hasScrollMastery(sel.id) && PROG.coins >= sel.cost) {
+          PROG.coins -= sel.cost; PROG.unlockedScrolls.push(sel.id); saveProg(); sfx.gong(); sfx.subBend(sel.id); haptic('heavy');
+        }
       } else if (armoryTab === 'gear') {
         if (PROG.ownedGear.includes(sel.id)) { PROG.equippedGear = sel.id; saveProg(); sfx.bend(); haptic('light'); }
         else if (PROG.coins >= sel.cost) { PROG.coins -= sel.cost; PROG.ownedGear.push(sel.id); PROG.equippedGear = sel.id; saveProg(); sfx.gong(); haptic('medium'); }
@@ -8390,7 +9507,12 @@
       g.setTransform(dpr, 0, 0, dpr, 0, 0);
       g.clearRect(0, 0, cw, ch);
 
-      const el = p1.el;
+      const el = (armoryTab === 'scrolls' && ELEMENTS[armorySelId]) ? ELEMENTS[armorySelId] : p1.el;
+      const previewEnch = armoryTab === 'enchants'
+        ? (ENCHANT_CATALOG.find(e => e.id === armorySelId) || null)
+        : getActiveEnchant(p1);
+      const sealGlow = (previewEnch && previewEnch.id !== 'none') ? previewEnch.col : el.glow;
+      const sealCore = (previewEnch && previewEnch.id !== 'none') ? '#ffffff' : el.core;
       const floorY = ch * 0.84;
 
       // Bespoke Candlelit Dojo Weapons Forge Backdrop (Nano Banana armory_forge.webp!)
@@ -8405,7 +9527,7 @@
         }
         g.drawImage(dojoImg, sx, sy, sw, sh, 0, 0, cw, ch);
         const veil = g.createRadialGradient(cw * 0.5, ch * 0.44, 18, cw * 0.5, ch * 0.5, Math.max(cw, ch) * 0.72);
-        veil.addColorStop(0, el.glow + '1c');
+        veil.addColorStop(0, sealGlow + '24');
         veil.addColorStop(0.58, 'rgba(18, 12, 8, 0.24)');
         veil.addColorStop(1, 'rgba(10, 7, 5, 0.68)');
         g.fillStyle = veil; g.fillRect(0, 0, cw, ch);
@@ -8425,18 +9547,18 @@
       // Determine active preview weapon, gear, breathing & tap-to-swing flourish!
       const prevWep = armoryTab === 'weapons'
         ? (armorySelId === 'default' ? el.wType : (WEAPON_CATALOG.find(x => x.id === armorySelId)?.wType || el.wType))
-        : getWeaponSpec(p1).wType;
+        : (armoryTab === 'scrolls' ? el.wType : getWeaponSpec(p1).wType);
       const prevGear = armoryTab === 'gear' ? armorySelId : PROG.equippedGear;
       const now = performance.now();
       const br = Math.sin(now * 0.0038);
       const sinceSwing = (now - armorySwingAt) / 1000;
       const swingAmt = sinceSwing < 0.68 ? Math.sin((sinceSwing / 0.68) * Math.PI) * 0.82 : 0;
 
-      // Render seamless solid-black fighter into silBuf (ZERO glowing puppet joint circles!)
+      // Render seamless solid-black fighter into silBuf (tinted by selected/equipped Weapon Enchantment Seal!)
       renderStaticSilhouetteToBuf({
         st: el.stance, dir: 1, sc: 1.0, wType: prevWep,
-        rim: el.glow, core: el.core, gearId: prevGear,
-        glowingEyes: PROG.avatarUnlocked || prevGear === 'crown',
+        rim: sealGlow, core: sealCore, gearId: prevGear,
+        glowingEyes: PROG.avatarUnlocked || prevGear === 'crown' || (armoryTab === 'scrolls' && hasScrollMastery(el.id)),
         br, swingAmt
       });
 
@@ -8449,14 +9571,14 @@
       const drawW = silBuf.width * drawSc, drawH = silBuf.height * drawSc;
       const dx = footX - 240 * drawSc, dy = floorY - 330 * drawSc;
 
-      // Subtle elemental slash arc during tap-to-swing flourish
+      // Subtle elemental / enchantment slash arc during tap-to-swing flourish
       if (swingAmt > 0.22) {
         g.save();
         g.translate(footX + 26 * drawSc, floorY - 122 * drawSc);
-        g.globalAlpha = swingAmt * 0.72;
-        g.strokeStyle = el.glow; g.lineWidth = 4.5 * drawSc;
+        g.globalAlpha = swingAmt * 0.82;
+        g.strokeStyle = sealGlow; g.lineWidth = 5.5 * drawSc;
         g.beginPath(); g.arc(-14 * drawSc, 6 * drawSc, 96 * drawSc, -1.25, 0.72); g.stroke();
-        g.strokeStyle = el.core; g.lineWidth = 2 * drawSc;
+        g.strokeStyle = sealCore; g.lineWidth = 2.2 * drawSc;
         g.beginPath(); g.arc(-14 * drawSc, 6 * drawSc, 99 * drawSc, -1.15, 0.64); g.stroke();
         g.restore();
       }
@@ -8477,10 +9599,10 @@
       rctx.clearRect(0, 0, rimBuf.width, rimBuf.height);
       rctx.drawImage(silBuf, 0, 0);
       rctx.globalCompositeOperation = 'source-in';
-      rctx.fillStyle = el.glow;
+      rctx.fillStyle = sealGlow;
       rctx.fillRect(0, 0, rimBuf.width, rimBuf.height);
       rctx.restore();
-      g.globalAlpha = 0.82;
+      g.globalAlpha = 0.84;
       const sp = Math.max(1.5, 2.2 * drawSc);
       g.drawImage(rimBuf, dx - sp, dy, drawW, drawH);
       g.drawImage(rimBuf, dx + sp, dy, drawW, drawH);
@@ -8513,7 +9635,7 @@
   document.getElementById('btn-pause').onclick = () => { unlockAudio(); togglePause(); };
   document.getElementById('btn-next-boss').onclick = () => { unlockAudio(); startCampaignStage(match.campaignStageIdx + 1); };
   document.getElementById('btn-open-armory-end').onclick = () => { unlockAudio(); openArmory(); };
-  document.getElementById('btn-rematch').onclick = () => { unlockAudio(); startMatch(p1.el.id, p2.el.id, match.boss, { mode: match.mode }); };
+  document.getElementById('btn-rematch').onclick = () => { unlockAudio(); startMatch(p1.el.id, p2.el.id, match.boss, { mode: match.mode, mutator: match.mutator, dailyTrial: match.dailyTrial }); };
   document.getElementById('btn-to-menu-end').onclick = () => { unlockAudio(); openMainMenu(); };
   document.getElementById('btn-dismiss-tip').onclick = () => { document.getElementById('portrait-tip').style.display = 'none'; };
   pauseModal.onclick = e => { if (e.target === pauseModal) { if (match.inMenu) closeAllModals(); else togglePause(); } };
