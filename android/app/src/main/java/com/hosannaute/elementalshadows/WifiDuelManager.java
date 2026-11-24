@@ -221,7 +221,8 @@ public class WifiDuelManager {
         } catch (Exception ignored) { }
 
         // Start UDP Discovery Beacon + Unicast Probe Responder
-        Thread beaconThread = new Thread(() -> runBeaconLoop(sid, boundPort), "ES-WifiBeacon-" + sid);
+        final int tcpPort = boundPort;
+        Thread beaconThread = new Thread(() -> runBeaconLoop(sid, tcpPort), "ES-WifiBeacon-" + sid);
         beaconThread.setDaemon(true);
         beaconThread.start();
 
