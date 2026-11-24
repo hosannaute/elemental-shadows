@@ -976,7 +976,13 @@
     .wifi-host-row small { font-size: 10px; color: #9ec8da; }
     .wifi-manual { display: flex; gap: 6px; align-items: center; }
     .wifi-manual .wifi-input { flex: 1; width: auto; min-width: 0; font-family: ui-monospace, monospace; }
+    .wifi-pin-in { width: 74px !important; flex: 0 0 74px !important; text-align: center; letter-spacing: 0.14em; }
+    .wifi-pin-row { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 4px; flex-wrap: wrap; }
+    .wifi-pin-badge { display: inline-flex; align-items: center; gap: 5px; padding: 2px 9px; border-radius: 3px; background: rgba(230, 169, 60, 0.16); border: 1px solid rgba(246, 206, 130, 0.65); color: #ffe8a8; font-family: ui-monospace, monospace; font-size: 12px; font-weight: 800; letter-spacing: 0.14em; }
+    .wifi-knock-box { background: rgba(20, 42, 34, 0.85); border: 1.5px solid #4ade80; border-radius: 5px; padding: 7px 10px; display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+    .wifi-knock-box b { font-family: var(--font-head); font-size: 11.5px; color: #dcfce7; letter-spacing: 0.06em; }
     .wifi-err { font-size: 11px; color: #fca5a5; background: rgba(127, 29, 29, 0.35); border: 1px solid rgba(248, 113, 113, 0.45); border-radius: 4px; padding: 5px 8px; }
+    .wifi-info { font-size: 11px; color: #fde68a; background: rgba(120, 74, 16, 0.36); border: 1px solid rgba(245, 186, 66, 0.52); border-radius: 4px; padding: 5px 8px; }
 
     /* Connected Live 2P VS Lobby */
     .wifi-vs-bar {
@@ -1433,13 +1439,22 @@
   }
 
   // ===== ANDROID CRASH-SAFE LIFECYCLE & WEB AUDIO (Zero-Leak Voice-Capped SFX + BGM) =====
-  let appSuspended = false;
+  let appSuspended = false, audioUnlocked = false;
   let audioCtx = null, activeVoices = 0, bgmVoices = 0, bgmStep = 0, bgmTick = 0;
   function unlockAudio() {
     if (appSuspended || document.hidden) return;
     try {
       if (!audioCtx) { const AC = window.AudioContext || window.webkitAudioContext; if (AC) audioCtx = new AC(); }
-      if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume().catch(() => {});
+      if (audioCtx) {
+        audioUnlocked = true;
+        if (audioCtx.state === 'suspended' || audioCtx.state === 'interrupted') audioCtx.resume().catch(() => {});
+      }
+    } catch {}
+  }
+  function resumeAudioIfUnlocked() {
+    if (appSuspended || document.hidden || !audioUnlocked || !audioCtx) return;
+    try {
+      if (audioCtx.state === 'suspended' || audioCtx.state === 'interrupted') audioCtx.resume().catch(() => {});
     } catch {}
   }
   function suspendAudio() {
@@ -1450,6 +1465,8 @@
   function playTone(freq, endFreq, dur, type, vol) {
     if (appSuspended || !settings.sfxOn || !audioCtx || audioCtx.state !== 'running' || settings.volume < 0.02 || activeVoices >= 10) return;
     activeVoices++;
+    let done = false;
+    const rel = (o, g) => { if (done) return; done = true; activeVoices = Math.max(0, activeVoices - 1); try { if (o) o.disconnect(); if (g) g.disconnect(); } catch {} };
     try {
       const t = audioCtx.currentTime, o = audioCtx.createOscillator(), g = audioCtx.createGain();
       o.type = type; o.frequency.setValueAtTime(freq, t);
@@ -1457,9 +1474,9 @@
       g.gain.setValueAtTime(vol * settings.volume, t);
       g.gain.exponentialRampToValueAtTime(0.001, t + dur);
       o.connect(g).connect(audioCtx.destination);
-      o.onended = () => { activeVoices = Math.max(0, activeVoices - 1); try { o.disconnect(); g.disconnect(); } catch {} };
+      o.onended = () => rel(o, g);
       o.start(t); o.stop(t + dur + 0.02);
-    } catch { activeVoices = Math.max(0, activeVoices - 1); }
+    } catch { rel(null, null); }
   }
   let _noiseBuf = null;
   function getNoiseBuf() {
@@ -1476,6 +1493,8 @@
   function playKoto(freq, dur = 0.42, vol = 0.055, shamisen = false) {
     if (appSuspended || !settings.musicOn || !audioCtx || audioCtx.state !== 'running' || settings.volume < 0.02 || bgmVoices >= 5) return;
     bgmVoices++;
+    let done = false;
+    const rel = (o, f, g) => { if (done) return; done = true; bgmVoices = Math.max(0, bgmVoices - 1); try { if (o) o.disconnect(); if (f) f.disconnect(); if (g) g.disconnect(); } catch {} };
     try {
       const t = audioCtx.currentTime;
       const o = audioCtx.createOscillator(), f = audioCtx.createBiquadFilter(), g = audioCtx.createGain();
@@ -1490,15 +1509,17 @@
       g.gain.linearRampToValueAtTime(vol * settings.volume, t + 0.006);
       g.gain.exponentialRampToValueAtTime(0.0006, t + dur);
       o.connect(f).connect(g).connect(audioCtx.destination);
-      o.onended = () => { bgmVoices = Math.max(0, bgmVoices - 1); try { o.disconnect(); f.disconnect(); g.disconnect(); } catch {} };
+      o.onended = () => rel(o, f, g);
       o.start(t); o.stop(t + dur + 0.02);
-    } catch { bgmVoices = Math.max(0, bgmVoices - 1); }
+    } catch { rel(null, null, null); }
   }
   function playShakuhachi(freq, dur = 0.95, vol = 0.042) {
     if (appSuspended || !settings.musicOn || !audioCtx || audioCtx.state !== 'running' || settings.volume < 0.02 || bgmVoices >= 5) return;
+    const t = audioCtx.currentTime;
     bgmVoices++;
+    let oDone = false;
+    const relO = (o, g) => { if (oDone) return; oDone = true; bgmVoices = Math.max(0, bgmVoices - 1); try { if (o) o.disconnect(); if (g) g.disconnect(); } catch {} };
     try {
-      const t = audioCtx.currentTime;
       const o = audioCtx.createOscillator(), g = audioCtx.createGain();
       o.type = 'sine';
       o.frequency.setValueAtTime(freq * 0.96, t);
@@ -1509,11 +1530,18 @@
       g.gain.linearRampToValueAtTime(vol * settings.volume, t + 0.16);
       g.gain.exponentialRampToValueAtTime(0.0006, t + dur);
       o.connect(g).connect(audioCtx.destination);
-      o.onended = () => { bgmVoices = Math.max(0, bgmVoices - 1); try { o.disconnect(); g.disconnect(); } catch {} };
+      o.onended = () => relO(o, g);
       o.start(t); o.stop(t + dur + 0.02);
-      const nb = getNoiseBuf();
-      if (nb && bgmVoices < 5) {
-        bgmVoices++;
+    } catch {
+      relO(null, null);
+      return;
+    }
+    const nb = getNoiseBuf();
+    if (nb && bgmVoices < 5) {
+      bgmVoices++;
+      let nsDone = false;
+      const relNs = (ns, bp, ng) => { if (nsDone) return; nsDone = true; bgmVoices = Math.max(0, bgmVoices - 1); try { if (ns) ns.disconnect(); if (bp) bp.disconnect(); if (ng) ng.disconnect(); } catch {} };
+      try {
         const ns = audioCtx.createBufferSource(), bp = audioCtx.createBiquadFilter(), ng = audioCtx.createGain();
         ns.buffer = nb; ns.loop = true;
         bp.type = 'bandpass'; bp.frequency.value = Math.min(3400, freq * 2.1); bp.Q.value = 3.2;
@@ -1521,14 +1549,18 @@
         ng.gain.linearRampToValueAtTime(vol * 0.28 * settings.volume, t + 0.14);
         ng.gain.exponentialRampToValueAtTime(0.0004, t + dur * 0.85);
         ns.connect(bp).connect(ng).connect(audioCtx.destination);
-        ns.onended = () => { bgmVoices = Math.max(0, bgmVoices - 1); try { ns.disconnect(); bp.disconnect(); ng.disconnect(); } catch {} };
+        ns.onended = () => relNs(ns, bp, ng);
         ns.start(t); ns.stop(t + dur * 0.88);
+      } catch {
+        relNs(null, null, null);
       }
-    } catch { bgmVoices = Math.max(0, bgmVoices - 1); }
+    }
   }
   function playTaiko(freq = 104, rim = false, vol = 0.14) {
     if (appSuspended || !settings.musicOn || !audioCtx || audioCtx.state !== 'running' || settings.volume < 0.02 || bgmVoices >= 5) return;
     bgmVoices++;
+    let done = false;
+    const rel = (o, g) => { if (done) return; done = true; bgmVoices = Math.max(0, bgmVoices - 1); try { if (o) o.disconnect(); if (g) g.disconnect(); } catch {} };
     try {
       const t = audioCtx.currentTime;
       const o = audioCtx.createOscillator(), g = audioCtx.createGain();
@@ -1539,22 +1571,24 @@
       g.gain.linearRampToValueAtTime(vol * settings.volume, t + 0.005);
       g.gain.exponentialRampToValueAtTime(0.0008, t + (rim ? 0.065 : 0.28));
       o.connect(g).connect(audioCtx.destination);
-      o.onended = () => { bgmVoices = Math.max(0, bgmVoices - 1); try { o.disconnect(); g.disconnect(); } catch {} };
+      o.onended = () => rel(o, g);
       o.start(t); o.stop(t + (rim ? 0.08 : 0.30));
-    } catch { bgmVoices = Math.max(0, bgmVoices - 1); }
+    } catch { rel(null, null); }
   }
   function playHyoshigi(vol = 0.036) {
     if (appSuspended || !settings.musicOn || !audioCtx || audioCtx.state !== 'running' || settings.volume < 0.02 || bgmVoices >= 5) return;
     bgmVoices++;
+    let done = false;
+    const rel = (o, g) => { if (done) return; done = true; bgmVoices = Math.max(0, bgmVoices - 1); try { if (o) o.disconnect(); if (g) g.disconnect(); } catch {} };
     try {
       const t = audioCtx.currentTime, o = audioCtx.createOscillator(), g = audioCtx.createGain();
       o.type = 'triangle';
       o.frequency.setValueAtTime(2180, t); o.frequency.exponentialRampToValueAtTime(1640, t + 0.032);
       g.gain.setValueAtTime(vol * settings.volume, t); g.gain.exponentialRampToValueAtTime(0.0008, t + 0.038);
       o.connect(g).connect(audioCtx.destination);
-      o.onended = () => { bgmVoices = Math.max(0, bgmVoices - 1); try { o.disconnect(); g.disconnect(); } catch {} };
+      o.onended = () => rel(o, g);
       o.start(t); o.stop(t + 0.045);
-    } catch { bgmVoices = Math.max(0, bgmVoices - 1); }
+    } catch { rel(null, null); }
   }
   // Traditional Japanese Hirajoshi / In-Sen Pentatonic Scales per Realm
   const REGION_BGM = {
@@ -1640,15 +1674,17 @@
     if (appSuspended || !settings.sfxOn || !audioCtx || audioCtx.state !== 'running' || settings.volume < 0.02 || activeVoices >= 10) return;
     const nb = getNoiseBuf(); if (!nb) return;
     activeVoices++;
+    let done = false;
+    const rel = (ns, f, g) => { if (done) return; done = true; activeVoices = Math.max(0, activeVoices - 1); try { if (ns) ns.disconnect(); if (f) f.disconnect(); if (g) g.disconnect(); } catch {} };
     try {
       const t = audioCtx.currentTime;
       const ns = audioCtx.createBufferSource(), f = audioCtx.createBiquadFilter(), g = audioCtx.createGain();
       ns.buffer = nb; f.type = 'bandpass'; f.frequency.setValueAtTime(freq, t); f.frequency.exponentialRampToValueAtTime(Math.max(180, freq * 0.45), t + dur); f.Q.value = q;
       g.gain.setValueAtTime(vol * settings.volume, t); g.gain.exponentialRampToValueAtTime(0.001, t + dur);
       ns.connect(f).connect(g).connect(audioCtx.destination);
-      ns.onended = () => { activeVoices = Math.max(0, activeVoices - 1); try { ns.disconnect(); f.disconnect(); g.disconnect(); } catch {} };
+      ns.onended = () => rel(ns, f, g);
       ns.start(t); ns.stop(t + dur + 0.02);
-    } catch { activeVoices = Math.max(0, activeVoices - 1); }
+    } catch { rel(null, null, null); }
   }
 
   const _sfxRaw = {
@@ -1743,12 +1779,12 @@
     air_follow: { s:5, a:7, r:11, dmg:78, chip:12, hs:23, bs:12, stop:5, kb:9.8, ly:-9.8, kd:true, crit:true, headHit:true, h:'high', ox:36, oy:-108, w:98, bh:60, imp:5.5, ifrm:2, mg:14, leg:true, elStatus:true, bendBurst:'arc' },
     air_weapon: { s:6, a:8, r:11, dmg:90, chip:15, hs:24, bs:14, stop:5, kb:9.5, ly:-8.5, kd:false, crit:false, headHit:true, h:'high', ox:36, oy:-136, w:124, bh:88, imp:5.0, ifrm:3, cw:9, next:'air_slam', wep:true, elStatus:true, mg:15, bendWave:'slash' },
     air_slam: { s:6, a:9, r:14, dmg:104, chip:18, hs:28, bs:14, stop:6, kb:8.0, ly:14.5, kd:true, crit:true, airSlam:true, h:'high', ox:30, oy:-96, w:108, bh:84, imp:4.5, ifrm:3, elStatus:true, mg:16, bendWave:'ground' },
-    air_throw: { s:5, a:6, r:14, dmg:112, chip:0, hs:34, bs:0, stop:6, kb:9.0, ly:15.5, kd:true, crit:true, isThrow:'air', inv:12, h:'mid', ox:16, oy:-120, w:84, bh:88, imp:3, ifrm:2, mg:18 },
+    air_throw: { s:5, a:6, r:14, dmg:112, chip:0, hs:34, bs:0, stop:6, kb:9.0, ly:15.5, kd:true, crit:true, isThrow:'air', inv:12, h:'mid', ox:16, oy:-120, w:88, bh:88, imp:4.5, ifrm:2, mg:18 },
 
     // Ground Throws & Bending Casts (35% Quick-Bend + 100% Avatar Ultimate)
-    throw_fwd: { s:6, a:5, r:17, dmg:108, chip:0, hs:34, bs:0, stop:5, kb:13.4, ly:-9.5, kd:true, crit:false, h:'mid', ox:16, oy:-132, w:80, bh:84, imp:4, ifrm:2, isThrow:'fwd', inv:12, mg:18 },
-    throw_back: { s:6, a:5, r:17, dmg:104, chip:0, hs:34, bs:0, stop:5, kb:-14.4, ly:-9.2, kd:true, crit:false, h:'mid', ox:16, oy:-132, w:80, bh:84, imp:3, ifrm:2, isThrow:'back', inv:12, mg:18 },
-    suplex: { s:7, a:5, r:19, dmg:146, chip:0, hs:40, bs:0, stop:6, kb:-12.0, ly:-12.2, kd:true, crit:true, h:'mid', ox:14, oy:-136, w:84, bh:88, imp:3, ifrm:2, isThrow:'suplex', inv:16, mg:22 },
+    throw_fwd: { s:6, a:5, r:17, dmg:108, chip:0, hs:34, bs:0, stop:5, kb:13.4, ly:-9.5, kd:true, crit:false, h:'mid', ox:14, oy:-132, w:88, bh:84, imp:6.5, ifrm:2, isThrow:'fwd', inv:12, mg:18 },
+    throw_back: { s:6, a:5, r:17, dmg:104, chip:0, hs:34, bs:0, stop:5, kb:-14.4, ly:-9.2, kd:true, crit:false, h:'mid', ox:14, oy:-132, w:88, bh:84, imp:6.0, ifrm:2, isThrow:'back', inv:12, mg:18 },
+    suplex: { s:7, a:5, r:19, dmg:146, chip:0, hs:40, bs:0, stop:6, kb:-12.0, ly:-12.2, kd:true, crit:true, h:'mid', ox:12, oy:-136, w:90, bh:88, imp:6.0, ifrm:2, isThrow:'suplex', inv:16, mg:22 },
     quick_bend: { s:5, a:4, r:7, dmg:76, chip:16, hs:24, bs:13, stop:4, kb:9.5, ly:-7.2, kd:false, crit:false, h:'mid', ox:34, oy:-140, w:96, bh:82, imp:4.5, ifrm:3, inv:6, elStatus:true, mg:0 },
     sub_bend: { s:6, a:4, r:9, dmg:88, chip:18, hs:26, bs:14, stop:5, kb:10.5, ly:-8.5, kd:false, crit:true, h:'mid', ox:36, oy:-144, w:100, bh:86, imp:5.0, ifrm:4, inv:9, elStatus:true, mg:0 },
     magic_cast: { s:10, a:8, r:16, dmg:140, chip:32, hs:34, bs:18, stop:5, kb:14.0, ly:-11.0, kd:true, crit:true, h:'mid', ox:38, oy:-150, w:110, bh:95, imp:5.5, ifrm:8, inv:18, elStatus:true, mg:0 }
@@ -2119,7 +2155,7 @@
       artIdx: 0, castArtIdx: 0, quickBendDir: 'fwd', bendChargeF: 0, chargingBend: false,
       guardWear: 0, airJumpsLeft: 0, fireStreak: 0, fireStreakT: 0,
       rockArmorF: 0, reflectStanceF: 0, disarmed: false, wallSplatted: false,
-      multiHitsLeft: 0, multiHitCd: 0,
+      multiHitsLeft: 0, multiHitCd: 0, lastClashMashF: -999, lastShiftF: -999,
       state: 'idle', sf: 0, inv: 0, armor: 0, stun: 0, guardFrame: -999, freezeRec: 0, avatarFlash: 0,
       move: null, moveId: null, hitDone: false, ms: 0, ma: 0, mr: 0, flash: 0, afterTimer: 0,
       enlightUsed: false, rockReady: (elId === 'earth') || (id === 'p1' && PROG.upgrades.body >= 3), avengerF: 0, mirrorF: 0, desperate: false,
@@ -2153,6 +2189,17 @@
   };
   let bendingWaves = [], hazards = [], particles = [], ghosts = [], droppedWeapons = [], rockWalls = [], decoyClones = [];
   let braziers = [], bladeClash = null, bladeClashCd = 0;
+  const MAX_PARTICLES = isAndroidOrTouch() ? 180 : 260;
+  const MAX_CALLOUTS = 10;
+  const MAX_GHOSTS = 24;
+  function pushParticle(p) {
+    if (particles.length >= MAX_PARTICLES) particles.shift();
+    particles.push(p);
+  }
+  function clampAxis(v) {
+    if (typeof v !== 'number' || !Number.isFinite(v)) return 0;
+    return v > 0.3 ? 1 : (v < -0.3 ? -1 : 0);
+  }
 
   function addStyle(pts, cat) {
     if (match.inMenu) return;
@@ -2169,16 +2216,17 @@
     if (!fromNet && WIFI && WIFI.isHostInMatch()) WIFI.pushEvent(['ban', text, sub || '', color || '#ffd685', dur, isUlt ? 1 : 0]);
   }
   function pushCallout(text, color, x, y, fromNet = false) {
-    let cy = y;
+    const sx = Number.isFinite(x) ? x : W * 0.5;
+    let cy = Number.isFinite(y) ? y : GROUND_Y - 160;
     for (let guard = 0; guard < 6; guard++) {
-      const hit = match.callouts.some(c => c.f > 8 && Math.abs(c.x - x) < 230 && Math.abs(c.y - cy) < 26);
+      const hit = match.callouts.some(c => c.f > 8 && Math.abs(c.x - sx) < 230 && Math.abs(c.y - cy) < 26);
       if (!hit) break;
       cy -= 26;
     }
     cy = Math.max(82, cy);
-    match.callouts.push({ text, color, x, y: cy, f: 46, max: 46 });
-    if (match.callouts.length > 10) match.callouts.shift();
-    if (!fromNet && WIFI && WIFI.isHostInMatch()) WIFI.pushEvent(['cal', text, color, Math.round(x), Math.round(cy)]);
+    if (match.callouts.length >= MAX_CALLOUTS) match.callouts.splice(0, match.callouts.length - MAX_CALLOUTS + 1);
+    match.callouts.push({ text: String(text || '').slice(0, 48), color, x: sx, y: cy, f: 46, max: 46 });
+    if (!fromNet && WIFI && WIFI.isHostInMatch()) WIFI.pushEvent(['cal', String(text || '').slice(0, 48), color, Math.round(sx), Math.round(cy)]);
   }
 
   function resetFighter(f, full) {
@@ -2198,12 +2246,12 @@
     f.airJumpsLeft = f.el.id === 'air' ? 1 : 0;
     f.fireStreak = 0; f.fireStreakT = 0; f.rockArmorF = 0; f.reflectStanceF = 0;
     f.disarmed = false; f.wallSplatted = false; f.chargingBend = false; f.bendChargeF = 0;
-    f.multiHitsLeft = 0; f.multiHitCd = 0;
+    f.multiHitsLeft = 0; f.multiHitCd = 0; f.lastClashMashF = -999; f.lastShiftF = -999;
     f.rockReady = (f.el.id === 'earth') || (match.mode !== 'wifi' && f.id === 'p1' && PROG.upgrades.body >= 3);
     f.avengerF = 0; f.mirrorF = 0; f.desperate = false;
     f.invisible = false; f.bossTimer = 0; f.lastFrameAdv = ''; f.lastMoveName = '';
     if (full) f.enlightUsed = false;
-    f.statuses = {}; f.buf = []; f.dblTap = null; f.wTrail = []; f.kTrail = [];
+    f.statuses = {}; f.buf = []; f.held.clear(); f.dir = { x: 0, y: 0 }; f.prevX = 0; f.dblTap = null; f.wTrail = []; f.kTrail = [];
     f.pose = { px: 0, sqx: 1, sqy: 1, ...f.el.stance };
     f.dpose = null; f.animKey = null; f.animSpecial = null; f.landT = 0; f.walkPh = 0; f.wasAir = false; f.hitH = 'mid';
   }
@@ -2352,7 +2400,9 @@
   }
 
   // ===== INPUT (Supports 35% Avatar Signatures, Secret Sub-Bending, Blade-Lock Clash & 4-Button SF2 Controls) =====
-  function setDir(f, x, y) {
+  const ALLOWED_FIGHTER_BTNS = new Set(['punch', 'kick', 'weapon', 'magic', 'subbend', 'grab', 'evade', 'block']);
+  function setDir(f, rawX, rawY) {
+    const x = clampAxis(rawX), y = clampAxis(rawY);
     if (x !== 0 && f.prevX === 0) {
       if (f.lastTapX === x && simFrame - f.lastTapF <= 16) { f.dblTap = { x, f: simFrame }; f.lastTapX = 0; }
       else { f.lastTapX = x; f.lastTapF = simFrame; }
@@ -2361,10 +2411,13 @@
     if (isLocalFighter(f)) updateStickArrows(x, y);
   }
   function pressBtn(f, btn) {
-    if (f.held.has(btn)) return;
+    if (typeof btn !== 'string' || !ALLOWED_FIGHTER_BTNS.has(btn)) return;
+    if (f.held.has(btn) || f.held.size >= 8) return;
     f.held.add(btn);
-    // Blade-Lock Weapon Clash tug-of-war mashing!
+    // Blade-Lock Weapon Clash tug-of-war mashing (capped to 1 mash per 4 frames per fighter to block macro spam)!
     if (bladeClash && (btn === 'punch' || btn === 'kick' || btn === 'weapon' || btn === 'magic' || btn === 'subbend')) {
+      if (simFrame - (f.lastClashMashF ?? -999) < 4) return;
+      f.lastClashMashF = simFrame;
       const push = match.mode === 'wifi' ? (f.id === 'p1' ? 15 : -15) : (f.id === 'p1' ? 16 : -14);
       bladeClash.meter = Math.max(-100, Math.min(100, bladeClash.meter + push));
       const mx = (p1.x + p2.x) * 0.5, my = Math.min(p1.y, p2.y) - 118;
@@ -2423,21 +2476,24 @@
 
   // ===== DRAMATIC AVATAR BENDING SPAWNERS =====
   function spawnSparks(x, y, c1, c2, scale = 1, shard = false, fromNet = false) {
-    const n = settings.vfx === 'low' ? 6 : Math.round(20 * scale);
+    if (!Number.isFinite(x) || !Number.isFinite(y)) return;
+    const sc = Math.max(0.2, Math.min(4.0, Number.isFinite(scale) ? scale : 1));
+    const n = settings.vfx === 'low' ? 6 : Math.min(36, Math.round(20 * sc));
     for (let i = 0; i < n; i++) {
       const a = (Math.PI * 2 * i) / n + (Math.random() - 0.5) * 0.5;
-      const sp = (4.5 + Math.random() * 10.5) * scale;
-      particles.push({ x, y, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp - 1.4, sz: (3.5 + Math.random() * 6) * scale, c: i % 3 === 0 ? c2 : c1, age: 0, max: 16 + Math.random() * 16, g: 0.22, t: shard ? 'shard' : 'spark' });
+      const sp = (4.5 + Math.random() * 10.5) * sc;
+      pushParticle({ x, y, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp - 1.4, sz: (3.5 + Math.random() * 6) * sc, c: i % 3 === 0 ? c2 : c1, age: 0, max: 16 + Math.random() * 16, g: 0.22, t: shard ? 'shard' : 'spark' });
     }
-    particles.push({ x, y, vx: 0, vy: 0, sz: 20 * scale, c: c2, age: 0, max: 15, g: 0, t: 'ring' });
-    if (!fromNet && WIFI && WIFI.isHostInMatch() && scale >= 0.75) {
-      WIFI.pushEvent(['spk', Math.round(x), Math.round(y), c1, c2, +scale.toFixed(2), shard ? 1 : 0]);
+    pushParticle({ x, y, vx: 0, vy: 0, sz: 20 * sc, c: c2, age: 0, max: 15, g: 0, t: 'ring' });
+    if (!fromNet && WIFI && WIFI.isHostInMatch() && sc >= 0.75) {
+      WIFI.pushEvent(['spk', Math.round(x), Math.round(y), c1, c2, +sc.toFixed(2), shard ? 1 : 0]);
     }
   }
   function spawnDust(x, y, dx = 0, n = 8, color = '#9aa6ba') {
-    if (settings.vfx === 'low') return;
-    for (let i = 0; i < n; i++) {
-      particles.push({ x: x + (Math.random() - 0.5) * 34, y: y - 4, vx: dx * (2 + Math.random() * 3.8) + (Math.random() - 0.5) * 2.4, vy: -0.9 - Math.random() * 2.5, sz: 7 + Math.random() * 11, c: color, age: 0, max: 22, g: -0.02, t: 'dust' });
+    if (settings.vfx === 'low' || !Number.isFinite(x) || !Number.isFinite(y)) return;
+    const cnt = Math.min(24, n);
+    for (let i = 0; i < cnt; i++) {
+      pushParticle({ x: x + (Math.random() - 0.5) * 34, y: y - 4, vx: dx * (2 + Math.random() * 3.8) + (Math.random() - 0.5) * 2.4, vy: -0.9 - Math.random() * 2.5, sz: 7 + Math.random() * 11, c: color, age: 0, max: 22, g: -0.02, t: 'dust' });
     }
   }
   function spawnHazard(owner, x) {
@@ -2781,10 +2837,13 @@
     pushCallout(tag, art.glow, f.x, f.y - 210);
 
     if (el.id === 'water') {
+      const bx = Math.abs(opp.x - f.x) <= 520
+        ? opp.x
+        : Math.max(ARENA_L + 60, Math.min(ARENA_R - 60, f.x + dir * 460));
       bendingWaves.push({
         owner: f.id, el, kind: 'sub_bloodbend', noClash: true,
-        x: opp.x, y: opp.y - 100, vx: 0, dir, w: 150, h: 180,
-        dmg: Math.round(115 * gmMult), age: 0, f: 46, max: 46, grabbed: false, hit: false, ult: false
+        x: bx, y: opp.y - 100, vx: 0, dir, w: 150, h: 180,
+        dmg: Math.round(115 * gmMult), age: 0, f: 50, max: 50, grabbed: false, hit: false, ult: false
       });
     } else if (el.id === 'fire') {
       bendingWaves.push({
@@ -3080,8 +3139,8 @@
     if (f.airScooterF > 0) f.airScooterF--;
     if (f.fireJetF > 0) {
       f.fireJetF--;
-      if (f.fireJetF % 3 === 0 && particles.length < 220) {
-        particles.push({ x: f.x - f.facing * 24, y: f.y - 12, vx: -f.facing * (3 + Math.random() * 4), vy: -1 - Math.random() * 2, sz: 5 + Math.random() * 4, c: Math.random() < 0.5 ? '#ffae34' : '#ff4514', age: 0, max: 16, g: -0.04, t: 'spark' });
+      if (f.fireJetF % 3 === 0) {
+        pushParticle({ x: f.x - f.facing * 24, y: f.y - 12, vx: -f.facing * (3 + Math.random() * 4), vy: -1 - Math.random() * 2, sz: 5 + Math.random() * 4, c: Math.random() < 0.5 ? '#ffae34' : '#ff4514', age: 0, max: 16, g: -0.04, t: 'spark' });
       }
     }
     if (f.seismicWaveF > 0) f.seismicWaveF--;
@@ -3348,7 +3407,7 @@
         }
         // Elemental Weapon Infusion: heavy weapon finishers unleash an elemental wave when >=20% meter!
         if (m.wep && !f.disarmed && (f.moveId === 'super_slash' || f.moveId === 'weapon_over' || f.moveId === 'weapon_spin')) {
-          if (wSpec.perk === 'hammer_crush') {
+          if (wSpec.perk === 'hammer_armor' || wSpec.perk === 'hammer_crush') {
             bendingWaves.push({ owner: f.id, el: f.el, kind: 'ground_shockwave', x: f.x + f.facing * 68, y: GROUND_Y - 22, vx: f.facing * 12.5, dir: f.facing, w: 120, h: 58, dmg: 52, ly: -8.5, low: true, f: 24, max: 24, hit: false, ult: false });
           } else if (f.magic >= 20) {
             f.magic = Math.max(0, f.magic - 10);
@@ -3444,7 +3503,7 @@
     }
     if (f.airScooterF > 0) {
       // Auto-glide smoothly atop Aang's Air Scooter — steer left/right or cruise forward automatically!
-      const cruiseDir = f.dir.x !== 0 ? f.dir.x : f.facing;
+      const cruiseDir = f.dir.x > 0 ? 1 : f.dir.x < 0 ? -1 : (f.facing === -1 ? -1 : 1);
       f.facing = cruiseDir;
       f.state = 'walk_fwd';
       f.vx += (cruiseDir * 12.2 - f.vx) * 0.24;
@@ -3474,7 +3533,7 @@
 
   function dispatchAttack(f, act, opp, dist, sMul) {
     const r = relDir(f, act.dir);
-    const close = dist < 110 && opp.y >= GROUND_Y - 0.5 && opp.state !== 'grounded';
+    const close = dist < 110 && opp.y >= GROUND_Y - 0.5 && opp.state !== 'grounded' && opp.state !== 'ko' && opp.inv <= 0;
     const behind = close && ((opp.facing === 1 && f.x < opp.x) || (opp.facing === -1 && f.x > opp.x));
     let id = 'jab';
     if (act.btn === 'grab') {
@@ -3527,7 +3586,7 @@
         else if (r.back) id = 'weapon_spin';
         else if (r.fwd) id = 'weapon_thrust';
         else id = 'weapon_1';
-        if (ws.perk === 'hammer_crush' && (id === 'weapon_over' || id === 'weapon_spin')) f.armor = Math.max(f.armor, 1);
+        if ((ws.perk === 'hammer_armor' || ws.perk === 'hammer_crush') && (id === 'weapon_over' || id === 'weapon_spin')) f.armor = Math.max(f.armor, 1);
       }
     }
     startMove(f, id, sMul);
@@ -3806,7 +3865,10 @@
       def.dizzied = false; match.finishHim = false; match.finishF = 0; match.eclipseFinished = true;
       const execTitle = ELEMENT_EXECUTION_TITLES[atk.el.id] || 'ECLIPSE EXECUTION';
       match.finisherAnim = { elId: atk.el.id, atkId: atk.id, defId: def.id, f: 90, max: 90, title: execTitle };
-      def.hp = 1; def.vx = 0; def.vy = 0; def.state = 'grabbed'; def.sf = 0;
+      atk.y = GROUND_Y; atk.vx = 0; atk.vy = 0; atk.state = 'idle'; atk.sf = 0; atk.move = null; atk.moveId = null;
+      atk.octopusSwinging = false; atk.airScooterF = 0; atk.fireJetF = 0;
+      def.hp = 1; def.y = GROUND_Y; def.vx = 0; def.vy = 0; def.state = 'grabbed'; def.sf = 0; def.statuses = {}; def.frozenPrisonF = 0;
+      bendingWaves.length = 0; decoyClones.length = 0;
       inkFlashF = 6; dramaticZoom = 0.16; shake = Math.max(shake, 18 * settings.feedback);
       sfx.gong(); sfx.awakening(); haptic('ko');
       spawnSparks(ix, iy, atk.el.glow, '#ffffff', 2.6, atk.el.id === 'ice');
@@ -3923,7 +3985,7 @@
       slowMoFrames = 40; dramaticZoom = 0.14; inkFlashF = Math.max(inkFlashF, 5);
       for (let k = 0; k < 22; k++) {
         const a = Math.random() * Math.PI * 2, sp = 4 + Math.random() * 14;
-        particles.push({ x: ix, y: iy, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp - 3, sz: 4 + Math.random() * 8, c: k % 3 === 0 ? atk.el.glow : '#07090f', age: 0, max: 32, g: 0.25, t: 'spark' });
+        pushParticle({ x: ix, y: iy, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp - 3, sz: 4 + Math.random() * 8, c: k % 3 === 0 ? atk.el.glow : '#07090f', age: 0, max: 32, g: 0.25, t: 'spark' });
       }
     } else if (crit && (isHeadHit || m.kd)) { slowMoFrames = Math.max(slowMoFrames, 8); dramaticZoom = Math.max(dramaticZoom, 0.065); }
     spawnSparks(ix, iy, atk.el.glow, atk.el.core, heavy ? 1.65 : 1.05, atk.el.id === 'ice');
@@ -4264,7 +4326,7 @@
     let label = 'ELEMENTAL CLASH!', col = '#fde68a', push = 10, splashDmg = 0;
     if (pair === 'fire+water') {
       label = 'STEAM BURST!'; col = '#e2f4ff'; push = 14;
-      for (let k = 0; k < 22; k++) particles.push({ x: cx + (Math.random() - 0.5) * 90, y: cy + (Math.random() - 0.5) * 70, vx: (Math.random() - 0.5) * 5, vy: -1.2 - Math.random() * 2.5, sz: 22 + Math.random() * 26, c: '#eef8ff', age: 0, max: 42, g: -0.02, t: 'dust' });
+      for (let k = 0; k < 22; k++) pushParticle({ x: cx + (Math.random() - 0.5) * 90, y: cy + (Math.random() - 0.5) * 70, vx: (Math.random() - 0.5) * 5, vy: -1.2 - Math.random() * 2.5, sz: 22 + Math.random() * 26, c: '#eef8ff', age: 0, max: 42, g: -0.02, t: 'dust' });
     } else if (pair === 'earth+ice') {
       label = 'CRYSTAL SHATTER!'; col = '#78eeff'; push = 12; splashDmg = 28;
       spawnSparks(cx, cy, '#78eeff', '#e8b038', 2.4, true);
@@ -4306,15 +4368,13 @@
 
     if (settings.vfx !== 'low' && simFrame % 4 === 0) {
       [p1, p2].forEach(f => {
-        if (particles.length < 220) {
-          particles.push({
-            x: f.x + (Math.random() - 0.5) * 76, y: f.y - 18 - Math.random() * 145,
-            vx: (Math.random() - 0.5) * 1.6, vy: -1.0 - Math.random() * 2.2,
-            sz: 2.5 + Math.random() * 4.2, c: Math.random() < 0.45 ? f.el.core : f.el.glow,
-            age: 0, max: 22 + Math.random() * 16, g: f.el.id === 'earth' ? 0.05 : -0.02,
-            t: f.el.id === 'ice' || f.el.id === 'earth' ? 'shard' : 'spark'
-          });
-        }
+        pushParticle({
+          x: f.x + (Math.random() - 0.5) * 76, y: f.y - 18 - Math.random() * 145,
+          vx: (Math.random() - 0.5) * 1.6, vy: -1.0 - Math.random() * 2.2,
+          sz: 2.5 + Math.random() * 4.2, c: Math.random() < 0.45 ? f.el.core : f.el.glow,
+          age: 0, max: 22 + Math.random() * 16, g: f.el.id === 'earth' ? 0.05 : -0.02,
+          t: f.el.id === 'ice' || f.el.id === 'earth' ? 'shard' : 'spark'
+        });
       });
     }
 
@@ -4580,62 +4640,83 @@
       }
     }
 
-    // Melee Hitbox Checks (+ Blade-Lock Weapon Clash, Nunchaku Deflect, Rock Walls, Shadow Decoys!)
+    // Melee Hitbox Checks (Symmetric P1/P2 Hitbox Snapshot, Throw Tech, Blade-Lock Clash, Deflects & Decoys!)
     if (canFight) {
       const hb1 = getHitbox(p1), hb2 = getHitbox(p2);
-      if (hb1 && hb2 && bladeClashCd <= 0 && !match.finishHim && p1.move && p1.move.wep && p2.move && p2.move.wep && !p1.disarmed && !p2.disarmed && rectsHit(hb1, hb2)) {
+      const m1 = p1.move, m2 = p2.move;
+      const db1 = getHurtbox(p1), db2 = getHurtbox(p2);
+
+      // Simultaneous Close-Throw Tech (zero P1 port bias!)
+      if (!match.finishHim && p1.state === 'attack' && p2.state === 'attack' && m1 && m1.isThrow && !p1.hitDone && m2 && m2.isThrow && !p2.hitDone && Math.abs(p1.x - p2.x) < 118 && Math.abs(p1.y - p2.y) < 72) {
+        const dir = p2.x >= p1.x ? 1 : -1;
+        p1.hitDone = true; p2.hitDone = true;
+        p1.state = 'idle'; p2.state = 'idle'; p1.sf = 0; p2.sf = 0;
+        p1.move = null; p2.move = null; p1.moveId = null; p2.moveId = null;
+        p1.vx = -dir * 10.5; p2.vx = dir * 10.5;
+        sfx.guard(true); haptic('medium'); hitstop = 4; shake = Math.max(shake, 9 * settings.feedback);
+        spawnSparks((p1.x + p2.x) * 0.5, Math.min(p1.y, p2.y) - 102, '#fde68a', '#ffffff', 1.5);
+        pushCallout('THROW TECH!', '#fde68a', (p1.x + p2.x) * 0.5, Math.min(p1.y, p2.y) - 196);
+      } else if (hb1 && hb2 && bladeClashCd <= 0 && !match.finishHim && m1 && m1.wep && m2 && m2.wep && !p1.disarmed && !p2.disarmed && rectsHit(hb1, hb2)) {
         bladeClash = { f: 72, max: 72, meter: 0 };
         p1.hitDone = true; p2.hitDone = true;
         sfx.bladeClash(); sfx.gong(); haptic('heavy'); shake = Math.max(shake, 14 * settings.feedback);
         spawnSparks((p1.x + p2.x) * 0.5, Math.min(p1.y, p2.y) - 118, '#fde047', '#ffffff', 2.2);
         pushCallout('BLADE CLASH! TAP FAST!', '#fde047', (p1.x + p2.x) * 0.5, Math.min(p1.y, p2.y) - 210);
         return;
-      }
-      [[p1, p2], [p2, p1]].forEach(([a, d]) => {
-        const hb = getHitbox(a);
-        if (!hb) return;
+      } else {
+        const pairs = [
+          [p1, hb1, m1, p2, db2],
+          [p2, hb2, m2, p1, db1]
+        ];
+        for (let pi = 0; pi < 2; pi++) {
+          if (match.finisherAnim || match.awakening) break;
+          const [a, hb, am, d, db] = pairs[pi];
+          if (!hb || !am) continue;
 
-        // 1) Heavy Super Slash / Weapon Spin / Nunchaku DEFLECTS enemy non-ultimate bending waves!
-        const aWSpec = getWeaponSpec(a);
-        if (a.move && (a.move.deflects || (a.move.wep && !a.disarmed && aWSpec.perk === 'nunchaku_stun'))) {
-          for (const b of bendingWaves) {
-            if (b.owner !== a.id && !b.ult && !b.hit && !b.deflected && !b.noClash && b.kind !== 'seismic_sonar' && b.kind !== 'octopus_8_swing' && rectsHit(hb, getWaveBox(b))) {
-              b.owner = a.id; b.dir = a.facing; b.vx = a.facing * Math.max(15, Math.abs(b.vx) * 1.25);
-              b.deflected = true; b.f = Math.max(b.f, 24);
-              if (a.id === 'p1') { match.p1Clashes++; addStyle(16, 'parry'); }
-              sfx.bladeClash(); hitstop = 4; shake = Math.max(shake, 10 * settings.feedback);
-              spawnSparks(b.x, b.y, '#9cf4ff', '#ffffff', 1.6);
-              pushCallout('REDIRECTED!', '#9cf4ff', b.x, b.y - 72);
+          // 1) Heavy Super Slash / Weapon Spin / Nunchaku DEFLECTS enemy non-ultimate bending waves!
+          const aWSpec = getWeaponSpec(a);
+          if (am.deflects || (am.wep && !a.disarmed && aWSpec.perk === 'nunchaku_stun')) {
+            for (const b of bendingWaves) {
+              if (b.owner !== a.id && !b.ult && !b.hit && !b.deflected && !b.noClash && b.kind !== 'seismic_sonar' && b.kind !== 'octopus_8_swing' && rectsHit(hb, getWaveBox(b))) {
+                b.owner = a.id; b.dir = a.facing; b.vx = a.facing * Math.max(15, Math.abs(b.vx) * 1.25);
+                b.deflected = true; b.f = Math.max(b.f, 24);
+                if (a.id === 'p1') { match.p1Clashes++; addStyle(16, 'parry'); }
+                sfx.bladeClash(); hitstop = 4; shake = Math.max(shake, 10 * settings.feedback);
+                spawnSparks(b.x, b.y, '#9cf4ff', '#ffffff', 1.6);
+                pushCallout('REDIRECTED!', '#9cf4ff', b.x, b.y - 72);
+              }
             }
           }
-        }
 
-        // 2) Hitting an enemy Shadow Decoy Clone triggers an ambush detonation!
-        for (let ci = decoyClones.length - 1; ci >= 0; ci--) {
-          const dc = decoyClones[ci];
-          if (dc.owner !== a.id && rectsHit(hb, { x: dc.x - 32, y: GROUND_Y - 150, w: 64, h: 150 })) {
-            decoyClones.splice(ci, 1);
-            const ownerF = dc.owner === 'p1' ? p1 : p2;
-            spawnSparks(dc.x, GROUND_Y - 95, '#6348e8', '#f6f2ff', 2.0);
-            sfx.slam(); pushCallout('CLONE TRAP!', '#b49cff', dc.x, GROUND_Y - 185);
-            resolveHit(ownerF, a, { dmg: 78, chip: 0, hs: 26, bs: 0, stop: 5, kb: 12.5, ly: -10.5, kd: true, crit: true, unblockable: true, h: 'mid', elStatus: true, mg: 0 }, a.x, a.y - 100, true);
-            a.hitDone = true;
-            return;
+          // 2) Hitting an enemy Shadow Decoy Clone triggers an ambush detonation!
+          let hitDecoy = false;
+          for (let ci = decoyClones.length - 1; ci >= 0; ci--) {
+            const dc = decoyClones[ci];
+            if (dc.owner !== a.id && rectsHit(hb, { x: dc.x - 32, y: GROUND_Y - 150, w: 64, h: 150 })) {
+              decoyClones.splice(ci, 1);
+              const ownerF = dc.owner === 'p1' ? p1 : p2;
+              spawnSparks(dc.x, GROUND_Y - 95, '#6348e8', '#f6f2ff', 2.0);
+              sfx.slam(); pushCallout('CLONE TRAP!', '#b49cff', dc.x, GROUND_Y - 185);
+              resolveHit(ownerF, a, { dmg: 78, chip: 0, hs: 26, bs: 0, stop: 5, kb: 12.5, ly: -10.5, kd: true, crit: true, unblockable: true, h: 'mid', elStatus: true, mg: 0 }, a.x, a.y - 100, true);
+              a.hitDone = true;
+              hitDecoy = true;
+              break;
+            }
+          }
+          if (hitDecoy) continue;
+
+          if (d.inv > 0 || d.state === 'ko' || d.state === 'grabbed') continue;
+          if (d.state === 'grounded' && !am.hitsDown) continue;
+          if (rectsHit(hb, db) && a.multiHitCd <= 0) {
+            if (a.multiHitsLeft > 1) {
+              a.multiHitsLeft--; a.multiHitCd = 4;
+            } else {
+              a.hitDone = true;
+            }
+            resolveHit(a, d, am, (Math.max(hb.x, db.x) + Math.min(hb.x + hb.w, db.x + db.w)) * 0.5, (Math.max(hb.y, db.y) + Math.min(hb.y + hb.h, db.y + db.h)) * 0.5);
           }
         }
-
-        if (d.inv > 0 || d.state === 'ko' || d.state === 'grabbed') return;
-        if (d.state === 'grounded' && !(a.move && a.move.hitsDown)) return;
-        const db = getHurtbox(d);
-        if (rectsHit(hb, db) && a.multiHitCd <= 0) {
-          if (a.multiHitsLeft > 1) {
-            a.multiHitsLeft--; a.multiHitCd = 4;
-          } else {
-            a.hitDone = true;
-          }
-          resolveHit(a, d, a.move, (Math.max(hb.x, db.x) + Math.min(hb.x + hb.w, db.x + db.w)) * 0.5, (Math.max(hb.y, db.y) + Math.min(hb.y + hb.h, db.y + db.h)) * 0.5);
-        }
-      });
+      }
     }
 
     // ===== ELEMENTAL BENDING WAVE CLASHES (Opposing Waves Collide Mid-Screen!) =====
@@ -4714,6 +4795,8 @@
       }
     }
 
+    const casterInterrupted = (c) => c.hp <= 0 || c.dizzied || c.frozenPrisonF > 0 || ['hitstun', 'knockdown_air', 'grounded', 'ko', 'grabbed'].includes(c.state);
+
     // Update Bending Waves, Vortexes, Seismic Sonar, 8-Arm Octopus Whip & Elemental Arm Swings
     for (let i = bendingWaves.length - 1; i >= 0; i--) {
       const b = bendingWaves[i];
@@ -4722,14 +4805,32 @@
 
       // ===== SECRET ATLA SUB-BENDING ARTS SIMULATION =====
       if (b.kind === 'sub_bloodbend') {
+        if (casterInterrupted(a)) {
+          if (b.grabbed && d.state === 'grabbed' && !match.finisherAnim) { d.state = 'knockdown_air'; d.vy = -5; }
+          bendingWaves.splice(i, 1);
+          continue;
+        }
         b.age++; b.f--;
         const u = Math.min(1, b.age / b.max);
-        if (b.age === 1 && canFight && d.inv <= 0 && d.state !== 'ko') {
+        if (b.age < 6 && !b.grabbed) {
+          b.x += (d.x - b.x) * 0.35;
+          b.y = d.y - 100;
+        } else if (b.age === 6 && !b.grabbed && canFight && d.inv <= 0 && d.state !== 'ko' && d.state !== 'grabbed' && Math.abs(d.x - b.x) < 145) {
+          if (d.reflectStanceF > 0) {
+            d.reflectStanceF = 0;
+            sfx.guard(true); spawnSparks(d.x, d.y - 98, '#ffe066', '#ffffff', 1.6);
+            pushCallout('CHI RESISTED!', '#ffe066', d.x, d.y - 192);
+            bendingWaves.splice(i, 1);
+            continue;
+          }
           d.state = 'grabbed'; d.sf = 0; d.vx = 0; d.vy = 0; d.frozenPrisonF = 0;
           b.grabbed = true;
           dramaticZoom = Math.max(dramaticZoom, 0.11);
           sfx.subBend('water');
           if (FX3D) { FX3D.spawnFloorRing(d.x, '#ff4b6b', 220, 32); FX3D.flashSky('#991b2e', 0.36); }
+        } else if (b.age === 6 && !b.grabbed) {
+          bendingWaves.splice(i, 1);
+          continue;
         }
         if (b.grabbed) {
           b.x = d.x; b.y = d.y - 100;
@@ -4739,7 +4840,8 @@
             d.x = Math.max(ARENA_L + 40, Math.min(ARENA_R - 40, d.x + Math.sin(b.age * 0.55) * 3.2));
             if (b.age % 5 === 0) spawnSparks(d.x, d.y - 90, '#991b2e', '#ff8aa1', 0.9);
           } else if (!b.hit) {
-            b.hit = true; d.y = GROUND_Y; d.state = 'idle';
+            b.hit = true; b.grabbed = false;
+            d.y = GROUND_Y; d.state = 'idle';
             inkFlashF = Math.max(inkFlashF, 5); slowMoFrames = Math.max(slowMoFrames, 10);
             sfx.slam(); sfx.headHit(); haptic('heavy'); shake = Math.max(shake, 22 * settings.feedback);
             spawnSparks(d.x, GROUND_Y - 26, '#991b2e', '#ff4b6b', 2.4);
@@ -4752,13 +4854,18 @@
           }
         }
         if (b.f <= 0 || !canFight) {
-          if (d.state === 'grabbed') { d.state = 'knockdown_air'; d.vy = -8; }
+          if (b.grabbed && d.state === 'grabbed' && !match.finisherAnim) { d.state = 'knockdown_air'; d.vy = -8; }
           bendingWaves.splice(i, 1);
         }
         continue;
       }
 
       if (b.kind === 'sub_metal_wire') {
+        if (casterInterrupted(a)) {
+          if (b.grabbed && d.state === 'grabbed' && !match.finisherAnim) { d.state = 'idle'; }
+          bendingWaves.splice(i, 1);
+          continue;
+        }
         b.age++; b.f--;
         const ox = a.x + b.dir * 26, oy = a.y - 108;
         b.x = ox; b.y = oy;
@@ -4784,6 +4891,7 @@
           b.tipX = d.x; b.tipY = d.y - 96;
           if (b.age % 2 === 0) spawnSparks(d.x, d.y - 96, '#94a3b8', '#ffffff', 0.9);
           if (Math.abs(d.x - destX) < 18 || b.f <= 2) {
+            b.grabbed = false;
             d.x = destX; d.y = GROUND_Y; d.state = 'idle';
             b.f = 0;
             sfx.slam(); haptic('heavy');
@@ -4794,7 +4902,7 @@
           }
         }
         if (b.f <= 0 || !canFight) {
-          if (d.state === 'grabbed') { d.state = 'hitstun'; d.stun = 22; }
+          if (b.grabbed && d.state === 'grabbed' && !match.finisherAnim) { d.state = 'hitstun'; d.stun = 22; }
           bendingWaves.splice(i, 1);
         }
         continue;
@@ -4803,8 +4911,8 @@
       if (b.kind === 'sub_combustion') {
         b.age++; b.f--;
         b.x += b.vx;
-        if (b.age % 2 === 0 && particles.length < 240) {
-          particles.push({ x: b.x, y: b.y, vx: -b.vx * 0.1, vy: (Math.random() - 0.5) * 2, sz: 5.2, c: '#ffae34', age: 0, max: 14, g: 0, t: 'spark' });
+        if (b.age % 2 === 0) {
+          pushParticle({ x: b.x, y: b.y, vx: -b.vx * 0.1, vy: (Math.random() - 0.5) * 2, sz: 5.2, c: '#ffae34', age: 0, max: 14, g: 0, t: 'spark' });
         }
         const box = { x: b.x - b.w * 0.5, y: b.y - b.h * 0.5, w: b.w, h: b.h };
         const hitTarget = canFight && d.inv <= 0 && d.state !== 'ko' && d.state !== 'grabbed' && rectsHit(box, getHurtbox(d));
@@ -4833,9 +4941,9 @@
         b.age++; b.f--;
         b.x += (d.x - b.x) * 0.14;
         if (b.hitCd > 0) b.hitCd--;
-        if (b.age % 2 === 0 && particles.length < 240) {
+        if (b.age % 2 === 0) {
           const ang = b.age * 0.55;
-          particles.push({ x: b.x + Math.cos(ang) * 76, y: b.y + Math.sin(ang) * 58, vx: -Math.cos(ang) * 4.5, vy: -Math.sin(ang) * 3.5, sz: 4.4, c: '#78ffd6', age: 0, max: 14, g: 0, t: 'spark' });
+          pushParticle({ x: b.x + Math.cos(ang) * 76, y: b.y + Math.sin(ang) * 58, vx: -Math.cos(ang) * 4.5, vy: -Math.sin(ang) * 3.5, sz: 4.4, c: '#78ffd6', age: 0, max: 14, g: 0, t: 'spark' });
         }
         if (canFight && d.inv <= 0 && d.state !== 'ko' && Math.abs(d.x - b.x) < 128) {
           d.x += (b.x - d.x) * 0.12;
@@ -4890,6 +4998,12 @@
 
       // Katara's 8-Arm Octopus Multi-Swing: 8 articulated water tentacles whipping & slamming the opponent 8 TIMES!
       if (b.kind === 'octopus_8_swing') {
+        if (casterInterrupted(a)) {
+          a.octopusSwinging = false;
+          if (b.grabbed && d.state === 'grabbed' && !match.finisherAnim) { d.state = 'knockdown_air'; d.vy = -6; }
+          bendingWaves.splice(i, 1);
+          continue;
+        }
         b.age++; b.f--;
         if (b.lastSlamF > 0) b.lastSlamF--;
         const ox = a.x, oy = a.y - 104;
@@ -4930,8 +5044,8 @@
           d.x = b.tipX; d.y = Math.min(GROUND_Y, b.tipY + 66);
           a.facing = b.tipX >= a.x ? 1 : -1;
           dramaticZoom = Math.max(dramaticZoom, 0.08 + b.swingIdx * 0.008);
-          if (settings.vfx !== 'low' && b.swingF % 2 === 0 && particles.length < 240) {
-            particles.push({ x: b.tipX, y: b.tipY, vx: (Math.random() - 0.5) * 5, vy: -1.5 - Math.random() * 3, sz: 5.2, c: Math.random() < 0.5 ? '#e6fcff' : '#38d8ff', age: 0, max: 16, g: 0.14, t: 'spark' });
+          if (settings.vfx !== 'low' && b.swingF % 2 === 0) {
+            pushParticle({ x: b.tipX, y: b.tipY, vx: (Math.random() - 0.5) * 5, vy: -1.5 - Math.random() * 3, sz: 5.2, c: Math.random() < 0.5 ? '#e6fcff' : '#38d8ff', age: 0, max: 16, g: 0.14, t: 'spark' });
           }
           if (b.swingF >= dur) {
             const slamNum = b.swingIdx + 1;
@@ -4958,7 +5072,7 @@
               pushCallout(`OCTOPUS SLAM ${slamNum}/8`, '#7cf2ff', d.x, GROUND_Y - 172);
               b.swingIdx++; b.swingF = 0; b.f = Math.max(b.f, 36);
             } else {
-              b.phase = 'slam'; b.f = 12; a.octopusSwinging = false;
+              b.phase = 'slam'; b.f = 12; b.grabbed = false; a.octopusSwinging = false;
               d.state = 'idle';
               sfx.waterWhip(); sfx.slam(); sfx.headHit(); haptic('heavy');
               inkFlashF = Math.max(inkFlashF, 5); slowMoFrames = Math.max(slowMoFrames, 16);
@@ -4978,13 +5092,18 @@
         }
         if (b.f <= 0 || !canFight) {
           a.octopusSwinging = false;
-          if (d.state === 'grabbed') { d.state = 'knockdown_air'; d.vy = -8; }
+          if (b.grabbed && d.state === 'grabbed' && !match.finisherAnim) { d.state = 'knockdown_air'; d.vy = -8; }
           bendingWaves.splice(i, 1);
         }
         continue;
       }
 
       if (b.kind === 'ult_arm_swing') {
+        if (casterInterrupted(a)) {
+          if (b.grabbed && d.state === 'grabbed' && !match.finisherAnim) { d.state = 'knockdown_air'; d.vy = -6; }
+          bendingWaves.splice(i, 1);
+          continue;
+        }
         b.age++; b.f--;
         const handX = a.x + b.dir * 32, handY = a.y - 118;
         b.x = handX; b.y = handY;
@@ -5016,11 +5135,12 @@
           b.tipX = Math.max(ARENA_L + 36, Math.min(ARENA_R - 36, a.x + b.dir * Math.cos(ang) * radX));
           b.tipY = Math.min(GROUND_Y - 12, (a.y - 95) - Math.sin(ang) * radY + u * 65);
           d.x = b.tipX; d.y = Math.min(GROUND_Y, b.tipY + 70);
-          if (settings.vfx !== 'low' && b.swingF % 2 === 0 && particles.length < 240) {
-            particles.push({ x: b.tipX, y: b.tipY, vx: (Math.random() - 0.5) * 4, vy: (Math.random() - 0.5) * 4, sz: 5.5, c: Math.random() < 0.5 ? b.el.core : b.el.glow, age: 0, max: 18, g: 0.12, t: b.el.id === 'ice' || b.el.id === 'earth' ? 'shard' : 'spark' });
+          if (settings.vfx !== 'low' && b.swingF % 2 === 0) {
+            pushParticle({ x: b.tipX, y: b.tipY, vx: (Math.random() - 0.5) * 4, vy: (Math.random() - 0.5) * 4, sz: 5.5, c: Math.random() < 0.5 ? b.el.core : b.el.glow, age: 0, max: 18, g: 0.12, t: b.el.id === 'ice' || b.el.id === 'earth' ? 'shard' : 'spark' });
           }
           if (b.swingF >= dur) {
-            b.phase = 'slam'; b.f = 10; d.y = GROUND_Y;
+            b.phase = 'slam'; b.f = 10; b.grabbed = false;
+            d.y = GROUND_Y; d.state = 'idle';
             sfx.slam(); slowMoFrames = 14; dramaticZoom = 0.095; shake = Math.max(shake, 22 * settings.feedback);
             spawnSparks(d.x, GROUND_Y - 24, b.el.primary, b.el.core, 2.4, b.el.id === 'ice');
             spawnDust(d.x, GROUND_Y, -b.dir, 18, b.el.glow);
@@ -5033,8 +5153,8 @@
             }, d.x, GROUND_Y - 40, true);
           }
         }
-        if (b.f <= 0) {
-          if (d.state === 'grabbed') { d.state = 'knockdown_air'; d.vy = -8; }
+        if (b.f <= 0 || !canFight) {
+          if (b.grabbed && d.state === 'grabbed' && !match.finisherAnim) { d.state = 'knockdown_air'; d.vy = -8; }
           bendingWaves.splice(i, 1);
         }
         continue;
@@ -5044,10 +5164,10 @@
         b.x = Math.max(ARENA_L + 60, Math.min(ARENA_R - 60, b.x + b.vx));
         b.f--;
         if (b.hitCd > 0) b.hitCd--;
-        if (settings.vfx !== 'low' && b.f % 2 === 0 && particles.length < 240) {
+        if (settings.vfx !== 'low' && b.f % 2 === 0) {
           const ang = simFrame * 0.45 + Math.random() * 6;
           const r = 30 + Math.random() * 75;
-          particles.push({ x: b.x + Math.cos(ang) * r, y: GROUND_Y - Math.random() * b.h * 0.85, vx: -Math.sin(ang) * 5, vy: -4.2 - Math.random() * 3, sz: 5.2, c: Math.random() < 0.5 ? b.el.core : b.el.glow, age: 0, max: 20, g: -0.04, t: b.el.id === 'ice' || b.el.id === 'earth' ? 'shard' : 'spark' });
+          pushParticle({ x: b.x + Math.cos(ang) * r, y: GROUND_Y - Math.random() * b.h * 0.85, vx: -Math.sin(ang) * 5, vy: -4.2 - Math.random() * 3, sz: 5.2, c: Math.random() < 0.5 ? b.el.core : b.el.glow, age: 0, max: 20, g: -0.04, t: b.el.id === 'ice' || b.el.id === 'earth' ? 'shard' : 'spark' });
         }
         const vBox = { x: b.x - b.w * 0.55, y: GROUND_Y - b.h, w: b.w * 1.1, h: b.h };
         if (canFight && b.hitsLeft > 0 && b.hitCd <= 0 && d.inv <= 0 && d.state !== 'ko' && d.state !== 'grabbed' && rectsHit(vBox, getHurtbox(d))) {
@@ -5084,8 +5204,8 @@
         spawnSparks(b.x, b.y, '#ff7014', '#ffea80', 1.2);
       }
       b.f--;
-      if (settings.vfx !== 'low' && b.f % 2 === 0 && particles.length < 240) {
-        particles.push({ x: b.x + (Math.random() - 0.5) * b.w * 0.6, y: b.y - Math.random() * b.h * 0.5, vx: -b.vx * 0.15 + (Math.random() - 0.5) * 3, vy: -1.5 - Math.random() * 2.5, sz: b.ult ? 5.5 : 3.5, c: Math.random() < 0.5 ? b.el.core : b.el.glow, age: 0, max: 18, g: 0.08, t: b.el.id === 'ice' || b.el.id === 'earth' ? 'shard' : 'spark' });
+      if (settings.vfx !== 'low' && b.f % 2 === 0) {
+        pushParticle({ x: b.x + (Math.random() - 0.5) * b.w * 0.6, y: b.y - Math.random() * b.h * 0.5, vx: -b.vx * 0.15 + (Math.random() - 0.5) * 3, vy: -1.5 - Math.random() * 2.5, sz: b.ult ? 5.5 : 3.5, c: Math.random() < 0.5 ? b.el.core : b.el.glow, age: 0, max: 18, g: 0.08, t: b.el.id === 'ice' || b.el.id === 'earth' ? 'shard' : 'spark' });
       }
       if (canFight && !b.hit && !(b.hitCd > 0)) {
         const box = getWaveBox(b);
@@ -5166,7 +5286,10 @@
     }
 
     [p1, p2].forEach(f => {
-      if (f.afterTimer > 0 && f.sf % 2 === 0 && settings.vfx !== 'low') ghosts.push({ x: f.x, y: f.y, c: f.el.glow, a: 0, max: 14 });
+      if (f.afterTimer > 0 && f.sf % 2 === 0 && settings.vfx !== 'low') {
+        if (ghosts.length >= MAX_GHOSTS) ghosts.shift();
+        ghosts.push({ x: f.x, y: f.y, c: f.el.glow, a: 0, max: 14 });
+      }
     });
     for (let i = ghosts.length - 1; i >= 0; i--) if (++ghosts[i].a >= ghosts[i].max) ghosts.splice(i, 1);
 
@@ -5261,7 +5384,7 @@
         PROG.coins += hostReward;
         saveProg();
         const subWifi = `${match.p1W} — ${match.p2W}${match.eclipseFinished ? ' · EXECUTION' : ''} · WI-FI DUET`;
-        showBanner(`${winName} WINS`, subWifi, match.winner === 'p1' ? '#ffae34' : '#4be3ff', 99999);
+        showBanner(`${winName} WINS`, subWifi, match.winner === 'p1' ? '#ffae34' : '#4be3ff', 99999, false, true);
         if (WIFI && WIFI.isHostInMatch()) {
           WIFI.sendRaw({ t: 'over', w: match.winner, w1: match.p1W, w2: match.p2W, ex: match.eclipseFinished ? 1 : 0 });
         }
@@ -5330,6 +5453,7 @@
     }
   }
   function updateParticles() {
+    if (particles.length > MAX_PARTICLES) particles.splice(0, particles.length - MAX_PARTICLES);
     for (let i = particles.length - 1; i >= 0; i--) {
       const p = particles[i]; p.age++; p.x += p.vx; p.y += p.vy; p.vy += p.g; p.vx *= 0.97;
       if (p.age >= p.max) particles.splice(i, 1);
@@ -7093,7 +7217,9 @@
     if (f.invisible) ctx.globalAlpha = 0.16;
     const isInvuln = f.inv > 0;
     const invPulse = isInvuln ? 1.0 + Math.abs(Math.sin(f.sf * 0.7)) * 0.65 : 1.0;
-    const soulGlow = f.id === 'p1' ? (0.45 + Math.min(8, PROG.unlockedElements.length) * 0.11 + (PROG.avatarUnlocked ? 0.35 : 0)) : (f.phase2 ? 1.35 : 1.0);
+    const soulGlow = match.mode === 'wifi'
+      ? (canFighterAvatarShift(f) ? 1.24 : 1.08)
+      : (f.id === 'p1' ? (0.45 + Math.min(8, PROG.unlockedElements.length) * 0.11 + (PROG.avatarUnlocked ? 0.35 : 0)) : (f.phase2 ? 1.35 : 1.0));
     const boost = (f.avatarFlash > 0 || f.magic >= 100 || f.phase2 ? 1.38 : 1.0) * invPulse * soulGlow;
     const rimCol = (f.flash > 0 || f.avatarFlash > 0 || (isInvuln && f.sf % 4 < 2)) ? '#ffffff' : (f.phase2 ? '#ff6a32' : (isInvuln ? '#8ef5ff' : (f.rockArmorF > 0 || f.gauntletsF > 0 ? '#f5ba42' : f.el.glow)));
     const airHoverY = f.airScooterF > 0 ? -42 + Math.sin(simFrame * 0.35) * 4 : 0;
@@ -7949,12 +8075,12 @@
         lightCol[idx].copy(tmpCol);
         lightRad[idx] = rad;
       };
-      // Lights 0 & 1: P1 and P2 elemental auras (tinted by equipped Armory Weapon Enchantment Seal!)
-      const p1Ench = getActiveEnchant(p1);
+      // Lights 0 & 1: P1 and P2 elemental auras (tinted symmetrically by equipped Armory Weapon Enchantment Seal!)
+      const p1Ench = getActiveEnchant(p1), p2Ench = getActiveEnchant(p2);
       const p1Boost = (p1.octopusF > 0 || p1.airScooterF > 0 || p1.fireJetF > 0 || p1.reflectStanceF > 0 || p1.state === 'attack') ? 1.45 : 0.92;
       const p2Boost = (p2.octopusF > 0 || p2.airScooterF > 0 || p2.fireJetF > 0 || p2.reflectStanceF > 0 || p2.phase2 || p2.state === 'attack') ? 1.45 : 0.92;
       setLight(0, p1.x, p1.y - 72, 18, p1Ench ? p1Ench.col : p1.el.glow, p1Boost, p1.octopusSwinging ? 320 : 230);
-      setLight(1, p2.x, p2.y - 72, 18, p2.el.glow, p2Boost, p2.octopusSwinging ? 320 : 230);
+      setLight(1, p2.x, p2.y - 72, 18, p2Ench ? p2Ench.col : p2.el.glow, p2Boost, p2.octopusSwinging ? 320 : 230);
 
       // Light 2: Most prominent bending wave / Blade Clash / Octopus Whip tip
       if (bladeClash) {
@@ -8356,14 +8482,19 @@
   function renderScene() {
     ctx.setTransform(gameDpr, 0, 0, gameDpr, 0, 0);
     ctx.clearRect(0, 0, W, H);
-    const focusX = match.awakening ? p2.x : (match.finisherAnim ? (match.finisherAnim.defId === 'p1' ? p1.x : p2.x) : (p1.x + p2.x) * 0.5);
-    const midX = focusX, dist = Math.abs(p1.x - p2.x);
-    const tz = Math.max(1.05, Math.min(1.28, 1.18 - dist / 2600 + dramaticZoom));
-    camZoom += (tz - camZoom) * 0.08;
+    const p1x = Number.isFinite(p1.x) ? p1.x : W * 0.35;
+    const p2x = Number.isFinite(p2.x) ? p2.x : W * 0.65;
+    const singleFocus = Boolean(match.awakening || match.finisherAnim);
+    const focusX = match.awakening ? p2x : (match.finisherAnim ? (match.finisherAnim.defId === 'p1' ? p1x : p2x) : (p1x + p2x) * 0.5);
+    const midX = focusX, dist = Math.abs(p1x - p2x);
+    const fitBothMaxZ = singleFocus ? 1.28 : Math.max(1.0, Math.min(1.28, W / Math.max(400, dist + 210)));
+    const rawTz = 1.18 - dist / 2600 + (Number.isFinite(dramaticZoom) ? dramaticZoom : 0);
+    const tz = Math.max(1.0, Math.min(fitBothMaxZ, rawTz));
+    camZoom = Number.isFinite(camZoom) ? camZoom + (tz - camZoom) * 0.08 : tz;
     const halfViewW = W / (2 * camZoom);
     const minCamX = halfViewW + 18, maxCamX = W - halfViewW - 18;
     const tx = minCamX < maxCamX ? Math.max(minCamX, Math.min(maxCamX, midX)) : W * 0.5;
-    camX += (tx - camX) * 0.12;
+    camX = Number.isFinite(camX) ? camX + (tx - camX) * 0.12 : tx;
     const clampedCamX = minCamX < maxCamX ? Math.max(minCamX, Math.min(maxCamX, camX)) : W * 0.5;
 
     let sx = 0, sy = 0;
@@ -8659,7 +8790,7 @@
   const FIST_SVG = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M7 11V7a1.5 1.5 0 0 1 3 0v3M10 10V6a1.5 1.5 0 0 1 3 0v4M13 10V7a1.5 1.5 0 0 1 3 0v3M16 11V9a1.5 1.5 0 0 1 3 0v5a6 6 0 0 1-6 6h-2a5 5 0 0 1-5-5v-3.5a1.5 1.5 0 0 1 3 0"/></svg>`;
 
   function escapeHtml(s) {
-    return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    return String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
   }
 
   function syncHud() {
@@ -8723,15 +8854,17 @@
       }
     }
 
-    // Live Wi-Fi Ping Badge in Top HUD Center
+    // Live Wi-Fi Ping & Stall Badge in Top HUD Center
     if (elRefs.wifiPingPill) {
-      const pTxt = isWifi && WIFI ? (WIFI.connected ? `WIFI · ${Math.max(1, WIFI.pingMs)}ms` : 'DISCONNECTED') : '';
+      const pTxt = isWifi && WIFI
+        ? (!WIFI.connected ? 'DISCONNECTED' : WIFI.stalled ? 'WIFI · STALLED' : `WIFI · ${Math.max(1, WIFI.pingMs)}ms`)
+        : '';
       if (pTxt !== lastPingTxt) {
         lastPingTxt = pTxt;
         elRefs.wifiPingPill.classList.toggle('hidden', !pTxt);
         if (pTxt) {
           elRefs.wifiPingVal.textContent = pTxt;
-          const bad = !WIFI.connected || WIFI.pingMs > 120;
+          const bad = !WIFI.connected || WIFI.stalled || WIFI.pingMs > 120;
           const warn = !bad && WIFI.pingMs > 55;
           elRefs.wifiPingPill.classList.toggle('bad', bad);
           elRefs.wifiPingPill.classList.toggle('warn', warn);
@@ -8868,23 +9001,35 @@
   }
   const bendDirPill = document.getElementById('bend-dir-pill');
   const btnAvatar = document.getElementById('btn-avatar');
+  const SHIFT_ALLOWED_STATES = new Set(['idle', 'walk_fwd', 'walk_back', 'crouch', 'jump', 'dash_fwd', 'back_handspring']);
   function triggerAvatarShift(targetF = null) {
+    if (match.inMenu || match.paused || match.screen !== 'fighting' || match.intro > 0 || match.finisherAnim || match.awakening || bladeClash) return false;
     const f = targetF || getLocalFighter();
+    if (!f || f.hp <= 0 || f.dizzied || f.frozenPrisonF > 0 || f.octopusSwinging || !SHIFT_ALLOWED_STATES.has(f.state)) return false;
+    if (simFrame - (f.lastShiftF ?? -999) < 30) return false;
+
     if (!targetF && WIFI && WIFI.isClientInMatch()) {
+      if (!canFighterAvatarShift(f)) return false;
+      f.lastShiftF = simFrame;
       WIFI.sendInput({ a: 'shift' });
-      return;
+      return true;
     }
-    if (canFighterAvatarShift(f)) {
-      const idx = (EL_ORDER.indexOf(f.el.id) + 1) % EL_ORDER.length;
-      f.el = ELEMENTS[EL_ORDER[idx]]; f.avatarFlash = 22;
-      if (f.id === 'p1') lastE1 = ''; else lastE2 = '';
-      lastLocalMagEl = ''; lastSubKey = '';
-      spawnSparks(f.x, f.y - 105, f.el.glow, '#ffffff', 1.5);
-      pushCallout(`AVATAR: ${f.el.name.toUpperCase()}`, f.el.glow, f.x, f.y - 205);
-    } else {
-      f.artIdx = (f.artIdx + 1) % 3;
+    if (!canFighterAvatarShift(f)) {
+      if (!targetF && match.mode !== 'wifi') {
+        f.lastShiftF = simFrame;
+        f.artIdx = (f.artIdx + 1) % 3;
+      }
+      return false;
     }
+    f.lastShiftF = simFrame;
+    const idx = (EL_ORDER.indexOf(f.el.id) + 1) % EL_ORDER.length;
+    f.el = ELEMENTS[EL_ORDER[idx]]; f.avatarFlash = 22;
+    if (f.id === 'p1') lastE1 = ''; else lastE2 = '';
+    lastLocalMagEl = ''; lastSubKey = '';
+    spawnSparks(f.x, f.y - 105, f.el.glow, '#ffffff', 1.5);
+    pushCallout(`AVATAR: ${f.el.name.toUpperCase()}`, f.el.glow, f.x, f.y - 205);
     sfx.elemBend(f.el.id);
+    return true;
   }
   if (btnAvatar) {
     btnAvatar.addEventListener('pointerdown', e => { e.preventDefault(); unlockAudio(); btnAvatar.classList.add('pressed'); triggerAvatarShift(); });
@@ -8903,16 +9048,22 @@
   function sendLocalBtnDown(act) {
     const lf = getLocalFighter();
     if (WIFI && WIFI.isClientInMatch()) {
-      if (act === 'magic' && lf.magic < 35) { triggerDenyShake(document.getElementById('btn-magic')); _sfxRaw.deny(); return; }
-      if (act === 'subbend' && lf.magic < (hasFighterScroll(lf, lf.el.id) ? 35 : 45)) { triggerDenyShake(document.getElementById('btn-sub')); _sfxRaw.deny(); return; }
-      WIFI.sendInput({ a: 'dn', b: act, dx: lf.dir.x, dy: lf.dir.y });
+      const netAct = act === 'punch' ? 'weapon' : act;
+      if (netAct !== 'weapon' && netAct !== 'kick' && netAct !== 'magic' && netAct !== 'subbend') return;
+      if (!bladeClash) {
+        if (netAct === 'magic' && lf.magic < 35) { triggerDenyShake(document.getElementById('btn-magic')); _sfxRaw.deny(); return; }
+        if (netAct === 'subbend' && lf.magic < (hasFighterScroll(lf, lf.el.id) ? 35 : 45)) { triggerDenyShake(document.getElementById('btn-sub')); _sfxRaw.deny(); return; }
+      }
+      WIFI.sendInput({ a: 'dn', b: netAct, dx: clampAxis(lf.dir.x), dy: clampAxis(lf.dir.y) });
       return;
     }
     pressBtn(lf, act);
   }
   function sendLocalBtnUp(act) {
     if (WIFI && WIFI.isClientInMatch()) {
-      WIFI.sendInput({ a: 'up', b: act });
+      const netAct = act === 'punch' ? 'weapon' : act;
+      if (netAct !== 'weapon' && netAct !== 'kick' && netAct !== 'magic' && netAct !== 'subbend') return;
+      WIFI.sendInput({ a: 'up', b: netAct });
       return;
     }
     releaseBtn(getLocalFighter(), act);
@@ -8981,6 +9132,7 @@
       appSuspended = true;
       resetInputs();
       suspendAudio();
+      if (WIFI) WIFI.onAppPause();
       if (!match.inMenu && !match.paused && match.mode !== 'wifi' && match.screen === 'fighting') {
         match.paused = true;
         pauseModal.classList.remove('hidden');
@@ -8991,6 +9143,8 @@
       lastT = performance.now();
       syncGameCanvasDpr();
       if (FX3D) FX3D.syncQuality();
+      resumeAudioIfUnlocked();
+      if (WIFI) WIFI.onAppResume();
     }
   };
   window.onAndroidMemoryTrim = function () {
@@ -9011,9 +9165,12 @@
       appSuspended = true;
       resetInputs();
       suspendAudio();
+      if (WIFI) WIFI.onAppPause();
     } else {
       appSuspended = false;
       lastT = performance.now();
+      resumeAudioIfUnlocked();
+      if (WIFI) WIFI.onAppResume();
     }
   });
   window.addEventListener('contextmenu', e => e.preventDefault());
@@ -9138,8 +9295,8 @@
         if (match.inMenu || match.paused || match.screen !== 'fighting') return;
         const lf = getLocalFighter();
         if (WIFI && WIFI.isClientInMatch()) {
-          if (lf.magic < 35) { triggerDenyShake(document.getElementById('btn-magic')); _sfxRaw.deny(); return; }
-          if (bendSwMoved) WIFI.sendInput({ a: 'swp', dx: bendSwDx, dy: bendSwDy });
+          if (!bladeClash && lf.magic < 35) { triggerDenyShake(document.getElementById('btn-magic')); _sfxRaw.deny(); return; }
+          if (bendSwMoved && !bladeClash) WIFI.sendInput({ a: 'swp', dx: bendSwDx, dy: bendSwDy });
           else { WIFI.sendInput({ a: 'dn', b: 'magic', dx: lf.dir.x, dy: lf.dir.y }); WIFI.sendInput({ a: 'up', b: 'magic' }); }
           return;
         }
@@ -9199,9 +9356,27 @@
   }
 
   // Android Hardware Back Button Bridge (called by native Android WebView MainActivity)
+  let wifiBackConfirmUntil = 0;
   window.onAndroidBack = function () {
+    const activeEl = document.activeElement;
+    if (activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA')) {
+      try { activeEl.blur(); } catch {}
+      return true;
+    }
     if (!storyOverlay.classList.contains('hidden')) { finishStory(); return true; }
     if (wifiModal && !wifiModal.classList.contains('hidden')) {
+      if (WIFI && (WIFI.connected || WIFI.hosting || WIFI.state.waitingApproval)) {
+        const now = performance.now();
+        if (now < wifiBackConfirmUntil) {
+          wifiBackConfirmUntil = 0;
+          WIFI.leaveToMenu();
+        } else {
+          wifiBackConfirmUntil = now + 2500;
+          WIFI.state.infoMsg = 'Press BACK again within 2.5s to leave Dojo, or tap DISCONNECT.';
+          renderWifiModal();
+        }
+        return true;
+      }
       if (WIFI) WIFI.leaveToMenu();
       return true;
     }
@@ -9596,6 +9771,9 @@
     const bladesSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 19L19 5M19 19L5 5M7 14l3 3M17 14l-3 3"/></svg>`;
     const toriiSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6c5 1.8 13 1.8 18 0"/><path d="M5 10h14"/><path d="M8 7v13M16 7v13"/></svg>`;
 
+    const oldMap = campaignModal.querySelector('#map-canvas');
+    if (oldMap && (oldMap.width > 1 || oldMap.height > 1)) { oldMap.width = 1; oldMap.height = 1; }
+
     campaignModal.innerHTML = `
       <section class="wm-screen" style="--accent:${el.glow}">
         <header class="wm-topbar">
@@ -9852,6 +10030,10 @@
       const lv = PROG.upgrades[sel.id] || 0, maxed = lv >= sel.max, cost = sel.baseCost + lv * sel.stepCost;
       actionBtn = `<button class="pill ${maxed ? '' : 'primary'}" id="arm-act" ${maxed || PROG.coins < cost ? 'disabled' : ''}>${maxed ? 'MASTERED' : `TRAIN · ${cost}`}</button>`;
     }
+
+    if (armoryPreviewRaf) { cancelAnimationFrame(armoryPreviewRaf); armoryPreviewRaf = 0; }
+    const oldPrev = armoryModal.querySelector('#armory-preview');
+    if (oldPrev && (oldPrev.width > 1 || oldPrev.height > 1)) { oldPrev.width = 1; oldPrev.height = 1; }
 
     armoryModal.innerHTML = `
       <section class="panel-modal armory-modal-panel">
@@ -10116,39 +10298,121 @@
     const nativeReady = () => Boolean(window.AndroidWifiDuel && typeof window.AndroidWifiDuel.startHost === 'function');
     const peerUid = 'es_' + Math.random().toString(36).slice(2, 9);
     let bc = null, bcBeaconTimer = null, pingTimer = null, hostPruneTimer = null;
+    let bcRoomPin = '';
+
+    const hasOwn = (o, k) => Boolean(o && typeof o === 'object' && Object.prototype.hasOwnProperty.call(o, k));
+    const finNum = (v, fb = 0, min = -1e6, max = 1e6) => (typeof v === 'number' && Number.isFinite(v)) ? Math.max(min, Math.min(max, v)) : fb;
+    const finInt = (v, fb = 0, min = -1e6, max = 1e6) => Math.trunc(finNum(v, fb, min, max));
+    const safeStr = (v, maxLen = 48, fb = '') => typeof v === 'string' ? v.replace(/[\r\n\0]/g, '').slice(0, maxLen) : fb;
+    const safeHex = (v, fb = '#78e2ff') => {
+      if (typeof v !== 'string') return fb;
+      const s = v.trim();
+      if (/^#[0-9a-fA-F]{6}$/.test(s)) return s;
+      if (/^#[0-9a-fA-F]{3}$/.test(s)) return '#' + s[1] + s[1] + s[2] + s[2] + s[3] + s[3];
+      return fb;
+    };
+    const isAllowedLanIpv4 = (ip) => {
+      if (typeof ip !== 'string' || !/^\d{1,3}(\.\d{1,3}){3}$/.test(ip)) return false;
+      const p = ip.split('.').map(Number);
+      if (p.some(n => !Number.isInteger(n) || n < 0 || n > 255)) return false;
+      const [b0, b1, , b3] = p;
+      if (b3 === 0 || b3 === 255) return false;
+      return b0 === 10
+        || (b0 === 172 && b1 >= 16 && b1 <= 31)
+        || (b0 === 192 && b1 === 168)
+        || (b0 === 169 && b1 === 254)
+        || (b0 === 100 && b1 >= 64 && b1 <= 127);
+    };
+    const genPin4 = () => {
+      try {
+        if (window.crypto && window.crypto.getRandomValues) {
+          const u = new Uint32Array(1);
+          window.crypto.getRandomValues(u);
+          return String(1000 + (u[0] % 9000));
+        }
+      } catch {}
+      return String(1000 + Math.floor(Math.random() * 9000));
+    };
+
+    const VALID_ELS = new Set(EL_ORDER);
+    const VALID_WEPS = new Set(WEAPON_CATALOG.map(w => w.id));
+    const VALID_ENCHANTS = new Set(ENCHANT_CATALOG.map(e => e.id));
+    const VALID_GEAR = new Set(GEAR_CATALOG.map(g => g.id));
+    const VALID_BIOMES = new Set(WIFI_STAGES.map(s => s.id));
+    const VALID_SCREENS = new Set(['fighting', 'round_over', 'match_over']);
+    const VALID_F_STATES = new Set([
+      'idle', 'walk_fwd', 'walk_back', 'crouch', 'jump', 'dash_fwd', 'back_handspring',
+      'roll_fwd', 'roll_back', 'shadow_step', 'wall_jump', 'attack', 'block_high',
+      'block_low', 'hitstun', 'knockdown_air', 'grounded', 'grabbed', 'ko', 'victory'
+    ]);
+    const VALID_STATUS_KEYS = new Set(['burn', 'soaked', 'chill', 'shock', 'crush', 'lift', 'hex', 'scorched', 'rooted']);
+    const ALLOWED_SFX_KEYS = new Set(['whoosh', 'hit', 'guard', 'bend', 'elemBend', 'subBend', 'waterWhip', 'ultimate', 'awakening', 'bladeClash', 'headHit', 'slam', 'gong']);
+    const ALLOWED_HAPTICS = new Set(['light', 'medium', 'heavy', 'ko']);
+    const ALLOWED_NET_BTNS = new Set(['weapon', 'kick', 'magic', 'subbend']);
+    const MAX_DISCOVERED_HOSTS = 24;
+    const MAX_NET_INPUTS_PER_FRAME = 8;
+    const STALL_WARN_MS = 1800;
+    const STALL_TIMEOUT_MS = 10500;
 
     const makeDefaultLob = (elId = 'water') => ({
       name: PROG.playerName || 'SHADOW',
-      el: elId,
-      weapon: PROG.equippedWeapon || 'default',
-      enchant: PROG.equippedEnchant || 'none',
-      gear: PROG.equippedGear || 'none',
+      el: VALID_ELS.has(elId) ? elId : 'water',
+      weapon: VALID_WEPS.has(PROG.equippedWeapon) ? PROG.equippedWeapon : 'default',
+      enchant: VALID_ENCHANTS.has(PROG.equippedEnchant) ? PROG.equippedEnchant : 'none',
+      gear: VALID_GEAR.has(PROG.equippedGear) ? PROG.equippedGear : 'none',
       scrollMastered: hasScrollMastery(elId),
       avatarUnlocked: Boolean(PROG.avatarUnlocked || PROG.sandboxUnlockAll),
       ready: false
     });
+
+    const sanitizeLoadout = (raw, fallback) => {
+      const base = fallback || makeDefaultLob('water');
+      if (!raw || typeof raw !== 'object') return { ...base };
+      const cleanName = safeStr(hasOwn(raw, 'name') ? raw.name : base.name, 14, base.name).replace(/\|/g, '').trim().toUpperCase() || 'SHADOW';
+      const el = (hasOwn(raw, 'el') && VALID_ELS.has(raw.el)) ? raw.el : base.el;
+      const weapon = (hasOwn(raw, 'weapon') && VALID_WEPS.has(raw.weapon)) ? raw.weapon : base.weapon;
+      const enchant = (hasOwn(raw, 'enchant') && VALID_ENCHANTS.has(raw.enchant)) ? raw.enchant : base.enchant;
+      const gear = (hasOwn(raw, 'gear') && VALID_GEAR.has(raw.gear)) ? raw.gear : base.gear;
+      const scrollMastered = hasOwn(raw, 'scrollMastered') ? Boolean(raw.scrollMastered) : Boolean(base.scrollMastered);
+      const avatarUnlocked = hasOwn(raw, 'avatarUnlocked') ? Boolean(raw.avatarUnlocked) : Boolean(base.avatarUnlocked);
+      const ready = hasOwn(raw, 'ready') ? Boolean(raw.ready) : false;
+      return { name: cleanName, el, weapon, enchant, gear, scrollMastered, avatarUnlocked, ready };
+    };
 
     const state = {
       role: '', // '' | 'host' | 'client'
       connected: false,
       hosting: false,
       scanning: false,
+      waitingApproval: false,
       inMatch: false,
+      stalled: false,
+      overReceived: false,
       hostIp: '',
       hostPort: 42871,
       shortCode: '',
+      roomPin: '',
+      fullCode: '',
       peerIp: '',
       pingMs: 4,
       errorMsg: '',
+      infoMsg: '',
       statusMsg: '',
       manualCode: '',
-      discovered: new Map(), // key "ip:port" -> { name, el, ip, port, shortCode, seenAt, bcId }
+      manualPin: '',
+      pendingKnocks: [], // [{ reqId, name, el, ip }]
+      discovered: new Map(), // key "ip:port" -> { name, el, ip, port, shortCode, seenAt }
       p1Lob: makeDefaultLob(p1.el.id || 'water'),
       p2Lob: makeDefaultLob('fire'),
       stageBiome: 'eclipse_sanctum',
       toWin: 2,
       pendingEvents: [],
       lastNetSnapAt: 0,
+      lastPeerRxAt: 0,
+      lastPingRxAt: 0,
+      lastPongRxAt: 0,
+      lastHostKeepaliveAt: 0,
+      netInputsThisFrame: 0,
       snapCount: 0,
       isHostInMatch: () => Boolean(state.connected && state.role === 'host' && state.inMatch && match.mode === 'wifi' && !match.inMenu),
       isClientInMatch: () => Boolean(state.connected && state.role === 'client' && state.inMatch && match.mode === 'wifi' && !match.inMenu)
@@ -10159,21 +10423,32 @@
       bc = new BroadcastChannel('es_wifi_duet_v1');
       bc.onmessage = (ev) => {
         const msg = ev.data;
-        if (!msg || msg.from === peerUid) return;
+        if (!msg || typeof msg !== 'object' || msg.from === peerUid) return;
         if (msg.bcKind === 'beacon' && state.scanning && !state.connected) {
           onEvent({ type: 'host_found', name: msg.name, el: msg.el, ip: msg.bcId, port: 42871, shortCode: msg.shortCode || 'LOCAL' });
         } else if (msg.bcKind === 'join' && state.hosting && !state.connected && msg.target === peerUid) {
-          state.connected = true;
-          state.hosting = false;
-          state.peerIp = msg.from;
-          if (bcBeaconTimer) { clearInterval(bcBeaconTimer); bcBeaconTimer = null; }
-          bc.postMessage({ from: peerUid, bcKind: 'accept', target: msg.from });
-          onEvent({ type: 'connected', role: 'host', peerIp: msg.from });
+          const pinProvided = safeStr(msg.pin, 8, '').trim();
+          if (pinProvided) {
+            if (pinProvided !== bcRoomPin) {
+              bc.postMessage({ from: peerUid, bcKind: 'reject', target: msg.from, reason: 'Incorrect 4-digit Dojo PIN.' });
+              return;
+            }
+            acceptBcPeer(msg.from);
+          } else {
+            const reqId = Math.floor(1 + Math.random() * 900000);
+            bc.postMessage({ from: peerUid, bcKind: 'wait_knock', target: msg.from });
+            onEvent({ type: 'challenger_knock', reqId, name: msg.name || 'SHADOW', el: msg.el || 'fire', ip: msg.from });
+          }
+        } else if (msg.bcKind === 'wait_knock' && state.role === 'client' && !state.connected && msg.target === peerUid) {
+          onEvent({ type: 'waiting_approval', message: 'Waiting for Host to tap ACCEPT...' });
+        } else if (msg.bcKind === 'reject' && state.role === 'client' && !state.connected && msg.target === peerUid) {
+          onEvent({ type: 'error', message: safeStr(msg.reason, 80, 'Join declined by Host.') });
         } else if (msg.bcKind === 'accept' && state.role === 'client' && !state.connected && msg.target === peerUid) {
           state.connected = true;
           state.scanning = false;
-          state.peerIp = msg.from;
-          onEvent({ type: 'connected', role: 'client', peerIp: msg.from });
+          state.waitingApproval = false;
+          state.peerIp = safeStr(msg.from, 40, '');
+          onEvent({ type: 'connected', role: 'client', peerIp: state.peerIp });
         } else if (msg.bcKind === 'data' && state.connected && msg.target === peerUid) {
           onRawMsg(msg.line);
         } else if (msg.bcKind === 'bye' && state.connected && msg.target === peerUid) {
@@ -10182,10 +10457,22 @@
       };
     }
 
+    function acceptBcPeer(peerId) {
+      if (!bc || !state.hosting || state.connected) return;
+      state.connected = true;
+      state.hosting = false;
+      state.pendingKnocks = [];
+      state.peerIp = safeStr(peerId, 40, '');
+      if (bcBeaconTimer) { clearInterval(bcBeaconTimer); bcBeaconTimer = null; }
+      bc.postMessage({ from: peerUid, bcKind: 'accept', target: state.peerIp });
+      onEvent({ type: 'connected', role: 'host', peerIp: state.peerIp });
+    }
+
     function sendRaw(obj) {
       if (!state.connected) return;
       let line;
       try { line = JSON.stringify(obj); } catch { return; }
+      if (!line || line.length > 15800) return;
       if (nativeReady()) {
         try { window.AndroidWifiDuel.send(line); } catch {}
       } else if (bc) {
@@ -10200,14 +10487,14 @@
     }
 
     function sendInput(payload) {
-      if (!state.isClientInMatch()) return;
+      if (!state.isClientInMatch() || !payload || typeof payload !== 'object') return;
       sendRaw({ t: 'in', ...payload });
     }
 
     function myLob() { return state.role === 'client' ? state.p2Lob : state.p1Lob; }
 
     function sendLobbySync() {
-      if (!state.connected) return;
+      if (!state.connected || state.inMatch) return;
       const mine = myLob();
       const pkt = { t: 'lob', who: state.role, d: mine };
       if (state.role === 'host') { pkt.biome = state.stageBiome; pkt.toWin = state.toWin; }
@@ -10217,7 +10504,7 @@
     function startPingLoop() {
       if (pingTimer) clearInterval(pingTimer);
       pingTimer = setInterval(() => {
-        if (state.connected) sendRaw({ t: 'ping', ts: Math.round(performance.now()) });
+        if (state.connected && !appSuspended) sendRaw({ t: 'ping', ts: Math.round(performance.now()) });
       }, 1000);
     }
     function stopPingLoop() {
@@ -10226,11 +10513,13 @@
 
     function packFighter(f) {
       const sts = {};
-      for (const k of Object.keys(f.statuses)) sts[k] = f.statuses[k].f;
+      for (const k of Object.keys(f.statuses)) {
+        if (hasOwn(f.statuses, k) && VALID_STATUS_KEYS.has(k)) sts[k] = finInt(f.statuses[k].f, 0, 0, 1200);
+      }
       return {
         x: Math.round(f.x * 10) / 10, y: Math.round(f.y * 10) / 10,
         vx: Math.round(f.vx * 10) / 10, vy: Math.round(f.vy * 10) / 10,
-        fc: f.facing, el: f.el.id,
+        fc: f.facing === -1 ? -1 : 1, el: f.el.id,
         hp: Math.round(f.hp), mhp: f.maxHp, mg: Math.round(f.magic * 10) / 10,
         po: Math.round(f.poise), mpo: f.maxPoise,
         st: f.state, sf: f.sf, mv: f.moveId || '', ms: f.ms, ma: f.ma, mr: f.mr,
@@ -10244,38 +10533,64 @@
     }
 
     function applyFighter(f, d) {
-      if (!d) return;
-      if (d.el && ELEMENTS[d.el] && f.el.id !== d.el) f.el = ELEMENTS[d.el];
-      const dx = d.x - f.x, dy = d.y - f.y;
-      // Smooth micro-correction on small deltas, instant snap on throws/teleports/resets!
-      if (Math.hypot(dx, dy) > 72 || f.state !== d.st) { f.x = d.x; f.y = d.y; }
+      if (!d || typeof d !== 'object') return;
+      if (typeof d.el === 'string' && VALID_ELS.has(d.el) && f.el.id !== d.el) f.el = ELEMENTS[d.el];
+      const nx = finNum(d.x, f.x, ARENA_L - 40, ARENA_R + 40);
+      const ny = finNum(d.y, f.y, -260, GROUND_Y + 40);
+      const nextState = (typeof d.st === 'string' && VALID_F_STATES.has(d.st)) ? d.st : f.state;
+      const dx = nx - f.x, dy = ny - f.y;
+      if (Math.hypot(dx, dy) > 72 || f.state !== nextState) { f.x = nx; f.y = ny; }
       else { f.x += dx * 0.62; f.y += dy * 0.62; }
-      f._netX = d.x; f._netY = d.y;
-      f.vx = d.vx; f.vy = d.vy; f.facing = d.fc;
-      f.maxHp = d.mhp || f.maxHp; f.hp = d.hp;
+      f._netX = nx; f._netY = ny;
+      f.vx = finNum(d.vx, 0, -60, 60);
+      f.vy = finNum(d.vy, 0, -60, 60);
+      f.facing = d.fc === -1 ? -1 : 1;
+      f.maxHp = finInt(d.mhp, f.maxHp || 1000, 100, 5000);
+      f.hp = finNum(d.hp, f.hp, 0, f.maxHp);
       if (f.trailHp > f.hp) f.trailHp += (f.hp - f.trailHp) * 0.18; else f.trailHp = f.hp;
-      f.magic = d.mg; f.maxPoise = d.mpo || 100; f.poise = d.po;
-      f.state = d.st; f.sf = d.sf;
-      f.moveId = d.mv || null;
-      f.move = f.moveId ? (MOVES[f.moveId] || null) : null;
-      f.ms = d.ms; f.ma = d.ma; f.mr = d.mr;
-      f.flash = d.fl; f.inv = d.iv; f.stun = d.sn; f.hitH = d.hh || 'mid';
-      f.dizzied = Boolean(d.dz); f.dizzyF = d.dzf || 0;
-      f.frozenPrisonF = d.fp || 0; f.octopusF = d.oc || 0; f.octopusSwinging = Boolean(d.ocs);
-      f.airScooterF = d.as || 0; f.fireJetF = d.fj || 0; f.seismicWaveF = d.sw || 0; f.gauntletsF = d.gn || 0;
-      f.reflectStanceF = d.rf || 0; f.rockArmorF = d.ra || 0; f.disarmed = Boolean(d.ds);
-      f.invisible = Boolean(d.in); f.avatarFlash = d.af || 0;
+      f.magic = finNum(d.mg, f.magic, 0, 100);
+      f.maxPoise = finInt(d.mpo, 100, 20, 500);
+      f.poise = finNum(d.po, f.poise, 0, f.maxPoise);
+      f.state = nextState;
+      f.sf = finInt(d.sf, 0, 0, 9999);
+      f.moveId = (typeof d.mv === 'string' && d.mv && hasOwn(MOVES, d.mv)) ? d.mv : null;
+      f.move = f.moveId ? MOVES[f.moveId] : null;
+      f.ms = finInt(d.ms, 0, 0, 300);
+      f.ma = finInt(d.ma, 0, 0, 300);
+      f.mr = finInt(d.mr, 0, 0, 300);
+      f.flash = finInt(d.fl, 0, 0, 60);
+      f.inv = finInt(d.iv, 0, 0, 240);
+      f.stun = finInt(d.sn, 0, 0, 240);
+      f.hitH = (d.hh === 'high' || d.hh === 'low' || d.hh === 'mid') ? d.hh : 'mid';
+      f.dizzied = Boolean(d.dz);
+      f.dizzyF = finInt(d.dzf, 0, 0, 600);
+      f.frozenPrisonF = finInt(d.fp, 0, 0, 300);
+      f.octopusF = finInt(d.oc, 0, 0, 400);
+      f.octopusSwinging = Boolean(d.ocs);
+      f.airScooterF = finInt(d.as, 0, 0, 300);
+      f.fireJetF = finInt(d.fj, 0, 0, 300);
+      f.seismicWaveF = finInt(d.sw, 0, 0, 300);
+      f.gauntletsF = finInt(d.gn, 0, 0, 400);
+      f.reflectStanceF = finInt(d.rf, 0, 0, 300);
+      f.rockArmorF = finInt(d.ra, 0, 0, 600);
+      f.disarmed = Boolean(d.ds);
+      f.invisible = Boolean(d.in);
+      f.avatarFlash = finInt(d.af, 0, 0, 120);
       const nextSts = {};
-      if (d.sts) {
-        for (const k of Object.keys(d.sts)) nextSts[k] = { f: d.sts[k], t: 0 };
+      if (d.sts && typeof d.sts === 'object') {
+        for (const k of Object.keys(d.sts)) {
+          if (hasOwn(d.sts, k) && VALID_STATUS_KEYS.has(k)) {
+            nextSts[k] = { f: finInt(d.sts[k], 0, 0, 1200), t: 0 };
+          }
+        }
       }
       f.statuses = nextSts;
     }
 
     function packWaves() {
-      return bendingWaves.map(b => ({
+      return bendingWaves.slice(0, 24).map(b => ({
         o: b.owner, e: b.el ? b.el.id : 'water', k: b.kind,
-        x: Math.round(b.x), y: Math.round(b.y), d: b.dir,
+        x: Math.round(b.x), y: Math.round(b.y), d: b.dir === -1 ? -1 : 1,
         w: Math.round(b.w), h: Math.round(b.h),
         f: b.f, mx: b.max, u: b.ult ? 1 : 0,
         ag: b.age || 0, dl: b.delay || 0,
@@ -10288,42 +10603,83 @@
 
     function unpackWaves(arr) {
       if (!Array.isArray(arr)) return;
-      bendingWaves = arr.map(w => {
+      const next = [];
+      const lim = Math.min(24, arr.length);
+      for (let i = 0; i < lim; i++) {
+        const w = arr[i];
+        if (!w || typeof w !== 'object') continue;
         const obj = {
-          owner: w.o, el: ELEMENTS[w.e] || ELEMENTS.water, kind: w.k,
-          x: w.x, y: w.y, dir: w.d, w: w.w, h: w.h,
-          f: w.f, max: w.mx, ult: Boolean(w.u),
-          age: w.ag, delay: w.dl, grabbed: Boolean(w.gb),
-          phase: w.ph, swingIdx: w.si, activeArm: w.aa,
-          lastSlamF: w.lsf, lastSlamX: w.lsx
+          owner: w.o === 'p2' ? 'p2' : 'p1',
+          el: (typeof w.e === 'string' && VALID_ELS.has(w.e)) ? ELEMENTS[w.e] : ELEMENTS.water,
+          kind: safeStr(w.k, 32, 'fire_arc'),
+          x: finNum(w.x, W * 0.5, -400, W + 400),
+          y: finNum(w.y, GROUND_Y - 80, -400, H + 200),
+          dir: w.d === -1 ? -1 : 1,
+          w: finNum(w.w, 80, 4, 900),
+          h: finNum(w.h, 80, 4, 900),
+          f: finInt(w.f, 10, 0, 600),
+          max: finInt(w.mx, 20, 1, 600),
+          ult: Boolean(w.u),
+          age: finInt(w.ag, 0, 0, 600),
+          delay: finInt(w.dl, 0, 0, 120),
+          grabbed: Boolean(w.gb),
+          phase: safeStr(w.ph, 16, ''),
+          swingIdx: finInt(w.si, 0, 0, 8),
+          activeArm: finInt(w.aa, 0, 0, 7),
+          lastSlamF: finInt(w.lsf, 0, 0, 60),
+          lastSlamX: finNum(w.lsx, 0, 0, W)
         };
-        if (w.tx !== null) obj.tipX = w.tx;
-        if (w.ty !== null) obj.tipY = w.ty;
-        return obj;
-      });
+        if (typeof w.tx === 'number' && Number.isFinite(w.tx)) obj.tipX = finNum(w.tx, obj.x, -400, W + 400);
+        if (typeof w.ty === 'number' && Number.isFinite(w.ty)) obj.tipY = finNum(w.ty, obj.y, -400, H + 200);
+        next.push(obj);
+      }
+      bendingWaves = next;
     }
 
     function onHostStep() {
       if (!state.isHostInMatch()) return;
+      state.netInputsThisFrame = 0;
+      const now = performance.now();
+      if (!appSuspended && state.lastPeerRxAt > 0) {
+        const silence = now - state.lastPeerRxAt;
+        if (silence > STALL_TIMEOUT_MS) {
+          disconnect(false);
+          onEvent({ type: 'disconnected', message: 'Challenger connection timed out.' });
+          return;
+        }
+        if (silence > 2600) {
+          if (!state.stalled) {
+            state.stalled = true;
+            Array.from(p2.held).forEach(b => releaseBtn(p2, b));
+            setDir(p2, 0, 0);
+          }
+        } else if (state.stalled) {
+          state.stalled = false;
+        }
+      }
       const hasEv = state.pendingEvents.length > 0;
       if (!hasEv && (simFrame % 2 !== 0)) return;
+      state.lastHostKeepaliveAt = now;
       const pkt = {
-        t: 'st', f: simFrame, r: match.round, sc: match.screen,
+        t: 'st', f: simFrame, r: match.round, re: match.roundElapsed, sc: match.screen,
         tm: match.timer, in: match.intro, ov: match.over,
         w1: match.p1W, w2: match.p2W, wn: match.winner || '',
         c1: match.c1, c2: match.c2,
         fh: match.finishHim ? match.finishTarget : '',
-        fa: match.finisherAnim ? { ...match.finisherAnim } : null,
+        fa: match.finisherAnim ? {
+          elId: match.finisherAnim.elId, atkId: match.finisherAnim.atkId, defId: match.finisherAnim.defId,
+          f: match.finisherAnim.f, max: match.finisherAnim.max, title: match.finisherAnim.title
+        } : null,
         bc: bladeClash ? { f: bladeClash.f, max: bladeClash.max, meter: Math.round(bladeClash.meter) } : null,
         hs: hitstop, sm: Math.round(slowMoFrames), dz: Math.round(dramaticZoom * 100) / 100,
-        ud: ultDimFrames, udc: ultDimColor, sf: stormFlashFrames, ik: inkFlashF, sh: Math.round(shake),
+        ud: ultDimFrames, udc: safeHex(ultDimColor, '#000000'), sf: stormFlashFrames, ik: inkFlashF, sh: Math.round(shake),
         p1: packFighter(p1), p2: packFighter(p2),
         bw: packWaves(),
-        hz: hazards.map(h => ({ k: h.kind || 'lava', x: Math.round(h.x), hw: Math.round(h.hw), f: h.f })),
-        rw: rockWalls.map(r => ({ x: Math.round(r.x), w: r.w, h: r.h, f: r.f })),
-        dc: decoyClones.map(d => ({ x: Math.round(d.x), fc: d.facing, f: d.f, sw: d.swung ? 1 : 0, sf: d.swingF, wt: d.wType, gr: d.gear })),
-        dw: droppedWeapons.map(d => ({ x: Math.round(d.x), y: Math.round(d.y), rt: Math.round(d.rot * 100) / 100, wt: d.wType, e: d.el.id, gd: d.grounded ? 1 : 0 })),
-        br: braziers.map(b => [Math.round(b.x), b.intact ? 1 : 0, b.hitFlash || 0])
+        hz: hazards.slice(0, 6).map(h => ({ k: h.kind === 'ice' ? 'ice' : 'lava', x: Math.round(h.x), hw: Math.round(h.hw), f: h.f })),
+        rw: rockWalls.slice(0, 4).map(r => ({ x: Math.round(r.x), w: r.w, h: r.h, f: r.f })),
+        dc: decoyClones.slice(0, 4).map(d => ({ x: Math.round(d.x), fc: d.facing === -1 ? -1 : 1, f: d.f, sw: d.swung ? 1 : 0, sf: d.swingF, wt: d.wType, gr: d.gear })),
+        dw: droppedWeapons.slice(0, 4).map(d => ({ x: Math.round(d.x), y: Math.round(d.y), rt: Math.round(d.rot * 100) / 100, wt: d.wType, e: d.el.id, gd: d.grounded ? 1 : 0 })),
+        br: braziers.slice(0, 2).map(b => [Math.round(b.x), b.intact ? 1 : 0, b.hitFlash || 0])
       };
       if (hasEv) {
         pkt.ev = state.pendingEvents.splice(0, 24);
@@ -10333,72 +10689,165 @@
 
     function applyNetEvents(evs) {
       if (!Array.isArray(evs)) return;
-      for (const e of evs) {
-        if (!Array.isArray(e) || !e.length) continue;
+      const lim = Math.min(32, evs.length);
+      for (let i = 0; i < lim; i++) {
+        const e = evs[i];
+        if (!Array.isArray(e) || !e.length || typeof e[0] !== 'string') continue;
         const k = e[0];
         if (k === 'sfx') {
-          const fn = _sfxRaw[e[1]];
-          if (fn) fn(...e.slice(2));
+          const name = e[1];
+          if (typeof name !== 'string' || !ALLOWED_SFX_KEYS.has(name) || !hasOwn(_sfxRaw, name)) continue;
+          if (name === 'hit') {
+            _sfxRaw.hit(Boolean(e[2]), Boolean(e[3]), (typeof e[4] === 'string' && VALID_ELS.has(e[4])) ? e[4] : 'water');
+          } else if (name === 'whoosh' || name === 'guard') {
+            _sfxRaw[name](Boolean(e[2]));
+          } else if (name === 'elemBend' || name === 'subBend') {
+            _sfxRaw[name]((typeof e[2] === 'string' && VALID_ELS.has(e[2])) ? e[2] : 'water');
+          } else {
+            _sfxRaw[name]();
+          }
         } else if (k === 'hap') {
-          haptic(e[1], true);
+          if (typeof e[1] === 'string' && ALLOWED_HAPTICS.has(e[1])) haptic(e[1], true);
         } else if (k === 'ban') {
-          showBanner(e[1], e[2], e[3], e[4], Boolean(e[5]), true);
+          showBanner(safeStr(e[1], 64, ''), safeStr(e[2], 80, ''), safeHex(e[3], '#fde68a'), finInt(e[4], 60, 1, 99999), Boolean(e[5]), true);
         } else if (k === 'cal') {
-          pushCallout(e[1], e[2], e[3], e[4], true);
+          pushCallout(safeStr(e[1], 44, ''), safeHex(e[2], '#fde68a'), finNum(e[3], W * 0.5, -200, W + 200), finNum(e[4], GROUND_Y - 120, -200, H + 200), true);
         } else if (k === 'spk') {
-          spawnSparks(e[1], e[2], e[3], e[4], e[5], Boolean(e[6]), true);
+          spawnSparks(finNum(e[1], W * 0.5, -200, W + 200), finNum(e[2], GROUND_Y - 80, -200, H + 200), safeHex(e[3], '#38d8ff'), safeHex(e[4], '#ffffff'), finNum(e[5], 1, 0.2, 4.0), Boolean(e[6]), true);
         } else if (k === 'ring' && FX3D) {
-          FX3D.spawnFloorRing(e[1], e[2], e[3], e[4], true);
+          FX3D.spawnFloorRing(finNum(e[1], W * 0.5, -200, W + 200), safeHex(e[2], '#38d8ff'), finNum(e[3], 180, 20, 600), finInt(e[4], 24, 4, 120), true);
         } else if (k === 'bst' && FX3D) {
-          FX3D.spawnBurst(e[1], e[2], e[3], e[4], Boolean(e[5]), true);
+          FX3D.spawnBurst(finNum(e[1], W * 0.5, -200, W + 200), finNum(e[2], GROUND_Y - 80, -200, H + 200), safeHex(e[3], '#38d8ff'), finInt(e[4], 12, 1, 40), Boolean(e[5]), true);
         } else if (k === 'sky' && FX3D) {
-          FX3D.flashSky(e[1], e[2], true);
+          FX3D.flashSky(safeHex(e[1], '#78e2ff'), finNum(e[2], 0.35, 0.02, 0.95), true);
         }
       }
     }
 
     function applyStateSnapshot(s) {
+      if (!s || typeof s !== 'object') return;
       state.lastNetSnapAt = performance.now();
+      state.stalled = false;
       state.snapCount++;
-      simFrame = s.f;
-      match.round = s.r;
-      match.screen = s.sc;
-      match.timer = s.tm;
-      match.intro = s.in;
-      match.over = s.ov;
-      match.p1W = s.w1;
-      match.p2W = s.w2;
-      match.winner = s.wn || null;
-      match.c1 = s.c1 || 0;
-      match.c2 = s.c2 || 0;
-      match.finishHim = Boolean(s.fh);
-      match.finishTarget = s.fh || 'p2';
-      match.finisherAnim = s.fa || null;
-      bladeClash = s.bc || null;
-      hitstop = s.hs || 0;
-      slowMoFrames = s.sm || 0;
-      dramaticZoom = Math.max(dramaticZoom * 0.8, s.dz || 0);
-      ultDimFrames = s.ud || 0;
-      if (s.udc) ultDimColor = s.udc;
-      stormFlashFrames = s.sf || 0;
-      inkFlashF = Math.max(inkFlashF, s.ik || 0);
-      shake = Math.max(shake, s.sh || 0);
+      const nextRound = finInt(s.r, match.round || 1, 1, 99);
+      const prevRound = match.round;
+      simFrame = finInt(s.f, simFrame, 0, 1e9);
+      match.round = nextRound;
+      match.roundElapsed = finInt(s.re, match.roundElapsed, 0, 1e6);
+      if (typeof s.sc === 'string' && VALID_SCREENS.has(s.sc)) {
+        if (match.screen !== 'match_over' || s.sc === 'match_over') match.screen = s.sc;
+      }
+      match.timer = finInt(s.tm, 99, 0, 999);
+      match.intro = finInt(s.in, 0, 0, 300);
+      match.over = finInt(s.ov, 0, 0, 600);
+      match.p1W = finInt(s.w1, match.p1W, 0, 10);
+      match.p2W = finInt(s.w2, match.p2W, 0, 10);
+      match.winner = (s.wn === 'p1' || s.wn === 'p2' || s.wn === 'draw') ? s.wn : null;
+      match.c1 = finInt(s.c1, 0, 0, 999);
+      match.c2 = finInt(s.c2, 0, 0, 999);
+      match.finishHim = (s.fh === 'p1' || s.fh === 'p2');
+      match.finishTarget = s.fh === 'p1' ? 'p1' : 'p2';
+      if (s.fa && typeof s.fa === 'object') {
+        match.finisherAnim = {
+          elId: VALID_ELS.has(s.fa.elId) ? s.fa.elId : 'water',
+          atkId: s.fa.atkId === 'p2' ? 'p2' : 'p1',
+          defId: s.fa.defId === 'p1' ? 'p1' : 'p2',
+          f: finInt(s.fa.f, 0, 0, 180),
+          max: finInt(s.fa.max, 90, 1, 180),
+          title: safeStr(s.fa.title, 48, 'ECLIPSE EXECUTION')
+        };
+      } else {
+        match.finisherAnim = null;
+      }
+      if (s.bc && typeof s.bc === 'object') {
+        bladeClash = {
+          f: finInt(s.bc.f, 1, 0, 120),
+          max: finInt(s.bc.max, 72, 1, 120),
+          meter: finNum(s.bc.meter, 0, -100, 100)
+        };
+      } else {
+        bladeClash = null;
+      }
+      hitstop = finInt(s.hs, 0, 0, 30);
+      slowMoFrames = finNum(s.sm, 0, 0, 120);
+      dramaticZoom = Math.max(dramaticZoom * 0.8, finNum(s.dz, 0, 0, 0.35));
+      ultDimFrames = finInt(s.ud, 0, 0, 120);
+      if (s.udc) ultDimColor = safeHex(s.udc, '#000000');
+      stormFlashFrames = finInt(s.sf, 0, 0, 60);
+      inkFlashF = Math.max(inkFlashF, finInt(s.ik, 0, 0, 30));
+      shake = Math.max(shake, finNum(s.sh, 0, 0, 40));
+
+      if (nextRound !== prevRound) {
+        p1.wTrail = []; p2.wTrail = [];
+        particles.length = 0; ghosts.length = 0;
+        if (FX3D) FX3D.clearTransients();
+      }
 
       applyFighter(p1, s.p1);
       applyFighter(p2, s.p2);
       unpackWaves(s.bw);
-      if (Array.isArray(s.hz)) hazards = s.hz.map(h => ({ kind: h.k, x: h.x, hw: h.hw, f: h.f, t: 0 }));
-      if (Array.isArray(s.rw)) rockWalls = s.rw.map(r => ({ x: r.x, w: r.w, h: r.h, f: r.f }));
-      if (Array.isArray(s.dc)) decoyClones = s.dc.map(d => ({ x: d.x, y: GROUND_Y, facing: d.fc, f: d.f, swung: Boolean(d.sw), swingF: d.sf, wType: d.wt, gear: d.gr }));
-      if (Array.isArray(s.dw)) droppedWeapons = s.dw.map(d => ({ x: d.x, y: d.y, rot: d.rt, wType: d.wt, el: ELEMENTS[d.e] || ELEMENTS.water, grounded: Boolean(d.gd) }));
-      if (Array.isArray(s.br) && s.br.length === 2) {
-        braziers = s.br.map(b => ({ x: b[0], intact: Boolean(b[1]), hitFlash: b[2] || 0 }));
+      if (Array.isArray(s.hz)) {
+        hazards = s.hz.slice(0, 6).filter(h => h && typeof h === 'object').map(h => ({
+          kind: h.k === 'ice' ? 'ice' : 'lava',
+          x: finNum(h.x, W * 0.5, ARENA_L, ARENA_R),
+          hw: finNum(h.hw, 70, 16, 220),
+          f: finInt(h.f, 30, 0, 600),
+          t: 0
+        }));
+      }
+      if (Array.isArray(s.rw)) {
+        rockWalls = s.rw.slice(0, 4).filter(r => r && typeof r === 'object').map(r => ({
+          x: finNum(r.x, W * 0.5, ARENA_L, ARENA_R),
+          w: finNum(r.w, 48, 16, 160),
+          h: finNum(r.h, 150, 30, 300),
+          f: finInt(r.f, 30, 0, 600)
+        }));
+      }
+      if (Array.isArray(s.dc)) {
+        decoyClones = s.dc.slice(0, 4).filter(d => d && typeof d === 'object').map(d => ({
+          x: finNum(d.x, W * 0.5, ARENA_L, ARENA_R),
+          y: GROUND_Y,
+          facing: d.fc === -1 ? -1 : 1,
+          f: finInt(d.f, 20, 0, 300),
+          swung: Boolean(d.sw),
+          swingF: finInt(d.sf, 0, 0, 60),
+          wType: safeStr(d.wt, 24, 'katana'),
+          gear: VALID_GEAR.has(d.gr) ? d.gr : 'none'
+        }));
+      }
+      if (Array.isArray(s.dw)) {
+        droppedWeapons = s.dw.slice(0, 4).filter(d => d && typeof d === 'object').map(d => ({
+          x: finNum(d.x, W * 0.5, ARENA_L, ARENA_R),
+          y: finNum(d.y, GROUND_Y - 8, -200, GROUND_Y),
+          rot: finNum(d.rt, 0, -20, 20),
+          wType: safeStr(d.wt, 24, 'katana'),
+          el: (typeof d.e === 'string' && VALID_ELS.has(d.e)) ? ELEMENTS[d.e] : ELEMENTS.water,
+          grounded: Boolean(d.gd)
+        }));
+      }
+      if (Array.isArray(s.br) && s.br.length === 2 && Array.isArray(s.br[0]) && Array.isArray(s.br[1])) {
+        braziers = s.br.map(b => ({
+          x: finNum(b[0], ARENA_L + 30, 0, W),
+          intact: Boolean(b[1]),
+          hitFlash: finInt(b[2], 0, 0, 30)
+        }));
       }
       if (s.ev) applyNetEvents(s.ev);
     }
 
     function stepClientFrame() {
+      const now = performance.now();
+      if (!appSuspended && state.lastNetSnapAt > 0 && match.screen !== 'match_over') {
+        const gap = now - state.lastNetSnapAt;
+        if (gap > STALL_TIMEOUT_MS) {
+          disconnect(false);
+          onEvent({ type: 'disconnected', message: 'Host connection timed out.' });
+          return;
+        }
+        state.stalled = gap > STALL_WARN_MS;
+      }
       simFrame++;
+      if (match.screen === 'fighting' && match.intro <= 0) match.roundElapsed++;
       tickMusic();
       if (dramaticZoom > 0.001) dramaticZoom *= 0.94; else dramaticZoom = 0;
       if (ultDimFrames > 0) ultDimFrames--;
@@ -10412,9 +10861,9 @@
         match.callouts[i].f--; match.callouts[i].y -= 0.72;
         if (match.callouts[i].f <= 0) match.callouts.splice(i, 1);
       }
-      // Smooth 60Hz between-snapshot motion & trail HP easing
+      // Smooth 60Hz between-snapshot motion & trail HP easing (frozen cleanly during network stall)
       [p1, p2].forEach(f => {
-        if (hitstop <= 0 && !f.dizzied && f.frozenPrisonF <= 0) {
+        if (!state.stalled && hitstop <= 0 && !f.dizzied && f.frozenPrisonF <= 0) {
           if (Math.abs(f.vx) > 0.2) f.x = Math.max(ARENA_L, Math.min(ARENA_R, f.x + f.vx * 0.45));
           if (f.y < GROUND_Y || f.vy < 0) f.y = Math.min(GROUND_Y, f.y + f.vy * 0.45);
           if (typeof f._netX === 'number') f.x += (f._netX - f.x) * 0.25;
@@ -10433,12 +10882,18 @@
 
     function launchMatch(cfg) {
       closeAllModals();
+      const now = performance.now();
       state.inMatch = true;
+      state.stalled = false;
+      state.overReceived = false;
+      state.lastNetSnapAt = now;
+      state.lastPeerRxAt = now;
+      state.netInputsThisFrame = 0;
       state.pendingEvents.length = 0;
-      state.p1Lob = { ...state.p1Lob, ...cfg.p1, ready: false };
-      state.p2Lob = { ...state.p2Lob, ...cfg.p2, ready: false };
-      state.stageBiome = cfg.biome || state.stageBiome;
-      state.toWin = cfg.toWin || 2;
+      state.p1Lob = { ...sanitizeLoadout(cfg && cfg.p1, state.p1Lob), ready: false };
+      state.p2Lob = { ...sanitizeLoadout(cfg && cfg.p2, state.p2Lob), ready: false };
+      state.stageBiome = (cfg && VALID_BIOMES.has(cfg.biome)) ? cfg.biome : state.stageBiome;
+      state.toWin = (cfg && (cfg.toWin === 2 || cfg.toWin === 3)) ? cfg.toWin : 2;
       startMatch(state.p1Lob.el, state.p2Lob.el, null, {
         mode: 'wifi',
         toWin: state.toWin,
@@ -10453,13 +10908,13 @@
 
     function hostStartDuel() {
       if (!state.connected || state.role !== 'host') return;
-      const cfg = { p1: { ...state.p1Lob }, p2: { ...state.p2Lob }, biome: state.stageBiome, toWin: state.toWin };
+      const cfg = { p1: { ...state.p1Lob, ready: false }, p2: { ...state.p2Lob, ready: false }, biome: state.stageBiome, toWin: state.toWin };
       sendRaw({ t: 'go', ...cfg });
       launchMatch(cfg);
     }
 
     function requestRematch() {
-      if (!state.connected) return;
+      if (!state.connected || !state.inMatch || match.screen !== 'match_over') return;
       if (state.role === 'host') match.wifiRematchP1 = true;
       else match.wifiRematchP2 = true;
       sendRaw({ t: 'rm', who: state.role });
@@ -10470,12 +10925,21 @@
     }
 
     function returnToLobby(notifyPeer = false) {
-      if (notifyPeer && state.connected) sendRaw({ t: 'lobby' });
+      if (notifyPeer && state.connected && state.inMatch) sendRaw({ t: 'lobby' });
+      resetInputs();
       state.inMatch = false;
+      state.stalled = false;
+      state.overReceived = false;
       state.p1Lob.ready = false;
       state.p2Lob.ready = false;
       match.wifiRematchP1 = false;
       match.wifiRematchP2 = false;
+      match.finisherAnim = null;
+      match.awakening = null;
+      bladeClash = null;
+      bendingWaves.length = 0;
+      decoyClones.length = 0;
+      if (FX3D) FX3D.clearTransients();
       match.inMenu = true;
       match.paused = false;
       document.getElementById('hud').classList.add('hidden');
@@ -10487,97 +10951,192 @@
     function onRawMsg(rawLine) {
       let m;
       try { m = typeof rawLine === 'string' ? JSON.parse(rawLine) : rawLine; } catch { return; }
-      if (!m || !m.t) return;
-      if (m.t === 'ping') { sendRaw({ t: 'pong', ts: m.ts }); return; }
-      if (m.t === 'pong') {
-        state.pingMs = Math.max(1, Math.min(999, Math.round(performance.now() - m.ts)));
+      if (!m || typeof m !== 'object' || typeof m.t !== 'string') return;
+      const now = performance.now();
+      state.lastPeerRxAt = now;
+
+      if (m.t === 'hb') return;
+      if (m.t === 'ping') {
+        if (now - state.lastPingRxAt < 400) return;
+        state.lastPingRxAt = now;
+        if (typeof m.ts === 'number' && Number.isFinite(m.ts)) {
+          sendRaw({ t: 'pong', ts: m.ts });
+        }
         return;
       }
+      if (m.t === 'pong') {
+        if (now - state.lastPongRxAt < 400) return;
+        state.lastPongRxAt = now;
+        if (typeof m.ts === 'number' && Number.isFinite(m.ts)) {
+          const rtt = Math.round(now - m.ts);
+          if (rtt >= 0 && rtt <= 5000) state.pingMs = Math.max(1, Math.min(999, rtt));
+        }
+        return;
+      }
+
+      // W-2: Strict sender-role & lobby/match state enforcement!
       if (m.t === 'lob') {
-        if (m.who === 'host' && m.d) {
-          state.p1Lob = { ...state.p1Lob, ...m.d };
-          if (m.biome) state.stageBiome = m.biome;
-          if (m.toWin) state.toWin = m.toWin;
-        } else if (m.who === 'client' && m.d) {
-          state.p2Lob = { ...state.p2Lob, ...m.d };
+        if (state.inMatch) return;
+        if (state.role === 'client' && m.who === 'host' && m.d && typeof m.d === 'object') {
+          state.p1Lob = sanitizeLoadout(m.d, state.p1Lob);
+          if (typeof m.biome === 'string' && VALID_BIOMES.has(m.biome)) state.stageBiome = m.biome;
+          if (m.toWin === 2 || m.toWin === 3) state.toWin = m.toWin;
+        } else if (state.role === 'host' && m.who === 'client' && m.d && typeof m.d === 'object') {
+          state.p2Lob = sanitizeLoadout(m.d, state.p2Lob);
+        } else {
+          return;
         }
         if (wifiModal && !wifiModal.classList.contains('hidden')) renderWifiModal();
         return;
       }
+
       if (m.t === 'go') {
+        if (state.role !== 'client') return;
+        if (state.inMatch && match.screen !== 'match_over') return;
         launchMatch(m);
         return;
       }
+
       if (m.t === 'lobby') {
+        if (!state.inMatch) return;
         returnToLobby(false);
         return;
       }
+
       if (m.t === 'rm') {
-        if (m.who === 'host') match.wifiRematchP1 = true;
-        else match.wifiRematchP2 = true;
+        if (!state.inMatch || match.screen !== 'match_over') return;
+        if (state.role === 'host' && m.who === 'client') {
+          match.wifiRematchP2 = true;
+        } else if (state.role === 'client' && m.who === 'host') {
+          match.wifiRematchP1 = true;
+        } else {
+          return;
+        }
         lastBanKey = '';
         if (state.role === 'host' && match.wifiRematchP1 && match.wifiRematchP2) {
           hostStartDuel();
         }
         return;
       }
-      if (m.t === 'over' && state.role === 'client') {
+
+      if (m.t === 'over') {
+        if (state.role !== 'client' || !state.inMatch || state.overReceived) return;
+        const win = (m.w === 'p1' || m.w === 'p2' || m.w === 'draw') ? m.w : null;
+        if (!win) return;
+        state.overReceived = true;
+        state.stalled = false;
+        const w1 = finInt(m.w1, match.p1W, 0, 10);
+        const w2 = finInt(m.w2, match.p2W, 0, 10);
+        const ex = Boolean(m.ex);
         match.screen = 'match_over';
-        match.winner = m.w;
-        match.p1W = m.w1; match.p2W = m.w2;
-        match.eclipseFinished = Boolean(m.ex);
+        match.winner = win;
+        match.p1W = w1; match.p2W = w2;
+        match.eclipseFinished = ex;
         match.wifiRematchP1 = false; match.wifiRematchP2 = false;
-        const clientReward = m.w === 'p2' ? 110 : 55;
+        const clientReward = win === 'p2' ? 110 : 55;
         PROG.coins += clientReward; saveProg();
-        const winName = getFighterDisplayName(m.w);
-        showBanner(`${winName} WINS`, `${m.w1} — ${m.w2}${m.ex ? ' · EXECUTION' : ''} · WI-FI DUET`, m.w === 'p1' ? '#ffae34' : '#4be3ff', 99999, false, true);
+        const winName = win === 'draw' ? 'DRAW MATCH' : `${getFighterDisplayName(win)} WINS`;
+        showBanner(winName, `${w1} — ${w2}${ex ? ' · EXECUTION' : ''} · WI-FI DUET`, win === 'p1' ? '#ffae34' : '#4be3ff', 99999, false, true);
         haptic('ko', true);
         return;
       }
+
       if (m.t === 'st' && state.isClientInMatch()) {
         applyStateSnapshot(m);
         return;
       }
+
       if (m.t === 'in' && state.isHostInMatch()) {
-        if (m.a === 'dir') {
-          setDir(p2, m.dx || 0, m.dy || 0);
-        } else if (m.a === 'dn') {
-          if (typeof m.dx === 'number' && typeof m.dy === 'number') setDir(p2, m.dx, m.dy);
-          pressBtn(p2, m.b);
-        } else if (m.a === 'up') {
-          releaseBtn(p2, m.b);
-        } else if (m.a === 'swp') {
-          const prevX = p2.dir.x, prevY = p2.dir.y;
-          p2.dir = { x: m.dx || 0, y: m.dy || 0 };
-          pressBtn(p2, 'magic');
-          releaseBtn(p2, 'magic');
-          p2.dir = { x: prevX, y: prevY };
-        } else if (m.a === 'shift') {
-          triggerAvatarShift(p2);
-        } else if (m.a === 'rst') {
+        if (m.a === 'rst') {
           Array.from(p2.held).forEach(b => releaseBtn(p2, b));
           setDir(p2, 0, 0);
+          return;
+        }
+        if (state.netInputsThisFrame >= MAX_NET_INPUTS_PER_FRAME) return;
+        state.netInputsThisFrame++;
+
+        if (m.a === 'dir') {
+          setDir(p2, clampAxis(m.dx), clampAxis(m.dy));
+        } else if (m.a === 'dn') {
+          const btn = m.b === 'punch' ? 'weapon' : m.b;
+          if (typeof btn !== 'string' || !ALLOWED_NET_BTNS.has(btn)) return;
+          if (m.dx !== undefined || m.dy !== undefined) setDir(p2, clampAxis(m.dx), clampAxis(m.dy));
+          pressBtn(p2, btn);
+        } else if (m.a === 'up') {
+          const btn = m.b === 'punch' ? 'weapon' : m.b;
+          if (typeof btn !== 'string' || !ALLOWED_NET_BTNS.has(btn)) return;
+          releaseBtn(p2, btn);
+        } else if (m.a === 'swp') {
+          const prevX = p2.dir.x, prevY = p2.dir.y;
+          setDir(p2, clampAxis(m.dx), clampAxis(m.dy));
+          pressBtn(p2, 'magic');
+          releaseBtn(p2, 'magic');
+          setDir(p2, prevX, prevY);
+        } else if (m.a === 'shift') {
+          triggerAvatarShift(p2);
         }
       }
     }
 
     function onEvent(ev) {
-      if (!ev || !ev.type) return;
+      if (!ev || typeof ev !== 'object' || typeof ev.type !== 'string') return;
       if (ev.type === 'host_ready') {
         state.hosting = true;
-        state.hostIp = ev.ip || '192.168.43.1';
-        state.hostPort = ev.port || 42871;
-        state.shortCode = ev.shortCode || state.hostIp;
-        state.statusMsg = ev.message || 'Waiting for Player 2...';
+        state.waitingApproval = false;
+        state.hostIp = safeStr(ev.ip, 40, '192.168.43.1');
+        state.hostPort = finInt(ev.port, 42871, 42871, 42890);
+        state.shortCode = safeStr(ev.shortCode, 16, state.hostIp);
+        const pinStr = String(ev.roomPin || ev.pin || '');
+        state.roomPin = /^\d{4}$/.test(pinStr) ? pinStr : state.roomPin;
+        state.fullCode = safeStr(ev.fullCode, 24, state.roomPin ? `${state.shortCode}-${state.roomPin}` : state.shortCode);
+        state.pendingKnocks = [];
+        state.statusMsg = safeStr(ev.message, 96, 'Waiting for Player 2...');
+        state.errorMsg = '';
+        state.infoMsg = '';
+        if (wifiModal && !wifiModal.classList.contains('hidden')) renderWifiModal();
+      } else if (ev.type === 'challenger_cleared') {
+        state.pendingKnocks = [];
+        if (wifiModal && !wifiModal.classList.contains('hidden') && !state.connected) renderWifiModal();
+      } else if (ev.type === 'challenger_knock') {
+        if (!state.hosting || state.connected) return;
+        const reqId = finInt(ev.reqId, 0, 1, 1e9);
+        if (!reqId) return;
+        const knockIp = safeStr(ev.ip, 40, '');
+        const entry = {
+          reqId,
+          name: safeStr(ev.name, 14, 'SHADOW').toUpperCase() || 'SHADOW',
+          el: (typeof ev.el === 'string' && VALID_ELS.has(ev.el)) ? ev.el : 'fire',
+          ip: knockIp
+        };
+        state.pendingKnocks = state.pendingKnocks.filter(k => k.reqId !== reqId && (!knockIp || k.ip !== knockIp));
+        state.pendingKnocks.push(entry);
+        if (state.pendingKnocks.length > 4) state.pendingKnocks.shift();
+        sfx.gong(); haptic('medium');
+        if (wifiModal && !wifiModal.classList.contains('hidden')) renderWifiModal();
+      } else if (ev.type === 'waiting_approval') {
+        state.waitingApproval = true;
+        state.statusMsg = safeStr(ev.message, 96, 'Waiting for Host to tap ACCEPT...');
         state.errorMsg = '';
         if (wifiModal && !wifiModal.classList.contains('hidden')) renderWifiModal();
       } else if (ev.type === 'host_found') {
-        const key = `${ev.ip}:${ev.port || 42871}`;
+        const ip = safeStr(ev.ip, 40, '');
+        const port = finInt(ev.port, 42871, 42871, 42890);
+        if (!ip || (nativeReady() && !isAllowedLanIpv4(ip))) return;
+        const key = `${ip}:${port}`;
         const prev = state.discovered.get(key);
+        if (!prev && state.discovered.size >= MAX_DISCOVERED_HOSTS) {
+          let oldestKey = null, oldestSeen = Infinity;
+          for (const [k, v] of state.discovered.entries()) {
+            if (v.seenAt < oldestSeen) { oldestSeen = v.seenAt; oldestKey = k; }
+          }
+          if (oldestKey !== null) state.discovered.delete(oldestKey);
+        }
         const next = {
-          name: ev.name || 'SHADOW', el: ev.el || 'water',
-          ip: ev.ip, port: ev.port || 42871,
-          shortCode: ev.shortCode || ev.ip, seenAt: Date.now()
+          name: safeStr(ev.name, 14, 'SHADOW').toUpperCase() || 'SHADOW',
+          el: (typeof ev.el === 'string' && VALID_ELS.has(ev.el)) ? ev.el : 'water',
+          ip, port,
+          shortCode: safeStr(ev.shortCode, 16, ip),
+          seenAt: Date.now()
         };
         const changed = !prev || prev.name !== next.name || prev.el !== next.el || prev.shortCode !== next.shortCode;
         state.discovered.set(key, next);
@@ -10585,14 +11144,20 @@
           refreshWifiHostList();
         }
       } else if (ev.type === 'connected') {
+        const now = performance.now();
         state.connected = true;
         state.hosting = false;
         state.scanning = false;
-        state.role = ev.role || state.role;
-        state.peerIp = ev.peerIp || state.peerIp;
+        state.waitingApproval = false;
+        state.stalled = false;
+        state.pendingKnocks = [];
+        state.role = (ev.role === 'host' || ev.role === 'client') ? ev.role : state.role;
+        state.peerIp = safeStr(ev.peerIp, 40, state.peerIp);
+        state.lastPeerRxAt = now;
+        state.lastNetSnapAt = now;
         state.errorMsg = '';
-        state.statusMsg = ev.message || 'Connected!';
-        // Initialize local slot from saved playerName & current gear
+        state.infoMsg = '';
+        state.statusMsg = safeStr(ev.message, 80, 'Connected!');
         if (state.role === 'host') state.p1Lob = { ...state.p1Lob, name: PROG.playerName || 'SHADOW', ready: false };
         else state.p2Lob = { ...state.p2Lob, name: PROG.playerName || 'SHADOW', ready: false };
         startPingLoop();
@@ -10601,23 +11166,33 @@
         sfx.gong(); haptic('medium');
         if (wifiModal && !wifiModal.classList.contains('hidden')) renderWifiModal();
       } else if (ev.type === 'error') {
-        state.errorMsg = ev.message || 'Connection failed.';
+        state.errorMsg = safeStr(ev.message, 120, 'Connection failed.');
+        state.infoMsg = '';
         state.hosting = false;
+        state.waitingApproval = false;
+        if (state.role === 'client' && !state.connected) state.role = '';
         if (wifiModal && !wifiModal.classList.contains('hidden')) renderWifiModal();
       } else if (ev.type === 'disconnected') {
         const wasInMatch = state.inMatch;
         state.connected = false;
         state.hosting = false;
+        state.waitingApproval = false;
         state.inMatch = false;
+        state.stalled = false;
+        state.pendingKnocks = [];
         stopPingLoop();
         if (wasInMatch && !match.inMenu) {
+          resetInputs();
+          match.finisherAnim = null;
+          bladeClash = null;
           match.screen = 'match_over';
           match.winner = null;
-          showBanner('OPPONENT DISCONNECTED', 'WI-FI CONNECTION LOST', '#f87171', 99999, false, true);
+          showBanner('OPPONENT DISCONNECTED', safeStr(ev.message, 64, 'WI-FI CONNECTION LOST').toUpperCase(), '#f87171', 99999, false, true);
           lastBanKey = '';
           lastPingTxt = '';
         } else if (wifiModal && !wifiModal.classList.contains('hidden')) {
-          state.errorMsg = ev.message || 'Opponent left the Dojo.';
+          state.errorMsg = safeStr(ev.message, 96, 'Opponent left the Dojo.');
+          state.infoMsg = '';
           state.role = '';
           startScan();
           renderWifiModal();
@@ -10625,19 +11200,64 @@
       }
     }
 
+    function onBatch(items) {
+      if (!Array.isArray(items)) return;
+      const lim = Math.min(64, items.length);
+      for (let i = 0; i < lim; i++) {
+        const it = items[i];
+        if (Array.isArray(it) && it.length >= 2) {
+          if (it[0] === 0 && typeof it[1] === 'string') {
+            try { onEvent(JSON.parse(it[1])); } catch {}
+          } else if (it[0] === 1 && typeof it[1] === 'string') {
+            onRawMsg(it[1]);
+          }
+        } else if (it && typeof it === 'object') {
+          if (it.k === 'ev') onEvent(it.d);
+          else if (it.k === 'msg') onRawMsg(it.d);
+        }
+      }
+    }
+
+    function approveKnock(reqId, accept) {
+      const id = finInt(reqId, 0, 1, 1e9);
+      const entry = state.pendingKnocks.find(k => k.reqId === id);
+      state.pendingKnocks = accept ? [] : state.pendingKnocks.filter(k => k.reqId !== id);
+      if (nativeReady()) {
+        try {
+          if (typeof window.AndroidWifiDuel.approveChallenger === 'function') {
+            window.AndroidWifiDuel.approveChallenger(id, Boolean(accept));
+          }
+        } catch {}
+      } else if (bc && entry) {
+        if (accept) acceptBcPeer(entry.ip);
+        else bc.postMessage({ from: peerUid, bcKind: 'reject', target: entry.ip, reason: 'Host declined join request.' });
+      }
+      if (wifiModal && !wifiModal.classList.contains('hidden')) renderWifiModal();
+    }
+
     function startHost() {
       disconnect(true);
       state.role = 'host';
       state.hosting = true;
+      state.waitingApproval = false;
       state.errorMsg = '';
+      state.infoMsg = '';
+      state.pendingKnocks = [];
       state.p1Lob = { ...state.p1Lob, name: PROG.playerName || 'SHADOW', ready: false };
       if (nativeReady()) {
         try { window.AndroidWifiDuel.startHost(state.p1Lob.name, state.p1Lob.el); } catch {}
       } else {
         ensureBc();
+        bcRoomPin = genPin4();
         state.hostIp = peerUid;
         state.shortCode = peerUid.slice(3, 7).toUpperCase();
-        onEvent({ type: 'host_ready', ip: peerUid, port: 42871, shortCode: state.shortCode, message: 'Browser Local Duet Ready — open a 2nd tab and tap Join!' });
+        state.roomPin = bcRoomPin;
+        state.fullCode = `${state.shortCode}-${bcRoomPin}`;
+        onEvent({
+          type: 'host_ready', ip: peerUid, port: 42871,
+          shortCode: state.shortCode, roomPin: bcRoomPin, fullCode: state.fullCode,
+          message: 'Browser Local Duet Ready — open a 2nd tab and tap Join!'
+        });
         if (bcBeaconTimer) clearInterval(bcBeaconTimer);
         bcBeaconTimer = setInterval(() => {
           if (bc && state.hosting && !state.connected) {
@@ -10669,23 +11289,68 @@
       }, 1500);
     }
 
-    function connectTo(target, port = 42871) {
-      const clean = String(target || '').trim();
-      if (!clean) { state.errorMsg = 'Enter the Host Dojo Code or IP address.'; renderWifiModal(); return; }
+    function connectTo(target, port = 42871, pinArg = '') {
+      let raw = String(target || '').trim();
+      let pin = String(pinArg || state.manualPin || '').replace(/\D/g, '').slice(0, 4);
+      // Support combined "43.1-8492" or "43.1#8492" Room Code + PIN syntax
+      const dashIdx = Math.max(raw.lastIndexOf('-'), raw.lastIndexOf('#'));
+      if (dashIdx > 0) {
+        const suffix = raw.slice(dashIdx + 1).trim();
+        if (/^\d{4}$/.test(suffix)) {
+          if (!pin) pin = suffix;
+          raw = raw.slice(0, dashIdx).trim();
+        }
+      }
+      let cleanPort = finInt(Number(port) || 42871, 42871, 42871, 42890);
+      if (raw.includes(':')) {
+        const idx = raw.lastIndexOf(':');
+        const pNum = Number(raw.slice(idx + 1).trim());
+        if (Number.isInteger(pNum) && pNum >= 42871 && pNum <= 42890) cleanPort = pNum;
+        raw = raw.slice(0, idx).trim();
+      }
+      if (!raw) {
+        state.errorMsg = 'Enter the Host Dojo Code or tap a discovered Dojo.';
+        renderWifiModal();
+        return;
+      }
+      if (pin && pin.length !== 4) {
+        state.errorMsg = 'Dojo PIN must be 4 digits (or leave blank to knock for Host approval).';
+        renderWifiModal();
+        return;
+      }
+      // Match against discovered hosts by IP or shortCode first
+      for (const h of state.discovered.values()) {
+        if (h.ip === raw || (h.shortCode && h.shortCode.toUpperCase() === raw.toUpperCase())) {
+          raw = h.ip;
+          cleanPort = h.port || cleanPort;
+          break;
+        }
+      }
+      if (nativeReady()) {
+        const isShortPair = /^\d{1,3}\.\d{1,3}$/.test(raw);
+        if (!isShortPair && !isAllowedLanIpv4(raw)) {
+          state.errorMsg = 'Invalid target IP. Only private local Wi-Fi / Hotspot IPv4 addresses are allowed.';
+          renderWifiModal();
+          return;
+        }
+      }
       state.role = 'client';
+      state.waitingApproval = false;
       state.errorMsg = '';
-      state.statusMsg = `Connecting to ${clean}...`;
+      state.infoMsg = '';
+      state.statusMsg = pin ? `Verifying Dojo PIN with ${raw}...` : `Knocking on ${raw}'s Dojo...`;
       state.p2Lob = { ...state.p2Lob, name: PROG.playerName || 'SHADOW', ready: false };
       if (nativeReady()) {
-        try { window.AndroidWifiDuel.connectToHost(clean, Number(port) || 42871); } catch {}
+        try {
+          if (typeof window.AndroidWifiDuel.connectToHostAuth === 'function') {
+            window.AndroidWifiDuel.connectToHostAuth(raw, cleanPort, pin, state.p2Lob.name, state.p2Lob.el);
+          } else {
+            window.AndroidWifiDuel.connectToHost(raw, cleanPort);
+          }
+        } catch {}
       } else {
         ensureBc();
-        // Match by bcId or shortCode
-        let targetId = clean;
-        for (const h of state.discovered.values()) {
-          if (h.ip === clean || (h.shortCode && h.shortCode.toUpperCase() === clean.toUpperCase())) { targetId = h.ip; break; }
-        }
-        if (bc) bc.postMessage({ from: peerUid, bcKind: 'join', target: targetId });
+        if (bc) bc.postMessage({ from: peerUid, bcKind: 'join', target: raw, pin, name: state.p2Lob.name, el: state.p2Lob.el });
       }
       renderWifiModal();
     }
@@ -10703,10 +11368,31 @@
       state.connected = false;
       state.hosting = false;
       state.scanning = false;
+      state.waitingApproval = false;
       state.inMatch = false;
+      state.stalled = false;
+      state.overReceived = false;
       state.role = '';
       state.peerIp = '';
+      state.pendingKnocks = [];
       state.pendingEvents.length = 0;
+    }
+
+    function onAppPause() {
+      // Prevent false-positive stall trigger while app is backgrounded
+      state.stalled = false;
+    }
+
+    function onAppResume() {
+      const now = performance.now();
+      if (state.connected) {
+        state.lastNetSnapAt = now;
+        state.lastPeerRxAt = now;
+        state.stalled = false;
+        sendRaw({ t: 'ping', ts: Math.round(now) });
+      } else if (wifiModal && !wifiModal.classList.contains('hidden') && !state.hosting && state.scanning && nativeReady()) {
+        try { window.AndroidWifiDuel.startScan(); } catch {}
+      }
     }
 
     function leaveToMenu() {
@@ -10716,6 +11402,7 @@
 
     window.__onWifiDuelEvent = onEvent;
     window.__onWifiDuelMsg = onRawMsg;
+    window.__onWifiDuelBatch = onBatch;
 
     const api = {
       get role() { return state.role; },
@@ -10723,12 +11410,14 @@
       get hosting() { return state.hosting; },
       get scanning() { return state.scanning; },
       get inMatch() { return state.inMatch; },
+      get stalled() { return state.stalled; },
       get pingMs() { return state.pingMs; },
       get state() { return state; },
       isHostInMatch: state.isHostInMatch,
       isClientInMatch: state.isClientInMatch,
       nativeReady,
-      startHost, startScan, connectTo, disconnect, leaveToMenu,
+      startHost, startScan, connectTo, approveKnock, disconnect, leaveToMenu,
+      onAppPause, onAppResume,
       sendLobbySync, sendInput, sendRaw, pushEvent,
       hostStartDuel, requestRematch, returnToLobby,
       onHostStep, stepClientFrame
@@ -10741,6 +11430,7 @@
   function openWifiModal(keepSession = false) {
     closeAllModals();
     match.paused = true;
+    WIFI.state.infoMsg = '';
     if (!keepSession && !WIFI.connected && !WIFI.hosting) {
       WIFI.state.errorMsg = '';
       WIFI.startScan();
@@ -10753,13 +11443,13 @@
     const st = WIFI.state;
     const hosts = Array.from(st.discovered.values());
     if (!hosts.length) {
-      return `<div style="padding:14px 8px;text-align:center;font-size:11px;color:#9f907a">${st.scanning ? 'Scanning local Wi-Fi / Hotspot for nearby Host Dojos...' : 'Tap Scan to find nearby Dojos.'}</div>`;
+      return `<div style="padding:14px 8px;text-align:center;font-size:11px;color:#9f907a">${st.scanning ? 'Scanning local Wi-Fi / Hotspot for signed Host Dojos...' : 'Tap Scan to find nearby Dojos.'}</div>`;
     }
     return hosts.map(h => {
       const hel = ELEMENTS[h.el] || ELEMENTS.water;
       return `<button class="wifi-host-row" data-join-ip="${escapeHtml(h.ip)}" data-join-port="${h.port}">
         <div><b>${escapeHtml(h.name)}'S DOJO</b><small>${hel.name} · Code ${escapeHtml(h.shortCode)} (${escapeHtml(h.ip)})</small></div>
-        <span class="pill primary" style="padding:4px 9px;font-size:10px">JOIN</span>
+        <span class="pill primary" style="padding:4px 9px;font-size:10px">${st.manualPin && st.manualPin.length === 4 ? 'PIN JOIN' : 'KNOCK'}</span>
       </button>`;
     }).join('');
   }
@@ -10770,7 +11460,11 @@
     if (!listEl) { renderWifiModal(); return; }
     listEl.innerHTML = buildWifiHostListHtml();
     listEl.querySelectorAll('[data-join-ip]').forEach(btn => {
-      btn.onclick = () => { unlockAudio(); sfx.bend(); WIFI.connectTo(btn.dataset.joinIp, Number(btn.dataset.joinPort) || 42871); };
+      btn.onclick = () => {
+        unlockAudio(); sfx.bend();
+        const pinIn = wifiModal.querySelector('#wifi-pin-in');
+        WIFI.connectTo(btn.dataset.joinIp, Number(btn.dataset.joinPort) || 42871, pinIn ? pinIn.value : WIFI.state.manualPin);
+      };
     });
   }
 
@@ -10783,6 +11477,18 @@
 
     if (!isConn) {
       const hostListHtml = buildWifiHostListHtml();
+      const knocksHtml = (st.hosting && st.pendingKnocks.length)
+        ? st.pendingKnocks.map(k => {
+            const kel = ELEMENTS[k.el] || ELEMENTS.fire;
+            return `<div class="wifi-knock-box">
+              <div><b>${escapeHtml(k.name)} WANTS TO DUEL</b><small>${kel.name} · ${escapeHtml(k.ip)}</small></div>
+              <div class="wifi-knock-acts">
+                <button class="pill primary" style="padding:4px 10px;font-size:10px" data-knock-acc="${k.reqId}">ACCEPT</button>
+                <button class="pill" style="padding:4px 9px;font-size:10px" data-knock-dec="${k.reqId}">DECLINE</button>
+              </div>
+            </div>`;
+          }).join('')
+        : '';
 
       wifiModal.innerHTML = `
         <section class="panel-modal wifi-panel">
@@ -10795,16 +11501,18 @@
             </div>
           </div>
           ${st.errorMsg ? `<div class="wifi-err">${escapeHtml(st.errorMsg)}</div>` : ''}
+          ${st.infoMsg ? `<div class="wifi-info">${escapeHtml(st.infoMsg)}</div>` : ''}
           <div class="wifi-connect-grid">
             <div class="wifi-card">
               <h2>HOST DOJO (PLAYER 1)</h2>
               <p>Connect both phones to the <b>same Wi-Fi</b>, or turn on this phone's <b>Wi-Fi Hotspot</b> (zero mobile data needed) and tap Host Duel.</p>
               ${st.hosting ? `
                 <div class="wifi-code-box">
-                  <div class="wifi-code-lbl">DOJO ROOM CODE · SHARE WITH PLAYER 2</div>
-                  <div class="wifi-code-val">${escapeHtml(st.shortCode)}</div>
-                  <div class="wifi-code-sub">Full IP: ${escapeHtml(st.hostIp)}:${st.hostPort}</div>
+                  <div class="wifi-code-lbl">DOJO ROOM CODE &amp; 4-DIGIT PIN</div>
+                  <div class="wifi-code-val">${escapeHtml(st.shortCode)}${st.roomPin ? `<span class="wifi-pin-pill">PIN ${escapeHtml(st.roomPin)}</span>` : ''}</div>
+                  <div class="wifi-code-sub">Full IP: ${escapeHtml(st.hostIp)}:${st.hostPort} · Instant PIN or 1-Tap Knock</div>
                 </div>
+                ${knocksHtml}
                 <div style="font-size:11px;color:#86efac;text-align:center;font-weight:700">${escapeHtml(st.statusMsg || 'Waiting for Challenger...')}</div>
                 <button class="pill" id="w-cancel-host">CANCEL HOSTING</button>
               ` : `
@@ -10819,9 +11527,14 @@
                 <button class="pill" id="w-refresh" style="padding:3px 9px;font-size:10px">SCAN</button>
               </div>
               <div class="wifi-host-list" id="wifi-host-list">${hostListHtml}</div>
+              ${st.waitingApproval ? `
+                <div class="wifi-info" style="text-align:center">${escapeHtml(st.statusMsg || 'Waiting for Host to tap ACCEPT...')}</div>
+                <button class="pill" id="w-cancel-join">CANCEL JOIN</button>
+              ` : ''}
               <div class="wifi-manual">
-                <input class="wifi-input" id="wifi-code-in" value="${escapeHtml(st.manualCode)}" placeholder="Room Code (e.g. 43.1)" />
-                <button class="pill primary" id="w-connect">CONNECT</button>
+                <input class="wifi-input" id="wifi-code-in" value="${escapeHtml(st.manualCode)}" placeholder="Code / IP (e.g. 43.1)" />
+                <input class="wifi-input wifi-pin-in" id="wifi-pin-in" maxlength="4" inputmode="numeric" value="${escapeHtml(st.manualPin)}" placeholder="PIN" title="4-digit Host PIN (optional if knocking)" />
+                <button class="pill primary" id="w-connect">JOIN</button>
               </div>
             </div>
           </div>
@@ -10836,18 +11549,38 @@
       };
       const codeIn = wifiModal.querySelector('#wifi-code-in');
       if (codeIn) codeIn.oninput = (e) => { st.manualCode = e.target.value.trim(); };
+      const pinIn = wifiModal.querySelector('#wifi-pin-in');
+      if (pinIn) pinIn.oninput = (e) => {
+        st.manualPin = e.target.value.replace(/\D/g, '').slice(0, 4);
+        e.target.value = st.manualPin;
+        refreshWifiHostList();
+      };
       const bClose = wifiModal.querySelector('#w-close');
       if (bClose) bClose.onclick = () => { WIFI.leaveToMenu(); };
       const bHost = wifiModal.querySelector('#w-start-host');
       if (bHost) bHost.onclick = () => { unlockAudio(); sfx.bend(); WIFI.startHost(); };
       const bCancel = wifiModal.querySelector('#w-cancel-host');
       if (bCancel) bCancel.onclick = () => { WIFI.disconnect(true); WIFI.startScan(); renderWifiModal(); };
+      const bCancelJoin = wifiModal.querySelector('#w-cancel-join');
+      if (bCancelJoin) bCancelJoin.onclick = () => { WIFI.disconnect(true); WIFI.startScan(); renderWifiModal(); };
       const bRef = wifiModal.querySelector('#w-refresh');
       if (bRef) bRef.onclick = () => { WIFI.startScan(); renderWifiModal(); };
       const bConn = wifiModal.querySelector('#w-connect');
-      if (bConn) bConn.onclick = () => { unlockAudio(); WIFI.connectTo(codeIn ? codeIn.value : st.manualCode, 42871); };
+      if (bConn) bConn.onclick = () => {
+        unlockAudio();
+        WIFI.connectTo(codeIn ? codeIn.value : st.manualCode, 42871, pinIn ? pinIn.value : st.manualPin);
+      };
+      wifiModal.querySelectorAll('[data-knock-acc]').forEach(btn => {
+        btn.onclick = () => { unlockAudio(); sfx.gong(); WIFI.approveKnock(Number(btn.dataset.knockAcc), true); };
+      });
+      wifiModal.querySelectorAll('[data-knock-dec]').forEach(btn => {
+        btn.onclick = () => { unlockAudio(); WIFI.approveKnock(Number(btn.dataset.knockDec), false); };
+      });
       wifiModal.querySelectorAll('[data-join-ip]').forEach(btn => {
-        btn.onclick = () => { unlockAudio(); sfx.bend(); WIFI.connectTo(btn.dataset.joinIp, Number(btn.dataset.joinPort) || 42871); };
+        btn.onclick = () => {
+          unlockAudio(); sfx.bend();
+          WIFI.connectTo(btn.dataset.joinIp, Number(btn.dataset.joinPort) || 42871, pinIn ? pinIn.value : st.manualPin);
+        };
       });
       return;
     }
@@ -10870,6 +11603,7 @@
             <button class="pill" id="w-leave">DISCONNECT</button>
           </div>
         </div>
+        ${st.infoMsg ? `<div class="wifi-info">${escapeHtml(st.infoMsg)}</div>` : ''}
         <div class="wifi-vs-bar">
           <div class="wifi-slot ${isHost ? 'me' : ''} ${st.p1Lob.ready ? 'ready' : ''}">
             <div class="ws-crest" style="--sc:${e1.glow}">${e1.svg}</div>
@@ -10945,18 +11679,18 @@
       </section>`;
 
     wifiModal.querySelector('#w-leave').onclick = () => { WIFI.leaveToMenu(); };
-    wifiModal.querySelectorAll('[data-wel]').forEach(b => b.onclick = () => { mine.el = b.dataset.wel; mine.ready = false; sfx.bend(); WIFI.sendLobbySync(); renderWifiModal(); });
-    wifiModal.querySelectorAll('[data-wwep]').forEach(b => b.onclick = () => { mine.weapon = b.dataset.wwep; mine.ready = false; sfx.whoosh(false); WIFI.sendLobbySync(); renderWifiModal(); });
-    wifiModal.querySelectorAll('[data-wench]').forEach(b => b.onclick = () => { mine.enchant = b.dataset.wench; mine.ready = false; sfx.bladeClash(); WIFI.sendLobbySync(); renderWifiModal(); });
-    wifiModal.querySelectorAll('[data-wgear]').forEach(b => b.onclick = () => { mine.gear = b.dataset.wgear; mine.ready = false; sfx.bend(); WIFI.sendLobbySync(); renderWifiModal(); });
+    wifiModal.querySelectorAll('[data-wel]').forEach(b => b.onclick = () => { mine.el = b.dataset.wel; mine.ready = false; st.infoMsg = ''; sfx.bend(); WIFI.sendLobbySync(); renderWifiModal(); });
+    wifiModal.querySelectorAll('[data-wwep]').forEach(b => b.onclick = () => { mine.weapon = b.dataset.wwep; mine.ready = false; st.infoMsg = ''; sfx.whoosh(false); WIFI.sendLobbySync(); renderWifiModal(); });
+    wifiModal.querySelectorAll('[data-wench]').forEach(b => b.onclick = () => { mine.enchant = b.dataset.wench; mine.ready = false; st.infoMsg = ''; sfx.bladeClash(); WIFI.sendLobbySync(); renderWifiModal(); });
+    wifiModal.querySelectorAll('[data-wgear]').forEach(b => b.onclick = () => { mine.gear = b.dataset.wgear; mine.ready = false; st.infoMsg = ''; sfx.bend(); WIFI.sendLobbySync(); renderWifiModal(); });
     const tScr = wifiModal.querySelector('#w-tog-scroll');
-    if (tScr) tScr.onclick = () => { mine.scrollMastered = !mine.scrollMastered; mine.ready = false; sfx.bend(); WIFI.sendLobbySync(); renderWifiModal(); };
+    if (tScr) tScr.onclick = () => { mine.scrollMastered = !mine.scrollMastered; mine.ready = false; st.infoMsg = ''; sfx.bend(); WIFI.sendLobbySync(); renderWifiModal(); };
     const tAv = wifiModal.querySelector('#w-tog-av');
-    if (tAv) tAv.onclick = () => { mine.avatarUnlocked = !mine.avatarUnlocked; mine.ready = false; sfx.bend(); WIFI.sendLobbySync(); renderWifiModal(); };
-    wifiModal.querySelectorAll('[data-wstage]').forEach(b => b.onclick = () => { st.stageBiome = b.dataset.wstage; sfx.bend(); WIFI.sendLobbySync(); renderWifiModal(); });
-    wifiModal.querySelectorAll('[data-wfmt]').forEach(b => b.onclick = () => { st.toWin = Number(b.dataset.wfmt); sfx.bend(); WIFI.sendLobbySync(); renderWifiModal(); });
+    if (tAv) tAv.onclick = () => { mine.avatarUnlocked = !mine.avatarUnlocked; mine.ready = false; st.infoMsg = ''; sfx.bend(); WIFI.sendLobbySync(); renderWifiModal(); };
+    wifiModal.querySelectorAll('[data-wstage]').forEach(b => b.onclick = () => { st.stageBiome = b.dataset.wstage; st.infoMsg = ''; sfx.bend(); WIFI.sendLobbySync(); renderWifiModal(); });
+    wifiModal.querySelectorAll('[data-wfmt]').forEach(b => b.onclick = () => { st.toWin = Number(b.dataset.wfmt); st.infoMsg = ''; sfx.bend(); WIFI.sendLobbySync(); renderWifiModal(); });
     wifiModal.querySelector('#w-ready').onclick = () => {
-      mine.ready = !mine.ready; sfx.gong(); haptic('light');
+      mine.ready = !mine.ready; st.infoMsg = ''; sfx.gong(); haptic('light');
       WIFI.sendLobbySync(); renderWifiModal();
     };
     const bStart = wifiModal.querySelector('#w-start-duel');
