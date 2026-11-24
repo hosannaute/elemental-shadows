@@ -52,54 +52,43 @@ jobs:
       - name: Prepare APK deliverable
         run: |
           mkdir -p out
-          cp android/app/build/outputs/apk/release/app-release.apk out/ElementalShadows-v3.0.0-android.apk
-          ls -lh out/ElementalShadows-v3.0.0-android.apk
+          cp android/app/build/outputs/apk/release/app-release.apk out/ElementalShadows-v3.1.0-android.apk
+          ls -lh out/ElementalShadows-v3.1.0-android.apk
 
       - name: Upload APK workflow artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ElementalShadows-v3.0.0-android-apk
-          path: out/ElementalShadows-v3.0.0-android.apk
+          name: ElementalShadows-v3.1.0-android-apk
+          path: out/ElementalShadows-v3.1.0-android.apk
           retention-days: 90
 
       - name: Publish GitHub Release with direct APK download
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          TAG="v3.0.0-android"
+          TAG="v3.1.0-android"
           NOTES=$(cat <<'EOF'
           Standalone 100% offline Android APK of **Elemental Shadows — The Hollow Avatar**.
 
-          ### What's New in v3.0.0
-          - **Shadow Fight 2 Ergonomic 4-Button Touch Cluster:**
-            - Removed redundant `GRAB`, `BLK`, `ROLL`, and duplicate `WEAPON` buttons, freeing the right-hand combat area for **4 large, generously spaced Shadow Fight 2 buttons** arranged in a natural thumb arc:
-              - **PUNCH (`68×68px`)**: Primary weapon / martial-arts strike, automatic close-range Fwd/Back throws, Water Octopus Grab when active, and instant bare-fist fallback if disarmed.
-              - **KICK (`68×68px`)**: Full directional leg arts, sweeps, jump kicks, and air combos.
-              - **ELEMENT BENDING (`62×62px`)**: Live directional Signature Bending & Ultimates.
-              - **SUB-BENDING (`62×62px`)**: Dedicated trigger for all 8 secret ATLA Sub-Bending Arts (glows gold when upgraded with a Grandmaster Scroll).
-              - Optional floating **SHIFT** orb appears above the cluster once Avatar State is unlocked.
-            - Guard & timed parry happen natively via idle/hold-Back, and dash/evade roll triggers cleanly on stick double-tap.
-          - **8 Secret ATLA Sub-Bending Arts & Unlockable Grandmaster Scrolls:**
-            - Every element now has its own iconic sub-discipline — **Bloodbending** (Water, crimson moon puppet lift + slam), **Combustion Beam** (Fire, third-eye spark-spark-boom detonation), **Zaheer's Vacuum Sphere** (Air, breath-drain vortex pull), **Cryo Spear Dome** (Ice, 7-spear radial freeze), **Metalbending Cables** (Earth, dual Lin Beifong grapple reels), **Arc Lightning Storm** (Lightning, 3-bolt chain surge), **Eclipse Soul-Bind** (Shadow, twin-tether drain), and **Caldera Magma Rift** (Magma, twin erupting fissures).
-            - Unlock Grandmaster Scrolls via Regional Trials or the new **Armory Forge -> Scrolls** tab (`350 coins`) to empower Sub-Bending damage, range, and golden HUD aura.
-          - **Armory Forge Weapon Enchantment Seals & 3D Volumetric Slash Ribbons:**
-            - Craft and equip 5 permanent Weapon Enchantment Seals (**Frost-Edge**, **Thunder-Forged**, **Scorched-Ember**, **Umbral-Drain**, **Seismic-Crush**) in the new **Armory Forge -> Enchants** tab (`320-480 coins`), adding elemental combat procs, blade tip glints, and seal-tinted **Three.js 3D Volumetric Weapon Slash Ribbons** sweeping through 2.5D depth on every swing.
-          - **Sculpted Tapered Hokusai Ink Tentacles:**
-            - Upgraded Katara's 8-Arm Octopus Form & 8-Slam Whip with tapered calligraphic sumi-e water tentacles featuring dark ink outlines, indigo-to-cyan gradients, white specular foam spines, curled Hokusai wave crests, and 3-taloned water claws.
-          - **All 8 Per-Element "FINISH THEM!" Cinematic Executions:**
-            - Every element now delivers a bespoke 1.5-second choreographed execution on decisive finishers (`TIDAL ABYSS EXECUTION`, `SOZIN TWIN DRAGON INFERNO`, `SKY TEMPEST ASCENSION`, `ABSOLUTE ZERO SHATTER`, `EARTH COFFIN CRUSH`, `HEAVEN'S JUDGMENT BOLT`, `ECLIPSE ABYSS DRAG`, `CALDERA MAGMA ERUPTION`).
-          - **Boss Phase-2 Awakening Cut-Ins & Distinct 8-Element Archetype AI Brains:**
-            - Campaign Masters now erupt into Phase 2 with a 48-frame freeze, camera zoom, sumi-e ink-brush awakening plaque, and 3D floor shockwave, backed by bespoke per-element AI tactics (Volt Iroh Redirect, Terra Stone Wall, Frost Cryo Shatter rush, Zephyr wall-jump & Air Scooter, Mizu Octopus Whip & Water Heal, Umbra Eclipse Swap, plus High-Dan Sub-Bending casts).
-          - **Dynamic 3-Tier Round-Escalating Japanese Soundtrack & Layered Impact SFX:**
-            - Procedural Shakuhachi, Shamisen, Koto, Hyoshigi clappers, and Taiko drums automatically intensify from Round 1 tension -> Round 2 clash -> Round 3 / Match Point / Phase-2 war drums, paired with layered water whips, crystal shatters, blade clashes, awakening surges, and sub-bending SFX.
-          - **Shadow Tower Rotating Mutators & Today's Daily Trial (`2x COINS`):**
-            - Four rotating combat mutators (`AVATAR ROULETTE`, `BENDING SUPREMACY`, `SHATTERED GUARD`, `VOLCANIC FLOOR`) cycle every 3 waves in Endless Shadow Tower and power the new **DAILY TRIAL (`2x COINS`)** mode in the Roster menu.
+          ### What's New in v3.1.0
+          - **Seamless 100% Offline 2-Player Wi-Fi / Hotspot Duet Mode:**
+            - Fight a friend face-to-face on two Android phones connected to the **same Wi-Fi network** OR with **one phone's Wi-Fi Hotspot** (zero internet, zero mobile data, zero location permission popups!).
+            - **1-Tap Auto-Discovery + Short Dojo Room Code:** Native Android UDP discovery beacons + direct Hotspot gateway probing let Player 2 tap **JOIN** in one touch, with short Room Code (`e.g. 43.1`) and IP fallback.
+            - **Live Connected 2P VS Lobby:** Customize your Fighter Name, pick any of the 8 Elements, 9 Weapons, 5 Weapon Enchantment Seals, 5 Gear pieces, Grandmaster Scroll & Avatar Shift toggles, Host-picked painted Arena Stages, and Best of 3 / Best of 5 format — all updating live across both phones.
+            - **Low-Latency Host-Authoritative 60Hz Sync:** Native `TCP_NODELAY` (`IPTOS_LOWDELAY`) transport with automatic stale-snapshot dropping, full SFX/haptics/callouts/banners/Three.js 3D FX relay, live `WIFI · Xms` HUD ping indicator, symmetric Shadow Fight 2 4-button controls for BOTH Player 1 & Player 2, `{Winner Name} WINS` banners, mutual instant **REMATCH**, and **SWITCH ELEMENT** back to the connected lobby without re-pairing.
+          - **4 Major Android Stability & Crash Fixes:**
+            - **WebView Renderer-Gone Auto-Recovery:** Added `onRenderProcessGone` handling in `MainActivity` to cleanly disconnect sockets and recreate the WebView instead of force-closing if Android OS kills the renderer under memory pressure, plus `largeHeap` and soft-keyboard `configChanges` protection.
+            - **Android GPU/VRAM Budget Optimization:** Capped 2D and Three.js WebGL backing resolution on Android devices, disabled costly 4x mobile MSAA, added `webglcontextlost`/`webglcontextrestored` recovery, and shrank closed modal canvases (`story`, `map`, `armory`) to `1x1` on close and `onTrimMemory`.
+            - **WebAudio Voice Leak Fix:** Enforced voice caps and guaranteed node disconnects on `playNoiseBurst()` and audio buffers to prevent native Android OOM / audio glitches during long sessions.
+            - **Zero-Draw Background & Screen-Lock Suspension:** Native `onPause`/`onResume` bridge + `visibilitychange` cleanly suspends the game loop, Three.js rendering, and WebAudio when backgrounded or screen-locked, eliminating GPU context loss crashes on resume.
+          - **Preserves Everything from v3.0.0:**
+            - Streamlined Shadow Fight 2 4-button touch cluster (`PUNCH`, `KICK`, `BEND`, `SUB`, optional `SHIFT`), all 8 Secret ATLA Sub-Bending Arts & Grandmaster Scrolls, 5 Weapon Enchantment Seals & 3D Volumetric Slash Ribbons, sculpted Hokusai 8-Arm Octopus Whip, all 8 bespoke "FINISH THEM!" executions, Boss Phase-2 Awakening cut-ins, dynamic 3-tier Japanese soundtrack, and Daily Trial / Shadow Tower mutators.
           EOF
           )
           if gh release view "$TAG" >/dev/null 2>&1; then
-            gh release upload "$TAG" out/ElementalShadows-v3.0.0-android.apk --clobber
+            gh release upload "$TAG" out/ElementalShadows-v3.1.0-android.apk --clobber
           else
-            gh release create "$TAG" out/ElementalShadows-v3.0.0-android.apk \
-              --title "Elemental Shadows v3.0.0 (Android APK — SF2 4-Button Controls, Sub-Bending Scrolls, Weapon Enchants & 8 Executions)" \
+            gh release create "$TAG" out/ElementalShadows-v3.1.0-android.apk \
+              --title "Elemental Shadows v3.1.0 (Android APK — Crash Fixes & 2P Wi-Fi/Hotspot Duet)" \
               --notes "$NOTES"
           fi

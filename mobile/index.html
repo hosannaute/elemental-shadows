@@ -903,6 +903,137 @@
       .coin-hex { padding: 4px 10px; font-size: 11px; }
       .oct-btn { width: 30px; height: 30px; }
     }
+
+    /* ===== WI-FI / HOTSPOT DUET HUD & LACQUER LOBBY UI ===== */
+    .wifi-ping {
+      display: inline-flex; align-items: center; gap: 5px; margin-top: 3px;
+      padding: 2px 8px; border-radius: 3px; font-family: var(--font-head);
+      font-size: 9.5px; font-weight: 800; letter-spacing: 0.08em;
+      background: rgba(14, 10, 8, 0.86); border: 1px solid rgba(114, 216, 146, 0.55);
+      color: #a8f5c4; white-space: nowrap;
+    }
+    .wifi-ping.warn { border-color: rgba(245, 198, 84, 0.72); color: #fde68a; }
+    .wifi-ping.bad { border-color: rgba(248, 113, 113, 0.78); color: #fecaca; }
+    .wifi-ping .wp-dot { width: 6px; height: 6px; border-radius: 50%; background: #4ade80; box-shadow: 0 0 6px #4ade80; }
+    .wifi-ping.warn .wp-dot { background: #facc15; box-shadow: 0 0 6px #facc15; }
+    .wifi-ping.bad .wp-dot { background: #f87171; box-shadow: 0 0 6px #f87171; }
+    .you-tag {
+      display: inline-block; font-size: 8.5px; font-weight: 900; letter-spacing: 0.08em;
+      padding: 1px 5px; border-radius: 2px; margin: 0 5px; vertical-align: middle;
+      background: linear-gradient(180deg, #f0b248, #c46818); color: #160c05;
+    }
+    .mm-btn.wifi-accent {
+      background: linear-gradient(96deg, rgba(22, 34, 42, 0.92), rgba(16, 22, 28, 0.82));
+      box-shadow: inset 0 0 0 1px rgba(108, 214, 255, 0.45);
+      border-color: rgba(108, 214, 255, 0.45);
+    }
+    .mm-btn.wifi-accent .mm-ico { color: #7ce8ff; }
+
+    .wifi-panel {
+      width: min(940px, 96%); max-height: 94%;
+      display: flex; flex-direction: column; gap: 9px; overflow: hidden;
+    }
+    .wifi-head {
+      display: flex; align-items: center; justify-content: space-between; gap: 10px;
+      border-bottom: 1px solid var(--ink-border-soft); padding-bottom: 7px; flex-shrink: 0;
+    }
+    .wifi-head h1 { font-family: var(--font-head); font-size: clamp(14px, 1.8vw, 20px); letter-spacing: 0.12em; color: var(--gold-light); white-space: nowrap; }
+    .wifi-name-wrap { display: flex; align-items: center; gap: 6px; }
+    .wifi-name-wrap label { font-size: 10.5px; color: var(--text-muted); font-weight: 700; letter-spacing: 0.08em; white-space: nowrap; }
+    .wifi-input {
+      background: rgba(12, 9, 7, 0.94); border: 1px solid rgba(218, 178, 112, 0.48);
+      border-radius: 4px; color: #fff6e6; padding: 5px 9px; font-family: var(--font-head);
+      font-size: 12px; font-weight: 700; letter-spacing: 0.06em; width: 130px; outline: none;
+    }
+    .wifi-input:focus { border-color: var(--gold-light); box-shadow: 0 0 8px rgba(230, 169, 60, 0.32); }
+    .wifi-connect-grid {
+      flex: 1; min-height: 0; display: grid; grid-template-columns: 1fr 1.15fr; gap: 11px; overflow: hidden;
+    }
+    .wifi-card {
+      background: var(--ink-card); border: 1px solid var(--ink-border); border-radius: 5px;
+      padding: 11px 13px; display: flex; flex-direction: column; gap: 8px; min-height: 0; overflow-y: auto;
+    }
+    .wifi-card h2 { font-family: var(--font-head); font-size: 13.5px; letter-spacing: 0.11em; color: var(--gold-light); }
+    .wifi-card p { font-size: 11.5px; color: #d8c6ac; line-height: 1.38; }
+    .wifi-code-box {
+      background: rgba(12, 9, 7, 0.95); border: 1.5px solid rgba(240, 186, 86, 0.72);
+      border-radius: 5px; padding: 9px 12px; text-align: center;
+    }
+    .wifi-code-lbl { font-size: 9.5px; letter-spacing: 0.14em; color: var(--text-muted); font-weight: 700; }
+    .wifi-code-val { font-family: var(--font-head); font-size: clamp(19px, 2.6vw, 28px); font-weight: 900; letter-spacing: 0.14em; color: #ffe49c; margin: 2px 0; }
+    .wifi-code-sub { font-size: 10.5px; color: #9ec8da; font-family: ui-monospace, monospace; }
+    .wifi-host-list {
+      flex: 1; min-height: 68px; overflow-y: auto; display: flex; flex-direction: column; gap: 6px;
+      background: rgba(10, 8, 6, 0.65); border: 1px solid var(--ink-border-soft); border-radius: 4px; padding: 6px;
+    }
+    .wifi-host-row {
+      display: flex; align-items: center; justify-content: space-between; gap: 8px;
+      padding: 7px 9px; border-radius: 4px; background: rgba(26, 20, 15, 0.96);
+      border: 1px solid rgba(108, 214, 255, 0.42); color: var(--text-main); cursor: pointer; text-align: left;
+    }
+    .wifi-host-row:hover { border-color: #7ce8ff; background: rgba(34, 28, 22, 0.98); }
+    .wifi-host-row b { font-family: var(--font-head); font-size: 12px; color: #fff6e6; display: block; }
+    .wifi-host-row small { font-size: 10px; color: #9ec8da; }
+    .wifi-manual { display: flex; gap: 6px; align-items: center; }
+    .wifi-manual .wifi-input { flex: 1; width: auto; min-width: 0; font-family: ui-monospace, monospace; }
+    .wifi-err { font-size: 11px; color: #fca5a5; background: rgba(127, 29, 29, 0.35); border: 1px solid rgba(248, 113, 113, 0.45); border-radius: 4px; padding: 5px 8px; }
+
+    /* Connected Live 2P VS Lobby */
+    .wifi-vs-bar {
+      display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: 8px; align-items: center; flex-shrink: 0;
+    }
+    .wifi-slot {
+      display: flex; align-items: center; gap: 8px; padding: 7px 10px; border-radius: 5px;
+      background: rgba(20, 15, 11, 0.94); border: 1.5px solid var(--ink-border-soft);
+      min-width: 0; overflow: hidden;
+    }
+    .wifi-slot.me { border-color: var(--gold); box-shadow: 0 0 12px rgba(230, 169, 60, 0.2); }
+    .wifi-slot.ready { border-color: #4ade80; }
+    .wifi-slot.p2 { flex-direction: row-reverse; text-align: right; }
+    .ws-crest { width: 32px; height: 32px; border-radius: 50%; border: 1.5px solid var(--sc, var(--gold)); color: var(--sc, var(--gold)); padding: 5px; background: #100c09; flex-shrink: 0; }
+    .ws-crest svg { width: 100%; height: 100%; }
+    .ws-meta { flex: 1; min-width: 0; overflow: hidden; }
+    .ws-name { font-family: var(--font-head); font-size: 13px; font-weight: 800; color: #fff6e6; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .ws-sub { font-size: 10px; color: #cbbba2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .ws-rdy { font-family: var(--font-head); font-size: 9.5px; font-weight: 800; padding: 2px 7px; border-radius: 3px; letter-spacing: 0.08em; background: rgba(255,255,255,0.08); color: #b8a890; flex-shrink: 0; }
+    .ws-rdy.on { background: rgba(34, 197, 94, 0.25); border: 1px solid #4ade80; color: #86efac; }
+    .wifi-vs-mid { font-family: var(--font-head); font-size: 15px; font-weight: 900; color: var(--vermilion-hi); letter-spacing: 0.14em; }
+
+    .wifi-lobby-body {
+      flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: 7px; padding-right: 3px;
+    }
+    .wifi-row { display: flex; align-items: center; gap: 7px; min-width: 0; }
+    .wifi-row-lbl { width: 68px; flex-shrink: 0; font-family: var(--font-head); font-size: 10px; font-weight: 800; letter-spacing: 0.08em; color: var(--gold-light); text-transform: uppercase; }
+    .wifi-chips { display: flex; gap: 5px; overflow-x: auto; flex: 1; min-width: 0; scrollbar-width: none; padding: 1px 6px 1px 0; }
+    .wifi-chips::-webkit-scrollbar { display: none; }
+    .wchip {
+      display: inline-flex; align-items: center; gap: 5px; padding: 4px 8px; border-radius: 3px;
+      background: rgba(18, 14, 10, 0.94); border: 1px solid rgba(218, 178, 112, 0.26);
+      color: #e4d6c0; font-family: var(--font-head); font-size: 10.5px; font-weight: 700;
+      cursor: pointer; white-space: nowrap; flex-shrink: 0;
+    }
+    .wchip svg { width: 12px; height: 12px; color: var(--wc, var(--gold)); }
+    .wchip.on { border-color: var(--wc, var(--gold-light)); background: rgba(52, 36, 22, 0.96); color: #fff8ea; box-shadow: 0 0 8px rgba(230, 169, 60, 0.25); }
+    .wifi-foot {
+      display: flex; align-items: center; justify-content: space-between; gap: 8px;
+      border-top: 1px solid var(--ink-border-soft); padding-top: 7px; flex-shrink: 0;
+    }
+
+    @media (max-height: 480px) {
+      .mm-nav { gap: 4px; max-width: 248px; }
+      .mm-btn { padding: 4px 10px; gap: 7px; }
+      .mm-btn .mm-ico { width: 20px; height: 20px; }
+      .mm-btn b { font-size: 11.5px; }
+      .mm-btn small { font-size: 8.5px; }
+      .wifi-panel { padding: 8px 11px; gap: 6px; max-height: 97%; }
+      .wifi-card { padding: 8px 10px; gap: 6px; }
+      .wifi-slot { padding: 5px 8px; }
+      .ws-crest { width: 26px; height: 26px; padding: 4px; }
+      .ws-name { font-size: 11.5px; }
+      .wifi-row-lbl { width: 58px; font-size: 9.2px; }
+      .wchip { padding: 3px 6.5px; font-size: 9.8px; }
+      .wifi-ping { font-size: 8.5px; padding: 1px 6px; }
+    }
   </style>
 </head>
 <body>
@@ -937,6 +1068,7 @@
 
         <div class="hud-center">
           <div class="timer-box"><span class="timer-val" id="timer">99</span></div>
+          <div class="wifi-ping hidden" id="wifi-ping-pill"><span class="wp-dot"></span><span id="wifi-ping-val">WIFI</span></div>
         </div>
 
         <div class="fighter-hud p2">
@@ -975,6 +1107,7 @@
         <div class="match-actions hidden" id="match-actions">
           <button class="pill primary hidden" id="btn-next-boss">NEXT MASTER</button>
           <button class="pill primary" id="btn-rematch">REMATCH</button>
+          <button class="pill hidden" id="btn-wifi-lobby-end">SWITCH ELEMENT</button>
           <button class="pill" id="btn-open-armory-end">ARMORY</button>
           <button class="pill" id="btn-to-menu-end">MAIN MENU</button>
         </div>
@@ -1046,7 +1179,12 @@
         </button>
         <button class="mm-btn" id="mm-fight">
           <span class="mm-ico"><svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M7 29L28 8"/><path d="M29 29L8 8"/><path d="M10 22l4 4"/><path d="M26 22l-4 4"/></svg></span>
-          <div class="mm-txt"><b>FIGHT</b><small>Quick Duel &amp; Endless Tower</small></div>
+          <div class="mm-txt"><b>FIGHT</b><small>Quick Duel, Daily Trial &amp; Tower</small></div>
+          <span class="arr"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="5,3 10,7 5,11"/></svg></span>
+        </button>
+        <button class="mm-btn wifi-accent" id="mm-wifi">
+          <span class="mm-ico"><svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 15a17 17 0 0 1 24 0"/><path d="M10.5 19.5a11 11 0 0 1 15 0"/><path d="M15 24a5 5 0 0 1 6 0"/><circle cx="18" cy="28" r="2" fill="currentColor"/></svg></span>
+          <div class="mm-txt"><b>WI-FI DUET</b><small>2P Local Wi-Fi &amp; Hotspot Versus</small></div>
           <span class="arr"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="5,3 10,7 5,11"/></svg></span>
         </button>
         <button class="mm-btn" id="mm-dojo">
@@ -1056,12 +1194,12 @@
         </button>
         <button class="mm-btn" id="mm-armory">
           <span class="mm-ico"><svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M6 14c4-3.5 20-3.5 24 0"/><path d="M9 14v13M15 14v13M21 14v13M27 14v13"/><path d="M6 27h24"/><path d="M10 10h16"/></svg></span>
-          <div class="mm-txt"><b>ARMORY</b><small>Weapons, Silhouette Gear &amp; Mastery</small></div>
+          <div class="mm-txt"><b>ARMORY</b><small>Weapons, Seals, Scrolls &amp; Gear</small></div>
           <span class="arr"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="5,3 10,7 5,11"/></svg></span>
         </button>
       </nav>
       <div class="mm-foot">
-        <span>Offline Single-Player · 8 Elemental Disciplines · 9 Weapon Classes</span>
+        <span>Offline Solo &amp; 2P Wi-Fi / Hotspot Duet · 8 Disciplines · 9 Weapons</span>
         <span id="mm-avatar-badge"></span>
       </div>
     </div>
@@ -1089,6 +1227,7 @@
     <div class="backdrop center hidden" id="roster-modal"></div>
     <div class="backdrop wm-full hidden" id="campaign-modal"></div>
     <div class="backdrop center hidden" id="armory-modal"></div>
+    <div class="backdrop center hidden" id="wifi-modal"></div>
   </div>
 </div>
 
@@ -1274,8 +1413,11 @@
     aiTier: 'warrior', debug: false, volume: 0.72, sfxOn: true, musicOn: true, hapticsOn: true, fx3d: true
   };
   let lastHapticAt = 0;
-  function haptic(kind = 'light') {
-    if (!settings.hapticsOn || settings.feedback <= 0) return;
+  function haptic(kind = 'light', fromNet = false) {
+    if (!fromNet && WIFI && WIFI.isHostInMatch() && (kind === 'ko' || kind === 'heavy' || kind === 'parry' || kind === 'medium')) {
+      WIFI.pushEvent(['hap', kind]);
+    }
+    if (appSuspended || !settings.hapticsOn || settings.feedback <= 0) return;
     const now = performance.now();
     if (now - lastHapticAt < 28) return;
     lastHapticAt = now;
@@ -1290,108 +1432,129 @@
     } catch {}
   }
 
-  // ===== WEB AUDIO SFX + ADAPTIVE REGIONAL EASTERN COMBAT SOUNDTRACK (Voice-Capped & Zero-Leak) =====
+  // ===== ANDROID CRASH-SAFE LIFECYCLE & WEB AUDIO (Zero-Leak Voice-Capped SFX + BGM) =====
+  let appSuspended = false;
   let audioCtx = null, activeVoices = 0, bgmVoices = 0, bgmStep = 0, bgmTick = 0;
   function unlockAudio() {
-    if (!audioCtx) { const AC = window.AudioContext || window.webkitAudioContext; if (AC) audioCtx = new AC(); }
-    if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+    if (appSuspended || document.hidden) return;
+    try {
+      if (!audioCtx) { const AC = window.AudioContext || window.webkitAudioContext; if (AC) audioCtx = new AC(); }
+      if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume().catch(() => {});
+    } catch {}
+  }
+  function suspendAudio() {
+    try {
+      if (audioCtx && audioCtx.state === 'running') audioCtx.suspend().catch(() => {});
+    } catch {}
   }
   function playTone(freq, endFreq, dur, type, vol) {
-    if (!settings.sfxOn || !audioCtx || audioCtx.state !== 'running' || settings.volume < 0.02 || activeVoices >= 10) return;
+    if (appSuspended || !settings.sfxOn || !audioCtx || audioCtx.state !== 'running' || settings.volume < 0.02 || activeVoices >= 10) return;
     activeVoices++;
-    const t = audioCtx.currentTime, o = audioCtx.createOscillator(), g = audioCtx.createGain();
-    o.type = type; o.frequency.setValueAtTime(freq, t);
-    o.frequency.exponentialRampToValueAtTime(Math.max(25, endFreq), t + dur);
-    g.gain.setValueAtTime(vol * settings.volume, t);
-    g.gain.exponentialRampToValueAtTime(0.001, t + dur);
-    o.connect(g).connect(audioCtx.destination);
-    o.onended = () => { activeVoices = Math.max(0, activeVoices - 1); try { o.disconnect(); g.disconnect(); } catch {} };
-    o.start(t); o.stop(t + dur + 0.02);
+    try {
+      const t = audioCtx.currentTime, o = audioCtx.createOscillator(), g = audioCtx.createGain();
+      o.type = type; o.frequency.setValueAtTime(freq, t);
+      o.frequency.exponentialRampToValueAtTime(Math.max(25, endFreq), t + dur);
+      g.gain.setValueAtTime(vol * settings.volume, t);
+      g.gain.exponentialRampToValueAtTime(0.001, t + dur);
+      o.connect(g).connect(audioCtx.destination);
+      o.onended = () => { activeVoices = Math.max(0, activeVoices - 1); try { o.disconnect(); g.disconnect(); } catch {} };
+      o.start(t); o.stop(t + dur + 0.02);
+    } catch { activeVoices = Math.max(0, activeVoices - 1); }
   }
   let _noiseBuf = null;
   function getNoiseBuf() {
     if (_noiseBuf || !audioCtx) return _noiseBuf;
-    const len = Math.floor(audioCtx.sampleRate * 0.25);
-    const buf = audioCtx.createBuffer(1, len, audioCtx.sampleRate);
-    const d = buf.getChannelData(0);
-    for (let i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
-    _noiseBuf = buf;
-    return buf;
+    try {
+      const len = Math.floor(audioCtx.sampleRate * 0.25);
+      const buf = audioCtx.createBuffer(1, len, audioCtx.sampleRate);
+      const d = buf.getChannelData(0);
+      for (let i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
+      _noiseBuf = buf;
+      return buf;
+    } catch { return null; }
   }
   function playKoto(freq, dur = 0.42, vol = 0.055, shamisen = false) {
-    if (!settings.musicOn || !audioCtx || audioCtx.state !== 'running' || settings.volume < 0.02 || bgmVoices >= 5) return;
+    if (appSuspended || !settings.musicOn || !audioCtx || audioCtx.state !== 'running' || settings.volume < 0.02 || bgmVoices >= 5) return;
     bgmVoices++;
-    const t = audioCtx.currentTime;
-    const o = audioCtx.createOscillator(), f = audioCtx.createBiquadFilter(), g = audioCtx.createGain();
-    o.type = shamisen ? 'sawtooth' : 'triangle';
-    o.frequency.setValueAtTime(freq * (shamisen ? 1.015 : 1.006), t);
-    o.frequency.exponentialRampToValueAtTime(freq, t + 0.022);
-    f.type = 'lowpass';
-    f.frequency.setValueAtTime(Math.min(5200, freq * (shamisen ? 6.5 : 4.8)), t);
-    f.frequency.exponentialRampToValueAtTime(Math.max(220, freq * 1.25), t + dur);
-    f.Q.value = shamisen ? 2.4 : 1.3;
-    g.gain.setValueAtTime(0.0008, t);
-    g.gain.linearRampToValueAtTime(vol * settings.volume, t + 0.006);
-    g.gain.exponentialRampToValueAtTime(0.0006, t + dur);
-    o.connect(f).connect(g).connect(audioCtx.destination);
-    o.onended = () => { bgmVoices = Math.max(0, bgmVoices - 1); try { o.disconnect(); f.disconnect(); g.disconnect(); } catch {} };
-    o.start(t); o.stop(t + dur + 0.02);
+    try {
+      const t = audioCtx.currentTime;
+      const o = audioCtx.createOscillator(), f = audioCtx.createBiquadFilter(), g = audioCtx.createGain();
+      o.type = shamisen ? 'sawtooth' : 'triangle';
+      o.frequency.setValueAtTime(freq * (shamisen ? 1.015 : 1.006), t);
+      o.frequency.exponentialRampToValueAtTime(freq, t + 0.022);
+      f.type = 'lowpass';
+      f.frequency.setValueAtTime(Math.min(5200, freq * (shamisen ? 6.5 : 4.8)), t);
+      f.frequency.exponentialRampToValueAtTime(Math.max(220, freq * 1.25), t + dur);
+      f.Q.value = shamisen ? 2.4 : 1.3;
+      g.gain.setValueAtTime(0.0008, t);
+      g.gain.linearRampToValueAtTime(vol * settings.volume, t + 0.006);
+      g.gain.exponentialRampToValueAtTime(0.0006, t + dur);
+      o.connect(f).connect(g).connect(audioCtx.destination);
+      o.onended = () => { bgmVoices = Math.max(0, bgmVoices - 1); try { o.disconnect(); f.disconnect(); g.disconnect(); } catch {} };
+      o.start(t); o.stop(t + dur + 0.02);
+    } catch { bgmVoices = Math.max(0, bgmVoices - 1); }
   }
   function playShakuhachi(freq, dur = 0.95, vol = 0.042) {
-    if (!settings.musicOn || !audioCtx || audioCtx.state !== 'running' || settings.volume < 0.02 || bgmVoices >= 5) return;
+    if (appSuspended || !settings.musicOn || !audioCtx || audioCtx.state !== 'running' || settings.volume < 0.02 || bgmVoices >= 5) return;
     bgmVoices++;
-    const t = audioCtx.currentTime;
-    const o = audioCtx.createOscillator(), g = audioCtx.createGain();
-    o.type = 'sine';
-    o.frequency.setValueAtTime(freq * 0.96, t);
-    o.frequency.exponentialRampToValueAtTime(freq, t + 0.14);
-    o.frequency.linearRampToValueAtTime(freq * 1.008, t + dur * 0.65);
-    o.frequency.linearRampToValueAtTime(freq * 0.994, t + dur);
-    g.gain.setValueAtTime(0.0008, t);
-    g.gain.linearRampToValueAtTime(vol * settings.volume, t + 0.16);
-    g.gain.exponentialRampToValueAtTime(0.0006, t + dur);
-    o.connect(g).connect(audioCtx.destination);
-    o.onended = () => { bgmVoices = Math.max(0, bgmVoices - 1); try { o.disconnect(); g.disconnect(); } catch {} };
-    o.start(t); o.stop(t + dur + 0.02);
-    const nb = getNoiseBuf();
-    if (nb && bgmVoices < 5) {
-      bgmVoices++;
-      const ns = audioCtx.createBufferSource(), bp = audioCtx.createBiquadFilter(), ng = audioCtx.createGain();
-      ns.buffer = nb; ns.loop = true;
-      bp.type = 'bandpass'; bp.frequency.value = Math.min(3400, freq * 2.1); bp.Q.value = 3.2;
-      ng.gain.setValueAtTime(0.0005, t);
-      ng.gain.linearRampToValueAtTime(vol * 0.28 * settings.volume, t + 0.14);
-      ng.gain.exponentialRampToValueAtTime(0.0004, t + dur * 0.85);
-      ns.connect(bp).connect(ng).connect(audioCtx.destination);
-      ns.onended = () => { bgmVoices = Math.max(0, bgmVoices - 1); try { ns.disconnect(); bp.disconnect(); ng.disconnect(); } catch {} };
-      ns.start(t); ns.stop(t + dur * 0.88);
-    }
+    try {
+      const t = audioCtx.currentTime;
+      const o = audioCtx.createOscillator(), g = audioCtx.createGain();
+      o.type = 'sine';
+      o.frequency.setValueAtTime(freq * 0.96, t);
+      o.frequency.exponentialRampToValueAtTime(freq, t + 0.14);
+      o.frequency.linearRampToValueAtTime(freq * 1.008, t + dur * 0.65);
+      o.frequency.linearRampToValueAtTime(freq * 0.994, t + dur);
+      g.gain.setValueAtTime(0.0008, t);
+      g.gain.linearRampToValueAtTime(vol * settings.volume, t + 0.16);
+      g.gain.exponentialRampToValueAtTime(0.0006, t + dur);
+      o.connect(g).connect(audioCtx.destination);
+      o.onended = () => { bgmVoices = Math.max(0, bgmVoices - 1); try { o.disconnect(); g.disconnect(); } catch {} };
+      o.start(t); o.stop(t + dur + 0.02);
+      const nb = getNoiseBuf();
+      if (nb && bgmVoices < 5) {
+        bgmVoices++;
+        const ns = audioCtx.createBufferSource(), bp = audioCtx.createBiquadFilter(), ng = audioCtx.createGain();
+        ns.buffer = nb; ns.loop = true;
+        bp.type = 'bandpass'; bp.frequency.value = Math.min(3400, freq * 2.1); bp.Q.value = 3.2;
+        ng.gain.setValueAtTime(0.0005, t);
+        ng.gain.linearRampToValueAtTime(vol * 0.28 * settings.volume, t + 0.14);
+        ng.gain.exponentialRampToValueAtTime(0.0004, t + dur * 0.85);
+        ns.connect(bp).connect(ng).connect(audioCtx.destination);
+        ns.onended = () => { bgmVoices = Math.max(0, bgmVoices - 1); try { ns.disconnect(); bp.disconnect(); ng.disconnect(); } catch {} };
+        ns.start(t); ns.stop(t + dur * 0.88);
+      }
+    } catch { bgmVoices = Math.max(0, bgmVoices - 1); }
   }
   function playTaiko(freq = 104, rim = false, vol = 0.14) {
-    if (!settings.musicOn || !audioCtx || audioCtx.state !== 'running' || settings.volume < 0.02 || bgmVoices >= 5) return;
+    if (appSuspended || !settings.musicOn || !audioCtx || audioCtx.state !== 'running' || settings.volume < 0.02 || bgmVoices >= 5) return;
     bgmVoices++;
-    const t = audioCtx.currentTime;
-    const o = audioCtx.createOscillator(), g = audioCtx.createGain();
-    o.type = rim ? 'triangle' : 'sine';
-    o.frequency.setValueAtTime(rim ? freq * 4.8 : freq * 1.45, t);
-    o.frequency.exponentialRampToValueAtTime(rim ? freq * 1.6 : Math.max(34, freq * 0.42), t + (rim ? 0.05 : 0.24));
-    g.gain.setValueAtTime(0.001, t);
-    g.gain.linearRampToValueAtTime(vol * settings.volume, t + 0.005);
-    g.gain.exponentialRampToValueAtTime(0.0008, t + (rim ? 0.065 : 0.28));
-    o.connect(g).connect(audioCtx.destination);
-    o.onended = () => { bgmVoices = Math.max(0, bgmVoices - 1); try { o.disconnect(); g.disconnect(); } catch {} };
-    o.start(t); o.stop(t + (rim ? 0.08 : 0.30));
+    try {
+      const t = audioCtx.currentTime;
+      const o = audioCtx.createOscillator(), g = audioCtx.createGain();
+      o.type = rim ? 'triangle' : 'sine';
+      o.frequency.setValueAtTime(rim ? freq * 4.8 : freq * 1.45, t);
+      o.frequency.exponentialRampToValueAtTime(rim ? freq * 1.6 : Math.max(34, freq * 0.42), t + (rim ? 0.05 : 0.24));
+      g.gain.setValueAtTime(0.001, t);
+      g.gain.linearRampToValueAtTime(vol * settings.volume, t + 0.005);
+      g.gain.exponentialRampToValueAtTime(0.0008, t + (rim ? 0.065 : 0.28));
+      o.connect(g).connect(audioCtx.destination);
+      o.onended = () => { bgmVoices = Math.max(0, bgmVoices - 1); try { o.disconnect(); g.disconnect(); } catch {} };
+      o.start(t); o.stop(t + (rim ? 0.08 : 0.30));
+    } catch { bgmVoices = Math.max(0, bgmVoices - 1); }
   }
   function playHyoshigi(vol = 0.036) {
-    if (!settings.musicOn || !audioCtx || audioCtx.state !== 'running' || settings.volume < 0.02 || bgmVoices >= 5) return;
+    if (appSuspended || !settings.musicOn || !audioCtx || audioCtx.state !== 'running' || settings.volume < 0.02 || bgmVoices >= 5) return;
     bgmVoices++;
-    const t = audioCtx.currentTime, o = audioCtx.createOscillator(), g = audioCtx.createGain();
-    o.type = 'triangle';
-    o.frequency.setValueAtTime(2180, t); o.frequency.exponentialRampToValueAtTime(1640, t + 0.032);
-    g.gain.setValueAtTime(vol * settings.volume, t); g.gain.exponentialRampToValueAtTime(0.0008, t + 0.038);
-    o.connect(g).connect(audioCtx.destination);
-    o.onended = () => { bgmVoices = Math.max(0, bgmVoices - 1); try { o.disconnect(); g.disconnect(); } catch {} };
-    o.start(t); o.stop(t + 0.045);
+    try {
+      const t = audioCtx.currentTime, o = audioCtx.createOscillator(), g = audioCtx.createGain();
+      o.type = 'triangle';
+      o.frequency.setValueAtTime(2180, t); o.frequency.exponentialRampToValueAtTime(1640, t + 0.032);
+      g.gain.setValueAtTime(vol * settings.volume, t); g.gain.exponentialRampToValueAtTime(0.0008, t + 0.038);
+      o.connect(g).connect(audioCtx.destination);
+      o.onended = () => { bgmVoices = Math.max(0, bgmVoices - 1); try { o.disconnect(); g.disconnect(); } catch {} };
+      o.start(t); o.stop(t + 0.045);
+    } catch { bgmVoices = Math.max(0, bgmVoices - 1); }
   }
   // Traditional Japanese Hirajoshi / In-Sen Pentatonic Scales per Realm
   const REGION_BGM = {
@@ -1409,7 +1572,7 @@
   const SHAMISEN_MOTIF_B = [5, 7, 8, 7, 10, 8, 7, 5, 3, 5, 6, 5, 3, 2, 1, 3];
   const ECLIPSE_MOTIF    = [0, 1, 5, 4, 7, 6, 10, 7, 5, 4, 3, 1, 6, 5, 1, 0];
   function tickMusic() {
-    if (!settings.musicOn || match.paused || !audioCtx || audioCtx.state !== 'running') return;
+    if (appSuspended || !settings.musicOn || match.paused || !audioCtx || audioCtx.state !== 'running') return;
     // Serene Japanese Koto & Shakuhachi ambience on Main Menu / World Map
     if (match.inMenu) {
       if (++bgmTick < 18) return;
@@ -1474,17 +1637,21 @@
   }
 
   function playNoiseBurst(dur = 0.14, freq = 1400, q = 2.0, vol = 0.22) {
-    if (!settings.sfxOn || !audioCtx || audioCtx.state !== 'running' || settings.volume < 0.02) return;
+    if (appSuspended || !settings.sfxOn || !audioCtx || audioCtx.state !== 'running' || settings.volume < 0.02 || activeVoices >= 10) return;
     const nb = getNoiseBuf(); if (!nb) return;
-    const t = audioCtx.currentTime;
-    const ns = audioCtx.createBufferSource(), f = audioCtx.createBiquadFilter(), g = audioCtx.createGain();
-    ns.buffer = nb; f.type = 'bandpass'; f.frequency.setValueAtTime(freq, t); f.frequency.exponentialRampToValueAtTime(Math.max(180, freq * 0.45), t + dur); f.Q.value = q;
-    g.gain.setValueAtTime(vol * settings.volume, t); g.gain.exponentialRampToValueAtTime(0.001, t + dur);
-    ns.connect(f).connect(g).connect(audioCtx.destination);
-    ns.start(t); ns.stop(t + dur + 0.02);
+    activeVoices++;
+    try {
+      const t = audioCtx.currentTime;
+      const ns = audioCtx.createBufferSource(), f = audioCtx.createBiquadFilter(), g = audioCtx.createGain();
+      ns.buffer = nb; f.type = 'bandpass'; f.frequency.setValueAtTime(freq, t); f.frequency.exponentialRampToValueAtTime(Math.max(180, freq * 0.45), t + dur); f.Q.value = q;
+      g.gain.setValueAtTime(vol * settings.volume, t); g.gain.exponentialRampToValueAtTime(0.001, t + dur);
+      ns.connect(f).connect(g).connect(audioCtx.destination);
+      ns.onended = () => { activeVoices = Math.max(0, activeVoices - 1); try { ns.disconnect(); f.disconnect(); g.disconnect(); } catch {} };
+      ns.start(t); ns.stop(t + dur + 0.02);
+    } catch { activeVoices = Math.max(0, activeVoices - 1); }
   }
 
-  const sfx = {
+  const _sfxRaw = {
     whoosh: (h) => { playTone(h ? 340 : 580, h ? 95 : 175, h ? 0.16 : 0.1, 'triangle', 0.15); if (h) playNoiseBurst(0.11, 1100, 1.4, 0.11); },
     bend: () => { playTone(320, 680, 0.14, 'sine', 0.14); playTone(180, 90, 0.18, 'triangle', 0.16); },
     waterWhip: () => { playNoiseBurst(0.18, 1650, 2.2, 0.24); playTone(480, 175, 0.16, 'sine', 0.18); playTone(760, 290, 0.12, 'triangle', 0.12); },
@@ -1493,7 +1660,7 @@
     awakening: () => { [112, 168, 224, 336].forEach((f, i) => playTone(f, f * 1.18, 0.72 + i * 0.08, i % 2 ? 'sawtooth' : 'sine', 0.11)); playNoiseBurst(0.32, 900, 1.2, 0.18); },
     subBend: (elId) => { playTone(260, 780, 0.22, 'sawtooth', 0.16); playTone(145, 55, 0.28, 'triangle', 0.24); playNoiseBurst(0.18, elId === 'fire' || elId === 'lava' ? 900 : 2100, 1.8, 0.18); },
     elemBend: (elId) => {
-      if (elId === 'water') { sfx.waterWhip(); }
+      if (elId === 'water') { _sfxRaw.waterWhip(); }
       else if (elId === 'fire') { playNoiseBurst(0.18, 820, 1.3, 0.20); playTone(380, 115, 0.20, 'sawtooth', 0.16); playTone(620, 240, 0.15, 'triangle', 0.13); }
       else if (elId === 'ice') { playTone(1480, 2120, 0.14, 'sine', 0.15); playTone(920, 580, 0.16, 'triangle', 0.12); playNoiseBurst(0.12, 3200, 2.5, 0.14); }
       else if (elId === 'earth') { playTone(105, 32, 0.24, 'triangle', 0.26); playTone(175, 52, 0.18, 'square', 0.12); playNoiseBurst(0.16, 420, 1.2, 0.20); }
@@ -1520,6 +1687,14 @@
     deny: () => playTone(190, 120, 0.09, 'square', 0.1),
     gong: () => { [142, 214, 319].forEach(f => playTone(f, f * 0.98, 0.95, 'sine', 0.09)); }
   };
+  let WIFI = null;
+  const sfx = {};
+  Object.keys(_sfxRaw).forEach(k => {
+    sfx[k] = (...args) => {
+      _sfxRaw[k](...args);
+      if (k !== 'deny' && WIFI && WIFI.isHostInMatch()) WIFI.pushEvent(['sfx', k, ...args]);
+    };
+  });
 
   // ===== BALANCED SHADOW FIGHT 2 FRAME-DATA MOVE LIBRARY + ELEMENTAL BENDING =====
   // Frame advantage on block = bs - (a - 1 + r): pokes (+1..-2 safe), checks (-2..-4 spacing), heavies/overheads (-6..-10 punishable!)
@@ -1773,6 +1948,7 @@
       ownedWeapons: ['default'], equippedWeapon: 'default',
       ownedEnchants: ['none'], equippedEnchant: 'none',
       unlockedScrolls: [],
+      playerName: 'SHADOW',
       storyIntroSeen: false, tutorialSeen: false, dojoLessonDone: false, avatarUnlocked: false,
       endlessBest: 0, allySelected: '', sandboxUnlockAll: false
     };
@@ -1793,6 +1969,7 @@
         ownedEnchants: Array.isArray(d.ownedEnchants) && d.ownedEnchants.length ? d.ownedEnchants : ['none'],
         equippedEnchant: d.equippedEnchant || 'none',
         unlockedScrolls: Array.isArray(d.unlockedScrolls) ? d.unlockedScrolls : [],
+        playerName: (typeof d.playerName === 'string' && d.playerName.trim()) ? d.playerName.trim().slice(0, 14).toUpperCase() : 'SHADOW',
         storyIntroSeen: Boolean(d.storyIntroSeen),
         tutorialSeen: Boolean(d.tutorialSeen),
         dojoLessonDone: Boolean(d.dojoLessonDone),
@@ -1805,22 +1982,58 @@
   }
   const PROG = loadSave();
   function saveProg() { try { localStorage.setItem(SAVE_KEY, JSON.stringify(PROG)); } catch {} }
+  function isAndroidOrTouch() {
+    return Boolean(window.AndroidHaptics || window.AndroidWifiDuel) || _initTouch;
+  }
   function isElUnlocked(elId) { return PROG.sandboxUnlockAll || PROG.avatarUnlocked || PROG.unlockedElements.includes(elId); }
   function hasScrollMastery(elId) { return PROG.unlockedScrolls.includes(elId); }
-  function getActiveEnchant(f) {
-    if (!f || f.id !== 'p1' || !PROG.equippedEnchant || PROG.equippedEnchant === 'none') return null;
-    return ENCHANT_CATALOG.find(e => e.id === PROG.equippedEnchant) || null;
+  function getLocalFighter() { return (match.mode === 'wifi' && WIFI && WIFI.role === 'client') ? p2 : p1; }
+  function isLocalFighter(f) { return Boolean(f && f === getLocalFighter()); }
+  function hasFighterScroll(f, elId) {
+    if (!f) return false;
+    if (match.mode === 'wifi' && f.loadout) return Boolean(f.loadout.scrollMastered);
+    return f.id === 'p1' && hasScrollMastery(elId || f.el.id);
   }
-  function p1DmgMult() { return 1 + PROG.upgrades.edge * 0.06; }
-  function p1HpBonus() { return PROG.upgrades.body * 65; }
-  function p1FlowMult() { return 1 + PROG.upgrades.flow * 0.10 + (PROG.equippedGear === 'crown' ? 0.15 : 0); }
-  function p1SpeedMult() { return PROG.equippedGear === 'cloak' ? 1.09 : 1.0; }
+  function getActiveGear(f) {
+    if (!f) return 'none';
+    if (match.mode === 'wifi' && f.loadout) return f.loadout.gear || 'none';
+    if (f.id === 'p1') return PROG.equippedGear || 'none';
+    return (match.boss && match.boss.gear) ? match.boss.gear : (match.boss && match.boss.isFinal ? 'crown' : 'none');
+  }
+  function canFighterAvatarShift(f) {
+    if (!f) return false;
+    if (match.mode === 'wifi' && f.loadout) return Boolean(f.loadout.avatarUnlocked);
+    return f.id === 'p1' && (PROG.avatarUnlocked || PROG.sandboxUnlockAll);
+  }
+  function getActiveEnchant(f) {
+    if (!f) return null;
+    const enchId = (match.mode === 'wifi' && f.loadout)
+      ? f.loadout.enchant
+      : (f.id === 'p1' ? PROG.equippedEnchant : null);
+    if (!enchId || enchId === 'none') return null;
+    return ENCHANT_CATALOG.find(e => e.id === enchId) || null;
+  }
+  function p1DmgMult() { return match.mode === 'wifi' ? 1.0 : (1 + PROG.upgrades.edge * 0.06); }
+  function p1HpBonus() { return match.mode === 'wifi' ? 0 : (PROG.upgrades.body * 65); }
+  function p1FlowMult() { return match.mode === 'wifi' ? 1.0 : (1 + PROG.upgrades.flow * 0.10 + (PROG.equippedGear === 'crown' ? 0.15 : 0)); }
+  function p1SpeedMult() { return match.mode === 'wifi' ? 1.0 : (PROG.equippedGear === 'cloak' ? 1.09 : 1.0); }
+  function fighterFlowMult(f) {
+    if (match.mode === 'wifi') return getActiveGear(f) === 'crown' ? 1.15 : 1.0;
+    return f.id === 'p1' ? p1FlowMult() : ((match.boss && match.boss.magicGain) || 1);
+  }
+  function fighterSpeedMult(f) {
+    if (match.mode === 'wifi') return getActiveGear(f) === 'cloak' ? 1.09 : 1.0;
+    return f.id === 'p1' ? p1SpeedMult() : (f.phase2 ? 1.14 : 1);
+  }
   function getWeaponSpec(f) {
     if (f.disarmed) {
       return { id: 'bare', name: 'Barehanded', wType: 'bare', reach: 108, speedMod: 0.85, dmgMod: 0.78, perk: '' };
     }
-    if (f.id === 'p1' && PROG.equippedWeapon && PROG.equippedWeapon !== 'default') {
-      const w = WEAPON_CATALOG.find(x => x.id === PROG.equippedWeapon);
+    const wId = (match.mode === 'wifi' && f.loadout)
+      ? f.loadout.weapon
+      : (f.id === 'p1' ? PROG.equippedWeapon : 'default');
+    if (wId && wId !== 'default') {
+      const w = WEAPON_CATALOG.find(x => x.id === wId);
       if (w) return { id: w.id, name: w.name, wType: w.wType, reach: w.reach, speedMod: w.speedMod, dmgMod: w.dmgMod, perk: w.perk || '' };
     }
     return { id: 'default', name: f.el.weapon, wType: f.el.wType, reach: f.el.reach, speedMod: f.el.speedMod, dmgMod: f.el.dmgMod, perk: '' };
@@ -1899,6 +2112,7 @@
       id, el, x: id === 'p1' ? 405 : 875, y: GROUND_Y, vx: 0, vy: 0, facing: id === 'p1' ? 1 : -1,
       hp: el.hp, maxHp: el.hp, trailHp: el.hp, magic: 55,
       poise: 100, maxPoise: 100,
+      customName: '', loadout: null,
       octopusF: 0, octopusCd: 0, octopusGrabReady: false, octopusGrabCd: 0, octopusSwinging: false, airScooterF: 0, scooterHitCd: 0, fireJetF: 0, seismicWaveF: 0, gauntletsF: 0, frozenPrisonF: 0, irohBeamReady: false, stillF: 0,
       dizzied: false, dizzyF: 0,
       phase2: false, phase2Used: false,
@@ -1925,6 +2139,7 @@
   const match = {
     mode: 'duel', campaignStageIdx: -1, boss: null, inMenu: true, endlessWave: 0,
     tutorialStep: 0, tutorialDone: false,
+    wifiBiome: '', finishTarget: 'p2', wifiRematchP1: false, wifiRematchP2: false,
     round: 1, p1W: 0, p2W: 0, toWin: 2, timer: 99, tTick: 0, roundElapsed: 0, paused: false,
     screen: 'fighting', intro: 64, over: 0, winner: null,
     finishHim: false, finishF: 0, eclipseFinished: false,
@@ -1949,8 +2164,11 @@
     match.styleRank = p >= 100 ? 'AVATAR' : p >= 76 ? 'S' : p >= 54 ? 'A' : p >= 34 ? 'B' : p >= 18 ? 'C' : p >= 8 ? 'D' : '';
   }
 
-  function showBanner(text, sub, color, dur = 64, isUlt = false) { match.banner = { text, sub, color, f: dur, isUlt }; }
-  function pushCallout(text, color, x, y) {
+  function showBanner(text, sub, color, dur = 64, isUlt = false, fromNet = false) {
+    match.banner = { text, sub, color, f: dur, isUlt };
+    if (!fromNet && WIFI && WIFI.isHostInMatch()) WIFI.pushEvent(['ban', text, sub || '', color || '#ffd685', dur, isUlt ? 1 : 0]);
+  }
+  function pushCallout(text, color, x, y, fromNet = false) {
     let cy = y;
     for (let guard = 0; guard < 6; guard++) {
       const hit = match.callouts.some(c => c.f > 8 && Math.abs(c.x - x) < 230 && Math.abs(c.y - cy) < 26);
@@ -1960,16 +2178,17 @@
     cy = Math.max(82, cy);
     match.callouts.push({ text, color, x, y: cy, f: 46, max: 46 });
     if (match.callouts.length > 10) match.callouts.shift();
+    if (!fromNet && WIFI && WIFI.isHostInMatch()) WIFI.pushEvent(['cal', text, color, Math.round(x), Math.round(cy)]);
   }
 
   function resetFighter(f, full) {
     f.x = f.id === 'p1' ? 405 : 875; f.y = GROUND_Y; f.vx = 0; f.vy = 0;
     f.facing = f.id === 'p1' ? 1 : -1;
     const bossHpMult = (f.id === 'p2' && match.boss) ? match.boss.hpMult : 1;
-    const bonusHp = f.id === 'p1' ? p1HpBonus() : 0;
+    const bonusHp = (match.mode === 'wifi') ? 0 : (f.id === 'p1' ? p1HpBonus() : 0);
     f.maxHp = Math.round(f.el.hp * bossHpMult + bonusHp); f.hp = f.maxHp; f.trailHp = f.maxHp;
     f.magic = full ? 55 : Math.min(100, Math.max(55, f.magic * 0.6 + 30));
-    f.maxPoise = 100 + (f.id === 'p1' ? PROG.upgrades.body * 8 : (match.boss ? 20 : 0));
+    f.maxPoise = (match.mode === 'wifi') ? 100 : (100 + (f.id === 'p1' ? PROG.upgrades.body * 8 : (match.boss ? 20 : 0)));
     f.poise = f.maxPoise;
     f.octopusF = 0; f.octopusCd = 0; f.octopusGrabReady = false; f.octopusGrabCd = 0; f.octopusSwinging = false; f.airScooterF = 0; f.scooterHitCd = 0; f.fireJetF = 0; f.seismicWaveF = 0; f.gauntletsF = 0; f.frozenPrisonF = 0; f.irohBeamReady = false; f.stillF = 0;
     f.dizzied = false; f.dizzyF = 0;
@@ -1980,7 +2199,7 @@
     f.fireStreak = 0; f.fireStreakT = 0; f.rockArmorF = 0; f.reflectStanceF = 0;
     f.disarmed = false; f.wallSplatted = false; f.chargingBend = false; f.bendChargeF = 0;
     f.multiHitsLeft = 0; f.multiHitCd = 0;
-    f.rockReady = (f.el.id === 'earth') || (f.id === 'p1' && PROG.upgrades.body >= 3);
+    f.rockReady = (f.el.id === 'earth') || (match.mode !== 'wifi' && f.id === 'p1' && PROG.upgrades.body >= 3);
     f.avengerF = 0; f.mirrorF = 0; f.desperate = false;
     f.invisible = false; f.bossTimer = 0; f.lastFrameAdv = ''; f.lastMoveName = '';
     if (full) f.enlightUsed = false;
@@ -2003,7 +2222,7 @@
     const tip = document.getElementById('first-tip');
     if (tipHideTimer) { clearTimeout(tipHideTimer); tipHideTimer = null; }
     if (tip) {
-      if (!PROG.tutorialSeen && !isTouchDevice() && match.mode !== 'tutorial') {
+      if (!PROG.tutorialSeen && !isTouchDevice() && match.mode !== 'tutorial' && match.mode !== 'wifi') {
         PROG.tutorialSeen = true; saveProg();
         tip.classList.remove('hidden', 'fade-out');
         tipHideTimer = setTimeout(dismissFirstTip, 4200);
@@ -2057,23 +2276,31 @@
     match.tutorialStep = 0; match.tutorialDone = false;
     match.mutator = opts.mutator || null;
     match.dailyTrial = Boolean(opts.dailyTrial);
+    match.wifiBiome = opts.wifiBiome || '';
+    match.finishTarget = 'p2';
+    match.wifiRematchP1 = false; match.wifiRematchP2 = false;
     match.mutTimer = 0;
     match.finisherAnim = null;
     match.awakening = null;
-    p1.el = ELEMENTS[e1];
-    p2.el = ELEMENTS[bossStage ? bossStage.el : e2];
+    p1.el = ELEMENTS[e1] || ELEMENTS.water;
+    p2.el = ELEMENTS[bossStage ? bossStage.el : e2] || ELEMENTS.fire;
+    p1.customName = opts.p1Name || '';
+    p2.customName = opts.p2Name || '';
+    p1.loadout = opts.p1Loadout || null;
+    p2.loadout = opts.p2Loadout || null;
     p2.avatarElIdx = 0;
     if (bossStage && typeof bossStage.theme === 'number') {
       themeIdx = bossStage.theme;
     }
     // Campaign Masters fight Best of 5 (3 rounds to win)!
-    match.toWin = (opts.mode === 'dojo' || opts.mode === 'tutorial') ? 999 : (bossStage ? 3 : (opts.mode === 'endless' ? 1 : (settings.format === 'bo3' ? 2 : settings.format === 'bo5' ? 3 : 999)));
+    match.toWin = opts.toWin || ((opts.mode === 'dojo' || opts.mode === 'tutorial') ? 999 : (bossStage ? 3 : (opts.mode === 'endless' ? 1 : (settings.format === 'bo3' ? 2 : settings.format === 'bo5' ? 3 : 999))));
     match.round = 1; match.p1W = 0; match.p2W = 0; match.winner = null; match.paused = false;
     match.finishHim = false; match.finishF = 0; match.eclipseFinished = false;
     match.stylePts = 0; match.styleRank = ''; match.styleT = 0; match.lastCat = '';
     match.maxComboP1 = 0; match.headHitsP1 = 0;
     match.p1Blocked = false; match.p1QuickBends = 0; match.p1AirWins = false;
     match.p1WallSplats = 0; match.p1Clashes = 0; match.p1Reactions = 0; match.allyUsed = false;
+    lastE1 = ''; lastE2 = ''; lastSubKey = ''; lastWepIco = ''; lastBanKey = ''; lastJw = ''; lastPingTxt = ''; lastLocalMagEl = '';
     enterBattleUI();
     buildBackdrop();
     resetFighter(p1, true); resetFighter(p2, true);
@@ -2103,11 +2330,13 @@
     ];
     bladeClash = null; bladeClashCd = 0;
     hitstop = 0; slowMoFrames = 0; dramaticZoom = 0; ultDimFrames = 0; stormFlashFrames = 0; inkFlashF = 0;
-    match.finishHim = false; match.finishF = 0; match.eclipseFinished = false;
+    match.finishHim = false; match.finishF = 0; match.eclipseFinished = false; match.finishTarget = 'p2';
     match.finisherAnim = null; match.awakening = null; match.mutTimer = 0;
     match.timer = 99; match.tTick = 0; match.roundElapsed = 0; match.intro = 56; match.over = 0;
     match.c1 = 0; match.c1Live = false; match.c2 = 0; match.c2Live = false; match.callouts = []; match.screen = 'fighting';
-    if (match.mode === 'endless') {
+    if (match.mode === 'wifi') {
+      showBanner(`ROUND ${match.round}`, `${getFighterDisplayName('p1')} VS ${getFighterDisplayName('p2')} · FIRST TO ${match.toWin}`, '#7ce8ff', 44);
+    } else if (match.mode === 'endless') {
       const mSub = match.mutator ? `${p2.el.fighter} · ${match.mutator.name}` : p2.el.fighter;
       showBanner(`SHADOW TOWER · WAVE ${match.endlessWave}`, mSub, match.mutator ? match.mutator.col : p2.el.glow, 48);
     } else if (match.dailyTrial && match.mutator) {
@@ -2129,31 +2358,32 @@
       else { f.lastTapX = x; f.lastTapF = simFrame; }
     }
     f.prevX = x; f.dir = { x, y };
-    if (f.id === 'p1') updateStickArrows(x, y);
+    if (isLocalFighter(f)) updateStickArrows(x, y);
   }
   function pressBtn(f, btn) {
     if (f.held.has(btn)) return;
     f.held.add(btn);
     // Blade-Lock Weapon Clash tug-of-war mashing!
     if (bladeClash && (btn === 'punch' || btn === 'kick' || btn === 'weapon' || btn === 'magic' || btn === 'subbend')) {
-      bladeClash.meter = Math.max(-100, Math.min(100, bladeClash.meter + (f.id === 'p1' ? 16 : -14)));
+      const push = match.mode === 'wifi' ? (f.id === 'p1' ? 15 : -15) : (f.id === 'p1' ? 16 : -14);
+      bladeClash.meter = Math.max(-100, Math.min(100, bladeClash.meter + push));
       const mx = (p1.x + p2.x) * 0.5, my = Math.min(p1.y, p2.y) - 118;
       spawnSparks(mx, my, f.el.glow, '#ffffff', 0.85);
       sfx.guard(true);
-      if (f.id === 'p1') haptic('light');
+      if (isLocalFighter(f)) haptic('light');
       return;
     }
     if (btn === 'block') { f.guardFrame = simFrame; return; }
     if (btn === 'magic') {
       if (f.magic < 35) {
-        if (f.id === 'p1') { triggerDenyShake(document.getElementById('btn-magic')); sfx.deny(); }
+        if (isLocalFighter(f)) { triggerDenyShake(document.getElementById('btn-magic')); sfx.deny(); }
         return;
       }
     }
     if (btn === 'subbend') {
-      const need = (f.id === 'p1' && hasScrollMastery(f.el.id)) ? 35 : 45;
+      const need = hasFighterScroll(f, f.el.id) ? 35 : 45;
       if (f.magic < need) {
-        if (f.id === 'p1') { triggerDenyShake(document.getElementById('btn-sub')); sfx.deny(); }
+        if (isLocalFighter(f)) { triggerDenyShake(document.getElementById('btn-sub')); sfx.deny(); }
         return;
       }
     }
@@ -2192,7 +2422,7 @@
   function rectsHit(a, b) { return a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y; }
 
   // ===== DRAMATIC AVATAR BENDING SPAWNERS =====
-  function spawnSparks(x, y, c1, c2, scale = 1, shard = false) {
+  function spawnSparks(x, y, c1, c2, scale = 1, shard = false, fromNet = false) {
     const n = settings.vfx === 'low' ? 6 : Math.round(20 * scale);
     for (let i = 0; i < n; i++) {
       const a = (Math.PI * 2 * i) / n + (Math.random() - 0.5) * 0.5;
@@ -2200,6 +2430,9 @@
       particles.push({ x, y, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp - 1.4, sz: (3.5 + Math.random() * 6) * scale, c: i % 3 === 0 ? c2 : c1, age: 0, max: 16 + Math.random() * 16, g: 0.22, t: shard ? 'shard' : 'spark' });
     }
     particles.push({ x, y, vx: 0, vy: 0, sz: 20 * scale, c: c2, age: 0, max: 15, g: 0, t: 'ring' });
+    if (!fromNet && WIFI && WIFI.isHostInMatch() && scale >= 0.75) {
+      WIFI.pushEvent(['spk', Math.round(x), Math.round(y), c1, c2, +scale.toFixed(2), shard ? 1 : 0]);
+    }
   }
   function spawnDust(x, y, dx = 0, n = 8, color = '#9aa6ba') {
     if (settings.vfx === 'low') return;
@@ -2496,7 +2729,7 @@
       } else {
         // ATLA SIGNATURE (TAP / FWD) — Eclipse Swap (Noob Saibot Pincer!): spawns a REAL pitch-black attacking silhouette shadow clone that sprints & slashes from the front while YOU teleport behind the enemy!
         const originX = f.x, originFacing = opp.x >= f.x ? 1 : -1;
-        decoyClones.push({ owner: f.id, x: originX, y: GROUND_Y, facing: originFacing, vx: originFacing * 11.5, f: 110, max: 110, swung: false, swingF: 0, el, wType: getWeaponSpec(f).wType, gear: f.id === 'p1' ? (PROG.equippedGear || 'none') : (match.boss ? (match.boss.gear || 'none') : 'none') });
+        decoyClones.push({ owner: f.id, x: originX, y: GROUND_Y, facing: originFacing, vx: originFacing * 11.5, f: 110, max: 110, swung: false, swingF: 0, el, wType: getWeaponSpec(f).wType, gear: getActiveGear(f) });
         if (decoyClones.length > 2) decoyClones.shift();
         const tx = Math.max(ARENA_L + 35, Math.min(ARENA_R - 35, opp.x - opp.facing * 92));
         f.x = tx; f.facing = opp.x >= f.x ? 1 : -1; f.inv = 14; f.afterTimer = 18;
@@ -2535,7 +2768,7 @@
     const el = f.el, dir = opp && Math.abs(opp.x - f.x) > 8 ? (opp.x >= f.x ? 1 : -1) : f.facing;
     f.facing = dir;
     const art = SUB_BEND_ARTS[el.id] || SUB_BEND_ARTS.water;
-    const mastered = (f.id === 'p1' && hasScrollMastery(el.id));
+    const mastered = hasFighterScroll(f, el.id);
     const gmMult = mastered ? 1.35 : 1.0;
     const tag = mastered ? `GRANDMASTER ${art.lbl}!` : `${art.lbl}!`;
     if (f.id === 'p1') { match.p1QuickBends++; addStyle(16, 'bend'); }
@@ -2889,15 +3122,14 @@
       f.poise = Math.min(f.maxPoise, f.poise + 0.26);
     }
     f.desperate = f.hp > 0 && f.hp / f.maxHp < 0.2;
-    const bossMagMult = (f.id === 'p2' && match.boss) ? (match.boss.magicGain || 1) : 1;
-    const styleFlow = (f.id === 'p1' && match.styleRank) ? (1 + ({ D: 0.04, C: 0.08, B: 0.14, A: 0.22, S: 0.30, AVATAR: 0.42 }[match.styleRank] || 0)) : 1;
+    const styleFlow = (match.mode !== 'wifi' && f.id === 'p1' && match.styleRank) ? (1 + ({ D: 0.04, C: 0.08, B: 0.14, A: 0.22, S: 0.30, AVATAR: 0.42 }[match.styleRank] || 0)) : 1;
     const mutMagMult = (match.mutator && match.mutator.id === 'supremacy') ? 3.0 : 1.0;
-    if (canCtrl && f.hp > 0) f.magic = Math.min(100, f.magic + 0.095 * mutMagMult * (f.id === 'p1' ? p1FlowMult() * styleFlow : bossMagMult));
+    if (canCtrl && f.hp > 0) f.magic = Math.min(100, f.magic + 0.095 * mutMagMult * fighterFlowMult(f) * styleFlow);
 
     const isIceFloor = Boolean(match.boss && match.boss.hazardId === 'glacier_floor') || hazards.some(h => h.kind === 'ice' && Math.abs(f.x - h.x) < h.hw);
     const isTailwind = Boolean(match.boss && match.boss.hazardId === 'gale_tailwind' && (simFrame % 240 < 90));
 
-    let spdMul = (settings.tempo === 'fast' ? 1.05 : 0.78) * (f.id === 'p1' ? p1SpeedMult() : (f.phase2 ? 1.14 : 1)), startMul = f.phase2 ? 0.90 : 1;
+    let spdMul = (settings.tempo === 'fast' ? 1.05 : 0.78) * fighterSpeedMult(f), startMul = f.phase2 ? 0.90 : 1;
     if (f.airScooterF > 0) spdMul *= 1.65;
     let isRooted = f.frozenPrisonF > 0;
     for (const k of Object.keys(f.statuses)) {
@@ -2964,13 +3196,13 @@
 
     // Helper: Execute Secret ATLA Sub-Bending Art (45% meter, or 35% + 35% power with Grandmaster Scroll!)
     const triggerSubBend = () => {
-      const cost = (f.id === 'p1' && hasScrollMastery(f.el.id)) ? 35 : 45;
+      const cost = hasFighterScroll(f, f.el.id) ? 35 : 45;
       if (f.magic >= cost) {
         f.magic = Math.max(0, f.magic - cost);
         startMove(f, 'sub_bend', startMul);
         return true;
       }
-      if (f.id === 'p1') { triggerDenyShake(document.getElementById('btn-sub')); sfx.deny(); }
+      if (isLocalFighter(f)) { triggerDenyShake(document.getElementById('btn-sub')); sfx.deny(); }
       return false;
     };
 
@@ -3358,7 +3590,7 @@
 
     if (guarding) {
       const perf = activeGuard && (simFrame - def.guardFrame <= 10 || def.reflectStanceF > 0);
-      const guardMax = def.id === 'p1' && PROG.equippedGear === 'kasa' ? 4 : 3;
+      const guardMax = getActiveGear(def) === 'kasa' ? 4 : 3;
       const atkEnch = getActiveEnchant(atk);
       // Guard Poise System: heavy blocks, Earth Stone Gauntlets & Seismic-Crush Seal drain poise -> GUARD SHATTER!
       const chillWear = def.statuses.chill ? 1 : 0;
@@ -3388,8 +3620,8 @@
       const chipMult = (def.statuses.burn || def.statuses.scorched ? 1.45 : 1) * (def.statuses.chill ? 1.35 : 1) * ((m.wep && wSpec.perk === 'naginata_chip') ? 1.4 : 1);
       const chip = perf ? 0 : Math.round(m.chip * chipMult);
       def.hp = Math.max(1, def.hp - chip);
-      def.magic = Math.min(100, def.magic + (perf ? 18 : 9) * (def.id === 'p1' ? p1FlowMult() : 1));
-      atk.magic = Math.min(100, atk.magic + m.mg * 0.5 * (atk.id === 'p1' ? p1FlowMult() : 1));
+      def.magic = Math.min(100, def.magic + (perf ? 18 : 9) * fighterFlowMult(def));
+      atk.magic = Math.min(100, atk.magic + m.mg * 0.5 * fighterFlowMult(atk));
       sfx.guard(perf);
       spawnSparks(ix, iy, perf ? def.el.glow : '#d8ecff', '#ffffff', perf ? 1.3 : 0.9, perf);
       hitstop = Math.max(hitstop, Math.round((perf ? 4 : 3) * settings.feedback));
@@ -3429,7 +3661,7 @@
     if (atk.phase2) mult *= 1.12;
     if (def.id === 'p2' && match.boss && match.boss.defMult) mult /= match.boss.defMult;
     let crit = m.crit;
-    if (atk.id === 'p1' && isProj && m.crit) mult *= p1FlowMult();
+    if (isProj && m.crit) mult *= fighterFlowMult(atk);
 
     // Toph's Stone Gauntlets: +30% melee impact damage!
     if (!isProj && atk.gauntletsF > 0) {
@@ -3485,12 +3717,12 @@
 
     const isHeadHit = Boolean(m.headHit) && def.state !== 'crouch' && def.state !== 'grounded' && iy <= def.y - 110;
     if (isHeadHit) {
-      mult *= (atk.id === 'p1' && PROG.equippedGear === 'kabuto') ? 1.48 : 1.35;
+      mult *= getActiveGear(atk) === 'kabuto' ? 1.48 : 1.35;
       if (atk.id === 'p1') { match.headHitsP1++; addStyle(12, 'head'); }
       inkFlashF = Math.max(inkFlashF, 3);
       pushCallout('HEAD HIT!', '#ffe066', def.x, def.y - 212); sfx.headHit();
     }
-    if (crit && atk.id === 'p1' && PROG.equippedGear === 'kabuto' && !isHeadHit) mult *= 1.10;
+    if (crit && getActiveGear(atk) === 'kabuto' && !isHeadHit) mult *= 1.10;
     def.hitH = isHeadHit ? 'head' : (m.h === 'low' ? 'low' : m.h === 'high' ? 'high' : 'mid');
     if (atk.desperate) mult *= 1.25;
     if (atk.mirrorF > 0) { mult *= 1.5; atk.mirrorF = 0; pushCallout('MIRROR COUNTER!', '#80f4ff', atk.x, atk.y - 190); }
@@ -3579,7 +3811,7 @@
       sfx.gong(); sfx.awakening(); haptic('ko');
       spawnSparks(ix, iy, atk.el.glow, '#ffffff', 2.6, atk.el.id === 'ice');
       if (FX3D) { FX3D.spawnFloorRing(def.x, atk.el.glow, 290, 38); FX3D.flashSky(atk.el.glow, 0.50); }
-      showBanner(execTitle, '+75 EXECUTION COINS', atk.el.glow, 88, true);
+      showBanner(execTitle, match.mode === 'wifi' ? `${getFighterDisplayName(atk.id)} EXECUTION` : '+75 EXECUTION COINS', atk.el.glow, 88, true);
       return;
     }
 
@@ -3595,15 +3827,16 @@
       return;
     }
 
-    // Mortal Kombat "FINISH THEM!" Trigger on Match-Deciding Round when Player 1 drops Opponent to 0!
+    // Mortal Kombat "FINISH THEM!" Trigger on Match-Deciding Round (Symmetric for BOTH P1 & P2 in Wi-Fi Duet!)
     const endlessMode = settings.format === 'endless' || match.mode === 'dojo' || match.mode === 'tutorial' || match.mode === 'endless';
-    if (nextHp <= 0 && !endlessMode && atk.id === 'p1' && (match.p1W + 1 >= match.toWin) && !match.finishHim) {
+    const atkMatchPt = atk.id === 'p1' ? (match.p1W + 1 >= match.toWin) : (match.mode === 'wifi' && match.p2W + 1 >= match.toWin);
+    if (nextHp <= 0 && !endlessMode && atkMatchPt && !match.finishHim) {
       def.hp = 1; def.trailHp = 1; def.dizzied = true; def.dizzyF = 0; def.frozenPrisonF = 0;
       def.state = 'idle'; def.sf = 0; def.vx = 0; def.vy = 0; def.y = GROUND_Y; def.inv = 0; def.move = null; def.moveId = null;
-      match.finishHim = true; match.finishF = 150;
+      match.finishHim = true; match.finishF = 150; match.finishTarget = def.id;
       slowMoFrames = 14; dramaticZoom = 0.11; shake = Math.max(shake, 14 * settings.feedback);
       sfx.gong(); haptic('heavy');
-      showBanner('FINISH THEM!', 'LAND ANY STRIKE FOR ELEMENTAL EXECUTION · +75 COINS', '#ff4d36', 110, true);
+      showBanner('FINISH THEM!', match.mode === 'wifi' ? `${getFighterDisplayName(atk.id)} — LAND ANY STRIKE!` : 'LAND ANY STRIKE FOR ELEMENTAL EXECUTION · +75 COINS', '#ff4d36', 110, true);
       return;
     }
 
@@ -3613,8 +3846,8 @@
     def.hp = Math.max(0, nextHp); def.flash = 7; def.guardWear = 0;
     const saiBonus = (m.wep && wSpec.perk === 'sai_flow') ? 7 : 0;
     const fireFlow = atk.el.id === 'fire' && atk.fireStreak >= 2 ? 1.15 : 1.0;
-    atk.magic = Math.min(100, atk.magic + (m.mg + saiBonus) * fireFlow * (atk.id === 'p1' ? p1FlowMult() : 1));
-    def.magic = Math.min(100, def.magic + Math.round(m.mg * 0.72 * (def.id === 'p1' ? p1FlowMult() : 1)));
+    atk.magic = Math.min(100, atk.magic + (m.mg + saiBonus) * fireFlow * fighterFlowMult(atk));
+    def.magic = Math.min(100, def.magic + Math.round(m.mg * 0.72 * fighterFlowMult(def)));
     if (m.wep && wSpec.perk === 'sickle_drain') {
       const drained = Math.min(14, def.magic);
       def.magic -= drained; atk.magic = Math.min(100, atk.magic + drained);
@@ -3790,6 +4023,7 @@
       if (simFrame % 125 === 0) pressBtn(p1, 'kick');
       return;
     }
+    if (match.mode === 'wifi') return;
     if (!canFight || p2.state === 'ko' || p2.state === 'victory' || p2.state === 'grabbed') { setDir(p2, 0, 0); return; }
     if (match.mode === 'tutorial') {
       ['punch','kick','weapon','magic','subbend','evade','block'].forEach(b => releaseBtn(p2, b));
@@ -4053,6 +4287,10 @@
 
   // ===== SIMULATION STEP =====
   function stepSim() {
+    if (WIFI && WIFI.isClientInMatch()) {
+      WIFI.stepClientFrame();
+      return;
+    }
     simFrame++;
     tickMusic();
     if (dramaticZoom > 0.001) dramaticZoom *= 0.94; else dramaticZoom = 0;
@@ -4222,8 +4460,10 @@
     if (bladeClash) {
       bladeClash.f--;
       dramaticZoom = 0.14;
-      const aiPush = (match.boss ? 1.55 : 1.15) * (p2.phase2 ? 1.25 : 1);
-      if (simFrame % 6 === 0) bladeClash.meter = Math.max(-100, bladeClash.meter - aiPush * 4.5);
+      if (match.mode !== 'wifi') {
+        const aiPush = (match.boss ? 1.55 : 1.15) * (p2.phase2 ? 1.25 : 1);
+        if (simFrame % 6 === 0) bladeClash.meter = Math.max(-100, bladeClash.meter - aiPush * 4.5);
+      }
       if (simFrame % 3 === 0) {
         const mx = (p1.x + p2.x) * 0.5, my = Math.min(p1.y, p2.y) - 115;
         spawnSparks(mx, my, '#fde047', '#ffffff', 1.15);
@@ -4242,7 +4482,7 @@
         sfx.bladeClash(); sfx.slam(); sfx.gong(); haptic('heavy'); shake = Math.max(shake, 18 * settings.feedback);
         spawnSparks((p1.x + p2.x) * 0.5, GROUND_Y - 115, winF.el.glow, '#ffffff', 2.4);
         if (FX3D) { FX3D.spawnFloorRing((p1.x + p2.x) * 0.5, winF.el.glow, 240, 28); FX3D.spawnBurst((p1.x + p2.x) * 0.5, GROUND_Y - 115, '#fde047', 18, true); }
-        pushCallout(p1Won ? 'CLASH VICTORY!' : 'CLASH BROKEN!', p1Won ? '#fde047' : '#ff6b4a', winF.x, winF.y - 205);
+        pushCallout(match.mode === 'wifi' ? `${getFighterDisplayName(winF.id)} CLASH WIN!` : (p1Won ? 'CLASH VICTORY!' : 'CLASH BROKEN!'), p1Won ? '#fde047' : '#ff6b4a', winF.x, winF.y - 205);
       }
       return;
     }
@@ -4276,7 +4516,8 @@
       match.roundElapsed++;
       if (match.finishHim) {
         if (--match.finishF <= 0) {
-          match.finishHim = false; p2.dizzied = false; p2.hp = 0; p2.state = 'ko';
+          const finDef = match.finishTarget === 'p1' ? p1 : p2;
+          match.finishHim = false; finDef.dizzied = false; finDef.hp = 0; finDef.state = 'ko';
         }
       } else if (match.intro > 0) {
         match.intro--;
@@ -4324,8 +4565,8 @@
 
     updateAI(canFight && !match.finishHim);
     tickBossRules(canFight && !match.finishHim);
-    tickFighter(p1, p2, canFight);
-    tickFighter(p2, p1, canFight && !match.finishHim);
+    tickFighter(p1, p2, canFight && !(match.finishHim && match.finishTarget === 'p1'));
+    tickFighter(p2, p1, canFight && !(match.finishHim && match.finishTarget === 'p2'));
     animateFighter(p1);
     animateFighter(p2);
 
@@ -4944,6 +5185,10 @@
   }
 
   function getFighterDisplayName(who) {
+    if (match.mode === 'wifi') {
+      const f = who === 'p1' ? p1 : p2;
+      return (f.customName && f.customName.trim()) ? f.customName.trim().toUpperCase() : f.el.fighter;
+    }
     if (who === 'p1') return match.mode === 'campaign' ? (PROG.avatarUnlocked ? 'AVATAR SHADOW' : 'HOLLOW SHADOW') : p1.el.fighter;
     return match.boss ? match.boss.title : p2.el.fighter;
   }
@@ -5009,6 +5254,20 @@
 
     if (match.p1W >= match.toWin || match.p2W >= match.toWin) {
       match.screen = 'match_over'; match.winner = match.p1W >= match.toWin ? 'p1' : 'p2';
+      if (match.mode === 'wifi') {
+        match.wifiRematchP1 = false; match.wifiRematchP2 = false;
+        const winName = getFighterDisplayName(match.winner);
+        const hostReward = match.winner === 'p1' ? 110 : 55;
+        PROG.coins += hostReward;
+        saveProg();
+        const subWifi = `${match.p1W} — ${match.p2W}${match.eclipseFinished ? ' · EXECUTION' : ''} · WI-FI DUET`;
+        showBanner(`${winName} WINS`, subWifi, match.winner === 'p1' ? '#ffae34' : '#4be3ff', 99999);
+        if (WIFI && WIFI.isHostInMatch()) {
+          WIFI.sendRaw({ t: 'over', w: match.winner, w1: match.p1W, w2: match.p2W, ex: match.eclipseFinished ? 1 : 0 });
+        }
+        haptic('ko');
+        return;
+      }
       const styleBonus = ({ D: 10, C: 20, B: 35, A: 55, S: 80, AVATAR: 120 }[match.styleRank] || 0);
       const finisherBonus = match.eclipseFinished ? 75 : 0;
       let reward = match.winner === 'p1' ? 120 : 35;
@@ -5082,7 +5341,8 @@
   const ctx = canvas.getContext('2d');
   let gameDpr = 1;
   function syncGameCanvasDpr() {
-    gameDpr = Math.min(2, Math.max(1, window.devicePixelRatio || 1));
+    const cap = isAndroidOrTouch() ? 1.5 : 2;
+    gameDpr = Math.min(cap, Math.max(1, window.devicePixelRatio || 1));
     const tw = Math.round(W * gameDpr), th = Math.round(H * gameDpr);
     if (canvas.width !== tw || canvas.height !== th) {
       canvas.width = tw; canvas.height = th;
@@ -5171,6 +5431,7 @@
 
   function getActiveBiome() {
     if (match.inMenu) return 'eclipse_sanctum';
+    if (match.mode === 'wifi' && match.wifiBiome) return match.wifiBiome;
     if (match.boss && match.boss.hazardId) return match.boss.hazardId;
     return themeIdx === 0 ? 'blazing_dojo' : themeIdx === 1 ? 'dew_shrine' : 'eclipse_sanctum';
   }
@@ -6753,7 +7014,7 @@
     sctx.beginPath(); sctx.moveTo(-6, 1); sctx.quadraticCurveTo(-20, 14, sx2, sy2); sctx.lineTo(sx2 + 5, sy2 + 5); sctx.quadraticCurveTo(-14, 20, -2, 8); sctx.fill();
 
     // Torso (+ Shadow Master Flowing Cloak silhouette when equipped!)
-    const activeGear = f.id === 'p1' ? PROG.equippedGear : (match.boss && match.boss.gear ? match.boss.gear : (match.boss && match.boss.isFinal ? 'crown' : 'none'));
+    const activeGear = getActiveGear(f);
     sctx.save(); sctx.translate(0, -4); sctx.rotate(p.tr);
     if (activeGear === 'cloak') {
       const cx = -18 - Math.cos(f.sash) * 58, cy = 22 + Math.sin(f.sash) * 28;
@@ -6993,9 +7254,10 @@
       ctx.globalAlpha = alpha;
       ctx.font = '800 13px system-ui, sans-serif'; ctx.textAlign = 'center';
       ctx.strokeStyle = '#05070d'; ctx.lineWidth = 3.5;
-      const lbl = f.id === 'p1' ? 'YOU' : 'FOE';
+      const isMine = isLocalFighter(f);
+      const lbl = isMine ? 'YOU' : 'FOE';
       ctx.strokeText(lbl, f.x, markerY);
-      ctx.fillStyle = f.id === 'p1' ? '#fde68a' : '#9cf4ff';
+      ctx.fillStyle = isMine ? '#fde68a' : '#9cf4ff';
       ctx.fillText(lbl, f.x, markerY);
       ctx.beginPath(); ctx.moveTo(f.x - 5, markerY + 5); ctx.lineTo(f.x + 5, markerY + 5); ctx.lineTo(f.x, markerY + 11); ctx.closePath(); ctx.fill();
       ctx.restore();
@@ -7193,13 +7455,29 @@
     const fxCanvas = document.getElementById('fx3d');
     if (!fxCanvas || typeof window.THREE === 'undefined') return null;
     const T = window.THREE;
-    let renderer;
+    const mobileGpu = isAndroidOrTouch();
+    let renderer, ctxLost = false;
     try {
-      renderer = new T.WebGLRenderer({ canvas: fxCanvas, alpha: true, antialias: true, powerPreference: 'high-performance' });
+      renderer = new T.WebGLRenderer({
+        canvas: fxCanvas, alpha: true,
+        antialias: !mobileGpu,
+        preserveDrawingBuffer: false,
+        powerPreference: mobileGpu ? 'default' : 'high-performance'
+      });
     } catch {
       fxCanvas.style.display = 'none';
       return null;
     }
+
+    fxCanvas.addEventListener('webglcontextlost', (e) => {
+      e.preventDefault();
+      ctxLost = true;
+      fxCanvas.style.display = 'none';
+    }, false);
+    fxCanvas.addEventListener('webglcontextrestored', () => {
+      ctxLost = false;
+      if (settings.fx3d) { fxCanvas.style.display = 'block'; syncQuality(); }
+    }, false);
 
     const FOV = 36;
     const CAM_Z = (H * 0.5) / Math.tan((FOV * 0.5) * Math.PI / 180); // ~1107.965 -> 1:1 pixel sync at z = 0
@@ -7210,7 +7488,8 @@
     renderer.setClearColor(0x000000, 0);
     renderer.outputColorSpace = T.SRGBColorSpace;
     const syncQuality = () => {
-      const maxDpr = settings.vfx === 'low' ? 1.25 : 1.5;
+      if (ctxLost) return;
+      const maxDpr = mobileGpu ? (settings.vfx === 'low' ? 1.0 : 1.25) : (settings.vfx === 'low' ? 1.25 : 1.5);
       const dpr = Math.min(maxDpr, Math.max(1, window.devicePixelRatio || 1));
       renderer.setPixelRatio(dpr);
       renderer.setSize(W, H, false);
@@ -7334,8 +7613,11 @@
       rings.push({ mesh, mat, active: false, age: 0, dur: 24, maxR: 180 });
     }
     let ringCursor = 0;
-    const spawnFloorRing = (wx, hexCol, maxR = 190, dur = 24) => {
-      if (!settings.fx3d) return;
+    const spawnFloorRing = (wx, hexCol, maxR = 190, dur = 24, fromNet = false) => {
+      if (!fromNet && WIFI && WIFI.isHostInMatch()) {
+        WIFI.pushEvent(['ring', Math.round(wx), hexCol || '#38d8ff', Math.round(maxR), Math.round(dur)]);
+      }
+      if (!settings.fx3d || ctxLost) return;
       const r = rings[ringCursor];
       ringCursor = (ringCursor + 1) % rings.length;
       r.active = true; r.age = 0; r.dur = dur; r.maxR = maxR;
@@ -7360,8 +7642,11 @@
       shards.push({ mesh, mat, active: false, vx: 0, vy: 0, vz: 0, rx: 0, ry: 0, rz: 0, age: 0, max: 42, scale: 1 });
     }
     let shardCursor = 0;
-    const spawnBurst = (wx, wy, hexCol, count = 16, isCrystal = true) => {
-      if (!settings.fx3d) return;
+    const spawnBurst = (wx, wy, hexCol, count = 16, isCrystal = true, fromNet = false) => {
+      if (!fromNet && WIFI && WIFI.isHostInMatch()) {
+        WIFI.pushEvent(['bst', Math.round(wx), Math.round(wy), hexCol || '#9ef6ff', count, isCrystal ? 1 : 0]);
+      }
+      if (!settings.fx3d || ctxLost) return;
       const n = Math.min(shards.length, settings.vfx === 'low' ? Math.ceil(count * 0.6) : count);
       const bx = to3X(wx), by = to3Y(wy);
       const col = new T.Color(hexCol || '#9ef6ff');
@@ -7600,17 +7885,20 @@
       skyFlashA = 0; skyFlashMesh.visible = false;
     };
     const setEnabled = (on) => {
-      fxCanvas.style.display = on ? 'block' : 'none';
-      if (!on) renderer.clear();
+      fxCanvas.style.display = (on && !ctxLost) ? 'block' : 'none';
+      if (!on && !ctxLost) { try { renderer.clear(); } catch {} }
     };
-    const flashSky = (hexCol, strength = 0.36) => {
-      if (!settings.fx3d) return;
+    const flashSky = (hexCol, strength = 0.36, fromNet = false) => {
+      if (!fromNet && WIFI && WIFI.isHostInMatch()) {
+        WIFI.pushEvent(['sky', hexCol || '#78e2ff', +strength.toFixed(2)]);
+      }
+      if (!settings.fx3d || ctxLost) return;
       skyFlashMat.color.set(hexCol || '#78e2ff');
       skyFlashA = Math.max(skyFlashA, strength);
     };
 
     const render = (clampedCamX, curZoom, camYOffset, sx, sy) => {
-      if (!settings.fx3d) return;
+      if (!settings.fx3d || ctxLost || appSuspended || document.hidden) return;
       const t = simFrame * 0.01667;
       floorUniforms.uTime.value = t;
 
@@ -8357,27 +8645,54 @@
     btnSub: document.getElementById('btn-sub'), subIcon: document.getElementById('sub-icon'), subLbl: document.getElementById('sub-lbl'),
     mutPill: document.getElementById('mutator-pill'), mutTitle: document.getElementById('mut-title'), mutDesc: document.getElementById('mut-desc'),
     styleRank: document.getElementById('style-rank'), srGrade: document.getElementById('sr-grade'), srLbl: document.getElementById('sr-lbl'),
-    btnNextBoss: document.getElementById('btn-next-boss')
+    btnNextBoss: document.getElementById('btn-next-boss'),
+    btnRematch: document.getElementById('btn-rematch'),
+    btnWifiLobbyEnd: document.getElementById('btn-wifi-lobby-end'),
+    btnArmoryEnd: document.getElementById('btn-open-armory-end'),
+    btnMenuEnd: document.getElementById('btn-to-menu-end'),
+    wifiPingPill: document.getElementById('wifi-ping-pill'),
+    wifiPingVal: document.getElementById('wifi-ping-val')
   };
-  let lastE1 = '', lastE2 = '', lastJw = '', lastWepIco = '', lastSR = '', lastBendLbl = '', lastSubKey = '', lastMutKey = '';
+  let lastE1 = '', lastE2 = '', lastJw = '', lastWepIco = '', lastSR = '', lastBendLbl = '', lastSubKey = '', lastMutKey = '', lastLocalMagEl = '', lastPingTxt = '';
   let lastB1 = '', lastB2 = '', lastC1 = -1, lastC2 = -1, lastTmr = '', lastBanKey = '';
   let lastH1 = '', lastHT1 = '', lastH2 = '', lastHT2 = '', lastM1 = '', lastM2 = '', lastP1 = '', lastP2 = '';
   const FIST_SVG = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M7 11V7a1.5 1.5 0 0 1 3 0v3M10 10V6a1.5 1.5 0 0 1 3 0v4M13 10V7a1.5 1.5 0 0 1 3 0v3M16 11V9a1.5 1.5 0 0 1 3 0v5a6 6 0 0 1-6 6h-2a5 5 0 0 1-5-5v-3.5a1.5 1.5 0 0 1 3 0"/></svg>`;
 
+  function escapeHtml(s) {
+    return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
   function syncHud() {
     if (match.inMenu) return;
-    if (lastE1 !== p1.el.id) {
-      lastE1 = p1.el.id;
+    const isWifi = match.mode === 'wifi';
+    const lf = getLocalFighter();
+    const p1Key = `${p1.el.id}:${p1.customName}:${isWifi ? (lf.id === 'p1' ? 1 : 0) : -1}`;
+    if (lastE1 !== p1Key) {
+      lastE1 = p1Key;
       elRefs.p1Crest.innerHTML = p1.el.svg; elRefs.p1Crest.style.color = p1.el.primary; elRefs.p1Crest.style.borderColor = p1.el.glow;
       elRefs.p1Crest.style.boxShadow = `0 0 14px ${p1.el.primary}88`;
-      elRefs.p1Name.textContent = getFighterDisplayName('p1');
+      elRefs.p1Name.innerHTML = escapeHtml(getFighterDisplayName('p1')) + (isWifi && lf.id === 'p1' ? '<span class="you-tag">YOU</span>' : '');
       elRefs.p1Mag.style.background = `linear-gradient(90deg, ${p1.el.primary}, ${p1.el.glow})`;
-      elRefs.magIcon.innerHTML = p1.el.svg;
-      elRefs.btnMag.style.setProperty('--mg-prim', p1.el.primary); elRefs.btnMag.style.setProperty('--mg-glow', p1.el.glow);
     }
-    const subArt = SUB_BEND_ARTS[p1.el.id] || SUB_BEND_ARTS.water;
-    const gmMastered = hasScrollMastery(p1.el.id);
-    const subKey = `${p1.el.id}:${gmMastered ? 1 : 0}`;
+    const p2Key = `${p2.el.id}:${match.boss ? match.boss.id : -1}:${p2.customName}:${isWifi ? (lf.id === 'p2' ? 1 : 0) : -1}`;
+    if (lastE2 !== p2Key) {
+      lastE2 = p2Key;
+      elRefs.p2Crest.innerHTML = p2.el.svg; elRefs.p2Crest.style.color = p2.el.primary; elRefs.p2Crest.style.borderColor = p2.el.glow;
+      elRefs.p2Crest.style.boxShadow = `0 0 14px ${p2.el.primary}88`;
+      elRefs.p2Name.innerHTML = (isWifi && lf.id === 'p2' ? '<span class="you-tag">YOU</span>' : '') + escapeHtml(getFighterDisplayName('p2'));
+      elRefs.p2Mag.style.background = `linear-gradient(270deg, ${p2.el.primary}, ${p2.el.glow})`;
+    }
+
+    // Touch buttons reflect the LOCAL player's fighter (P1 on Solo/Host, P2 on Wi-Fi Client!)
+    if (lastLocalMagEl !== lf.el.id) {
+      lastLocalMagEl = lf.el.id;
+      elRefs.magIcon.innerHTML = lf.el.svg;
+      elRefs.btnMag.style.setProperty('--mg-prim', lf.el.primary);
+      elRefs.btnMag.style.setProperty('--mg-glow', lf.el.glow);
+    }
+    const subArt = SUB_BEND_ARTS[lf.el.id] || SUB_BEND_ARTS.water;
+    const gmMastered = hasFighterScroll(lf, lf.el.id);
+    const subKey = `${lf.id}:${lf.el.id}:${gmMastered ? 1 : 0}`;
     if (elRefs.btnSub && subKey !== lastSubKey) {
       lastSubKey = subKey;
       if (elRefs.subIcon) elRefs.subIcon.innerHTML = subArt.ico;
@@ -8386,13 +8701,14 @@
       elRefs.btnSub.style.setProperty('--sb-glow', subArt.glow);
       elRefs.btnSub.classList.toggle('sub-gm', gmMastered);
     }
-    const wKey = `${PROG.equippedWeapon || 'default'}:${p1.el.id}:${p1.disarmed ? 1 : 0}`;
+    const lfWepSpec = getWeaponSpec(lf);
+    const wKey = `${lf.id}:${lfWepSpec.id}:${lf.el.id}:${lf.disarmed ? 1 : 0}`;
     if (elRefs.wepBtnIco && wKey !== lastWepIco) {
       lastWepIco = wKey;
-      if (p1.disarmed) {
+      if (lf.disarmed) {
         elRefs.wepBtnIco.innerHTML = FIST_SVG;
       } else {
-        const wObj = WEAPON_CATALOG.find(x => x.id === (PROG.equippedWeapon || 'default'));
+        const wObj = WEAPON_CATALOG.find(x => x.id === lfWepSpec.id);
         elRefs.wepBtnIco.innerHTML = (wObj && wObj.ico) ? wObj.ico : SVG_ICONS.default;
       }
     }
@@ -8406,13 +8722,21 @@
         elRefs.mutDesc.textContent = match.mutator.desc;
       }
     }
-    const p2Key = `${p2.el.id}:${match.boss ? match.boss.id : -1}`;
-    if (lastE2 !== p2Key) {
-      lastE2 = p2Key;
-      elRefs.p2Crest.innerHTML = p2.el.svg; elRefs.p2Crest.style.color = p2.el.primary; elRefs.p2Crest.style.borderColor = p2.el.glow;
-      elRefs.p2Crest.style.boxShadow = `0 0 14px ${p2.el.primary}88`;
-      elRefs.p2Name.textContent = getFighterDisplayName('p2');
-      elRefs.p2Mag.style.background = `linear-gradient(270deg, ${p2.el.primary}, ${p2.el.glow})`;
+
+    // Live Wi-Fi Ping Badge in Top HUD Center
+    if (elRefs.wifiPingPill) {
+      const pTxt = isWifi && WIFI ? (WIFI.connected ? `WIFI · ${Math.max(1, WIFI.pingMs)}ms` : 'DISCONNECTED') : '';
+      if (pTxt !== lastPingTxt) {
+        lastPingTxt = pTxt;
+        elRefs.wifiPingPill.classList.toggle('hidden', !pTxt);
+        if (pTxt) {
+          elRefs.wifiPingVal.textContent = pTxt;
+          const bad = !WIFI.connected || WIFI.pingMs > 120;
+          const warn = !bad && WIFI.pingMs > 55;
+          elRefs.wifiPingPill.classList.toggle('bad', bad);
+          elRefs.wifiPingPill.classList.toggle('warn', warn);
+        }
+      }
     }
 
     const h1 = `${Math.max(0, p1.hp / p1.maxHp * 100).toFixed(1)}%`; if (h1 !== lastH1) { lastH1 = h1; elRefs.p1Hp.style.width = h1; }
@@ -8423,22 +8747,23 @@
     const m1 = `${Math.min(100, p1.magic).toFixed(1)}%`;
     if (m1 !== lastM1) {
       lastM1 = m1; elRefs.p1Mag.style.width = m1;
-      const ultRdy = p1.magic >= 100, exRdy = p1.magic >= 35 && !ultRdy;
-      const subCost = gmMastered ? 35 : 45;
-      elRefs.p1MagW.classList.toggle('ready', ultRdy);
-      elRefs.p1MagW.classList.toggle('ex-ready', exRdy);
-      elRefs.btnMag.classList.toggle('ready', ultRdy);
-      elRefs.btnMag.classList.toggle('ex-ready', exRdy);
-      if (elRefs.btnSub) elRefs.btnSub.classList.toggle('sub-ready', p1.magic >= subCost);
+      elRefs.p1MagW.classList.toggle('ready', p1.magic >= 100);
+      elRefs.p1MagW.classList.toggle('ex-ready', p1.magic >= 35 && p1.magic < 100);
     }
-    const bl = p1.magic >= 100 ? 'ULTIMATE' : (p1.magic >= 35 ? (BEND_TRICKS[p1.el.id]?.fwd || 'BEND') : 'BEND');
-    if (elRefs.bendLbl && bl !== lastBendLbl) { lastBendLbl = bl; elRefs.bendLbl.textContent = bl; }
     const m2 = `${Math.min(100, p2.magic).toFixed(1)}%`;
     if (m2 !== lastM2) {
       lastM2 = m2; elRefs.p2Mag.style.width = m2;
       elRefs.p2MagW.classList.toggle('ready', p2.magic >= 100);
       elRefs.p2MagW.classList.toggle('ex-ready', p2.magic >= 35 && p2.magic < 100);
     }
+    const lfUltRdy = lf.magic >= 100, lfExRdy = lf.magic >= 35 && !lfUltRdy;
+    const subCost = gmMastered ? 35 : 45;
+    elRefs.btnMag.classList.toggle('ready', lfUltRdy);
+    elRefs.btnMag.classList.toggle('ex-ready', lfExRdy);
+    if (elRefs.btnSub) elRefs.btnSub.classList.toggle('sub-ready', lf.magic >= subCost);
+
+    const bl = lf.magic >= 100 ? 'ULTIMATE' : (lf.magic >= 35 ? (BEND_TRICKS[lf.el.id]?.fwd || 'BEND') : 'BEND');
+    if (elRefs.bendLbl && bl !== lastBendLbl) { lastBendLbl = bl; elRefs.bendLbl.textContent = bl; }
     const po1 = `${Math.max(0, Math.min(100, p1.poise / (p1.maxPoise || 100) * 100)).toFixed(0)}%`;
     if (elRefs.p1Poise && po1 !== lastP1) { lastP1 = po1; elRefs.p1Poise.style.width = po1; elRefs.p1PoiseW.classList.toggle('low', p1.poise / (p1.maxPoise || 100) < 0.34); }
     const po2 = `${Math.max(0, Math.min(100, p2.poise / (p2.maxPoise || 100) * 100)).toFixed(0)}%`;
@@ -8475,10 +8800,11 @@
       if (match.c2 >= 2) elRefs.c2.innerHTML = `<span class="w">COMBO</span> <span class="n">x${match.c2}</span>`;
     }
 
-    if (elRefs.styleRank && match.styleRank !== lastSR) {
-      lastSR = match.styleRank;
-      elRefs.styleRank.classList.toggle('show', Boolean(match.styleRank));
-      if (match.styleRank) {
+    const srVal = isWifi ? '' : match.styleRank;
+    if (elRefs.styleRank && srVal !== lastSR) {
+      lastSR = srVal;
+      elRefs.styleRank.classList.toggle('show', Boolean(srVal));
+      if (srVal) {
         const srMeta = {
           D:      { col: '#cfc0a8', lbl: 'DISCIPLE' },
           C:      { col: '#7cf0bd', lbl: 'CRISP' },
@@ -8486,14 +8812,15 @@
           A:      { col: '#ffb347', lbl: 'ARTFUL' },
           S:      { col: '#ff5238', lbl: 'SHOGUN' },
           AVATAR: { col: '#fff1a8', lbl: 'MASTER' }
-        }[match.styleRank] || { col: '#f5ba42', lbl: 'FLOW' };
-        elRefs.srGrade.textContent = match.styleRank;
+        }[srVal] || { col: '#f5ba42', lbl: 'FLOW' };
+        elRefs.srGrade.textContent = srVal;
         elRefs.srGrade.style.color = srMeta.col;
         elRefs.srLbl.textContent = srMeta.lbl;
       }
     }
 
-    const banKey = match.banner ? `${match.banner.text}|${match.banner.sub||''}|${match.banner.color}|${match.banner.isUlt?1:0}|${match.screen}` : '';
+    const rmKey = isWifi ? `${match.wifiRematchP1 ? 1 : 0}${match.wifiRematchP2 ? 1 : 0}:${WIFI && WIFI.connected ? 1 : 0}` : '';
+    const banKey = match.banner ? `${match.banner.text}|${match.banner.sub||''}|${match.banner.color}|${match.banner.isUlt?1:0}|${match.screen}|${rmKey}` : '';
     if (banKey !== lastBanKey) {
       lastBanKey = banKey;
       if (match.banner) {
@@ -8504,8 +8831,22 @@
         elRefs.bTitle.textContent = match.banner.text; elRefs.bTitle.style.color = match.banner.color;
         elRefs.bSub.textContent = match.banner.sub || '';
         elRefs.mActs.classList.toggle('hidden', !hasActs);
-        const canAdvance = hasActs && match.winner === 'p1' && match.mode === 'campaign' && match.campaignStageIdx >= 0 && match.campaignStageIdx < CAMPAIGN_STAGES.length - 1;
+        const canAdvance = hasActs && !isWifi && match.winner === 'p1' && match.mode === 'campaign' && match.campaignStageIdx >= 0 && match.campaignStageIdx < CAMPAIGN_STAGES.length - 1;
         elRefs.btnNextBoss.classList.toggle('hidden', !canAdvance);
+        const wifiConn = isWifi && WIFI && WIFI.connected;
+        if (elRefs.btnWifiLobbyEnd) elRefs.btnWifiLobbyEnd.classList.toggle('hidden', !wifiConn);
+        if (elRefs.btnArmoryEnd) elRefs.btnArmoryEnd.classList.toggle('hidden', isWifi);
+        if (elRefs.btnRematch) {
+          elRefs.btnRematch.classList.toggle('hidden', isWifi && !wifiConn);
+          if (wifiConn) {
+            const myRm = WIFI.role === 'host' ? match.wifiRematchP1 : match.wifiRematchP2;
+            const oppRm = WIFI.role === 'host' ? match.wifiRematchP2 : match.wifiRematchP1;
+            elRefs.btnRematch.textContent = myRm ? 'WAITING FOR PEER...' : (oppRm ? 'ACCEPT REMATCH' : 'REMATCH');
+          } else {
+            elRefs.btnRematch.textContent = 'REMATCH';
+          }
+        }
+        if (elRefs.btnMenuEnd) elRefs.btnMenuEnd.textContent = isWifi ? 'DISCONNECT' : 'MAIN MENU';
       } else {
         elRefs.banner.classList.add('hidden');
         elRefs.banner.classList.remove('ult-banner', 'has-actions');
@@ -8514,7 +8855,7 @@
     syncTouchVis();
   }
 
-  // ===== CONTROLS & DYNAMIC MOBILE TOUCH JOYSTICK (Zero Obstruction & Zero Stuck Inputs) =====
+  // ===== CONTROLS & DYNAMIC MOBILE TOUCH JOYSTICK (Symmetric P1/P2 Wi-Fi Routing + Zero Stuck Inputs) =====
   function isTouchDevice() {
     return ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || window.matchMedia('(pointer: coarse)').matches;
   }
@@ -8527,16 +8868,23 @@
   }
   const bendDirPill = document.getElementById('bend-dir-pill');
   const btnAvatar = document.getElementById('btn-avatar');
-  function triggerAvatarShift() {
-    if (PROG.avatarUnlocked || PROG.sandboxUnlockAll) {
-      const idx = (EL_ORDER.indexOf(p1.el.id) + 1) % EL_ORDER.length;
-      p1.el = ELEMENTS[EL_ORDER[idx]]; p1.avatarFlash = 22; lastE1 = '';
-      spawnSparks(p1.x, p1.y - 105, p1.el.glow, '#ffffff', 1.5);
-      pushCallout(`AVATAR: ${p1.el.name.toUpperCase()}`, p1.el.glow, p1.x, p1.y - 205);
-    } else {
-      p1.artIdx = (p1.artIdx + 1) % 3;
+  function triggerAvatarShift(targetF = null) {
+    const f = targetF || getLocalFighter();
+    if (!targetF && WIFI && WIFI.isClientInMatch()) {
+      WIFI.sendInput({ a: 'shift' });
+      return;
     }
-    sfx.elemBend(p1.el.id);
+    if (canFighterAvatarShift(f)) {
+      const idx = (EL_ORDER.indexOf(f.el.id) + 1) % EL_ORDER.length;
+      f.el = ELEMENTS[EL_ORDER[idx]]; f.avatarFlash = 22;
+      if (f.id === 'p1') lastE1 = ''; else lastE2 = '';
+      lastLocalMagEl = ''; lastSubKey = '';
+      spawnSparks(f.x, f.y - 105, f.el.glow, '#ffffff', 1.5);
+      pushCallout(`AVATAR: ${f.el.name.toUpperCase()}`, f.el.glow, f.x, f.y - 205);
+    } else {
+      f.artIdx = (f.artIdx + 1) % 3;
+    }
+    sfx.elemBend(f.el.id);
   }
   if (btnAvatar) {
     btnAvatar.addEventListener('pointerdown', e => { e.preventDefault(); unlockAudio(); btnAvatar.classList.add('pressed'); triggerAvatarShift(); });
@@ -8544,17 +8892,46 @@
     btnAvatar.addEventListener('pointerup', relA); btnAvatar.addEventListener('pointercancel', relA);
   }
   const keys = new Set(); let sPtr = null, sOx = 0, sOy = 0, sDx = 0, sDy = 0, kDx = 0, kDy = 0, lastTouchVis = null;
+  let lastNetDirX = 0, lastNetDirY = 0;
   function getTrickPillText(dx, dy) {
-    const t = BEND_TRICKS[p1.el.id] || BEND_TRICKS.water;
+    const lf = getLocalFighter();
+    const t = BEND_TRICKS[lf.el.id] || BEND_TRICKS.water;
     if (dy === -1) return `↑ ${t.up}`;
     if (dy === 1) return `↓ ${t.down}`;
-    return dx === p1.facing ? `→ ${t.fwd}` : `← ${t.back}`;
+    return dx === lf.facing ? `→ ${t.fwd}` : `← ${t.back}`;
+  }
+  function sendLocalBtnDown(act) {
+    const lf = getLocalFighter();
+    if (WIFI && WIFI.isClientInMatch()) {
+      if (act === 'magic' && lf.magic < 35) { triggerDenyShake(document.getElementById('btn-magic')); _sfxRaw.deny(); return; }
+      if (act === 'subbend' && lf.magic < (hasFighterScroll(lf, lf.el.id) ? 35 : 45)) { triggerDenyShake(document.getElementById('btn-sub')); _sfxRaw.deny(); return; }
+      WIFI.sendInput({ a: 'dn', b: act, dx: lf.dir.x, dy: lf.dir.y });
+      return;
+    }
+    pressBtn(lf, act);
+  }
+  function sendLocalBtnUp(act) {
+    if (WIFI && WIFI.isClientInMatch()) {
+      WIFI.sendInput({ a: 'up', b: act });
+      return;
+    }
+    releaseBtn(getLocalFighter(), act);
   }
   function flushDir() {
     const dx = sDx !== 0 ? sDx : kDx, dy = sDy !== 0 ? sDy : kDy;
-    setDir(p1, dx, dy);
+    const lf = getLocalFighter();
+    if (WIFI && WIFI.isClientInMatch()) {
+      lf.dir = { x: dx, y: dy };
+      updateStickArrows(dx, dy);
+      if (dx !== lastNetDirX || dy !== lastNetDirY) {
+        lastNetDirX = dx; lastNetDirY = dy;
+        WIFI.sendInput({ a: 'dir', dx, dy });
+      }
+    } else {
+      setDir(lf, dx, dy);
+    }
     if (bendDirPill) {
-      const hasDir = (dx !== 0 || dy !== 0) && p1.magic >= 35;
+      const hasDir = (dx !== 0 || dy !== 0) && lf.magic >= 35;
       bendDirPill.classList.toggle('show', hasDir);
       if (hasDir) bendDirPill.textContent = getTrickPillText(dx, dy);
     }
@@ -8569,20 +8946,82 @@
     stickBase.style.left = ''; stickBase.style.top = ''; stickBase.style.bottom = '';
     stickKnob.style.transform = 'translate(0,0)';
     document.querySelectorAll('.cbtn.pressed').forEach(el => el.classList.remove('pressed'));
-    Array.from(p1.held).forEach(b => releaseBtn(p1, b));
+    const lf = getLocalFighter();
+    if (WIFI && WIFI.isClientInMatch()) {
+      lastNetDirX = 0; lastNetDirY = 0;
+      WIFI.sendInput({ a: 'rst' });
+      lf.dir = { x: 0, y: 0 };
+    } else {
+      Array.from(lf.held).forEach(b => releaseBtn(lf, b));
+      setDir(lf, 0, 0);
+    }
     updateStickArrows(0, 0);
-    setDir(p1, 0, 0);
     if (bendDirPill) bendDirPill.classList.remove('show');
   }
   function cycleTheme() { themeIdx = (themeIdx + 1) % THEMES.length; buildBackdrop(); }
   function toggleSfx() { settings.sfxOn = !settings.sfxOn; }
   function toggleBgm() { settings.musicOn = !settings.musicOn; }
 
+  // ===== ANDROID CRASH-SAFE LIFECYCLE & GPU MEMORY TRIMMING =====
+  function releaseIdleCanvases() {
+    if (storyOverlay && storyOverlay.classList.contains('hidden')) {
+      if (storyCanvas.width > 1 || storyCanvas.height > 1) { storyCanvas.width = 1; storyCanvas.height = 1; }
+    }
+    if (campaignModal && campaignModal.classList.contains('hidden')) {
+      const mc = document.getElementById('map-canvas');
+      if (mc && (mc.width > 1 || mc.height > 1)) { mc.width = 1; mc.height = 1; }
+    }
+    if (armoryModal && armoryModal.classList.contains('hidden')) {
+      const pc = document.getElementById('armory-preview');
+      if (pc && (pc.width > 1 || pc.height > 1)) { pc.width = 1; pc.height = 1; }
+    }
+  }
+  window.onAndroidLifecycle = function (state) {
+    if (state === 'pause') {
+      appSuspended = true;
+      resetInputs();
+      suspendAudio();
+      if (!match.inMenu && !match.paused && match.mode !== 'wifi' && match.screen === 'fighting') {
+        match.paused = true;
+        pauseModal.classList.remove('hidden');
+        renderPause();
+      }
+    } else if (state === 'resume') {
+      appSuspended = false;
+      lastT = performance.now();
+      syncGameCanvasDpr();
+      if (FX3D) FX3D.syncQuality();
+    }
+  };
+  window.onAndroidMemoryTrim = function () {
+    particles.length = 0;
+    ghosts.length = 0;
+    releaseIdleCanvases();
+  };
+  window.addEventListener('error', (e) => {
+    try { if (e && e.preventDefault) e.preventDefault(); } catch {}
+  });
+  window.addEventListener('unhandledrejection', (e) => {
+    try { if (e && e.preventDefault) e.preventDefault(); } catch {}
+  });
+
   window.addEventListener('blur', resetInputs);
-  document.addEventListener('visibilitychange', () => { if (document.hidden) resetInputs(); });
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      appSuspended = true;
+      resetInputs();
+      suspendAudio();
+    } else {
+      appSuspended = false;
+      lastT = performance.now();
+    }
+  });
   window.addEventListener('contextmenu', e => e.preventDefault());
 
   window.addEventListener('keydown', e => {
+    // Allow typing freely inside Wi-Fi Duet Fighter Name / Room Code inputs
+    const tag = (document.activeElement && document.activeElement.tagName) || '';
+    if (tag === 'INPUT' || tag === 'TEXTAREA') return;
     unlockAudio();
     if (!document.getElementById('story-overlay').classList.contains('hidden')) {
       if (e.code === 'Space' || e.code === 'Enter') { e.preventDefault(); advanceStory(); }
@@ -8591,7 +9030,7 @@
     }
     if (e.code === 'Escape') { e.preventDefault(); if (!match.inMenu) togglePause(); else closeAllModals(); return; }
     if (match.inMenu || match.paused || match.screen !== 'fighting') return;
-    if (e.code === 'KeyT' && !e.repeat) { cycleTheme(); return; }
+    if (e.code === 'KeyT' && !e.repeat && match.mode !== 'wifi') { cycleTheme(); return; }
     if (e.code === 'KeyQ' && !e.repeat) { triggerAvatarShift(); return; }
     if (e.code === 'KeyM' && !e.repeat) { toggleSfx(); return; }
     if (e.code === 'KeyN' && !e.repeat) { toggleBgm(); return; }
@@ -8601,28 +9040,30 @@
     kDy = (keys.has('KeyS') || keys.has('ArrowDown')) - (keys.has('KeyW') || keys.has('ArrowUp'));
     flushDir();
     if (e.repeat) return;
-    if (e.code === 'KeyJ') pressBtn(p1, 'punch');
-    else if (e.code === 'KeyK') pressBtn(p1, 'kick');
-    else if (e.code === 'KeyL') pressBtn(p1, 'weapon');
-    else if (e.code === 'KeyG') pressBtn(p1, 'grab');
-    else if (e.code === 'KeyU' || e.code === 'Space') pressBtn(p1, 'magic');
-    else if (e.code === 'KeyI' || e.code === 'KeyO') pressBtn(p1, 'subbend');
-    else if (e.code === 'ShiftLeft') pressBtn(p1, 'evade');
-    else if (e.code === 'KeyB') pressBtn(p1, 'block');
+    if (e.code === 'KeyJ') sendLocalBtnDown('punch');
+    else if (e.code === 'KeyK') sendLocalBtnDown('kick');
+    else if (e.code === 'KeyL') sendLocalBtnDown('weapon');
+    else if (e.code === 'KeyG') sendLocalBtnDown('grab');
+    else if (e.code === 'KeyU' || e.code === 'Space') sendLocalBtnDown('magic');
+    else if (e.code === 'KeyI' || e.code === 'KeyO') sendLocalBtnDown('subbend');
+    else if (e.code === 'ShiftLeft') sendLocalBtnDown('evade');
+    else if (e.code === 'KeyB') sendLocalBtnDown('block');
   });
   window.addEventListener('keyup', e => {
+    const tag = (document.activeElement && document.activeElement.tagName) || '';
+    if (tag === 'INPUT' || tag === 'TEXTAREA') return;
     keys.delete(e.code);
     kDx = (keys.has('KeyD') || keys.has('ArrowRight')) - (keys.has('KeyA') || keys.has('ArrowLeft'));
     kDy = (keys.has('KeyS') || keys.has('ArrowDown')) - (keys.has('KeyW') || keys.has('ArrowUp'));
     flushDir();
-    if (e.code === 'KeyJ') releaseBtn(p1, 'punch');
-    else if (e.code === 'KeyK') releaseBtn(p1, 'kick');
-    else if (e.code === 'KeyL') releaseBtn(p1, 'weapon');
-    else if (e.code === 'KeyG') releaseBtn(p1, 'grab');
-    else if (e.code === 'KeyU' || e.code === 'Space') releaseBtn(p1, 'magic');
-    else if (e.code === 'KeyI' || e.code === 'KeyO') releaseBtn(p1, 'subbend');
-    else if (e.code === 'ShiftLeft') releaseBtn(p1, 'evade');
-    else if (e.code === 'KeyB') releaseBtn(p1, 'block');
+    if (e.code === 'KeyJ') sendLocalBtnUp('punch');
+    else if (e.code === 'KeyK') sendLocalBtnUp('kick');
+    else if (e.code === 'KeyL') sendLocalBtnUp('weapon');
+    else if (e.code === 'KeyG') sendLocalBtnUp('grab');
+    else if (e.code === 'KeyU' || e.code === 'Space') sendLocalBtnUp('magic');
+    else if (e.code === 'KeyI' || e.code === 'KeyO') sendLocalBtnUp('subbend');
+    else if (e.code === 'ShiftLeft') sendLocalBtnUp('evade');
+    else if (e.code === 'KeyB') sendLocalBtnUp('block');
   });
 
   // Dynamic Floating Joystick: spawns wherever the player's left thumb lands!
@@ -8682,7 +9123,8 @@
           btn.classList.add('swiping');
           if (Math.abs(dy) >= Math.abs(dx)) { bendSwDx = 0; bendSwDy = dy < 0 ? -1 : 1; }
           else { bendSwDx = dx > 0 ? 1 : -1; bendSwDy = 0; }
-          if (bendDirPill && p1.magic >= 35) {
+          const lf = getLocalFighter();
+          if (bendDirPill && lf.magic >= 35) {
             bendDirPill.classList.add('show');
             bendDirPill.textContent = getTrickPillText(bendSwDx, bendSwDy);
           }
@@ -8694,16 +9136,23 @@
         btn.classList.remove('pressed', 'swiping');
         if (bendDirPill) bendDirPill.classList.remove('show');
         if (match.inMenu || match.paused || match.screen !== 'fighting') return;
+        const lf = getLocalFighter();
+        if (WIFI && WIFI.isClientInMatch()) {
+          if (lf.magic < 35) { triggerDenyShake(document.getElementById('btn-magic')); _sfxRaw.deny(); return; }
+          if (bendSwMoved) WIFI.sendInput({ a: 'swp', dx: bendSwDx, dy: bendSwDy });
+          else { WIFI.sendInput({ a: 'dn', b: 'magic', dx: lf.dir.x, dy: lf.dir.y }); WIFI.sendInput({ a: 'up', b: 'magic' }); }
+          return;
+        }
         if (bendSwMoved) {
-          const prevX = p1.dir.x, prevY = p1.dir.y;
-          p1.dir = { x: bendSwDx, y: bendSwDy };
-          pressBtn(p1, 'magic');
-          releaseBtn(p1, 'magic');
-          p1.dir = { x: prevX, y: prevY };
+          const prevX = lf.dir.x, prevY = lf.dir.y;
+          lf.dir = { x: bendSwDx, y: bendSwDy };
+          pressBtn(lf, 'magic');
+          releaseBtn(lf, 'magic');
+          lf.dir = { x: prevX, y: prevY };
           flushDir();
         } else {
-          pressBtn(p1, 'magic');
-          releaseBtn(p1, 'magic');
+          pressBtn(lf, 'magic');
+          releaseBtn(lf, 'magic');
         }
       };
       btn.addEventListener('pointerup', finishBend);
@@ -8713,9 +9162,9 @@
     btn.addEventListener('pointerdown', e => {
       e.preventDefault(); unlockAudio();
       if (match.inMenu || match.paused || match.screen !== 'fighting') return;
-      btn.classList.add('pressed'); pressBtn(p1, act);
+      btn.classList.add('pressed'); sendLocalBtnDown(act);
     });
-    const rel = () => { btn.classList.remove('pressed'); releaseBtn(p1, act); };
+    const rel = () => { btn.classList.remove('pressed'); sendLocalBtnUp(act); };
     btn.addEventListener('pointerup', rel); btn.addEventListener('pointercancel', rel); btn.addEventListener('pointerleave', rel);
   });
   function isAnyModalOpen() {
@@ -8723,7 +9172,8 @@
       || !pauseModal.classList.contains('hidden')
       || !rosterModal.classList.contains('hidden')
       || !campaignModal.classList.contains('hidden')
-      || !armoryModal.classList.contains('hidden');
+      || !armoryModal.classList.contains('hidden')
+      || (wifiModal && !wifiModal.classList.contains('hidden'));
   }
   function shouldShowTouch() {
     if (match.inMenu || match.paused || match.screen !== 'fighting' || match.intro > 18) return false;
@@ -8744,13 +9194,17 @@
     tl.style.opacity = settings.opacity;
     stickBase.style.transform = `scale(${settings.scale})`;
     document.getElementById('action-cluster').style.transform = `scale(${settings.scale})`;
-    if (btnAvatar) btnAvatar.classList.toggle('hidden', !(PROG.avatarUnlocked || PROG.sandboxUnlockAll));
+    if (btnAvatar) btnAvatar.classList.toggle('hidden', !canFighterAvatarShift(getLocalFighter()));
     syncTouchVis();
   }
 
   // Android Hardware Back Button Bridge (called by native Android WebView MainActivity)
   window.onAndroidBack = function () {
     if (!storyOverlay.classList.contains('hidden')) { finishStory(); return true; }
+    if (wifiModal && !wifiModal.classList.contains('hidden')) {
+      if (WIFI) WIFI.leaveToMenu();
+      return true;
+    }
     if (!pauseModal.classList.contains('hidden') || !rosterModal.classList.contains('hidden') || !campaignModal.classList.contains('hidden') || !armoryModal.classList.contains('hidden')) {
       closeAllModals();
       if (match.inMenu) openMainMenu();
@@ -8768,13 +9222,16 @@
   let storyState = null;
 
   function openMainMenu() {
+    if (WIFI && (WIFI.connected || WIFI.hosting || WIFI.scanning)) WIFI.disconnect(true);
     closeAllModals();
-    match.inMenu = true; match.paused = false; match.boss = null; match.mutator = null; match.dailyTrial = false;
+    match.inMenu = true; match.paused = false; match.boss = null; match.mutator = null; match.dailyTrial = false; match.mode = 'duel'; match.wifiBiome = '';
+    p1.loadout = null; p2.loadout = null; p1.customName = ''; p2.customName = '';
     buildBackdrop();
     document.getElementById('hud').classList.add('hidden');
     document.getElementById('touch-layer').classList.add('hidden');
     document.getElementById('tut-pill')?.classList.add('hidden');
     document.getElementById('mutator-pill')?.classList.add('hidden');
+    document.getElementById('wifi-ping-pill')?.classList.add('hidden');
     mainMenuEl.classList.remove('hidden');
     const elCount = Math.min(8, PROG.cleared.filter(id => id < 8).length);
     document.getElementById('mm-rank-sub').textContent = PROG.avatarUnlocked
@@ -8816,7 +9273,7 @@
     drawStoryArtwork(s);
   }
   function drawStoryArtwork(slide) {
-    const dpr = Math.min(2, Math.max(1, window.devicePixelRatio || 1));
+    const dpr = Math.min(isAndroidOrTouch() ? 1.5 : 2, Math.max(1, window.devicePixelRatio || 1));
     if (storyCanvas.width !== Math.round(W * dpr) || storyCanvas.height !== Math.round(H * dpr)) {
       storyCanvas.width = Math.round(W * dpr); storyCanvas.height = Math.round(H * dpr);
     }
@@ -8904,28 +9361,40 @@
     storyState = null;
     storyOverlay.classList.add('hidden');
     match.paused = false;
+    releaseIdleCanvases();
     if (cb) cb();
     syncTouchVis();
   }
   document.getElementById('story-next').onclick = () => { unlockAudio(); advanceStory(); };
   document.getElementById('story-skip').onclick = () => { unlockAudio(); finishStory(); };
 
-  // ===== MODALS: PAUSE, QUICK DUEL / DOJO, INTERACTIVE 8-REGION WORLD MAP, VISUAL-FIRST ARMORY =====
+  // ===== MODALS: PAUSE, QUICK DUEL / DOJO, WORLD MAP, ARMORY, WI-FI DUET =====
   const pauseModal = document.getElementById('pause-modal'), rosterModal = document.getElementById('roster-modal');
   const campaignModal = document.getElementById('campaign-modal'), armoryModal = document.getElementById('armory-modal');
+  const wifiModal = document.getElementById('wifi-modal');
   let pTab = 'controls', sel1 = 'water', sel2 = 'fire', picking = 'p1', rosterMode = 'duel';
   let mapSelIdx = 0, armoryTab = 'weapons', armorySelId = 'default', armoryPreviewRaf = null;
 
   function closeAllModals() {
     pauseModal.classList.add('hidden'); rosterModal.classList.add('hidden');
     campaignModal.classList.add('hidden'); armoryModal.classList.add('hidden');
+    if (wifiModal) wifiModal.classList.add('hidden');
     if (armoryPreviewRaf) { cancelAnimationFrame(armoryPreviewRaf); armoryPreviewRaf = null; }
     match.paused = false;
+    releaseIdleCanvases();
     syncTouchVis();
   }
   function togglePause() {
     if (!rosterModal.classList.contains('hidden') || !campaignModal.classList.contains('hidden') || !armoryModal.classList.contains('hidden')) {
       closeAllModals(); return;
+    }
+    if (match.mode === 'wifi') {
+      const opening = pauseModal.classList.contains('hidden');
+      pauseModal.classList.toggle('hidden', !opening);
+      // Do NOT freeze live Wi-Fi physics while adjusting volume/controls!
+      syncTouchVis();
+      if (opening) renderPause();
+      return;
     }
     match.paused = !match.paused; pauseModal.classList.toggle('hidden', !match.paused);
     syncTouchVis();
@@ -8933,13 +9402,14 @@
   }
 
   function renderPause() {
+    const isWifi = match.mode === 'wifi';
     const seg = (k, opts) => `<div class="seg">${opts.map(([v, l]) => `<button class="sbtn ${String(settings[k])===String(v)?'active':''}" data-sk="${k}" data-sv="${v}">${l}</button>`).join('')}</div>`;
     let body = '';
     if (pTab === 'controls') {
       body = `
         <div class="sgroup"><div class="slabel">Combat Tempo</div>${seg('tempo',[['fast','Fast'],['classic','Classic']])}</div>
         <div class="sgroup"><div class="slabel">Touch Controls</div>${seg('inputMode',[['auto','Auto'],['touch','Always On'],['keyboard','Keyboard Only']])}</div>
-        <div class="sgroup"><div class="slabel">Arena Backdrop</div><div class="seg">${THEMES.map((t,i)=>`<button class="sbtn ${themeIdx===i?'active':''}" data-th="${i}">${t.label}</button>`).join('')}</div></div>
+        ${isWifi ? '' : `<div class="sgroup"><div class="slabel">Arena Backdrop</div><div class="seg">${THEMES.map((t,i)=>`<button class="sbtn ${themeIdx===i?'active':''}" data-th="${i}">${t.label}</button>`).join('')}</div></div>`}
         <div class="sgroup"><div class="slabel">Touch Scale <span>${Math.round(settings.scale*100)}%</span></div><input type="range" id="r-sc" min="0.75" max="1.25" step="0.05" value="${settings.scale}"></div>
         <div class="sgroup"><div class="slabel">Touch Opacity <span>${Math.round(settings.opacity*100)}%</span></div><input type="range" id="r-op" min="0.30" max="1.00" step="0.05" value="${settings.opacity}"></div>
       `;
@@ -8958,35 +9428,47 @@
       `;
     } else {
       const mvs = [
+        ['Wi-Fi / Hotspot 2-Player Duet', 'Main Menu -> WI-FI DUET (100% Offline)', 'Connect two Android phones on the same Wi-Fi or turn on one phone\'s Wi-Fi Hotspot (no internet needed). Host taps HOST DUEL, Player 2 taps the discovered Dojo card or enters the short Dojo Code!'],
         ['Shadow Fight 2 4-Button Cluster', 'PUNCH · KICK · BEND · SUB-BEND', 'Streamlined 4 large buttons: PUNCH (Weapon/Fist + close Fwd/Back Throw), KICK, BEND (35% Signature / 100% Ultimate), and SUB-BEND (45% Secret Art). Stand neutral or hold Back to Block & Parry; double-tap stick to Dash/Roll!'],
         ['8 Secret ATLA Sub-Bending Arts & Scrolls', 'Tap SUB (or Key I / O) at 45%+ Meter (35% with Scroll)', 'Water = Bloodbend; Fire = Combustion Beam; Earth = Metal Wire Grapple; Air = Vacuum Sphere; Ice = Frost Dome; Lightning = Arc Storm; Shadow = Soul Bind; Lava = Magma Rift. Master Scrolls via Regional Trials or Armory Forge!'],
         ['8 Avatar Signatures (35% Meter · Instant Tap!)', 'Tap or Swipe BEND (U / Space)', 'Water = Sculpted 8-Arm Octopus Multi-Slam (8 alternating whip-slams + close Fwd+PUNCH re-trigger); Fire = Sozin Jet-Step; Earth = Toph Seismic Sense + Stone Gauntlets; Air = Aang Air Scooter; Lightning = Iroh Redirect 2x; Ice = Cryo Prison; Shadow = Eclipse Swap Clone; Lava = Molten Shuriken.'],
-        ['Armory Forge Weapon Enchantment Seals', 'Armory -> Enchants Tab (3D Volumetric Blade Ribbons)', 'Engrave Frost-Edge, Thunder-Forged, Scorched-Ember, Umbral-Drain, or Seismic-Crush Seals onto your weapon for glowing 3D blade slash ribbons and elemental combat procs!'],
-        ['8 Unique Elemental Executions & Daily Trials', 'FINISH THEM! · Boss Phase-2 Awakenings · 2x Coins', 'Every element performs its own 1.5s cinematic execution when defeating a dizzied foe! Challenge Today\'s Daily Trial Mutator or Endless Shadow Tower for 2x Coins!']
+        ['Armory Forge Weapon Enchantment Seals', 'Armory -> Enchants Tab (3D Volumetric Blade Ribbons)', 'Engrave Frost-Edge, Thunder-Forged, Scorched-Ember, Umbral-Drain, or Seismic-Crush Seals onto your weapon for glowing 3D blade slash ribbons and elemental combat procs!']
       ];
       body = mvs.map(([n, i, d]) => `<div class="mrow"><b>${n}</b><small>${i}</small><span>${d}</span></div>`).join('');
     }
+    const navRow = match.inMenu ? '' : (isWifi ? `
+      <div class="pill-row">
+        <button class="pill primary" id="p-res">RESUME</button>
+        <button class="pill" id="p-wlob">SWITCH ELEMENT</button>
+        <button class="pill" id="p-menu">DISCONNECT</button>
+      </div>` : `
+      <div class="pill-row">
+        <button class="pill primary" id="p-res">RESUME</button>
+        <button class="pill" id="p-rst">RESTART</button>
+        <button class="pill" id="p-map">WORLD MAP</button>
+        <button class="pill" id="p-arm">ARMORY</button>
+        <button class="pill" id="p-menu">MAIN MENU</button>
+      </div>`);
     pauseModal.innerHTML = `
       <aside class="drawer">
-        <div class="drawer-head"><div><h2>${match.inMenu ? 'SETTINGS' : 'PAUSED'}</h2><p>${match.inMenu ? 'Audio, controls &amp; display' : 'Round preserved'}</p></div><button class="xbtn" id="p-x" aria-label="Close"><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 4l8 8M12 4l-8 8"/></svg></button></div>
-        ${match.inMenu ? '' : `
-          <div class="pill-row">
-            <button class="pill primary" id="p-res">RESUME</button>
-            <button class="pill" id="p-rst">RESTART</button>
-            <button class="pill" id="p-map">WORLD MAP</button>
-            <button class="pill" id="p-arm">ARMORY</button>
-            <button class="pill" id="p-menu">MAIN MENU</button>
-          </div>`}
+        <div class="drawer-head"><div><h2>${match.inMenu ? 'SETTINGS' : (isWifi ? 'WI-FI DUET MENU' : 'PAUSED')}</h2><p>${match.inMenu ? 'Audio, controls &amp; display' : (isWifi ? 'Live connection active' : 'Round preserved')}</p></div><button class="xbtn" id="p-x" aria-label="Close"><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 4l8 8M12 4l-8 8"/></svg></button></div>
+        ${navRow}
         <div class="tabs"><button class="tab ${pTab==='controls'?'active':''}" data-pt="controls">Controls</button><button class="tab ${pTab==='graphics'?'active':''}" data-pt="graphics">Audio &amp; AI</button><button class="tab ${pTab==='moves'?'active':''}" data-pt="moves">Move Guide</button></div>
         <div class="drawer-body">${body}</div>
       </aside>`;
     pauseModal.querySelector('#p-x').onclick = () => { if (match.inMenu) closeAllModals(); else togglePause(); };
     if (!match.inMenu) {
       pauseModal.querySelector('#p-res').onclick = togglePause;
-      pauseModal.querySelector('#p-rst').onclick = () => { togglePause(); beginRound(); };
-      pauseModal.querySelector('#p-map').onclick = openCampaign;
-      pauseModal.querySelector('#p-arm').onclick = openArmory;
-      pauseModal.querySelector('#p-menu').onclick = openMainMenu;
+      if (isWifi) {
+        const wl = pauseModal.querySelector('#p-wlob');
+        if (wl) wl.onclick = () => { togglePause(); if (WIFI) WIFI.returnToLobby(true); };
+        pauseModal.querySelector('#p-menu').onclick = () => { if (WIFI) WIFI.leaveToMenu(); else openMainMenu(); };
+      } else {
+        pauseModal.querySelector('#p-rst').onclick = () => { togglePause(); beginRound(); };
+        pauseModal.querySelector('#p-map').onclick = openCampaign;
+        pauseModal.querySelector('#p-arm').onclick = openArmory;
+        pauseModal.querySelector('#p-menu').onclick = openMainMenu;
+      }
     }
     pauseModal.querySelectorAll('[data-pt]').forEach(b => b.onclick = () => { pTab = b.dataset.pt; renderPause(); });
     pauseModal.querySelectorAll('[data-th]').forEach(b => b.onclick = () => { themeIdx = Number(b.dataset.th); buildBackdrop(); renderPause(); });
@@ -9235,7 +9717,7 @@
   function drawWorldMapCanvas() {
     const mc = document.getElementById('map-canvas');
     if (!mc) return;
-    const dpr = Math.min(2, Math.max(1, window.devicePixelRatio || 1));
+    const dpr = Math.min(isAndroidOrTouch() ? 1.5 : 2, Math.max(1, window.devicePixelRatio || 1));
     const w = 640, h = 380;
     if (mc.width !== Math.round(w * dpr) || mc.height !== Math.round(h * dpr)) {
       mc.width = Math.round(w * dpr); mc.height = Math.round(h * dpr);
@@ -9496,10 +9978,11 @@
     const drawPrev = () => {
       const pc = document.getElementById('armory-preview');
       if (!pc || armoryModal.classList.contains('hidden')) return;
+      if (appSuspended || document.hidden) { armoryPreviewRaf = requestAnimationFrame(drawPrev); return; }
       const rect = pc.getBoundingClientRect();
       const cw = Math.max(160, Math.round(rect.width || 320));
       const ch = Math.max(150, Math.round(rect.height || 260));
-      const dpr = Math.min(2, Math.max(1, window.devicePixelRatio || 1));
+      const dpr = Math.min(isAndroidOrTouch() ? 1.5 : 2, Math.max(1, window.devicePixelRatio || 1));
       const tw = Math.round(cw * dpr), th = Math.round(ch * dpr);
       if (pc.width !== tw || pc.height !== th) { pc.width = tw; pc.height = th; }
 
@@ -9617,6 +10100,869 @@
     armoryPreviewRaf = requestAnimationFrame(drawPrev);
   }
 
+  // ===== 100% OFFLINE LOCAL WI-FI & HOTSPOT 2-PLAYER DUET ENGINE =====
+  const WIFI_STAGES = [
+    { id: 'blazing_dojo', label: 'Blazing Dojo' },
+    { id: 'dew_shrine', label: 'Tidal Shrine' },
+    { id: 'gale_tailwind', label: 'Sky Monastery' },
+    { id: 'glacier_floor', label: 'Frozen Peak' },
+    { id: 'seismic_tremor', label: 'Iron Mountain' },
+    { id: 'storm_spire', label: 'Storm Spire' },
+    { id: 'obsidian_caldera', label: 'Obsidian Caldera' },
+    { id: 'eclipse_sanctum', label: 'Eclipse Citadel' }
+  ];
+
+  function createWifiDuelEngine() {
+    const nativeReady = () => Boolean(window.AndroidWifiDuel && typeof window.AndroidWifiDuel.startHost === 'function');
+    const peerUid = 'es_' + Math.random().toString(36).slice(2, 9);
+    let bc = null, bcBeaconTimer = null, pingTimer = null, hostPruneTimer = null;
+
+    const makeDefaultLob = (elId = 'water') => ({
+      name: PROG.playerName || 'SHADOW',
+      el: elId,
+      weapon: PROG.equippedWeapon || 'default',
+      enchant: PROG.equippedEnchant || 'none',
+      gear: PROG.equippedGear || 'none',
+      scrollMastered: hasScrollMastery(elId),
+      avatarUnlocked: Boolean(PROG.avatarUnlocked || PROG.sandboxUnlockAll),
+      ready: false
+    });
+
+    const state = {
+      role: '', // '' | 'host' | 'client'
+      connected: false,
+      hosting: false,
+      scanning: false,
+      inMatch: false,
+      hostIp: '',
+      hostPort: 42871,
+      shortCode: '',
+      peerIp: '',
+      pingMs: 4,
+      errorMsg: '',
+      statusMsg: '',
+      manualCode: '',
+      discovered: new Map(), // key "ip:port" -> { name, el, ip, port, shortCode, seenAt, bcId }
+      p1Lob: makeDefaultLob(p1.el.id || 'water'),
+      p2Lob: makeDefaultLob('fire'),
+      stageBiome: 'eclipse_sanctum',
+      toWin: 2,
+      pendingEvents: [],
+      lastNetSnapAt: 0,
+      snapCount: 0,
+      isHostInMatch: () => Boolean(state.connected && state.role === 'host' && state.inMatch && match.mode === 'wifi' && !match.inMenu),
+      isClientInMatch: () => Boolean(state.connected && state.role === 'client' && state.inMatch && match.mode === 'wifi' && !match.inMenu)
+    };
+
+    function ensureBc() {
+      if (nativeReady() || bc || typeof BroadcastChannel === 'undefined') return;
+      bc = new BroadcastChannel('es_wifi_duet_v1');
+      bc.onmessage = (ev) => {
+        const msg = ev.data;
+        if (!msg || msg.from === peerUid) return;
+        if (msg.bcKind === 'beacon' && state.scanning && !state.connected) {
+          onEvent({ type: 'host_found', name: msg.name, el: msg.el, ip: msg.bcId, port: 42871, shortCode: msg.shortCode || 'LOCAL' });
+        } else if (msg.bcKind === 'join' && state.hosting && !state.connected && msg.target === peerUid) {
+          state.connected = true;
+          state.hosting = false;
+          state.peerIp = msg.from;
+          if (bcBeaconTimer) { clearInterval(bcBeaconTimer); bcBeaconTimer = null; }
+          bc.postMessage({ from: peerUid, bcKind: 'accept', target: msg.from });
+          onEvent({ type: 'connected', role: 'host', peerIp: msg.from });
+        } else if (msg.bcKind === 'accept' && state.role === 'client' && !state.connected && msg.target === peerUid) {
+          state.connected = true;
+          state.scanning = false;
+          state.peerIp = msg.from;
+          onEvent({ type: 'connected', role: 'client', peerIp: msg.from });
+        } else if (msg.bcKind === 'data' && state.connected && msg.target === peerUid) {
+          onRawMsg(msg.line);
+        } else if (msg.bcKind === 'bye' && state.connected && msg.target === peerUid) {
+          onEvent({ type: 'disconnected', message: 'Opponent disconnected.' });
+        }
+      };
+    }
+
+    function sendRaw(obj) {
+      if (!state.connected) return;
+      let line;
+      try { line = JSON.stringify(obj); } catch { return; }
+      if (nativeReady()) {
+        try { window.AndroidWifiDuel.send(line); } catch {}
+      } else if (bc) {
+        try { bc.postMessage({ from: peerUid, bcKind: 'data', target: state.peerIp, line }); } catch {}
+      }
+    }
+
+    function pushEvent(evArr) {
+      if (!state.isHostInMatch()) return;
+      state.pendingEvents.push(evArr);
+      if (state.pendingEvents.length > 24) state.pendingEvents.shift();
+    }
+
+    function sendInput(payload) {
+      if (!state.isClientInMatch()) return;
+      sendRaw({ t: 'in', ...payload });
+    }
+
+    function myLob() { return state.role === 'client' ? state.p2Lob : state.p1Lob; }
+
+    function sendLobbySync() {
+      if (!state.connected) return;
+      const mine = myLob();
+      const pkt = { t: 'lob', who: state.role, d: mine };
+      if (state.role === 'host') { pkt.biome = state.stageBiome; pkt.toWin = state.toWin; }
+      sendRaw(pkt);
+    }
+
+    function startPingLoop() {
+      if (pingTimer) clearInterval(pingTimer);
+      pingTimer = setInterval(() => {
+        if (state.connected) sendRaw({ t: 'ping', ts: Math.round(performance.now()) });
+      }, 1000);
+    }
+    function stopPingLoop() {
+      if (pingTimer) { clearInterval(pingTimer); pingTimer = null; }
+    }
+
+    function packFighter(f) {
+      const sts = {};
+      for (const k of Object.keys(f.statuses)) sts[k] = f.statuses[k].f;
+      return {
+        x: Math.round(f.x * 10) / 10, y: Math.round(f.y * 10) / 10,
+        vx: Math.round(f.vx * 10) / 10, vy: Math.round(f.vy * 10) / 10,
+        fc: f.facing, el: f.el.id,
+        hp: Math.round(f.hp), mhp: f.maxHp, mg: Math.round(f.magic * 10) / 10,
+        po: Math.round(f.poise), mpo: f.maxPoise,
+        st: f.state, sf: f.sf, mv: f.moveId || '', ms: f.ms, ma: f.ma, mr: f.mr,
+        fl: f.flash, iv: f.inv, sn: f.stun, hh: f.hitH,
+        dz: f.dizzied ? 1 : 0, dzf: f.dizzyF,
+        fp: f.frozenPrisonF, oc: f.octopusF, ocs: f.octopusSwinging ? 1 : 0,
+        as: f.airScooterF, fj: f.fireJetF, sw: f.seismicWaveF, gn: f.gauntletsF,
+        rf: f.reflectStanceF, ra: f.rockArmorF, ds: f.disarmed ? 1 : 0,
+        in: f.invisible ? 1 : 0, af: f.avatarFlash, sts
+      };
+    }
+
+    function applyFighter(f, d) {
+      if (!d) return;
+      if (d.el && ELEMENTS[d.el] && f.el.id !== d.el) f.el = ELEMENTS[d.el];
+      const dx = d.x - f.x, dy = d.y - f.y;
+      // Smooth micro-correction on small deltas, instant snap on throws/teleports/resets!
+      if (Math.hypot(dx, dy) > 72 || f.state !== d.st) { f.x = d.x; f.y = d.y; }
+      else { f.x += dx * 0.62; f.y += dy * 0.62; }
+      f._netX = d.x; f._netY = d.y;
+      f.vx = d.vx; f.vy = d.vy; f.facing = d.fc;
+      f.maxHp = d.mhp || f.maxHp; f.hp = d.hp;
+      if (f.trailHp > f.hp) f.trailHp += (f.hp - f.trailHp) * 0.18; else f.trailHp = f.hp;
+      f.magic = d.mg; f.maxPoise = d.mpo || 100; f.poise = d.po;
+      f.state = d.st; f.sf = d.sf;
+      f.moveId = d.mv || null;
+      f.move = f.moveId ? (MOVES[f.moveId] || null) : null;
+      f.ms = d.ms; f.ma = d.ma; f.mr = d.mr;
+      f.flash = d.fl; f.inv = d.iv; f.stun = d.sn; f.hitH = d.hh || 'mid';
+      f.dizzied = Boolean(d.dz); f.dizzyF = d.dzf || 0;
+      f.frozenPrisonF = d.fp || 0; f.octopusF = d.oc || 0; f.octopusSwinging = Boolean(d.ocs);
+      f.airScooterF = d.as || 0; f.fireJetF = d.fj || 0; f.seismicWaveF = d.sw || 0; f.gauntletsF = d.gn || 0;
+      f.reflectStanceF = d.rf || 0; f.rockArmorF = d.ra || 0; f.disarmed = Boolean(d.ds);
+      f.invisible = Boolean(d.in); f.avatarFlash = d.af || 0;
+      const nextSts = {};
+      if (d.sts) {
+        for (const k of Object.keys(d.sts)) nextSts[k] = { f: d.sts[k], t: 0 };
+      }
+      f.statuses = nextSts;
+    }
+
+    function packWaves() {
+      return bendingWaves.map(b => ({
+        o: b.owner, e: b.el ? b.el.id : 'water', k: b.kind,
+        x: Math.round(b.x), y: Math.round(b.y), d: b.dir,
+        w: Math.round(b.w), h: Math.round(b.h),
+        f: b.f, mx: b.max, u: b.ult ? 1 : 0,
+        ag: b.age || 0, dl: b.delay || 0,
+        gb: b.grabbed ? 1 : 0, ph: b.phase || '', si: b.swingIdx || 0, aa: b.activeArm || 0,
+        lsf: b.lastSlamF || 0, lsx: Math.round(b.lastSlamX || 0),
+        tx: b.tipX !== undefined ? Math.round(b.tipX) : null,
+        ty: b.tipY !== undefined ? Math.round(b.tipY) : null
+      }));
+    }
+
+    function unpackWaves(arr) {
+      if (!Array.isArray(arr)) return;
+      bendingWaves = arr.map(w => {
+        const obj = {
+          owner: w.o, el: ELEMENTS[w.e] || ELEMENTS.water, kind: w.k,
+          x: w.x, y: w.y, dir: w.d, w: w.w, h: w.h,
+          f: w.f, max: w.mx, ult: Boolean(w.u),
+          age: w.ag, delay: w.dl, grabbed: Boolean(w.gb),
+          phase: w.ph, swingIdx: w.si, activeArm: w.aa,
+          lastSlamF: w.lsf, lastSlamX: w.lsx
+        };
+        if (w.tx !== null) obj.tipX = w.tx;
+        if (w.ty !== null) obj.tipY = w.ty;
+        return obj;
+      });
+    }
+
+    function onHostStep() {
+      if (!state.isHostInMatch()) return;
+      const hasEv = state.pendingEvents.length > 0;
+      if (!hasEv && (simFrame % 2 !== 0)) return;
+      const pkt = {
+        t: 'st', f: simFrame, r: match.round, sc: match.screen,
+        tm: match.timer, in: match.intro, ov: match.over,
+        w1: match.p1W, w2: match.p2W, wn: match.winner || '',
+        c1: match.c1, c2: match.c2,
+        fh: match.finishHim ? match.finishTarget : '',
+        fa: match.finisherAnim ? { ...match.finisherAnim } : null,
+        bc: bladeClash ? { f: bladeClash.f, max: bladeClash.max, meter: Math.round(bladeClash.meter) } : null,
+        hs: hitstop, sm: Math.round(slowMoFrames), dz: Math.round(dramaticZoom * 100) / 100,
+        ud: ultDimFrames, udc: ultDimColor, sf: stormFlashFrames, ik: inkFlashF, sh: Math.round(shake),
+        p1: packFighter(p1), p2: packFighter(p2),
+        bw: packWaves(),
+        hz: hazards.map(h => ({ k: h.kind || 'lava', x: Math.round(h.x), hw: Math.round(h.hw), f: h.f })),
+        rw: rockWalls.map(r => ({ x: Math.round(r.x), w: r.w, h: r.h, f: r.f })),
+        dc: decoyClones.map(d => ({ x: Math.round(d.x), fc: d.facing, f: d.f, sw: d.swung ? 1 : 0, sf: d.swingF, wt: d.wType, gr: d.gear })),
+        dw: droppedWeapons.map(d => ({ x: Math.round(d.x), y: Math.round(d.y), rt: Math.round(d.rot * 100) / 100, wt: d.wType, e: d.el.id, gd: d.grounded ? 1 : 0 })),
+        br: braziers.map(b => [Math.round(b.x), b.intact ? 1 : 0, b.hitFlash || 0])
+      };
+      if (hasEv) {
+        pkt.ev = state.pendingEvents.splice(0, 24);
+      }
+      sendRaw(pkt);
+    }
+
+    function applyNetEvents(evs) {
+      if (!Array.isArray(evs)) return;
+      for (const e of evs) {
+        if (!Array.isArray(e) || !e.length) continue;
+        const k = e[0];
+        if (k === 'sfx') {
+          const fn = _sfxRaw[e[1]];
+          if (fn) fn(...e.slice(2));
+        } else if (k === 'hap') {
+          haptic(e[1], true);
+        } else if (k === 'ban') {
+          showBanner(e[1], e[2], e[3], e[4], Boolean(e[5]), true);
+        } else if (k === 'cal') {
+          pushCallout(e[1], e[2], e[3], e[4], true);
+        } else if (k === 'spk') {
+          spawnSparks(e[1], e[2], e[3], e[4], e[5], Boolean(e[6]), true);
+        } else if (k === 'ring' && FX3D) {
+          FX3D.spawnFloorRing(e[1], e[2], e[3], e[4], true);
+        } else if (k === 'bst' && FX3D) {
+          FX3D.spawnBurst(e[1], e[2], e[3], e[4], Boolean(e[5]), true);
+        } else if (k === 'sky' && FX3D) {
+          FX3D.flashSky(e[1], e[2], true);
+        }
+      }
+    }
+
+    function applyStateSnapshot(s) {
+      state.lastNetSnapAt = performance.now();
+      state.snapCount++;
+      simFrame = s.f;
+      match.round = s.r;
+      match.screen = s.sc;
+      match.timer = s.tm;
+      match.intro = s.in;
+      match.over = s.ov;
+      match.p1W = s.w1;
+      match.p2W = s.w2;
+      match.winner = s.wn || null;
+      match.c1 = s.c1 || 0;
+      match.c2 = s.c2 || 0;
+      match.finishHim = Boolean(s.fh);
+      match.finishTarget = s.fh || 'p2';
+      match.finisherAnim = s.fa || null;
+      bladeClash = s.bc || null;
+      hitstop = s.hs || 0;
+      slowMoFrames = s.sm || 0;
+      dramaticZoom = Math.max(dramaticZoom * 0.8, s.dz || 0);
+      ultDimFrames = s.ud || 0;
+      if (s.udc) ultDimColor = s.udc;
+      stormFlashFrames = s.sf || 0;
+      inkFlashF = Math.max(inkFlashF, s.ik || 0);
+      shake = Math.max(shake, s.sh || 0);
+
+      applyFighter(p1, s.p1);
+      applyFighter(p2, s.p2);
+      unpackWaves(s.bw);
+      if (Array.isArray(s.hz)) hazards = s.hz.map(h => ({ kind: h.k, x: h.x, hw: h.hw, f: h.f, t: 0 }));
+      if (Array.isArray(s.rw)) rockWalls = s.rw.map(r => ({ x: r.x, w: r.w, h: r.h, f: r.f }));
+      if (Array.isArray(s.dc)) decoyClones = s.dc.map(d => ({ x: d.x, y: GROUND_Y, facing: d.fc, f: d.f, swung: Boolean(d.sw), swingF: d.sf, wType: d.wt, gear: d.gr }));
+      if (Array.isArray(s.dw)) droppedWeapons = s.dw.map(d => ({ x: d.x, y: d.y, rot: d.rt, wType: d.wt, el: ELEMENTS[d.e] || ELEMENTS.water, grounded: Boolean(d.gd) }));
+      if (Array.isArray(s.br) && s.br.length === 2) {
+        braziers = s.br.map(b => ({ x: b[0], intact: Boolean(b[1]), hitFlash: b[2] || 0 }));
+      }
+      if (s.ev) applyNetEvents(s.ev);
+    }
+
+    function stepClientFrame() {
+      simFrame++;
+      tickMusic();
+      if (dramaticZoom > 0.001) dramaticZoom *= 0.94; else dramaticZoom = 0;
+      if (ultDimFrames > 0) ultDimFrames--;
+      if (inkFlashF > 0) inkFlashF--;
+      if (stormFlashFrames > 0) stormFlashFrames--;
+      if (match.banner && match.screen !== 'match_over') {
+        match.banner.f--;
+        if (match.banner.f <= 0) match.banner = null;
+      }
+      for (let i = match.callouts.length - 1; i >= 0; i--) {
+        match.callouts[i].f--; match.callouts[i].y -= 0.72;
+        if (match.callouts[i].f <= 0) match.callouts.splice(i, 1);
+      }
+      // Smooth 60Hz between-snapshot motion & trail HP easing
+      [p1, p2].forEach(f => {
+        if (hitstop <= 0 && !f.dizzied && f.frozenPrisonF <= 0) {
+          if (Math.abs(f.vx) > 0.2) f.x = Math.max(ARENA_L, Math.min(ARENA_R, f.x + f.vx * 0.45));
+          if (f.y < GROUND_Y || f.vy < 0) f.y = Math.min(GROUND_Y, f.y + f.vy * 0.45);
+          if (typeof f._netX === 'number') f.x += (f._netX - f.x) * 0.25;
+          if (typeof f._netY === 'number') f.y += (f._netY - f.y) * 0.25;
+        }
+        if (f.trailHp > f.hp) f.trailHp = Math.max(f.hp, f.trailHp - Math.max(1.2, (f.trailHp - f.hp) * 0.14));
+        else f.trailHp = f.hp;
+        if (f.flash > 0) f.flash--;
+        if (f.avatarFlash > 0) f.avatarFlash--;
+      });
+      animateFighter(p1);
+      animateFighter(p2);
+      for (let i = ghosts.length - 1; i >= 0; i--) if (++ghosts[i].a >= ghosts[i].max) ghosts.splice(i, 1);
+      updateParticles();
+    }
+
+    function launchMatch(cfg) {
+      closeAllModals();
+      state.inMatch = true;
+      state.pendingEvents.length = 0;
+      state.p1Lob = { ...state.p1Lob, ...cfg.p1, ready: false };
+      state.p2Lob = { ...state.p2Lob, ...cfg.p2, ready: false };
+      state.stageBiome = cfg.biome || state.stageBiome;
+      state.toWin = cfg.toWin || 2;
+      startMatch(state.p1Lob.el, state.p2Lob.el, null, {
+        mode: 'wifi',
+        toWin: state.toWin,
+        wifiBiome: state.stageBiome,
+        p1Name: state.p1Lob.name,
+        p2Name: state.p2Lob.name,
+        p1Loadout: { ...state.p1Lob },
+        p2Loadout: { ...state.p2Lob }
+      });
+      applyTouchUI();
+    }
+
+    function hostStartDuel() {
+      if (!state.connected || state.role !== 'host') return;
+      const cfg = { p1: { ...state.p1Lob }, p2: { ...state.p2Lob }, biome: state.stageBiome, toWin: state.toWin };
+      sendRaw({ t: 'go', ...cfg });
+      launchMatch(cfg);
+    }
+
+    function requestRematch() {
+      if (!state.connected) return;
+      if (state.role === 'host') match.wifiRematchP1 = true;
+      else match.wifiRematchP2 = true;
+      sendRaw({ t: 'rm', who: state.role });
+      lastBanKey = '';
+      if (state.role === 'host' && match.wifiRematchP1 && match.wifiRematchP2) {
+        hostStartDuel();
+      }
+    }
+
+    function returnToLobby(notifyPeer = false) {
+      if (notifyPeer && state.connected) sendRaw({ t: 'lobby' });
+      state.inMatch = false;
+      state.p1Lob.ready = false;
+      state.p2Lob.ready = false;
+      match.wifiRematchP1 = false;
+      match.wifiRematchP2 = false;
+      match.inMenu = true;
+      match.paused = false;
+      document.getElementById('hud').classList.add('hidden');
+      document.getElementById('touch-layer').classList.add('hidden');
+      document.getElementById('main-menu').classList.add('hidden');
+      openWifiModal(true);
+    }
+
+    function onRawMsg(rawLine) {
+      let m;
+      try { m = typeof rawLine === 'string' ? JSON.parse(rawLine) : rawLine; } catch { return; }
+      if (!m || !m.t) return;
+      if (m.t === 'ping') { sendRaw({ t: 'pong', ts: m.ts }); return; }
+      if (m.t === 'pong') {
+        state.pingMs = Math.max(1, Math.min(999, Math.round(performance.now() - m.ts)));
+        return;
+      }
+      if (m.t === 'lob') {
+        if (m.who === 'host' && m.d) {
+          state.p1Lob = { ...state.p1Lob, ...m.d };
+          if (m.biome) state.stageBiome = m.biome;
+          if (m.toWin) state.toWin = m.toWin;
+        } else if (m.who === 'client' && m.d) {
+          state.p2Lob = { ...state.p2Lob, ...m.d };
+        }
+        if (wifiModal && !wifiModal.classList.contains('hidden')) renderWifiModal();
+        return;
+      }
+      if (m.t === 'go') {
+        launchMatch(m);
+        return;
+      }
+      if (m.t === 'lobby') {
+        returnToLobby(false);
+        return;
+      }
+      if (m.t === 'rm') {
+        if (m.who === 'host') match.wifiRematchP1 = true;
+        else match.wifiRematchP2 = true;
+        lastBanKey = '';
+        if (state.role === 'host' && match.wifiRematchP1 && match.wifiRematchP2) {
+          hostStartDuel();
+        }
+        return;
+      }
+      if (m.t === 'over' && state.role === 'client') {
+        match.screen = 'match_over';
+        match.winner = m.w;
+        match.p1W = m.w1; match.p2W = m.w2;
+        match.eclipseFinished = Boolean(m.ex);
+        match.wifiRematchP1 = false; match.wifiRematchP2 = false;
+        const clientReward = m.w === 'p2' ? 110 : 55;
+        PROG.coins += clientReward; saveProg();
+        const winName = getFighterDisplayName(m.w);
+        showBanner(`${winName} WINS`, `${m.w1} — ${m.w2}${m.ex ? ' · EXECUTION' : ''} · WI-FI DUET`, m.w === 'p1' ? '#ffae34' : '#4be3ff', 99999, false, true);
+        haptic('ko', true);
+        return;
+      }
+      if (m.t === 'st' && state.isClientInMatch()) {
+        applyStateSnapshot(m);
+        return;
+      }
+      if (m.t === 'in' && state.isHostInMatch()) {
+        if (m.a === 'dir') {
+          setDir(p2, m.dx || 0, m.dy || 0);
+        } else if (m.a === 'dn') {
+          if (typeof m.dx === 'number' && typeof m.dy === 'number') setDir(p2, m.dx, m.dy);
+          pressBtn(p2, m.b);
+        } else if (m.a === 'up') {
+          releaseBtn(p2, m.b);
+        } else if (m.a === 'swp') {
+          const prevX = p2.dir.x, prevY = p2.dir.y;
+          p2.dir = { x: m.dx || 0, y: m.dy || 0 };
+          pressBtn(p2, 'magic');
+          releaseBtn(p2, 'magic');
+          p2.dir = { x: prevX, y: prevY };
+        } else if (m.a === 'shift') {
+          triggerAvatarShift(p2);
+        } else if (m.a === 'rst') {
+          Array.from(p2.held).forEach(b => releaseBtn(p2, b));
+          setDir(p2, 0, 0);
+        }
+      }
+    }
+
+    function onEvent(ev) {
+      if (!ev || !ev.type) return;
+      if (ev.type === 'host_ready') {
+        state.hosting = true;
+        state.hostIp = ev.ip || '192.168.43.1';
+        state.hostPort = ev.port || 42871;
+        state.shortCode = ev.shortCode || state.hostIp;
+        state.statusMsg = ev.message || 'Waiting for Player 2...';
+        state.errorMsg = '';
+        if (wifiModal && !wifiModal.classList.contains('hidden')) renderWifiModal();
+      } else if (ev.type === 'host_found') {
+        const key = `${ev.ip}:${ev.port || 42871}`;
+        const prev = state.discovered.get(key);
+        const next = {
+          name: ev.name || 'SHADOW', el: ev.el || 'water',
+          ip: ev.ip, port: ev.port || 42871,
+          shortCode: ev.shortCode || ev.ip, seenAt: Date.now()
+        };
+        const changed = !prev || prev.name !== next.name || prev.el !== next.el || prev.shortCode !== next.shortCode;
+        state.discovered.set(key, next);
+        if (changed && wifiModal && !wifiModal.classList.contains('hidden') && !state.connected) {
+          refreshWifiHostList();
+        }
+      } else if (ev.type === 'connected') {
+        state.connected = true;
+        state.hosting = false;
+        state.scanning = false;
+        state.role = ev.role || state.role;
+        state.peerIp = ev.peerIp || state.peerIp;
+        state.errorMsg = '';
+        state.statusMsg = ev.message || 'Connected!';
+        // Initialize local slot from saved playerName & current gear
+        if (state.role === 'host') state.p1Lob = { ...state.p1Lob, name: PROG.playerName || 'SHADOW', ready: false };
+        else state.p2Lob = { ...state.p2Lob, name: PROG.playerName || 'SHADOW', ready: false };
+        startPingLoop();
+        sendLobbySync();
+        setTimeout(sendLobbySync, 180);
+        sfx.gong(); haptic('medium');
+        if (wifiModal && !wifiModal.classList.contains('hidden')) renderWifiModal();
+      } else if (ev.type === 'error') {
+        state.errorMsg = ev.message || 'Connection failed.';
+        state.hosting = false;
+        if (wifiModal && !wifiModal.classList.contains('hidden')) renderWifiModal();
+      } else if (ev.type === 'disconnected') {
+        const wasInMatch = state.inMatch;
+        state.connected = false;
+        state.hosting = false;
+        state.inMatch = false;
+        stopPingLoop();
+        if (wasInMatch && !match.inMenu) {
+          match.screen = 'match_over';
+          match.winner = null;
+          showBanner('OPPONENT DISCONNECTED', 'WI-FI CONNECTION LOST', '#f87171', 99999, false, true);
+          lastBanKey = '';
+          lastPingTxt = '';
+        } else if (wifiModal && !wifiModal.classList.contains('hidden')) {
+          state.errorMsg = ev.message || 'Opponent left the Dojo.';
+          state.role = '';
+          startScan();
+          renderWifiModal();
+        }
+      }
+    }
+
+    function startHost() {
+      disconnect(true);
+      state.role = 'host';
+      state.hosting = true;
+      state.errorMsg = '';
+      state.p1Lob = { ...state.p1Lob, name: PROG.playerName || 'SHADOW', ready: false };
+      if (nativeReady()) {
+        try { window.AndroidWifiDuel.startHost(state.p1Lob.name, state.p1Lob.el); } catch {}
+      } else {
+        ensureBc();
+        state.hostIp = peerUid;
+        state.shortCode = peerUid.slice(3, 7).toUpperCase();
+        onEvent({ type: 'host_ready', ip: peerUid, port: 42871, shortCode: state.shortCode, message: 'Browser Local Duet Ready — open a 2nd tab and tap Join!' });
+        if (bcBeaconTimer) clearInterval(bcBeaconTimer);
+        bcBeaconTimer = setInterval(() => {
+          if (bc && state.hosting && !state.connected) {
+            bc.postMessage({ from: peerUid, bcKind: 'beacon', bcId: peerUid, name: state.p1Lob.name, el: state.p1Lob.el, shortCode: state.shortCode });
+          }
+        }, 450);
+      }
+      renderWifiModal();
+    }
+
+    function startScan() {
+      if (state.connected || state.hosting) return;
+      state.scanning = true;
+      state.discovered.clear();
+      if (nativeReady()) {
+        try { window.AndroidWifiDuel.startScan(); } catch {}
+      } else {
+        ensureBc();
+      }
+      if (hostPruneTimer) clearInterval(hostPruneTimer);
+      hostPruneTimer = setInterval(() => {
+        if (!state.scanning || state.connected) return;
+        const now = Date.now();
+        let changed = false;
+        for (const [k, v] of state.discovered.entries()) {
+          if (now - v.seenAt > 4500) { state.discovered.delete(k); changed = true; }
+        }
+        if (changed && wifiModal && !wifiModal.classList.contains('hidden')) refreshWifiHostList();
+      }, 1500);
+    }
+
+    function connectTo(target, port = 42871) {
+      const clean = String(target || '').trim();
+      if (!clean) { state.errorMsg = 'Enter the Host Dojo Code or IP address.'; renderWifiModal(); return; }
+      state.role = 'client';
+      state.errorMsg = '';
+      state.statusMsg = `Connecting to ${clean}...`;
+      state.p2Lob = { ...state.p2Lob, name: PROG.playerName || 'SHADOW', ready: false };
+      if (nativeReady()) {
+        try { window.AndroidWifiDuel.connectToHost(clean, Number(port) || 42871); } catch {}
+      } else {
+        ensureBc();
+        // Match by bcId or shortCode
+        let targetId = clean;
+        for (const h of state.discovered.values()) {
+          if (h.ip === clean || (h.shortCode && h.shortCode.toUpperCase() === clean.toUpperCase())) { targetId = h.ip; break; }
+        }
+        if (bc) bc.postMessage({ from: peerUid, bcKind: 'join', target: targetId });
+      }
+      renderWifiModal();
+    }
+
+    function disconnect(silent = false) {
+      if (!silent && state.connected && !nativeReady() && bc && state.peerIp) {
+        try { bc.postMessage({ from: peerUid, bcKind: 'bye', target: state.peerIp }); } catch {}
+      }
+      if (bcBeaconTimer) { clearInterval(bcBeaconTimer); bcBeaconTimer = null; }
+      if (hostPruneTimer) { clearInterval(hostPruneTimer); hostPruneTimer = null; }
+      stopPingLoop();
+      if (nativeReady()) {
+        try { window.AndroidWifiDuel.disconnect(); } catch {}
+      }
+      state.connected = false;
+      state.hosting = false;
+      state.scanning = false;
+      state.inMatch = false;
+      state.role = '';
+      state.peerIp = '';
+      state.pendingEvents.length = 0;
+    }
+
+    function leaveToMenu() {
+      disconnect(false);
+      openMainMenu();
+    }
+
+    window.__onWifiDuelEvent = onEvent;
+    window.__onWifiDuelMsg = onRawMsg;
+
+    const api = {
+      get role() { return state.role; },
+      get connected() { return state.connected; },
+      get hosting() { return state.hosting; },
+      get scanning() { return state.scanning; },
+      get inMatch() { return state.inMatch; },
+      get pingMs() { return state.pingMs; },
+      get state() { return state; },
+      isHostInMatch: state.isHostInMatch,
+      isClientInMatch: state.isClientInMatch,
+      nativeReady,
+      startHost, startScan, connectTo, disconnect, leaveToMenu,
+      sendLobbySync, sendInput, sendRaw, pushEvent,
+      hostStartDuel, requestRematch, returnToLobby,
+      onHostStep, stepClientFrame
+    };
+    window.__ES_WIFI = api;
+    return api;
+  }
+  WIFI = createWifiDuelEngine();
+
+  function openWifiModal(keepSession = false) {
+    closeAllModals();
+    match.paused = true;
+    if (!keepSession && !WIFI.connected && !WIFI.hosting) {
+      WIFI.state.errorMsg = '';
+      WIFI.startScan();
+    }
+    wifiModal.classList.remove('hidden');
+    renderWifiModal();
+  }
+
+  function buildWifiHostListHtml() {
+    const st = WIFI.state;
+    const hosts = Array.from(st.discovered.values());
+    if (!hosts.length) {
+      return `<div style="padding:14px 8px;text-align:center;font-size:11px;color:#9f907a">${st.scanning ? 'Scanning local Wi-Fi / Hotspot for nearby Host Dojos...' : 'Tap Scan to find nearby Dojos.'}</div>`;
+    }
+    return hosts.map(h => {
+      const hel = ELEMENTS[h.el] || ELEMENTS.water;
+      return `<button class="wifi-host-row" data-join-ip="${escapeHtml(h.ip)}" data-join-port="${h.port}">
+        <div><b>${escapeHtml(h.name)}'S DOJO</b><small>${hel.name} · Code ${escapeHtml(h.shortCode)} (${escapeHtml(h.ip)})</small></div>
+        <span class="pill primary" style="padding:4px 9px;font-size:10px">JOIN</span>
+      </button>`;
+    }).join('');
+  }
+
+  function refreshWifiHostList() {
+    if (!wifiModal || wifiModal.classList.contains('hidden') || WIFI.state.connected) return;
+    const listEl = wifiModal.querySelector('#wifi-host-list');
+    if (!listEl) { renderWifiModal(); return; }
+    listEl.innerHTML = buildWifiHostListHtml();
+    listEl.querySelectorAll('[data-join-ip]').forEach(btn => {
+      btn.onclick = () => { unlockAudio(); sfx.bend(); WIFI.connectTo(btn.dataset.joinIp, Number(btn.dataset.joinPort) || 42871); };
+    });
+  }
+
+  function renderWifiModal() {
+    if (!wifiModal || wifiModal.classList.contains('hidden')) return;
+    const st = WIFI.state;
+    const isConn = st.connected;
+    const isHost = st.role === 'host';
+    const mine = isHost ? st.p1Lob : st.p2Lob;
+
+    if (!isConn) {
+      const hostListHtml = buildWifiHostListHtml();
+
+      wifiModal.innerHTML = `
+        <section class="panel-modal wifi-panel">
+          <div class="wifi-head">
+            <h1>WI-FI / HOTSPOT DUET · 2P</h1>
+            <div class="wifi-name-wrap">
+              <label for="wifi-name-in">FIGHTER NAME</label>
+              <input class="wifi-input" id="wifi-name-in" maxlength="14" value="${escapeHtml(PROG.playerName || 'SHADOW')}" placeholder="YOUR NAME" />
+              <button class="pill" id="w-close">BACK</button>
+            </div>
+          </div>
+          ${st.errorMsg ? `<div class="wifi-err">${escapeHtml(st.errorMsg)}</div>` : ''}
+          <div class="wifi-connect-grid">
+            <div class="wifi-card">
+              <h2>HOST DOJO (PLAYER 1)</h2>
+              <p>Connect both phones to the <b>same Wi-Fi</b>, or turn on this phone's <b>Wi-Fi Hotspot</b> (zero mobile data needed) and tap Host Duel.</p>
+              ${st.hosting ? `
+                <div class="wifi-code-box">
+                  <div class="wifi-code-lbl">DOJO ROOM CODE · SHARE WITH PLAYER 2</div>
+                  <div class="wifi-code-val">${escapeHtml(st.shortCode)}</div>
+                  <div class="wifi-code-sub">Full IP: ${escapeHtml(st.hostIp)}:${st.hostPort}</div>
+                </div>
+                <div style="font-size:11px;color:#86efac;text-align:center;font-weight:700">${escapeHtml(st.statusMsg || 'Waiting for Challenger...')}</div>
+                <button class="pill" id="w-cancel-host">CANCEL HOSTING</button>
+              ` : `
+                <div style="margin-top:auto">
+                  <button class="pill primary" id="w-start-host" style="width:100%;padding:11px">HOST DUEL</button>
+                </div>
+              `}
+            </div>
+            <div class="wifi-card">
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:6px">
+                <h2>JOIN DOJO (PLAYER 2)</h2>
+                <button class="pill" id="w-refresh" style="padding:3px 9px;font-size:10px">SCAN</button>
+              </div>
+              <div class="wifi-host-list" id="wifi-host-list">${hostListHtml}</div>
+              <div class="wifi-manual">
+                <input class="wifi-input" id="wifi-code-in" value="${escapeHtml(st.manualCode)}" placeholder="Room Code (e.g. 43.1)" />
+                <button class="pill primary" id="w-connect">CONNECT</button>
+              </div>
+            </div>
+          </div>
+        </section>`;
+
+      const nameIn = wifiModal.querySelector('#wifi-name-in');
+      if (nameIn) nameIn.oninput = (e) => {
+        const val = e.target.value.replace(/[|\r\n]/g, '').slice(0, 14).toUpperCase();
+        PROG.playerName = val || 'SHADOW'; saveProg();
+        st.p1Lob.name = PROG.playerName; st.p2Lob.name = PROG.playerName;
+        if (st.hosting && WIFI.nativeReady()) { try { window.AndroidWifiDuel.updateHostMeta(PROG.playerName, st.p1Lob.el); } catch {} }
+      };
+      const codeIn = wifiModal.querySelector('#wifi-code-in');
+      if (codeIn) codeIn.oninput = (e) => { st.manualCode = e.target.value.trim(); };
+      const bClose = wifiModal.querySelector('#w-close');
+      if (bClose) bClose.onclick = () => { WIFI.leaveToMenu(); };
+      const bHost = wifiModal.querySelector('#w-start-host');
+      if (bHost) bHost.onclick = () => { unlockAudio(); sfx.bend(); WIFI.startHost(); };
+      const bCancel = wifiModal.querySelector('#w-cancel-host');
+      if (bCancel) bCancel.onclick = () => { WIFI.disconnect(true); WIFI.startScan(); renderWifiModal(); };
+      const bRef = wifiModal.querySelector('#w-refresh');
+      if (bRef) bRef.onclick = () => { WIFI.startScan(); renderWifiModal(); };
+      const bConn = wifiModal.querySelector('#w-connect');
+      if (bConn) bConn.onclick = () => { unlockAudio(); WIFI.connectTo(codeIn ? codeIn.value : st.manualCode, 42871); };
+      wifiModal.querySelectorAll('[data-join-ip]').forEach(btn => {
+        btn.onclick = () => { unlockAudio(); sfx.bend(); WIFI.connectTo(btn.dataset.joinIp, Number(btn.dataset.joinPort) || 42871); };
+      });
+      return;
+    }
+
+    // ===== CONNECTED LIVE 2-PLAYER VS LOBBY =====
+    const e1 = ELEMENTS[st.p1Lob.el] || ELEMENTS.water;
+    const e2 = ELEMENTS[st.p2Lob.el] || ELEMENTS.fire;
+    const w1Name = (WEAPON_CATALOG.find(x => x.id === st.p1Lob.weapon) || WEAPON_CATALOG[0]).name;
+    const w2Name = (WEAPON_CATALOG.find(x => x.id === st.p2Lob.weapon) || WEAPON_CATALOG[0]).name;
+    const en1Name = (ENCHANT_CATALOG.find(x => x.id === st.p1Lob.enchant) || ENCHANT_CATALOG[0]).name;
+    const en2Name = (ENCHANT_CATALOG.find(x => x.id === st.p2Lob.enchant) || ENCHANT_CATALOG[0]).name;
+    const stageObj = WIFI_STAGES.find(s => s.id === st.stageBiome) || WIFI_STAGES[0];
+
+    wifiModal.innerHTML = `
+      <section class="panel-modal wifi-panel">
+        <div class="wifi-head">
+          <h1>WI-FI DUET LOBBY · ${isHost ? 'HOST (P1)' : 'CHALLENGER (P2)'}</h1>
+          <div class="pill-row">
+            <span class="wifi-ping" style="margin:0"><span class="wp-dot"></span>CONNECTED · ${Math.max(1, st.pingMs)}ms</span>
+            <button class="pill" id="w-leave">DISCONNECT</button>
+          </div>
+        </div>
+        <div class="wifi-vs-bar">
+          <div class="wifi-slot ${isHost ? 'me' : ''} ${st.p1Lob.ready ? 'ready' : ''}">
+            <div class="ws-crest" style="--sc:${e1.glow}">${e1.svg}</div>
+            <div class="ws-meta">
+              <div class="ws-name">${escapeHtml(st.p1Lob.name)}${isHost ? '<span class="you-tag">YOU</span>' : ''}</div>
+              <div class="ws-sub">${e1.name} · ${w1Name}${st.p1Lob.enchant !== 'none' ? ` · ${en1Name}` : ''}</div>
+            </div>
+            <span class="ws-rdy ${st.p1Lob.ready ? 'on' : ''}">${st.p1Lob.ready ? 'READY' : 'PICKING'}</span>
+          </div>
+          <div class="wifi-vs-mid">VS</div>
+          <div class="wifi-slot p2 ${!isHost ? 'me' : ''} ${st.p2Lob.ready ? 'ready' : ''}">
+            <div class="ws-crest" style="--sc:${e2.glow}">${e2.svg}</div>
+            <div class="ws-meta">
+              <div class="ws-name">${!isHost ? '<span class="you-tag">YOU</span>' : ''}${escapeHtml(st.p2Lob.name)}</div>
+              <div class="ws-sub">${e2.name} · ${w2Name}${st.p2Lob.enchant !== 'none' ? ` · ${en2Name}` : ''}</div>
+            </div>
+            <span class="ws-rdy ${st.p2Lob.ready ? 'on' : ''}">${st.p2Lob.ready ? 'READY' : 'PICKING'}</span>
+          </div>
+        </div>
+
+        <div class="wifi-lobby-body">
+          <div class="wifi-row">
+            <span class="wifi-row-lbl">ELEMENT</span>
+            <div class="wifi-chips">
+              ${EL_ORDER.map(id => {
+                const el = ELEMENTS[id];
+                return `<button class="wchip ${mine.el === id ? 'on' : ''}" data-wel="${id}" style="--wc:${el.glow}">${el.svg}${el.name}</button>`;
+              }).join('')}
+            </div>
+          </div>
+          <div class="wifi-row">
+            <span class="wifi-row-lbl">WEAPON</span>
+            <div class="wifi-chips">
+              ${WEAPON_CATALOG.map(w => `<button class="wchip ${mine.weapon === w.id ? 'on' : ''}" data-wwep="${w.id}">${w.ico}${w.name}</button>`).join('')}
+            </div>
+          </div>
+          <div class="wifi-row">
+            <span class="wifi-row-lbl">SEAL</span>
+            <div class="wifi-chips">
+              ${ENCHANT_CATALOG.map(en => `<button class="wchip ${mine.enchant === en.id ? 'on' : ''}" data-wench="${en.id}" style="--wc:${en.col}">${en.ico}${en.name}</button>`).join('')}
+            </div>
+          </div>
+          <div class="wifi-row">
+            <span class="wifi-row-lbl">GEAR &amp; ART</span>
+            <div class="wifi-chips">
+              ${GEAR_CATALOG.map(gr => `<button class="wchip ${mine.gear === gr.id ? 'on' : ''}" data-wgear="${gr.id}">${gr.ico}${gr.name}</button>`).join('')}
+              <button class="wchip ${mine.scrollMastered ? 'on' : ''}" id="w-tog-scroll" style="--wc:#f6ce82">Grandmaster Scroll: ${mine.scrollMastered ? 'ON' : 'OFF'}</button>
+              <button class="wchip ${mine.avatarUnlocked ? 'on' : ''}" id="w-tog-av" style="--wc:#7ce8ff">Avatar Shift: ${mine.avatarUnlocked ? 'ON' : 'OFF'}</button>
+            </div>
+          </div>
+          <div class="wifi-row">
+            <span class="wifi-row-lbl">${isHost ? 'ARENA' : 'STAGE'}</span>
+            <div class="wifi-chips">
+              ${isHost
+                ? WIFI_STAGES.map(sg => `<button class="wchip ${st.stageBiome === sg.id ? 'on' : ''}" data-wstage="${sg.id}">${sg.label}</button>`).join('')
+                : `<span class="wchip on" style="cursor:default">${stageObj.label} · First to ${st.toWin} Rounds (Host Pick)</span>`}
+            </div>
+          </div>
+        </div>
+
+        <div class="wifi-foot">
+          <div class="pill-row">
+            ${isHost ? `
+              <button class="pill ${st.toWin === 2 ? 'primary' : ''}" data-wfmt="2" style="padding:5px 10px;font-size:10.5px">BEST OF 3</button>
+              <button class="pill ${st.toWin === 3 ? 'primary' : ''}" data-wfmt="3" style="padding:5px 10px;font-size:10.5px">BEST OF 5</button>
+            ` : `<span style="font-size:11px;color:#cbbba2">Tap READY when your fighter is set — Host starts the duel!</span>`}
+          </div>
+          <div class="pill-row">
+            <button class="pill ${mine.ready ? '' : 'primary'}" id="w-ready">${mine.ready ? 'CANCEL READY' : 'READY'}</button>
+            ${isHost ? `<button class="pill primary" id="w-start-duel">START DUEL</button>` : ''}
+          </div>
+        </div>
+      </section>`;
+
+    wifiModal.querySelector('#w-leave').onclick = () => { WIFI.leaveToMenu(); };
+    wifiModal.querySelectorAll('[data-wel]').forEach(b => b.onclick = () => { mine.el = b.dataset.wel; mine.ready = false; sfx.bend(); WIFI.sendLobbySync(); renderWifiModal(); });
+    wifiModal.querySelectorAll('[data-wwep]').forEach(b => b.onclick = () => { mine.weapon = b.dataset.wwep; mine.ready = false; sfx.whoosh(false); WIFI.sendLobbySync(); renderWifiModal(); });
+    wifiModal.querySelectorAll('[data-wench]').forEach(b => b.onclick = () => { mine.enchant = b.dataset.wench; mine.ready = false; sfx.bladeClash(); WIFI.sendLobbySync(); renderWifiModal(); });
+    wifiModal.querySelectorAll('[data-wgear]').forEach(b => b.onclick = () => { mine.gear = b.dataset.wgear; mine.ready = false; sfx.bend(); WIFI.sendLobbySync(); renderWifiModal(); });
+    const tScr = wifiModal.querySelector('#w-tog-scroll');
+    if (tScr) tScr.onclick = () => { mine.scrollMastered = !mine.scrollMastered; mine.ready = false; sfx.bend(); WIFI.sendLobbySync(); renderWifiModal(); };
+    const tAv = wifiModal.querySelector('#w-tog-av');
+    if (tAv) tAv.onclick = () => { mine.avatarUnlocked = !mine.avatarUnlocked; mine.ready = false; sfx.bend(); WIFI.sendLobbySync(); renderWifiModal(); };
+    wifiModal.querySelectorAll('[data-wstage]').forEach(b => b.onclick = () => { st.stageBiome = b.dataset.wstage; sfx.bend(); WIFI.sendLobbySync(); renderWifiModal(); });
+    wifiModal.querySelectorAll('[data-wfmt]').forEach(b => b.onclick = () => { st.toWin = Number(b.dataset.wfmt); sfx.bend(); WIFI.sendLobbySync(); renderWifiModal(); });
+    wifiModal.querySelector('#w-ready').onclick = () => {
+      mine.ready = !mine.ready; sfx.gong(); haptic('light');
+      WIFI.sendLobbySync(); renderWifiModal();
+    };
+    const bStart = wifiModal.querySelector('#w-start-duel');
+    if (bStart) bStart.onclick = () => { unlockAudio(); WIFI.hostStartDuel(); };
+  }
+
   // ===== BUTTON WIRE-UPS =====
   document.getElementById('mm-story').onclick = () => {
     unlockAudio();
@@ -9628,6 +10974,7 @@
     }
   };
   document.getElementById('mm-fight').onclick = () => { unlockAudio(); openRoster('duel'); };
+  document.getElementById('mm-wifi').onclick = () => { unlockAudio(); openWifiModal(false); };
   document.getElementById('mm-dojo').onclick = () => { unlockAudio(); openRoster('dojo'); };
   document.getElementById('mm-armory').onclick = () => { unlockAudio(); openArmory(); };
   document.getElementById('mm-settings').onclick = () => { unlockAudio(); match.paused = true; pauseModal.classList.remove('hidden'); renderPause(); };
@@ -9635,8 +10982,17 @@
   document.getElementById('btn-pause').onclick = () => { unlockAudio(); togglePause(); };
   document.getElementById('btn-next-boss').onclick = () => { unlockAudio(); startCampaignStage(match.campaignStageIdx + 1); };
   document.getElementById('btn-open-armory-end').onclick = () => { unlockAudio(); openArmory(); };
-  document.getElementById('btn-rematch').onclick = () => { unlockAudio(); startMatch(p1.el.id, p2.el.id, match.boss, { mode: match.mode, mutator: match.mutator, dailyTrial: match.dailyTrial }); };
-  document.getElementById('btn-to-menu-end').onclick = () => { unlockAudio(); openMainMenu(); };
+  document.getElementById('btn-wifi-lobby-end').onclick = () => { unlockAudio(); if (WIFI) WIFI.returnToLobby(true); };
+  document.getElementById('btn-rematch').onclick = () => {
+    unlockAudio();
+    if (match.mode === 'wifi' && WIFI) { WIFI.requestRematch(); return; }
+    startMatch(p1.el.id, p2.el.id, match.boss, { mode: match.mode, mutator: match.mutator, dailyTrial: match.dailyTrial });
+  };
+  document.getElementById('btn-to-menu-end').onclick = () => {
+    unlockAudio();
+    if (match.mode === 'wifi' && WIFI) { WIFI.leaveToMenu(); return; }
+    openMainMenu();
+  };
   document.getElementById('btn-dismiss-tip').onclick = () => { document.getElementById('portrait-tip').style.display = 'none'; };
   pauseModal.onclick = e => { if (e.target === pauseModal) { if (match.inMenu) closeAllModals(); else togglePause(); } };
   rosterModal.onclick = e => { if (e.target === rosterModal) closeAllModals(); };
@@ -9646,6 +11002,7 @@
   let lastT = performance.now(), acc = 0, rAcc = 0, curFps = 60;
   function loop(now) {
     requestAnimationFrame(loop);
+    if (appSuspended || document.hidden) { lastT = now; return; }
     const rawDt = (now - lastT) / 1000; lastT = now;
     const dt = Math.min(0.1, Math.max(0, rawDt));
     if (rawDt > 0.001) curFps = curFps * 0.9 + (1 / rawDt) * 0.1;
@@ -9653,7 +11010,11 @@
       const ts = slowMoFrames > 0 ? 0.36 : 1;
       if (slowMoFrames > 0) slowMoFrames = Math.max(0, slowMoFrames - dt * 60);
       acc += dt * ts;
-      while (acc >= 1 / 60) { stepSim(); acc -= 1 / 60; }
+      while (acc >= 1 / 60) {
+        stepSim();
+        if (WIFI && WIFI.isHostInMatch()) WIFI.onHostStep();
+        acc -= 1 / 60;
+      }
     }
     const rInt = settings.fps === 30 ? 1 / 30 : 0; rAcc += dt;
     if (rAcc >= rInt) { rAcc = rInt > 0 ? rAcc % rInt : 0; renderScene(); syncHud(); }

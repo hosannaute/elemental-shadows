@@ -11,11 +11,13 @@ import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.os.VibratorManager;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowInsets;
 import android.view.WindowInsetsController;
 import android.view.WindowManager;
 import android.webkit.JavascriptInterface;
+import android.webkit.RenderProcessGoneDetail;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
@@ -25,8 +27,13 @@ import android.webkit.WebViewClient;
 import androidx.webkit.WebViewAssetLoader;
 
 public class MainActivity extends Activity {
+    private static final String ENTRY_URL = "https://appassets.androidplatform.net/assets/www/index.html";
+
     private WebView webView;
     private Vibrator vibrator;
+    private WifiDuelManager wifiDuelManager;
+    private WebViewAssetLoader assetLoader;
+    private int renderCrashCount = 0;
 
     private class HapticBridge {
         @JavascriptInterface
@@ -46,7 +53,6 @@ public class MainActivity extends Activity {
         }
     }
 
-    @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,13 +74,24 @@ public class MainActivity extends Activity {
             window.setAttributes(lp);
         }
 
-        webView = new WebView(this);
-        webView.setBackgroundColor(Color.parseColor("#0b0908"));
-        webView.setOverScrollMode(View.OVER_SCROLL_NEVER);
-        webView.setHorizontalScrollBarEnabled(false);
-        webView.setVerticalScrollBarEnabled(false);
+        assetLoader = new WebViewAssetLoader.Builder()
+                .addPathHandler("/assets/", new WebViewAssetLoader.AssetsPathHandler(this))
+                .build();
 
-        WebSettings settings = webView.getSettings();
+        wifiDuelManager = new WifiDuelManager(this);
+        initWebView();
+        applyImmersiveFullscreen();
+    }
+
+    @SuppressLint("SetJavaScriptEnabled")
+    private void initWebView() {
+        WebView wv = new WebView(this);
+        wv.setBackgroundColor(Color.parseColor("#0b0908"));
+        wv.setOverScrollMode(View.OVER_SCROLL_NEVER);
+        wv.setHorizontalScrollBarEnabled(false);
+        wv.setVerticalScrollBarEnabled(false);
+
+        WebSettings settings = wv.getSettings();
         settings.setJavaScriptEnabled(true);
         settings.setDomStorageEnabled(true);
         settings.setDatabaseEnabled(true);
@@ -86,13 +103,10 @@ public class MainActivity extends Activity {
         settings.setSupportZoom(false);
         settings.setCacheMode(WebSettings.LOAD_DEFAULT);
 
-        webView.addJavascriptInterface(new HapticBridge(), "AndroidHaptics");
+        wv.addJavascriptInterface(new HapticBridge(), "AndroidHaptics");
+        wv.addJavascriptInterface(wifiDuelManager, "AndroidWifiDuel");
 
-        final WebViewAssetLoader assetLoader = new WebViewAssetLoader.Builder()
-                .addPathHandler("/assets/", new WebViewAssetLoader.AssetsPathHandler(this))
-                .build();
-
-        webView.setWebViewClient(new WebViewClient() {
+        wv.setWebViewClient(new WebViewClient() {
             @Override
             public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
                 return assetLoader.shouldInterceptRequest(request.getUrl());
@@ -103,11 +117,49 @@ public class MainActivity extends Activity {
                 Uri uri = request.getUrl();
                 return uri == null || !"appassets.androidplatform.net".equals(uri.getHost());
             }
+
+            @Override
+            @android.annotation.TargetApi(Build.VERSION_CODES.O)
+            public boolean onRenderProcessGone(WebView view, RenderProcessGoneDetail detail) {
+                // Recover cleanly from Android OS WebView renderer kills instead of crashing the app!
+                if (view != webView) return true;
+                renderCrashCount++;
+                if (wifiDuelManager != null) wifiDuelManager.disconnect();
+                detachAndDestroyWebView();
+                if (!isFinishing() && !isDestroyed() && renderCrashCount <= 4) {
+                    runOnUiThread(() -> {
+                        if (!isFinishing() && !isDestroyed()) {
+                            initWebView();
+                            applyImmersiveFullscreen();
+                        }
+                    });
+                    return true;
+                }
+                return true;
+            }
         });
 
-        setContentView(webView);
-        applyImmersiveFullscreen();
-        webView.loadUrl("https://appassets.androidplatform.net/assets/www/index.html");
+        webView = wv;
+        wifiDuelManager.attachWebView(wv);
+        setContentView(wv);
+        wv.loadUrl(ENTRY_URL);
+    }
+
+    private void detachAndDestroyWebView() {
+        WebView wv = webView;
+        webView = null;
+        if (wifiDuelManager != null) wifiDuelManager.attachWebView(null);
+        if (wv != null) {
+            try {
+                wv.stopLoading();
+                wv.removeJavascriptInterface("AndroidHaptics");
+                wv.removeJavascriptInterface("AndroidWifiDuel");
+                if (wv.getParent() instanceof ViewGroup) {
+                    ((ViewGroup) wv.getParent()).removeView(wv);
+                }
+                wv.destroy();
+            } catch (Throwable ignored) { }
+        }
     }
 
     private void applyImmersiveFullscreen() {
@@ -142,6 +194,9 @@ public class MainActivity extends Activity {
         if (webView != null) {
             webView.onResume();
             webView.resumeTimers();
+            try {
+                webView.evaluateJavascript("window.onAndroidLifecycle && window.onAndroidLifecycle('resume')", null);
+            } catch (Throwable ignored) { }
         }
         applyImmersiveFullscreen();
     }
@@ -149,6 +204,9 @@ public class MainActivity extends Activity {
     @Override
     protected void onPause() {
         if (webView != null) {
+            try {
+                webView.evaluateJavascript("window.onAndroidLifecycle && window.onAndroidLifecycle('pause')", null);
+            } catch (Throwable ignored) { }
             webView.onPause();
             webView.pauseTimers();
         }
@@ -157,12 +215,23 @@ public class MainActivity extends Activity {
 
     @Override
     @SuppressWarnings("deprecation")
+    public void onTrimMemory(int level) {
+        super.onTrimMemory(level);
+        if (webView != null && level >= TRIM_MEMORY_RUNNING_MODERATE) {
+            try {
+                webView.evaluateJavascript("window.onAndroidMemoryTrim && window.onAndroidMemoryTrim(" + level + ")", null);
+            } catch (Throwable ignored) { }
+        }
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
     public void onBackPressed() {
-        if (webView != null) {
+        if (webView != null && !isFinishing() && !isDestroyed()) {
             webView.evaluateJavascript(
                     "(function(){ return window.onAndroidBack ? window.onAndroidBack() : false; })()",
                     value -> {
-                        if (!"true".equals(value)) {
+                        if (!"true".equals(value) && !isFinishing() && !isDestroyed()) {
                             MainActivity.super.onBackPressed();
                         }
                     }
@@ -174,10 +243,11 @@ public class MainActivity extends Activity {
 
     @Override
     protected void onDestroy() {
-        if (webView != null) {
-            webView.destroy();
-            webView = null;
+        if (wifiDuelManager != null) {
+            wifiDuelManager.destroy();
+            wifiDuelManager = null;
         }
+        detachAndDestroyWebView();
         super.onDestroy();
     }
 }
