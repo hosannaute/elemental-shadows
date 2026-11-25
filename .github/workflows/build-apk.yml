@@ -66,7 +66,8 @@ jobs:
           mkdir -p out
           cp android/app/build/outputs/apk/release/app-release.apk out/ElementalShadows-v3.3.0-android.apk
           ls -lh out/ElementalShadows-v3.3.0-android.apk
-          keytool -printcert -jarfile out/ElementalShadows-v3.3.0-android.apk | grep -E "Owner:|SHA256:"
+          APKSIGNER=$(ls -1d "${ANDROID_HOME:-$ANDROID_SDK_ROOT}"/build-tools/*/apksigner | sort -V | tail -n1)
+          "$APKSIGNER" verify --print-certs out/ElementalShadows-v3.3.0-android.apk
 
       - name: Upload APK workflow artifact
         uses: actions/upload-artifact@v4
