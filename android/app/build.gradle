@@ -1,0 +1,48 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'com.hosannaute.elementalshadows'
+    compileSdk 35
+
+    defaultConfig {
+        applicationId "com.hosannaute.elementalshadows"
+        minSdk 24
+        targetSdk 35
+        versionCode 11
+        versionName "3.3.0"
+    }
+
+    signingConfigs {
+        release {
+            def ksFile = file("release.keystore")
+            if (ksFile.exists()) {
+                storeFile ksFile
+                storePassword System.getenv("KEYSTORE_PASSWORD") ?: "elementalshadows"
+                keyAlias System.getenv("KEY_ALIAS") ?: "elemental"
+                keyPassword System.getenv("KEY_PASSWORD") ?: "elementalshadows"
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            shrinkResources false
+            signingConfig file("release.keystore").exists() ? signingConfigs.release : signingConfigs.debug
+        }
+        debug {
+            applicationIdSuffix ".debug"
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+dependencies {
+    implementation 'androidx.webkit:webkit:1.12.1'
+}

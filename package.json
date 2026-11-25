@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "sync:android": "mkdir -p android/app/src/main/assets/www/assets && cp mobile/index.html android/app/src/main/assets/www/index.html && cp -r mobile/assets/* android/app/src/main/assets/www/assets/"
   },
   "devDependencies": {
     "typescript": "~7.0.2",
@@ -14,6 +15,7 @@
   },
   "dependencies": {
     "pixi-filters": "^6.1.5",
-    "pixi.js": "^8.23.0"
+    "pixi.js": "^8.23.0",
+    "three": "^0.187.0"
   }
 }
