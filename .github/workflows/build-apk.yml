@@ -35,25 +35,38 @@ jobs:
         with:
           gradle-version: '8.9'
 
-      - name: Generate Android signing keystore
+      - name: Restore persistent Android signing keystore
+        env:
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
         run: |
-          keytool -genkeypair -v \
-            -keystore android/app/release.keystore \
-            -alias elemental \
-            -keyalg RSA -keysize 2048 -validity 10000 \
-            -storepass elementalshadows \
-            -keypass elementalshadows \
-            -dname "CN=Elemental Shadows, OU=Mobile, O=hosannaute, L=Dojo, S=Realm, C=US"
+          if [ -z "$ANDROID_KEYSTORE_BASE64" ] || [ -z "$KEYSTORE_PASSWORD" ] || [ -z "$KEY_ALIAS" ] || [ -z "$KEY_PASSWORD" ]; then
+            echo "ERROR: Persistent signing secrets (ANDROID_KEYSTORE_BASE64, KEYSTORE_PASSWORD, KEY_ALIAS, KEY_PASSWORD) must be configured so APK updates never conflict." >&2
+            exit 1
+          fi
+          printf '%s' "$ANDROID_KEYSTORE_BASE64" | base64 -d > android/app/release.keystore
+          chmod 600 android/app/release.keystore
 
       - name: Build signed Release APK
         working-directory: android
+        env:
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
         run: gradle assembleRelease --no-daemon
 
-      - name: Prepare APK deliverable
+      - name: Remove temporary keystore from workspace
+        if: always()
+        run: rm -f android/app/release.keystore
+
+      - name: Prepare & verify APK deliverable
         run: |
           mkdir -p out
           cp android/app/build/outputs/apk/release/app-release.apk out/ElementalShadows-v3.3.0-android.apk
           ls -lh out/ElementalShadows-v3.3.0-android.apk
+          keytool -printcert -jarfile out/ElementalShadows-v3.3.0-android.apk | grep -E "Owner:|SHA256:"
 
       - name: Upload APK workflow artifact
         uses: actions/upload-artifact@v4
@@ -69,6 +82,8 @@ jobs:
           TAG="v3.3.0-android"
           NOTES=$(cat <<'EOF'
           Standalone 100% offline Android APK of **Elemental Shadows — The Hollow Avatar**.
+
+          > **Install Note:** `v3.3.0` is the first release signed with our **permanent release keystore**. If you have `v3.1.0` or `v3.2.0` installed, uninstall it **once** before installing `v3.3.0`. All future updates (`v3.3.1`, `v3.4.0`, etc.) will install cleanly in-place with zero conflicts and preserve your saved progress.
 
           ### What's New in v3.3.0
           - **4 New Elemental Masters (8 -> 12 Elements Across Quick Duel, Story Campaign, Armory & Wi-Fi Duet):**
