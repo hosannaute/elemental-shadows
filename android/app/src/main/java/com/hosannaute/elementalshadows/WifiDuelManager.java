@@ -1337,6 +1337,10 @@ public class WifiDuelManager {
             case "lightning":
             case "shadow":
             case "lava":
+            case "metal":
+            case "nature":
+            case "sand":
+            case "spirit":
                 return el.trim().toLowerCase(Locale.US);
             default:
                 return fallback;
