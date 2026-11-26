@@ -328,15 +328,15 @@ public class MainActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (wifiDuelManager != null) {
-            wifiDuelManager.onResume();
-        }
         if (webView != null) {
             webView.onResume();
             webView.resumeTimers();
             try {
                 webView.evaluateJavascript("window.onAndroidLifecycle && window.onAndroidLifecycle('resume')", null);
             } catch (Throwable ignored) { }
+        }
+        if (wifiDuelManager != null) {
+            wifiDuelManager.onResume();
         }
         applyImmersiveFullscreen();
     }
@@ -347,11 +347,13 @@ public class MainActivity extends Activity {
             try {
                 webView.evaluateJavascript("window.onAndroidLifecycle && window.onAndroidLifecycle('pause')", null);
             } catch (Throwable ignored) { }
-            webView.onPause();
-            webView.pauseTimers();
         }
         if (wifiDuelManager != null) {
             wifiDuelManager.onPause();
+        }
+        if (webView != null) {
+            webView.onPause();
+            webView.pauseTimers();
         }
         super.onPause();
     }

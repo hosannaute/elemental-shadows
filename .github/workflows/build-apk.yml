@@ -64,49 +64,52 @@ jobs:
       - name: Prepare & verify APK deliverable
         run: |
           mkdir -p out
-          cp android/app/build/outputs/apk/release/app-release.apk out/ElementalShadows-v3.3.0-android.apk
-          ls -lh out/ElementalShadows-v3.3.0-android.apk
+          cp android/app/build/outputs/apk/release/app-release.apk out/ElementalShadows-v3.3.1-android.apk
+          ls -lh out/ElementalShadows-v3.3.1-android.apk
           APKSIGNER=$(ls -1d "${ANDROID_HOME:-$ANDROID_SDK_ROOT}"/build-tools/*/apksigner | sort -V | tail -n1)
-          "$APKSIGNER" verify --print-certs out/ElementalShadows-v3.3.0-android.apk
+          "$APKSIGNER" verify --print-certs out/ElementalShadows-v3.3.1-android.apk
 
       - name: Upload APK workflow artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ElementalShadows-v3.3.0-android-apk
-          path: out/ElementalShadows-v3.3.0-android.apk
+          name: ElementalShadows-v3.3.1-android-apk
+          path: out/ElementalShadows-v3.3.1-android.apk
           retention-days: 90
 
       - name: Publish GitHub Release with direct APK download
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          TAG="v3.3.0-android"
+          TAG="v3.3.1-android"
           NOTES=$(cat <<'EOF'
           Standalone 100% offline Android APK of **Elemental Shadows — The Hollow Avatar**.
 
-          > **Install Note:** `v3.3.0` is the first release signed with our **permanent release keystore**. If you have `v3.1.0` or `v3.2.0` installed, uninstall it **once** before installing `v3.3.0`. All future updates (`v3.3.1`, `v3.4.0`, etc.) will install cleanly in-place with zero conflicts and preserve your saved progress.
+          > **Install Note:** Signed with our **permanent release keystore** (same signing key as `v3.3.0`, bumped to `versionCode 12`). Installing `v3.3.1` directly over `v3.3.0` updates cleanly in-place with zero conflicts and preserves all saved story progress, armory unlocks, and settings.
 
-          ### What's New in v3.3.0
-          - **4 New Elemental Masters (8 -> 12 Elements Across Quick Duel, Story Campaign, Armory & Wi-Fi Duet):**
-            - **Metal (`TETSU` — Wing Chun Metalbender):** Chrome-silver palette, *Twin Hook Swords*, Iron Deflect parry shockback, Magnetic Grapple & Shrapnel Fan quick-bends, **Magnetic Clamp** sub-bend, and *Iron Maiden Crush* execution.
-            - **Nature (`MORI` — Briar & Vine Master):** Vivid emerald-jade palette, *Thorned Nagamaki*, Verdant Roots passive regen, Vine Snare & Briar Patch hazards, **Elder Briar Prison** sub-bend, and *Elder Briar Entanglement* execution.
-            - **Sand (`SUNA` — Desert Glass Bender):** Sunburst gold-amber palette, *Twin Scimitars*, Desert Mirage back-handspring clones, Quicksand Pit & Sand Geyser quick-bends, **Sand Burial** sub-bend, and *Desert Coffin Implosion* execution.
-            - **Spirit (`KAMI` — Astral Energybender):** Astral magenta-rose palette, *Astral War Fans*, Astral Float mid-air hover, Chi-Lock Beam & Astral Blink quick-bends, **Energybend Chi-Seal** sub-bend, and *Astral Convergence Erasure* execution.
-          - **Expanded 13-Stage Story Campaign & 4 New Arenas:**
-            - Added **Master Tetsu** (*Ironclad Foundry*), **Master Mori** (*Verdant Grove*), **Master Suna** (*Mirage Dunes*), and **Master Kami** (*Astral Sanctum*) to the interactive World Map before the **13th Dan Final Eclipse Master**, with all 12 elements playable immediately in Quick Duel, Dojo, and Wi-Fi Duet.
-          - **4-Layer Fighter Readability & Distinction System (Zero Confusion in Multiplayer & Mirror Matches):**
-            - **Unique Per-Element Martial Silhouettes & Proportions:** Every element now has its own distinct body build and attire silhouette (flowing Tai Chi robe tails, Fire-General spiked pauldrons, Air-Nomad shawl + forehead arrow, heavy Earth armor plates, Frost hood, Lightning shinobi scarf, Shadow cowl, Lava obsidian horns, Metal lamellar armor, Nature leaf mantle & antlers, Sand desert turban & veil, Spirit floating astral halo & silk ribbon) plus colored inner obi/headband accents.
-            - **Persistent Grounded `YOU` Foot Ring + Smart Cross-Up Tag:** Solid gold ground locator ring + directional chevron beneath your local fighter (contrasting dashed opponent ring), persistent tiny overhead gold chevron pip, automatic `YOU` / `FOE` tag re-flash on every side-switch / cross-up, and a configurable **Player Indicator** (`Smart` / `Always` / `Minimal`) toggle in Settings.
-            - **Automatic Mirror-Match & Same-Family Alt Clan Palettes:** Mirror matches and near-color matchups automatically assign a high-contrast Alt Clan Dye to Player 2 across silhouette rims, inner accents, weapons, 3D floor lights, and HUD crests.
-            - **4 New Armory & Wi-Fi Masks/Gear:** Added **Kitsune Fox Mask**, **Tengu War Mask**, **Samurai Sode Armor**, and **Blindfold Monk Wrap** selectable across Armory, Story, and the Wi-Fi Duet Lobby.
+          ### What's New in v3.3.1 (Wi-Fi Duet, Combat & Campaign Stability Release)
+          - **Wi-Fi Duet Networking & Lifecycle Fixes:**
+            - Fixed stale round/lobby packet races across rematches via per-match sequence IDs (`matchSeq`) and automatic lobby state resync when returning to lobby.
+            - Forwarded heartbeats (`hb`) to the game loop and added pause-aware native JS queue deferral with tail-only snapshot coalescing in `WifiDuelManager` so backgrounding either phone no longer triggers false disconnects, stuck inputs, or out-of-order `go`/`over`/`lobby` delivery.
+            - Reordered `MainActivity` `onResume`/`onPause` lifecycle hooks and immediately release held Client inputs (`in/rst`) on pause.
+            - Fixed Wi-Fi Client visual/audio parity: hitstop timing, ambient elemental aura particles, decoy clone owner tinting, grab-wave tip coords, `lastSlamF` clamping, `'crystalShatter'` SFX, `'parry'` haptics, `'head'` hit height, and fair alternating clash order per frame.
+            - Fixed Wi-Fi keyboard controls symmetry (`KeyJ` weapon, disabled unsupported keys in Wi-Fi) and properly aligned the Host PIN badge row (`.wifi-pin-row` / `.wifi-pin-badge`).
+          - **Combat, Physics & Elemental Ability Fixes:**
+            - Hardened `bendingWaves`, `decoyClones`, and `resolveHit` against mid-loop array mutations and post-KO/Finish-Him interference (purging loser projectiles/stances on Finish-Him, pausing Finish-Him countdown during grabs, and preventing melee deflection of stationary ground hazards).
+            - Fixed explicit ground-anchored vs center-anchored hitboxes (`GROUND_ANCHORED_KINDS`), upright pulls (`water_pull`/`metal_pull`/`vine_pull`), grab-immunity checks on sub-bends (`sub_combustion`/`sub_vacuum`/`sub_soul_bind`/`sub_mag_clamp`/`sub_briar_cage`/`sub_spirit_seal`), `sub_sand_coffin` whiff/interruption cleanup, and `chilock` enforcement across counters/clashes/drains.
+            - Activated all 12 native elemental weapon perks on default weapons and wired Armory mask/gear perks (`crown`, `monk`, `cloak`, `kitsune`, `sode`, `kasa`) + Spirit `astralFloat` levitation surge + `sub_bend`/`quick_bend` poses.
+            - Fixed `stormFlashFrames` decay, `caldera_floor` & `volcanic` lava hazard spawning (`lastX` tracking), and Tutorial Step 3 sparring AI.
+          - **Story Campaign, Shadow Tower & UI Fixes:**
+            - Fixed Story World Map sequential stage unlocking & next-stage focus across all 13 stages, Story Memory timer cleanup when exiting to menu/modals, and `heroEl`/`altFoe` story panel artwork rendering.
+            - Fixed Shadow Tower (`endless`) off-by-one wave progression, full P2/backdrop reset between waves, and Wave 1 reset on Rematch.
+            - Fixed `pointercancel` on `#btn-magic` so interrupted gestures do not trigger unintended bending, preserved World Map when closing Settings opened from the map, updated Main Menu footer (`12 Disciplines · 12 Weapons`), Pause Move Guide labels, and Eclipse Citadel 3D maple leaves + alt-palette wave/decoy lighting.
           EOF
           )
           if gh release view "$TAG" >/dev/null 2>&1; then
-            gh release upload "$TAG" out/ElementalShadows-v3.3.0-android.apk --clobber
+            gh release upload "$TAG" out/ElementalShadows-v3.3.1-android.apk --clobber
             gh release edit "$TAG" --notes "$NOTES"
           else
-            gh release create "$TAG" out/ElementalShadows-v3.3.0-android.apk \
+            gh release create "$TAG" out/ElementalShadows-v3.3.1-android.apk \
               --target "${{ github.sha }}" \
-              --title "Elemental Shadows v3.3.0 (Android APK — 12 Elements & Fighter Readability Overhaul)" \
+              --title "Elemental Shadows v3.3.1 (Android APK — Wi-Fi Duet & Gameplay Stability Update)" \
               --notes "$NOTES"
           fi

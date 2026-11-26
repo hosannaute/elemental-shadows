@@ -92,7 +92,7 @@ public class WifiDuelManager {
 
     private volatile WebView webView;
     private volatile boolean destroyed = false;
-    private boolean paused = false;
+    private volatile boolean paused = false;
     private boolean scanningActive = false;
     private boolean resumeScanOnResume = false;
 
@@ -133,11 +133,13 @@ public class WifiDuelManager {
         final boolean isEvent;
         String payload;
         final boolean isPureSnapshot;
+        final boolean isHeartbeat;
 
-        JsItem(boolean isEvent, String payload, boolean isPureSnapshot) {
+        JsItem(boolean isEvent, String payload, boolean isPureSnapshot, boolean isHeartbeat) {
             this.isEvent = isEvent;
             this.payload = payload;
             this.isPureSnapshot = isPureSnapshot;
+            this.isHeartbeat = isHeartbeat;
         }
     }
 
@@ -337,6 +339,7 @@ public class WifiDuelManager {
             failedAuthByIp.clear();
             syncMulticastLockLocked();
         }
+        clearPendingJsQueue();
 
         Thread hostThread = new Thread(() -> runHostLoop(sid, pin, hid), "ES-WifiHost-" + sid);
         hostThread.setDaemon(true);
@@ -408,6 +411,7 @@ public class WifiDuelManager {
             this.clientEl = sanitizeElement(cEl, "fire");
             syncMulticastLockLocked();
         }
+        clearPendingJsQueue();
 
         final String safeTarget = rawTarget == null ? "" : rawTarget.trim();
         final String safePin = rawPin == null ? "" : rawPin.trim();
@@ -443,10 +447,12 @@ public class WifiDuelManager {
             closeSocketsLocked();
             syncMulticastLockLocked();
         }
+        clearPendingJsQueue();
     }
 
     public void onPause() {
         final int scId;
+        OutboundQueue clientResetQueue = null;
         synchronized (stateLock) {
             if (destroyed || paused) return;
             paused = true;
@@ -456,8 +462,21 @@ public class WifiDuelManager {
             scanSocket = null;
             closeDatagramQuietly(beaconSocket);
             beaconSocket = null;
+            if ("client".equals(activeRole) && peerSocket != null && sendQueue != null) {
+                clientResetQueue = sendQueue;
+            }
             syncMulticastLockLocked();
         }
+        // Guarantee immediate release of Client's held inputs on Host even if Blink pauses before JS resetInputs() runs
+        if (clientResetQueue != null) {
+            clientResetQueue.offerPacket("{\"t\":\"in\",\"a\":\"rst\"}");
+        }
+        // Pause UI WebView JS dispatch and drop stale pure snapshots while backgrounded
+        synchronized (jsLock) {
+            jsFlushScheduled = false;
+            pendingJsItems.removeIf(it -> it.isPureSnapshot || it.isHeartbeat);
+        }
+        mainHandler.removeCallbacks(jsFlushRunnable);
         if (scId < 0) { /* keep compiler happy */ }
     }
 
@@ -484,6 +503,17 @@ public class WifiDuelManager {
             syncMulticastLockLocked();
         }
 
+        boolean shouldFlush = false;
+        synchronized (jsLock) {
+            if (!destroyed && !pendingJsItems.isEmpty() && !jsFlushScheduled) {
+                jsFlushScheduled = true;
+                shouldFlush = true;
+            }
+        }
+        if (shouldFlush) {
+            mainHandler.post(jsFlushRunnable);
+        }
+
         refreshCachedLocalIpAsync();
         if (restartBeacon) {
             final int fSid = hostSid;
@@ -508,12 +538,16 @@ public class WifiDuelManager {
             closeSocketsLocked();
             syncMulticastLockLocked();
         }
+        clearPendingJsQueue();
+        webView = null;
+    }
+
+    private void clearPendingJsQueue() {
         synchronized (jsLock) {
             pendingJsItems.clear();
             jsFlushScheduled = false;
         }
         mainHandler.removeCallbacks(jsFlushRunnable);
-        webView = null;
     }
 
     private void runHostLoop(int sid, String pin, String hid) {
@@ -1207,7 +1241,7 @@ public class WifiDuelManager {
                     String line = reader.readLine();
                     if (line == null) break;
                     lastRxAt = SystemClock.elapsedRealtime();
-                    if (!line.isEmpty() && !"{\"t\":\"hb\"}".equals(line)) {
+                    if (!line.isEmpty()) {
                         emitRawMessage(line);
                     }
                 } catch (SocketTimeoutException ste) {
@@ -1559,41 +1593,49 @@ public class WifiDuelManager {
             JSONObject obj = extra != null ? extra : new JSONObject();
             obj.put("type", type);
             if (message != null && !message.isEmpty()) obj.put("message", message);
-            enqueueJsItem(true, obj.toString(), false);
+            enqueueJsItem(true, obj.toString(), false, false);
         } catch (Exception ignored) { }
     }
 
     private void emitRawMessage(String jsonLine) {
-        boolean pureSt = OutboundQueue.isPureStateSnapshot(jsonLine);
-        enqueueJsItem(false, jsonLine, pureSt);
+        boolean isHb = "{\"t\":\"hb\"}".equals(jsonLine);
+        boolean pureSt = !isHb && OutboundQueue.isPureStateSnapshot(jsonLine);
+        enqueueJsItem(false, jsonLine, pureSt, isHb);
     }
 
-    private void enqueueJsItem(boolean isEvent, String payload, boolean isPureSnapshot) {
+    private void enqueueJsItem(boolean isEvent, String payload, boolean isPureSnapshot, boolean isHeartbeat) {
         if (destroyed) return;
         long delayMs = 0L;
         boolean shouldSchedule = false;
         synchronized (jsLock) {
             if (destroyed) return;
-            if (isPureSnapshot) {
-                // Coalesce any queued pure snapshot in the current 16ms UI frame window
-                boolean replaced = false;
+            if (isHeartbeat) {
+                if (paused) return;
+                boolean hasHb = false;
                 for (int i = pendingJsItems.size() - 1; i >= 0; i--) {
-                    JsItem existing = pendingJsItems.get(i);
-                    if (existing.isPureSnapshot) {
-                        existing.payload = payload;
-                        replaced = true;
+                    if (pendingJsItems.get(i).isHeartbeat) {
+                        hasHb = true;
                         break;
                     }
                 }
-                if (!replaced && pendingJsItems.size() < MAX_JS_BATCH_ITEMS) {
-                    pendingJsItems.add(new JsItem(false, payload, true));
+                if (!hasHb && pendingJsItems.size() < MAX_JS_BATCH_ITEMS) {
+                    pendingJsItems.add(new JsItem(false, payload, false, true));
+                }
+            } else if (isPureSnapshot) {
+                if (paused) return;
+                // Only coalesce against a pure snapshot at the tail so we NEVER reorder across control packets (go/over/lobby)
+                int lastIdx = pendingJsItems.size() - 1;
+                if (lastIdx >= 0 && pendingJsItems.get(lastIdx).isPureSnapshot) {
+                    pendingJsItems.get(lastIdx).payload = payload;
+                } else if (pendingJsItems.size() < MAX_JS_BATCH_ITEMS) {
+                    pendingJsItems.add(new JsItem(false, payload, true, false));
                 }
             } else if (isEvent || pendingJsItems.size() < MAX_JS_BATCH_ITEMS
-                    || (!OutboundQueue.isDroppable(payload) && !OutboundQueue.isInputPacket(payload))) {
-                pendingJsItems.add(new JsItem(isEvent, payload, false));
+                    || (!OutboundQueue.isDroppable(payload) && !OutboundQueue.isInputPacket(payload) && pendingJsItems.size() < MAX_JS_BATCH_ITEMS * 2)) {
+                pendingJsItems.add(new JsItem(isEvent, payload, false, false));
             }
 
-            if (!jsFlushScheduled) {
+            if (!paused && !jsFlushScheduled && !pendingJsItems.isEmpty()) {
                 jsFlushScheduled = true;
                 shouldSchedule = true;
                 long elapsed = SystemClock.uptimeMillis() - lastJsFlushAt;
@@ -1613,11 +1655,14 @@ public class WifiDuelManager {
         final List<JsItem> batch;
         synchronized (jsLock) {
             jsFlushScheduled = false;
-            lastJsFlushAt = SystemClock.uptimeMillis();
-            if (pendingJsItems.isEmpty() || destroyed) {
+            if (destroyed) {
                 pendingJsItems.clear();
                 return;
             }
+            if (paused || pendingJsItems.isEmpty()) {
+                return;
+            }
+            lastJsFlushAt = SystemClock.uptimeMillis();
             batch = new ArrayList<>(pendingJsItems);
             pendingJsItems.clear();
         }
