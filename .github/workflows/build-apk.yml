@@ -64,52 +64,49 @@ jobs:
       - name: Prepare & verify APK deliverable
         run: |
           mkdir -p out
-          cp android/app/build/outputs/apk/release/app-release.apk out/ElementalShadows-v3.3.1-android.apk
-          ls -lh out/ElementalShadows-v3.3.1-android.apk
+          cp android/app/build/outputs/apk/release/app-release.apk out/ElementalShadows-v3.4.0-android.apk
+          ls -lh out/ElementalShadows-v3.4.0-android.apk
           APKSIGNER=$(ls -1d "${ANDROID_HOME:-$ANDROID_SDK_ROOT}"/build-tools/*/apksigner | sort -V | tail -n1)
-          "$APKSIGNER" verify --print-certs out/ElementalShadows-v3.3.1-android.apk
+          "$APKSIGNER" verify --print-certs out/ElementalShadows-v3.4.0-android.apk
 
       - name: Upload APK workflow artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ElementalShadows-v3.3.1-android-apk
-          path: out/ElementalShadows-v3.3.1-android.apk
+          name: ElementalShadows-v3.4.0-android-apk
+          path: out/ElementalShadows-v3.4.0-android.apk
           retention-days: 90
 
       - name: Publish GitHub Release with direct APK download
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          TAG="v3.3.1-android"
+          TAG="v3.4.0-android"
           NOTES=$(cat <<'EOF'
           Standalone 100% offline Android APK of **Elemental Shadows — The Hollow Avatar**.
 
-          > **Install Note:** Signed with our **permanent release keystore** (same signing key as `v3.3.0`, bumped to `versionCode 12`). Installing `v3.3.1` directly over `v3.3.0` updates cleanly in-place with zero conflicts and preserves all saved story progress, armory unlocks, and settings.
+          > **Install Note:** Signed with our **permanent release keystore** (same signing key as `v3.3.x`, bumped to `versionCode 13`). Installing `v3.4.0` directly over `v3.3.0` or `v3.3.1` updates cleanly in-place with zero conflicts and preserves all saved story progress, armory unlocks, and settings.
 
-          ### What's New in v3.3.1 (Wi-Fi Duet, Combat & Campaign Stability Release)
-          - **Wi-Fi Duet Networking & Lifecycle Fixes:**
-            - Fixed stale round/lobby packet races across rematches via per-match sequence IDs (`matchSeq`) and automatic lobby state resync when returning to lobby.
-            - Forwarded heartbeats (`hb`) to the game loop and added pause-aware native JS queue deferral with tail-only snapshot coalescing in `WifiDuelManager` so backgrounding either phone no longer triggers false disconnects, stuck inputs, or out-of-order `go`/`over`/`lobby` delivery.
-            - Reordered `MainActivity` `onResume`/`onPause` lifecycle hooks and immediately release held Client inputs (`in/rst`) on pause.
-            - Fixed Wi-Fi Client visual/audio parity: hitstop timing, ambient elemental aura particles, decoy clone owner tinting, grab-wave tip coords, `lastSlamF` clamping, `'crystalShatter'` SFX, `'parry'` haptics, `'head'` hit height, and fair alternating clash order per frame.
-            - Fixed Wi-Fi keyboard controls symmetry (`KeyJ` weapon, disabled unsupported keys in Wi-Fi) and properly aligned the Host PIN badge row (`.wifi-pin-row` / `.wifi-pin-badge`).
-          - **Combat, Physics & Elemental Ability Fixes:**
-            - Hardened `bendingWaves`, `decoyClones`, and `resolveHit` against mid-loop array mutations and post-KO/Finish-Him interference (purging loser projectiles/stances on Finish-Him, pausing Finish-Him countdown during grabs, and preventing melee deflection of stationary ground hazards).
-            - Fixed explicit ground-anchored vs center-anchored hitboxes (`GROUND_ANCHORED_KINDS`), upright pulls (`water_pull`/`metal_pull`/`vine_pull`), grab-immunity checks on sub-bends (`sub_combustion`/`sub_vacuum`/`sub_soul_bind`/`sub_mag_clamp`/`sub_briar_cage`/`sub_spirit_seal`), `sub_sand_coffin` whiff/interruption cleanup, and `chilock` enforcement across counters/clashes/drains.
-            - Activated all 12 native elemental weapon perks on default weapons and wired Armory mask/gear perks (`crown`, `monk`, `cloak`, `kitsune`, `sode`, `kasa`) + Spirit `astralFloat` levitation surge + `sub_bend`/`quick_bend` poses.
-            - Fixed `stormFlashFrames` decay, `caldera_floor` & `volcanic` lava hazard spawning (`lastX` tracking), and Tutorial Step 3 sparring AI.
-          - **Story Campaign, Shadow Tower & UI Fixes:**
-            - Fixed Story World Map sequential stage unlocking & next-stage focus across all 13 stages, Story Memory timer cleanup when exiting to menu/modals, and `heroEl`/`altFoe` story panel artwork rendering.
-            - Fixed Shadow Tower (`endless`) off-by-one wave progression, full P2/backdrop reset between waves, and Wave 1 reset on Rematch.
-            - Fixed `pointercancel` on `#btn-magic` so interrupted gestures do not trigger unintended bending, preserved World Map when closing Settings opened from the map, updated Main Menu footer (`12 Disciplines · 12 Weapons`), Pause Move Guide labels, and Eclipse Citadel 3D maple leaves + alt-palette wave/decoy lighting.
+          ### What's New in v3.4.0 (Compendium Bending Overhaul, 13x6 Story Journey & Shadow Avatar Siphon)
+          - **36 Truly Unique Elemental Ultimates (Zero Shared Vortex / Arm-Swing Clones):**
+            - Eliminated all generic shared tornado (`vortex`) and arm-swing (`arm_swing`) Ultimate templates across the 12 disciplines.
+            - Every element now commands 3 bespoke, high-impact signature Ultimates inspired by the 12-Element Bending Compendium: Water (`Ocean Dominion Tsunami`, `Pressure Jet Cannon`, `Abyssal Maelstrom`), Fire (`Sozin's Twin Dragons`, `Solar Incarnation Nova`, `Compressed Flare Meteors`), Ice (`Glacier Cataclysm`, `Absolute Winter Domain`, `Mirror Ice Prism`), Earth (`Continental Fissure`, `Seismic Monolith Drop`, `Crystal Spire Clamp`), Air (`Atmospheric Hurricane`, `Sonic Pressure Wave`, `Valkyrie Sky Dive`), Lightning (`Heaven's Judgment`, `Thunder God Overdrive`, `Electromagnetic Railgun`), Shadow (`Eclipse Tendrils`, `Eternal Night Legion`, `Dimensional Rift Drop`), Lava (`Caldera Eruption`, `Volcanic Titan Fist`, `Obsidian Spear Storm`), Metal (`Iron Blade Barrage`, `Iron Dominion Crush`, `Liquid Mercury Surge`), Nature (`Briar Eruption`, `World Beast Stampede`, `Toxic Spore Canopy`), Sand (`Desert Sovereign Storm`, `Sandstone Pyramid Tomb`, `Mirage Clone Assault`), and Spirit (`Astral Spirit Cannon`, `Celestial Ascension`, `Soul Mandala Pillar`).
+          - **12 Compendium Advanced Sub-Bendings (SUB-BEND Button):**
+            - Upgraded the dedicated SUB-BEND button to each element's iconic Advanced Bending: Blood Bending (Water), Plasma Combustion (Fire), Tectonic Gravity Fault (Earth), Vacuum Sphere (Air), Thermal Extraction Flash-Freeze (Ice), Neural EMP Pulse (Lightning), Dimensional Shadow Rift (Shadow), Volcanic Eruption & Obsidian Rift (Lava), Metal Transmutation Forged Cage (Metal), Biological Adaptation Primal Chimera Beast (Nature), Vitrified Glass Formation Tomb (Sand), and Soul Manipulation Astral Bind (Spirit).
+          - **Story Mode Journey — 13 Realms x 6-Bout Tribal Gauntlets (78 Story Fights):**
+            - Every Realm now begins with **5 Tribe Warriors wielding 5 different weapons** (Best of 3) before unlocking the **Realm Grandmaster Boss** (Best of 5), with an interactive 6-Bout Realm Gauntlet tracker directly on the World Map.
+            - **Strict Boss Power Escalation:** Every Realm Grandmaster Boss is visibly larger, wears bespoke Grandmaster Regalia (halos, crowns, thunder drums, shogun pauldrons, antlers, eclipse wings) with glowing eyes, and grows progressively stronger from Realm 1 through Realm 13.
+            - **13 Unique Cultural Arena Locations:** Added bespoke sumi-e cultural arenas for Ironclad Foundry (Metal), Verdant Grove (Nature), Astral Sanctum (Spirit), Mirage Dunes Oasis Courtyard (Sand), and the Eclipse Throne (Shadow Avatar) — all 13 playable in both Story Mode and Wi-Fi Duet.
+          - **Final Realm 13 — Elite Eclipse Generals & The Shadow Avatar's Bending-Theft Gauge:**
+            - Fight through 5 high-tier multi-elemental **Elite Eclipse Generals** before challenging **THE SHADOW AVATAR** (wielding 12 orbiting elemental orbs & dark solar eclipse corona).
+            - **Bending-Theft Bar:** A live crimson siphon gauge fills on the Shadow Avatar's HUD side during the final boss fight (accelerated by his hits, pushed back by your pressure). Defeat him before the bar reaches 100% — if it fills, he steals your bending for the round, sealing your BEND, SUB-BEND, ULTIMATE, and AVATAR SHIFT until you finish him with pure steel & martial arts!
           EOF
           )
           if gh release view "$TAG" >/dev/null 2>&1; then
-            gh release upload "$TAG" out/ElementalShadows-v3.3.1-android.apk --clobber
+            gh release upload "$TAG" out/ElementalShadows-v3.4.0-android.apk --clobber
             gh release edit "$TAG" --notes "$NOTES"
           else
-            gh release create "$TAG" out/ElementalShadows-v3.3.1-android.apk \
+            gh release create "$TAG" out/ElementalShadows-v3.4.0-android.apk \
               --target "${{ github.sha }}" \
-              --title "Elemental Shadows v3.3.1 (Android APK — Wi-Fi Duet & Gameplay Stability Update)" \
+              --title "Elemental Shadows v3.4.0 (Android APK — Compendium Bending, 13x6 Story Journey & Shadow Avatar)" \
               --notes "$NOTES"
           fi

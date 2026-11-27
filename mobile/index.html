@@ -119,6 +119,41 @@
     .magic-frame.ready { border-color: #fff8e2; animation: magPulse 0.7s ease-in-out infinite alternate; }
     @keyframes magPulse { from { box-shadow: 0 0 8px rgba(240, 180, 72, 0.8); } to { box-shadow: 0 0 18px #fff2cc; } }
 
+    /* Shadow Avatar Bending-Theft Siphon Bar (Right HUD — P2 Final Boss) */
+    .siphon-wrap {
+      display: flex; flex-direction: column; align-items: flex-end; gap: 2px; margin-top: 3px;
+    }
+    .siphon-lbl {
+      font-family: var(--font-head); font-size: clamp(8.5px, 0.9vw, 11px); font-weight: 800;
+      letter-spacing: 0.12em; color: #fda4af; text-shadow: 0 1px 6px #000;
+      white-space: nowrap;
+    }
+    .siphon-wrap.danger .siphon-lbl { color: #ff4d6d; animation: siphonPulse 0.48s ease-in-out infinite alternate; }
+    .siphon-wrap.stolen .siphon-lbl { color: #ffe4e6; }
+    .siphon-frame {
+      position: relative; width: 78%; height: clamp(8px, 0.95vw, 11px);
+      background: rgba(18, 6, 12, 0.94); border: 1.5px solid rgba(244, 63, 94, 0.65);
+      overflow: hidden; transform: skewX(16deg); box-shadow: 0 0 12px rgba(244, 63, 94, 0.35);
+    }
+    .siphon-wrap.danger .siphon-frame { border-color: #ff4d6d; box-shadow: 0 0 18px rgba(255, 56, 96, 0.8); }
+    .siphon-wrap.stolen .siphon-frame { border-color: #fde047; box-shadow: 0 0 20px rgba(244, 63, 94, 0.95); }
+    .siphon-fill {
+      position: absolute; top: 0; bottom: 0; right: 0;
+      background: linear-gradient(270deg, #6d28d9 0%, #db2777 52%, #f43f5e 100%);
+      transition: width 0.08s linear;
+    }
+    .siphon-wrap.stolen .siphon-fill { background: linear-gradient(270deg, #991b1b, #f43f5e, #fde047); }
+    @keyframes siphonPulse { from { opacity: 0.72; } to { opacity: 1; text-shadow: 0 0 12px #ff3355; } }
+    .boss-tag, .minion-tag {
+      display: inline-block; margin-left: 6px; padding: 1px 6px; border-radius: 3px;
+      font-family: var(--font-head); font-size: 9px; font-weight: 800; letter-spacing: 0.1em;
+      vertical-align: middle; line-height: 1.3;
+    }
+    .boss-tag { background: rgba(230, 169, 60, 0.24); border: 1px solid rgba(246, 206, 130, 0.75); color: #fde68a; }
+    .boss-tag.avatar { background: rgba(244, 63, 94, 0.28); border-color: #fb7185; color: #ffe4e6; }
+    .minion-tag { background: rgba(148, 163, 184, 0.18); border: 1px solid rgba(203, 213, 225, 0.4); color: #cbd5e1; }
+    .cbtn.sealed { opacity: 0.34 !important; filter: grayscale(0.85) !important; border-color: #f43f5e !important; box-shadow: inset 0 0 14px rgba(244, 63, 94, 0.55) !important; }
+
     /* Compact Vector Status Icons */
     .status-icons { display: flex; gap: 5px; min-height: 20px; align-items: center; margin-top: 1px; }
     .p2 .status-icons { justify-content: flex-end; }
@@ -854,6 +889,32 @@
     }
     .wm-stars { display: flex; gap: 4px; align-items: center; margin: 4px 0; }
     .wm-stars svg { width: clamp(13px, 1.4vw, 17px); height: clamp(13px, 1.4vw, 17px); color: var(--gold); }
+    .gauntlet-box {
+      margin: 5px 0 4px; padding: 7px 9px; border-radius: 3px;
+      background: rgba(12, 9, 7, 0.82); border: 1px solid rgba(214, 174, 106, 0.34);
+    }
+    .gauntlet-hd {
+      display: flex; justify-content: space-between; align-items: center;
+      font-family: var(--font-head); font-size: 9.5px; letter-spacing: 0.12em;
+      color: var(--gold-light); margin-bottom: 5px;
+    }
+    .gauntlet-row { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; }
+    .gpip {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 4px 2px; border-radius: 3px; cursor: pointer;
+      background: rgba(24, 18, 13, 0.9); border: 1px solid rgba(218, 178, 112, 0.25);
+      color: #a89984; font-family: var(--font-head); font-size: 9px; font-weight: 800; line-height: 1.1;
+    }
+    .gpip.done { background: rgba(24, 52, 34, 0.82); border-color: #4ade80; color: #bbf7d0; }
+    .gpip.cur { background: rgba(58, 40, 18, 0.95); border-color: var(--accent, var(--gold)); color: #fff8eb; box-shadow: 0 0 10px rgba(230, 169, 60, 0.35); }
+    .gpip.boss { border-color: rgba(246, 189, 88, 0.65); color: #fde68a; }
+    .gpip.boss.cur { background: rgba(88, 30, 22, 0.95); border-color: #fde047; color: #fff8eb; }
+    .gpip:disabled { opacity: 0.42; cursor: not-allowed; }
+    .g-meta {
+      margin-top: 5px; font-size: 10.5px; color: #e8dcc8; line-height: 1.3;
+      display: flex; justify-content: space-between; align-items: center; gap: 6px;
+    }
+    .g-meta b { color: var(--accent, var(--gold-light)); font-family: var(--font-head); letter-spacing: 0.05em; }
     .wm-div { display: flex; align-items: center; gap: 8px; margin: 6px 0; opacity: 0.7; }
     .wm-div::before, .wm-div::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(218,178,112,0.55), transparent); }
     .wm-div span { width: 6px; height: 6px; background: var(--gold); transform: rotate(45deg); }
@@ -1097,6 +1158,10 @@
               <div class="magic-frame" id="p2-mag-wrap"><div class="magic-fill" id="p2-mag" style="width:55%"></div></div>
             </div>
             <div class="poise-frame" id="p2-poise-wrap"><div class="poise-fill" id="p2-poise" style="width:100%"></div></div>
+            <div class="siphon-wrap hidden" id="siphon-wrap">
+              <span class="siphon-lbl" id="siphon-lbl">BENDING THEFT · 0%</span>
+              <div class="siphon-frame"><div class="siphon-fill" id="siphon-fill" style="width:0%"></div></div>
+            </div>
             <div class="status-icons" id="p2-badges"></div>
           </div>
           <div class="crest-wrap">
@@ -1211,7 +1276,7 @@
         </button>
       </nav>
       <div class="mm-foot">
-        <span>Offline Solo &amp; 2P Wi-Fi / Hotspot Duet · 12 Disciplines · 12 Weapons</span>
+        <span>Offline Solo &amp; 2P Wi-Fi Duet · 13 Realms · 12 Disciplines · 12 Weapons</span>
         <span id="mm-avatar-badge"></span>
       </div>
     </div>
@@ -1301,11 +1366,11 @@
       move: 7.7, jump: 19.0, hp: 1020, primary: '#0c7de8', glow: '#38d8ff', core: '#e6fcff',
       colorFamily: 'cyan', body: { sx: 1.0, sy: 1.0 },
       alt: { primary: '#be123c', glow: '#fb7185', core: '#ffe4e6', label: 'CRIMSON TIDE' },
-      magic: 'OCEAN SPIRIT TSUNAMI', strikeSpell: 'WATER WHIP', status: 'soaked', statusLbl: 'SOAKED',
+      magic: 'OCEAN DOMINION', strikeSpell: 'WATER WHIP', status: 'soaked', statusLbl: 'SOAKED',
       arts: [
-        { id:'tsunami', name:'TIDAL TSUNAMI', mode:'assault' },
-        { id:'water_tornado', name:'WATER TORNADO', mode:'vortex' },
-        { id:'water_arm', name:'WATER ARM SWING', mode:'arm_swing' }
+        { id:'tsunami', name:'OCEAN DOMINION TSUNAMI', mode:'assault' },
+        { id:'hydro_cannon', name:'PRESSURE JET CANNON', mode:'water_jet' },
+        { id:'maelstrom', name:'ABYSSAL MAELSTROM', mode:'water_whirlpool' }
       ],
       twist: 'Liquid Slip — +6 extra invulnerability frames on all ground recovery rolls.',
       stance: { py:-85, pr:0.03, tr:0.06, hr:-0.04, fs:-1.25, fe:-0.95, fw:0.2, bs:-0.65, be:-1.25, fh:-0.52, fk:0.56, bh:0.46, bk:0.46 },
@@ -1318,11 +1383,11 @@
       move: 7.9, jump: 19.4, hp: 1000, primary: '#e8410c', glow: '#ff951a', core: '#fff5cc',
       colorFamily: 'flame', body: { sx: 1.03, sy: 1.01 },
       alt: { primary: '#1d4ed8', glow: '#60a5fa', core: '#eff6ff', label: 'AZULA BLUE FLAME' },
-      magic: "SOZIN'S DRAGON INFERNO", strikeSpell: 'FIRE ARC', status: 'burn', statusLbl: 'BURN',
+      magic: 'SOLAR INCARNATION', strikeSpell: 'FIRE ARC', status: 'burn', statusLbl: 'BURN',
       arts: [
-        { id:'fire_dragon', name:"SOZIN'S DRAGON", mode:'assault' },
-        { id:'phoenix_vortex', name:'PHOENIX PILLAR', mode:'vortex' },
-        { id:'flame_whip', name:'FLAME WHIP SLAM', mode:'arm_swing' }
+        { id:'fire_dragon', name:"SOZIN'S TWIN DRAGONS", mode:'assault' },
+        { id:'solar_incarnation', name:'SOLAR INCARNATION NOVA', mode:'fire_solar' },
+        { id:'meteor_rain', name:'COMPRESSED FLARE METEORS', mode:'fire_meteors' }
       ],
       twist: 'Ember Wake-Up — Breakdance fire sweep erupts in a blazing knockback ring.',
       stance: { py:-82, pr:0.06, tr:0.24, hr:-0.14, fs:-0.95, fe:-1.25, fw:0.35, bs:0.55, be:-1.45, fh:-0.62, fk:0.72, bh:0.54, bk:0.42 },
@@ -1335,11 +1400,11 @@
       move: 7.4, jump: 18.8, hp: 1030, primary: '#12a8dc', glow: '#78eeff', core: '#ffffff',
       colorFamily: 'cyan', body: { sx: 0.99, sy: 1.02 },
       alt: { primary: '#9333ea', glow: '#e879f9', core: '#fdf4ff', label: 'AMETHYST FROST' },
-      magic: 'ABSOLUTE ZERO GLACIER', strikeSpell: 'ICE LANCE', status: 'chill', statusLbl: 'FREEZE',
+      magic: 'ABSOLUTE WINTER', strikeSpell: 'ICE LANCE', status: 'chill', statusLbl: 'FREEZE',
       arts: [
         { id:'glacier', name:'GLACIER CATACLYSM', mode:'assault' },
-        { id:'blizzard_vortex', name:'BLIZZARD VORTEX', mode:'vortex' },
-        { id:'frost_grasp', name:'FROST SPEAR SLAM', mode:'arm_swing' }
+        { id:'absolute_winter', name:'ABSOLUTE WINTER DOMAIN', mode:'ice_domain' },
+        { id:'mirror_prism', name:'MIRROR ICE PRISM', mode:'ice_prism' }
       ],
       twist: 'Permafrost Parry — Perfect blocks encase the attacker in solid frost.',
       stance: { py:-87, pr:0.02, tr:0.08, hr:-0.05, fs:-1.15, fe:-0.85, fw:0.48, bs:0.25, be:-1.1, fh:-0.42, fk:0.45, bh:0.44, bk:0.42 },
@@ -1352,11 +1417,11 @@
       move: 6.7, jump: 18.0, hp: 1140, primary: '#9c6c22', glow: '#e8b038', core: '#fff5d1',
       colorFamily: 'gold', body: { sx: 1.13, sy: 1.04 },
       alt: { primary: '#0f766e', glow: '#2dd4bf', core: '#ccfbf1', label: 'JADE MONOLITH' },
-      magic: 'SEISMIC EARTHSHAKER', strikeSpell: 'ROCK SPIKE', status: 'crush', statusLbl: 'CRUSH',
+      magic: 'CONTINENTAL DOMINION', strikeSpell: 'ROCK SPIKE', status: 'crush', statusLbl: 'CRUSH',
       arts: [
-        { id:'earth_fissure', name:'TECTONIC FISSURE', mode:'assault' },
-        { id:'earth_vortex', name:'STONE CYCLONE', mode:'vortex' },
-        { id:'rock_arm', name:'ROCK GAUNTLET SLAM', mode:'arm_swing' }
+        { id:'earth_fissure', name:'CONTINENTAL FISSURE', mode:'assault' },
+        { id:'meteor_monolith', name:'SEISMIC MONOLITH DROP', mode:'earth_monolith' },
+        { id:'crystal_jaws', name:'CRYSTAL SPIRE CLAMP', mode:'earth_crystals' }
       ],
       twist: 'Earthen Poise — Wide horse stance + 1-hit super armor on wake-up attacks.',
       stance: { py:-74, pr:0.05, tr:0.14, hr:-0.08, fs:-0.72, fe:-1.38, fw:0.45, bs:0.62, be:-1.48, fh:-0.78, fk:0.95, bh:0.74, bk:0.78 },
@@ -1369,11 +1434,11 @@
       move: 8.8, jump: 20.8, hp: 960, primary: '#1ab884', glow: '#5effc8', core: '#f4fffb',
       colorFamily: 'emerald', body: { sx: 0.93, sy: 0.97 },
       alt: { primary: '#d97706', glow: '#fcd34d', core: '#fffbeb', label: 'SAFFRON NOMAD' },
-      magic: 'TEMPEST HURRICANE', strikeSpell: 'GALE SLASH', status: 'lift', statusLbl: 'GALE',
+      magic: 'ATMOSPHERIC DOMINION', strikeSpell: 'GALE SLASH', status: 'lift', statusLbl: 'GALE',
       arts: [
-        { id:'air_hurricane', name:'TEMPEST HURRICANE', mode:'assault' },
-        { id:'air_tornado', name:'SKY CYCLONE', mode:'vortex' },
-        { id:'gale_whip', name:'GALE VACUUM THROW', mode:'arm_swing' }
+        { id:'air_hurricane', name:'ATMOSPHERIC HURRICANE', mode:'assault' },
+        { id:'sonic_clap', name:'SONIC PRESSURE WAVE', mode:'air_sonic' },
+        { id:'sky_dive', name:'VALKYRIE SKY DIVE', mode:'air_dive' }
       ],
       twist: 'Zephyr Vault — Air-scooter agility & wall jumps travel 35% higher/farther.',
       stance: { py:-89, pr:-0.03, tr:0.18, hr:-0.1, fs:-1.42, fe:-0.75, fw:0.25, bs:0.78, be:-1.1, fh:-0.48, fk:0.42, bh:0.56, bk:0.58 },
@@ -1386,11 +1451,11 @@
       move: 9.0, jump: 19.6, hp: 970, primary: '#2b7aff', glow: '#66d0ff', core: '#ffffff',
       colorFamily: 'cyan', body: { sx: 0.97, sy: 1.0 },
       alt: { primary: '#ca8a04', glow: '#fde047', core: '#fefce8', label: 'GOLDEN THUNDER' },
-      magic: "HEAVEN'S THUNDERSTORM", strikeSpell: 'ARC BOLT', status: 'shock', statusLbl: 'SHOCK',
+      magic: 'THUNDER GOD', strikeSpell: 'ARC BOLT', status: 'shock', statusLbl: 'SHOCK',
       arts: [
-        { id:'thunder_storm', name:"HEAVEN'S THUNDER", mode:'assault' },
-        { id:'volt_vortex', name:'PLASMA CYCLONE', mode:'vortex' },
-        { id:'volt_whip', name:'VOLT TETHER SLAM', mode:'arm_swing' }
+        { id:'thunder_storm', name:"HEAVEN'S JUDGMENT", mode:'assault' },
+        { id:'thunder_god', name:'THUNDER GOD OVERDRIVE', mode:'lightning_god' },
+        { id:'railgun_arc', name:'ELECTROMAGNETIC RAILGUN', mode:'lightning_railgun' }
       ],
       twist: 'Volt Dash — Blink-speed handsprings & forward dashes with lightning arcs.',
       stance: { py:-84, pr:0.05, tr:0.22, hr:-0.12, fs:-1.38, fe:-0.55, fw:0.2, bs:0.48, be:-1.55, fh:-0.58, fk:0.62, bh:0.58, bk:0.48 },
@@ -1403,11 +1468,11 @@
       move: 8.3, jump: 19.8, hp: 980, primary: '#6348e8', glow: '#b49cff', core: '#f6f2ff',
       colorFamily: 'violet', body: { sx: 0.96, sy: 0.99 },
       alt: { primary: '#dc2626', glow: '#f87171', core: '#fef2f2', label: 'SCARLET ECLIPSE' },
-      magic: 'ECLIPSE ABYSS', strikeSpell: 'UMBRAL CLAW', status: 'hex', statusLbl: 'HEX',
+      magic: 'ETERNAL NIGHT', strikeSpell: 'UMBRAL CLAW', status: 'hex', statusLbl: 'HEX',
       arts: [
         { id:'shadow_abyss', name:'ECLIPSE TENDRILS', mode:'assault' },
-        { id:'shadow_vortex', name:'ABYSSAL VORTEX', mode:'vortex' },
-        { id:'shadow_arm', name:'UMBRAL ARM GRASP', mode:'arm_swing' }
+        { id:'eternal_night', name:'ETERNAL NIGHT LEGION', mode:'shadow_legion' },
+        { id:'shadow_portal', name:'DIMENSIONAL RIFT DROP', mode:'shadow_rift' }
       ],
       twist: 'Shadow Step — Cancel recovery rolls into a phase-through teleport behind foes.',
       stance: { py:-76, pr:0.08, tr:0.34, hr:-0.22, fs:-0.78, fe:-1.38, fw:0.5, bs:0.85, be:-1.2, fh:-0.72, fk:0.86, bh:0.64, bk:0.68 },
@@ -1420,11 +1485,11 @@
       move: 6.9, jump: 18.2, hp: 1120, primary: '#d9260a', glow: '#ff7014', core: '#ffea80',
       colorFamily: 'flame', body: { sx: 1.11, sy: 1.03 },
       alt: { primary: '#7c3aed', glow: '#c084fc', core: '#f3e8ff', label: 'OBSIDIAN PLASMA' },
-      magic: 'CALDERA ERUPTION', strikeSpell: 'LAVA DISC', status: 'scorched', statusLbl: 'SCORCHED',
+      magic: 'VOLCANIC TITAN', strikeSpell: 'LAVA DISC', status: 'scorched', statusLbl: 'SCORCHED',
       arts: [
         { id:'lava_eruption', name:'CALDERA ERUPTION', mode:'assault' },
-        { id:'lava_vortex', name:'MAGMA CYCLONE', mode:'vortex' },
-        { id:'lava_chain', name:'MOLTEN CHAIN SLAM', mode:'arm_swing' }
+        { id:'volcanic_titan', name:'VOLCANIC TITAN FIST', mode:'lava_titan' },
+        { id:'obsidian_storm', name:'OBSIDIAN SPEAR STORM', mode:'lava_obsidian' }
       ],
       twist: 'Molten Wake — Slams & wake-ups forge bubbling magma pools beneath foes.',
       stance: { py:-76, pr:0.06, tr:0.20, hr:-0.1, fs:-0.68, fe:-1.22, fw:0.6, bs:0.65, be:-1.32, fh:-0.74, fk:0.88, bh:0.68, bk:0.70 },
@@ -1437,11 +1502,11 @@
       move: 7.5, jump: 18.8, hp: 1090, primary: '#64748b', glow: '#e2e8f0', core: '#ffffff',
       colorFamily: 'steel', body: { sx: 1.07, sy: 1.02 },
       alt: { primary: '#b45309', glow: '#f59e0b', core: '#fef3c7', label: 'GILDED BRONZE' },
-      magic: 'IRON BLADE BARRAGE', strikeSpell: 'STEEL FAN', status: 'weighted', statusLbl: 'CLAMPED',
+      magic: 'IRON DOMINION', strikeSpell: 'STEEL FAN', status: 'weighted', statusLbl: 'CLAMPED',
       arts: [
         { id:'metal_blades', name:'IRON BLADE BARRAGE', mode:'assault' },
-        { id:'metal_vortex', name:'SHRAPNEL CYCLONE', mode:'vortex' },
-        { id:'metal_cable', name:'TITAN CABLE SLAM', mode:'arm_swing' }
+        { id:'iron_dominion', name:'IRON DOMINION CRUSH', mode:'metal_dominion' },
+        { id:'liquid_mercury', name:'LIQUID MERCURY SURGE', mode:'metal_mercury' }
       ],
       twist: 'Iron Deflect — Perfect parries deal posture shock & steel recoil to attackers.',
       stance: { py:-80, pr:0.04, tr:0.12, hr:-0.06, fs:-1.08, fe:-1.32, fw:0.32, bs:0.42, be:-1.42, fh:-0.62, fk:0.72, bh:0.58, bk:0.62 },
@@ -1454,11 +1519,11 @@
       move: 7.8, jump: 19.3, hp: 1050, primary: '#16a34a', glow: '#86efac', core: '#f0fdf4',
       colorFamily: 'emerald', body: { sx: 0.98, sy: 1.01 },
       alt: { primary: '#be123c', glow: '#fda4af', core: '#fff1f2', label: 'AUTUMN SAKURA' },
-      magic: 'BRIAR FOREST ERUPTION', strikeSpell: 'VINE LASH', status: 'entangle', statusLbl: 'ENTANGLED',
+      magic: 'WORLD BEAST', strikeSpell: 'VINE LASH', status: 'entangle', statusLbl: 'ENTANGLED',
       arts: [
         { id:'briar_forest', name:'BRIAR ERUPTION', mode:'assault' },
-        { id:'nature_vortex', name:'THORN CYCLONE', mode:'vortex' },
-        { id:'nature_vine', name:'ELDER VINE SLAM', mode:'arm_swing' }
+        { id:'world_beast', name:'WORLD BEAST STAMPEDE', mode:'nature_beast' },
+        { id:'toxic_canopy', name:'TOXIC SPORE CANOPY', mode:'nature_spores' }
       ],
       twist: 'Verdant Roots — Crouching or blocking quietly regenerates vitality with emerald petals.',
       stance: { py:-83, pr:0.03, tr:0.14, hr:-0.08, fs:-1.18, fe:-0.88, fw:0.38, bs:0.46, be:-1.18, fh:-0.56, fk:0.62, bh:0.50, bk:0.52 },
@@ -1471,11 +1536,11 @@
       move: 8.2, jump: 19.4, hp: 1010, primary: '#ca8a04', glow: '#fef08a', core: '#fffbeb',
       colorFamily: 'gold', body: { sx: 0.98, sy: 0.99 },
       alt: { primary: '#0f766e', glow: '#5eead4', core: '#f0fdfa', label: 'OASIS GLASS' },
-      magic: 'DESERT GLASS TEMPEST', strikeSpell: 'SAND SLASH', status: 'haze', statusLbl: 'SAND HAZE',
+      magic: 'DESERT SOVEREIGN', strikeSpell: 'SAND SLASH', status: 'haze', statusLbl: 'SAND HAZE',
       arts: [
-        { id:'sand_tempest', name:'GLASS TEMPEST', mode:'assault' },
-        { id:'sand_vortex', name:'SAHARA DUST DEVIL', mode:'vortex' },
-        { id:'sand_coffin', name:'QUICKSAND SLAM', mode:'arm_swing' }
+        { id:'sand_tempest', name:'DESERT SOVEREIGN STORM', mode:'assault' },
+        { id:'sand_pyramid', name:'SANDSTONE PYRAMID TOMB', mode:'sand_pyramid' },
+        { id:'mirage_legion', name:'MIRAGE CLONE ASSAULT', mode:'sand_legion' }
       ],
       twist: 'Desert Mirage — Back-handsprings leave a crumbling Sand Mirage decoy that strikes back.',
       stance: { py:-79, pr:0.06, tr:0.26, hr:-0.14, fs:-0.92, fe:-1.28, fw:0.42, bs:0.68, be:-1.22, fh:-0.66, fk:0.78, bh:0.58, bk:0.54 },
@@ -1488,11 +1553,11 @@
       move: 8.5, jump: 20.2, hp: 985, primary: '#db2777', glow: '#f9a8d4', core: '#fff1f9',
       colorFamily: 'violet', body: { sx: 0.94, sy: 0.98 },
       alt: { primary: '#2563eb', glow: '#93c5fd', core: '#eff6ff', label: 'CELESTIAL SAPPHIRE' },
-      magic: 'ASTRAL SPIRIT CANNON', strikeSpell: 'CHI PULSE', status: 'chilock', statusLbl: 'CHI LOCK',
+      magic: 'CELESTIAL ASCENSION', strikeSpell: 'CHI PULSE', status: 'chilock', statusLbl: 'CHI LOCK',
       arts: [
-        { id:'spirit_cannon', name:'ASTRAL CANNON', mode:'assault' },
-        { id:'spirit_vortex', name:'LOTUS AETHER VORTEX', mode:'vortex' },
-        { id:'spirit_ribbon', name:'SPIRIT RIBBON SLAM', mode:'arm_swing' }
+        { id:'spirit_cannon', name:'ASTRAL SPIRIT CANNON', mode:'assault' },
+        { id:'celestial_ascension', name:'CELESTIAL ASCENSION', mode:'spirit_ascension' },
+        { id:'lotus_mandala', name:'SOUL MANDALA PILLAR', mode:'spirit_mandala' }
       ],
       twist: 'Astral Float — Mid-air jump triggers an ethereal spirit levitation surge + Chi Lock.',
       stance: { py:-88, pr:-0.02, tr:0.06, hr:-0.04, fs:-1.34, fe:-0.82, fw:0.28, bs:0.62, be:-1.18, fh:-0.44, fk:0.46, bh:0.48, bk:0.48 },
@@ -1968,197 +2033,288 @@
     { speaker: 'YOUR PATH', art: 'journey', text: 'Walk the twelve realms. Reclaim every discipline from the Masters who hold it — and end the Eclipse.' }
   ];
 
-  // ===== 13-STAGE STORY CAMPAIGN LADDER (1ST DAN -> 13TH DAN ECLIPSE MASTER) =====
+  // ===== 13-REALM STORY JOURNEY (5 TRIBE WARRIORS + 1 GRANDMASTER BOSS PER REALM -> SHADOW AVATAR) =====
   const CAMPAIGN_STAGES = [
     {
-      id: 0, el: 'water', title: 'MASTER MIZU', subtitle: 'Keeper of the Tidal Shrine', region: 'Tidal Shrine',
-      rank: '1st Dan', stars: 1, mx: 0.10, my: 0.62, honorable: true, gear: 'kasa',
-      storyDesc: 'An honorable Tai Chi guardian testing whether your hollow form can still command the tide.',
-      hpMult: 0.96, dmgMult: 0.84, defMult: 0.98, magicGain: 0.90, bounty: 180, theme: 1,
+      id: 0, el: 'water', title: 'MASTER MIZU', subtitle: 'Grandmaster of the Tidal Shrine', region: 'Tidal Shrine', tribe: 'Water Tribe',
+      rank: '1st Realm', stars: 1, mx: 0.10, my: 0.62, honorable: true, gear: 'kasa', bossScale: 1.07, bossRegalia: 'tidal_halo',
+      storyDesc: 'Cross the Tidal Shrine piers and best five Water Tribe disciples before Master Mizu tests your command of the tide.',
+      hpMult: 1.06, dmgMult: 0.90, defMult: 1.00, magicGain: 0.94, bounty: 220, theme: 1,
       hazardId: 'dew_shrine', ruleId: 'tidal_slip', ruleName: 'Tidal Slip',
+      minions: [
+        { name: 'KAIRO', title: 'Tidal Scout', weapon: 'twin_sai', gear: 'none' },
+        { name: 'SORA', title: 'Reef Lancer', weapon: 'naginata', gear: 'kasa' },
+        { name: 'RENJI', title: 'Wave Striker', weapon: 'nunchaku', gear: 'none' },
+        { name: 'YUKIHA', title: 'Current Blade', weapon: 'dual_katana', gear: 'cloak' },
+        { name: 'TAKUMA', title: 'Shrine Sentinel', weapon: 'hook_swords', gear: 'sode' }
+      ],
       trial: { id: 't_mizu', desc: 'Land a 3-hit combo in this fight', reward: 90 },
       preDialogue: [
-        { who: 'MASTER MIZU', line: 'A shadow without colour... yet the tide still answers your footsteps.' },
+        { who: 'MASTER MIZU', line: 'Five disciples of the Tidal Shrine stood before you — and all five bowed to your stance.' },
         { who: 'HOLLOW SHADOW', line: '...' },
-        { who: 'MASTER MIZU', line: 'Show me your stillness. If you can turn my current, Water returns to you.' }
+        { who: 'MASTER MIZU', line: 'Now face the Tide itself. Turn my current, and Water returns to you.' }
       ],
       memory: { title: 'MEMORY I · THE FIRST CURRENT', text: 'Cool rain washes over ink. You remember standing ankle-deep in a mirror pond, bending a ring of silver water without effort.' },
-      ai: { react: 28, guard: 0.22, parry: 0.02, agg: 0.32, combo: 0.24, thr: 0.10, mag: 0.28, punish: 0.18, antiAir: 0.15, adapt: 0.12, evade: 0.14, superCancel: 0.0, quickBend: 0.06, reflect: 0.03, wallJuggle: 0.0, kdPause: 30 }
+      ai: { react: 26, guard: 0.26, parry: 0.04, agg: 0.36, combo: 0.28, thr: 0.12, mag: 0.32, punish: 0.22, antiAir: 0.18, adapt: 0.16, evade: 0.16, superCancel: 0.0, quickBend: 0.10, reflect: 0.04, wallJuggle: 0.02, kdPause: 26 }
     },
     {
-      id: 1, el: 'fire', title: 'MASTER IGNIS', subtitle: 'General of the Blazing Dojo', region: 'Blazing Dojo',
-      rank: '2nd Dan', stars: 2, mx: 0.16, my: 0.30, honorable: false, gear: 'kabuto',
-      storyDesc: 'Consumed by Eclipse fury, Ignis overwhelms foes with relentless Northern Shaolin flame pressure.',
-      hpMult: 1.03, dmgMult: 0.92, defMult: 1.02, magicGain: 1.00, bounty: 215, theme: 0,
+      id: 1, el: 'fire', title: 'MASTER IGNIS', subtitle: 'Shogun of the Blazing Dojo', region: 'Blazing Dojo', tribe: 'Fire Clan',
+      rank: '2nd Realm', stars: 2, mx: 0.16, my: 0.30, honorable: false, gear: 'kabuto', bossScale: 1.08, bossRegalia: 'flame_horns',
+      storyDesc: 'Fight through five blazing Fire Clan soldiers armed with varied blades before General Ignis unleashes his dragon inferno.',
+      hpMult: 1.14, dmgMult: 0.96, defMult: 1.04, magicGain: 1.02, bounty: 260, theme: 0,
       hazardId: 'ember_updraft', ruleId: 'blazing_aura', ruleName: 'Blazing Aura',
+      minions: [
+        { name: 'KAEDE', title: 'Ember Footman', weapon: 'liquid_staff', gear: 'none' },
+        { name: 'HOMURA', title: 'Ash Duelist', weapon: 'twin_scimitars', gear: 'tengu' },
+        { name: 'DAICHI', title: 'Furnace Guard', weapon: 'heavy_cleaver', gear: 'sode' },
+        { name: 'AKANE', title: 'Spark Dancer', weapon: 'war_fans', gear: 'kitsune' },
+        { name: 'RENGOKU', title: 'Dojo Captain', weapon: 'great_hammer', gear: 'kabuto' }
+      ],
       trial: { id: 't_ignis', desc: 'Use a 35% Quick-Bend technique twice', reward: 110 },
       preDialogue: [
-        { who: 'MASTER IGNIS', line: 'The Eclipse burned away my hesitation! A hollow wraith dares enter my dojo?' },
-        { who: 'MASTER IGNIS', line: 'Let us see if ash can survive a dragon!' }
+        { who: 'MASTER IGNIS', line: 'You cut down my five Dojo Vanguard?! A hollow wraith dares stand in my hearth?' },
+        { who: 'MASTER IGNIS', line: 'Let us see if ash can survive Solar Incarnation!' }
       ],
       memory: { title: 'MEMORY II · THE EMBER HEART', text: 'Sparks flare inside your chest. You remember breathing warmth into a dying brazier before the night of the Eclipse.' },
-      ai: { react: 22, guard: 0.32, parry: 0.07, agg: 0.46, combo: 0.38, thr: 0.18, mag: 0.40, punish: 0.32, antiAir: 0.25, adapt: 0.22, evade: 0.20, superCancel: 0.0, quickBend: 0.14, reflect: 0.05, wallJuggle: 0.05, kdPause: 24 }
+      ai: { react: 21, guard: 0.34, parry: 0.09, agg: 0.48, combo: 0.40, thr: 0.20, mag: 0.42, punish: 0.34, antiAir: 0.26, adapt: 0.24, evade: 0.22, superCancel: 0.02, quickBend: 0.16, reflect: 0.06, wallJuggle: 0.06, kdPause: 22 }
     },
     {
-      id: 2, el: 'air', title: 'MASTER ZEPHYR', subtitle: 'Nomad of the Four Winds', region: 'Sky Monastery',
-      rank: '3rd Dan', stars: 2, mx: 0.32, my: 0.16, honorable: true, gear: 'cloak',
-      storyDesc: 'A serene Baguazhang wanderer who circles the sky and tests your agility on shifting gusts.',
-      hpMult: 1.10, dmgMult: 1.00, defMult: 1.05, magicGain: 1.06, bounty: 250, theme: 1,
+      id: 2, el: 'air', title: 'MASTER ZEPHYR', subtitle: 'Arch-Nomad of the Four Winds', region: 'Sky Monastery', tribe: 'Air Nomads',
+      rank: '3rd Realm', stars: 2, mx: 0.32, my: 0.16, honorable: true, gear: 'cloak', bossScale: 1.08, bossRegalia: 'wind_rings',
+      storyDesc: 'Ascend the Sky Monastery trials against five swift Air Nomad monks before sparring Grandmaster Zephyr atop the clouds.',
+      hpMult: 1.21, dmgMult: 1.03, defMult: 1.07, magicGain: 1.08, bounty: 300, theme: 1,
       hazardId: 'gale_tailwind', ruleId: 'cyclone_guard', ruleName: 'Cyclone Guard',
+      minions: [
+        { name: 'TENZIN', title: 'Breeze Acolyte', weapon: 'liquid_staff', gear: 'monk' },
+        { name: 'KAZUYA', title: 'Gale Acrobat', weapon: 'nunchaku', gear: 'none' },
+        { name: 'MEILING', title: 'Cloud Weaver', weapon: 'war_fans', gear: 'cloak' },
+        { name: 'HARUTO', title: 'Sky Skirmisher', weapon: 'twin_scimitars', gear: 'kasa' },
+        { name: 'JINPA', title: 'Monastery Elder', weapon: 'naginata', gear: 'monk' }
+      ],
       trial: { id: 't_zephyr', desc: 'Win a round using an aerial attack', reward: 130 },
       preDialogue: [
-        { who: 'MASTER ZEPHYR', line: 'Your shadow carries the scent of rain and smoke. You are gathering what was lost.' },
+        { who: 'MASTER ZEPHYR', line: 'Our monastery monks spoke highly of your grace. Your shadow carries rain and smoke.' },
         { who: 'MASTER ZEPHYR', line: 'Catch the wind if you can — I will not stand still for you.' }
       ],
       memory: { title: 'MEMORY III · WEIGHTLESS SKY', text: 'Wind curls around your ankles. You remember leaping across temple roofs, laughing as clouds parted beneath your sandals.' },
-      ai: { react: 18, guard: 0.42, parry: 0.13, agg: 0.52, combo: 0.50, thr: 0.26, mag: 0.52, punish: 0.45, antiAir: 0.38, adapt: 0.35, evade: 0.34, superCancel: 0.0, quickBend: 0.20, reflect: 0.10, wallJuggle: 0.12, kdPause: 18 }
+      ai: { react: 18, guard: 0.44, parry: 0.15, agg: 0.54, combo: 0.52, thr: 0.28, mag: 0.54, punish: 0.46, antiAir: 0.40, adapt: 0.36, evade: 0.36, superCancel: 0.04, quickBend: 0.24, reflect: 0.12, wallJuggle: 0.14, kdPause: 17 }
     },
     {
-      id: 3, el: 'ice', title: 'MASTER FROST', subtitle: 'Warden of the Frozen Peak', region: 'Frozen Peak',
-      rank: '4th Dan', stars: 3, mx: 0.25, my: 0.80, honorable: true, gear: 'kasa',
-      storyDesc: 'A disciplined glacier warden who traps reckless fighters in frost before shattering their guard.',
-      hpMult: 1.16, dmgMult: 1.08, defMult: 1.09, magicGain: 1.14, bounty: 290, theme: 1,
+      id: 3, el: 'ice', title: 'MASTER FROST', subtitle: 'Warden of the Frozen Peak', region: 'Frozen Peak', tribe: 'Frost Wardens',
+      rank: '4th Realm', stars: 3, mx: 0.25, my: 0.80, honorable: true, gear: 'kasa', bossScale: 1.09, bossRegalia: 'glacier_crown',
+      storyDesc: 'Endure five glacial Frost Wardens patrolling the ridge before confronting Master Frost in Absolute Winter.',
+      hpMult: 1.28, dmgMult: 1.09, defMult: 1.10, magicGain: 1.14, bounty: 345, theme: 1,
       hazardId: 'glacier_floor', ruleId: 'permafrost_armor', ruleName: 'Permafrost Armor',
+      minions: [
+        { name: 'SHIRO', title: 'Rime Hunter', weapon: 'twin_sai', gear: 'cloak' },
+        { name: 'FUBUKI', title: 'Hail Blade', weapon: 'dual_katana', gear: 'kasa' },
+        { name: 'KORI', title: 'Shard Hook', weapon: 'hook_swords', gear: 'sode' },
+        { name: 'YUKIO', title: 'Sleet Stalker', weapon: 'shadow_sickles', gear: 'kitsune' },
+        { name: 'HYORIN', title: 'Glacier Knight', weapon: 'heavy_cleaver', gear: 'kabuto' }
+      ],
       trial: { id: 't_frost', desc: 'Beat Master Frost without blocking', reward: 160 },
       preDialogue: [
-        { who: 'MASTER FROST', line: 'The Eclipse whispers from the peak, yet I guard your crystal shard intact.' },
-        { who: 'MASTER FROST', line: 'Strike cleanly — hesitate on this ice and you will shatter.' }
+        { who: 'MASTER FROST', line: 'Five wardens of the Frozen Peak yielded to your resolve. Your shard waits within my glacier.' },
+        { who: 'MASTER FROST', line: 'Strike cleanly — hesitate in Absolute Winter and you will shatter.' }
       ],
       memory: { title: 'MEMORY IV · STILL WINTER', text: 'Frost crystallizes along your sleeves. You remember freezing a falling waterfall mid-air to shelter a village below.' },
-      ai: { react: 15, guard: 0.52, parry: 0.20, agg: 0.58, combo: 0.60, thr: 0.34, mag: 0.62, punish: 0.55, antiAir: 0.48, adapt: 0.45, evade: 0.38, superCancel: 0.05, quickBend: 0.32, reflect: 0.20, wallJuggle: 0.20, kdPause: 13 }
+      ai: { react: 15, guard: 0.54, parry: 0.22, agg: 0.60, combo: 0.62, thr: 0.35, mag: 0.64, punish: 0.56, antiAir: 0.50, adapt: 0.46, evade: 0.40, superCancel: 0.08, quickBend: 0.34, reflect: 0.22, wallJuggle: 0.22, kdPause: 13 }
     },
     {
-      id: 4, el: 'earth', title: 'MASTER TERRA', subtitle: 'Colossus of the Iron Mountain', region: 'Iron Mountain',
-      rank: '5th Dan', stars: 3, mx: 0.44, my: 0.84, honorable: true, gear: 'kabuto',
-      storyDesc: 'An immovable Hung Gar sentinel who stands behind walls of stone and punishes every opening.',
-      hpMult: 1.24, dmgMult: 1.14, defMult: 1.14, magicGain: 1.18, bounty: 335, theme: 0,
+      id: 4, el: 'earth', title: 'MASTER TERRA', subtitle: 'Colossus of the Iron Mountain', region: 'Iron Mountain', tribe: 'Earth Clan',
+      rank: '5th Realm', stars: 3, mx: 0.44, my: 0.84, honorable: true, gear: 'kabuto', bossScale: 1.11, bossRegalia: 'stone_mantle',
+      storyDesc: 'Shatter the ranks of five heavy Earth Clan sentinels before testing your stance against the immovable Colossus Terra.',
+      hpMult: 1.36, dmgMult: 1.15, defMult: 1.14, magicGain: 1.18, bounty: 390, theme: 0,
       hazardId: 'seismic_tremor', ruleId: 'titan_poise', ruleName: 'Titan Poise',
+      minions: [
+        { name: 'GANTEI', title: 'Quarry Monk', weapon: 'liquid_staff', gear: 'none' },
+        { name: 'IWAO', title: 'Boulder Guard', weapon: 'heavy_cleaver', gear: 'sode' },
+        { name: 'TOPAZ', title: 'Crystal Striker', weapon: 'nunchaku', gear: 'tengu' },
+        { name: 'KAZAN', title: 'Cliff Halberd', weapon: 'naginata', gear: 'kasa' },
+        { name: 'SEKI', title: 'Bastion Brute', weapon: 'hook_swords', gear: 'kabuto' }
+      ],
       trial: { id: 't_terra', desc: 'Trigger a Wall Splat or Guard Break', reward: 180 },
       preDialogue: [
-        { who: 'MASTER TERRA', line: 'Light blows bounce off iron mountain. Plant your heels, shadow.' },
-        { who: 'MASTER TERRA', line: 'Break my stance and the earth itself will kneel to you once more.' }
+        { who: 'MASTER TERRA', line: 'Five Iron Mountain sentinels fell like pebbles. Plant your heels, shadow.' },
+        { who: 'MASTER TERRA', line: 'Break my stance and Continental Earth will kneel to you once more.' }
       ],
       memory: { title: 'MEMORY V · UNYIELDING STONE', text: 'The flagstones hum under your feet. You remember anchoring a crumbling ridge with a single stomp.' },
-      ai: { react: 13, guard: 0.62, parry: 0.28, agg: 0.64, combo: 0.68, thr: 0.42, mag: 0.70, punish: 0.64, antiAir: 0.58, adapt: 0.54, evade: 0.44, superCancel: 0.14, quickBend: 0.42, reflect: 0.26, wallJuggle: 0.32, kdPause: 9 }
+      ai: { react: 13, guard: 0.64, parry: 0.28, agg: 0.65, combo: 0.69, thr: 0.42, mag: 0.70, punish: 0.65, antiAir: 0.58, adapt: 0.54, evade: 0.45, superCancel: 0.16, quickBend: 0.44, reflect: 0.28, wallJuggle: 0.34, kdPause: 9 }
     },
     {
-      id: 5, el: 'lightning', title: 'MASTER VOLT', subtitle: 'Sovereign of the Storm Spire', region: 'Storm Spire',
-      rank: '6th Dan', stars: 4, mx: 0.52, my: 0.17, honorable: false, gear: 'crown',
-      storyDesc: 'Warped by Eclipse static, Volt blinks across the arena and fires lethal charged lightning bolts.',
-      hpMult: 1.28, dmgMult: 1.20, defMult: 1.17, magicGain: 1.25, bounty: 380, theme: 2,
+      id: 5, el: 'lightning', title: 'MASTER VOLT', subtitle: 'Sovereign of the Storm Spire', region: 'Storm Spire', tribe: 'Storm Order',
+      rank: '6th Realm', stars: 4, mx: 0.52, my: 0.17, honorable: false, gear: 'crown', bossScale: 1.09, bossRegalia: 'thunder_drums',
+      storyDesc: 'Survive five blitzing Storm Order duellists on the spire before Sovereign Volt unleashes Thunder God Overdrive.',
+      hpMult: 1.43, dmgMult: 1.21, defMult: 1.17, magicGain: 1.25, bounty: 440, theme: 2,
       hazardId: 'storm_spire', ruleId: 'thunder_blink', ruleName: 'Thunder Blink',
+      minions: [
+        { name: 'DENKI', title: 'Spark Shinobi', weapon: 'twin_sai', gear: 'kitsune' },
+        { name: 'RAIKA', title: 'Arc Fencer', weapon: 'dual_katana', gear: 'cloak' },
+        { name: 'INAZUMA', title: 'Bolt Fanatic', weapon: 'war_fans', gear: 'tengu' },
+        { name: 'SHIDEN', title: 'Coil Reaver', weapon: 'shadow_sickles', gear: 'monk' },
+        { name: 'KAMINARI', title: 'Spire Champion', weapon: 'twin_scimitars', gear: 'sode' }
+      ],
       trial: { id: 't_volt', desc: 'Redirect or Clash an elemental wave', reward: 210 },
       preDialogue: [
-        { who: 'MASTER VOLT', line: 'Why return this thunder to a broken vessel? The storm belongs to me!' },
+        { who: 'MASTER VOLT', line: 'You outpaced my entire Storm Order? Impressive — yet the sky still answers only to me!' },
         { who: 'MASTER VOLT', line: 'Blink once and you are ash!' }
       ],
       memory: { title: 'MEMORY VI · CLARITY OF THUNDER', text: 'Blue arcs race along your arms. You remember parting storm clouds with two fingertips raised to heaven.' },
-      ai: { react: 10, guard: 0.68, parry: 0.34, agg: 0.74, combo: 0.76, thr: 0.50, mag: 0.78, punish: 0.74, antiAir: 0.68, adapt: 0.64, evade: 0.54, superCancel: 0.26, quickBend: 0.52, reflect: 0.34, wallJuggle: 0.42, kdPause: 6 }
+      ai: { react: 11, guard: 0.69, parry: 0.35, agg: 0.74, combo: 0.76, thr: 0.50, mag: 0.78, punish: 0.74, antiAir: 0.68, adapt: 0.64, evade: 0.55, superCancel: 0.28, quickBend: 0.54, reflect: 0.36, wallJuggle: 0.42, kdPause: 6 }
     },
     {
-      id: 6, el: 'shadow', title: 'MASTER UMBRA', subtitle: 'Phantom of the Eclipse', region: 'Eclipse Sanctum',
-      rank: '7th Dan', stars: 4, mx: 0.70, my: 0.18, honorable: false, gear: 'cloak',
-      storyDesc: 'A deceptive Eclipse assassin who leaves exploding clones and strikes from beneath your feet.',
-      hpMult: 1.34, dmgMult: 1.25, defMult: 1.20, magicGain: 1.32, bounty: 435, theme: 2,
+      id: 6, el: 'shadow', title: 'MASTER UMBRA', subtitle: 'Phantom of the Eclipse Sanctum', region: 'Eclipse Sanctum', tribe: 'Shadow Clan',
+      rank: '7th Realm', stars: 4, mx: 0.70, my: 0.18, honorable: false, gear: 'cloak', bossScale: 1.09, bossRegalia: 'eclipse_wings',
+      storyDesc: 'Outsmart five ruthless Shadow Clan phantoms lurking in the dusk veranda before Master Umbra traps you in Eternal Night.',
+      hpMult: 1.50, dmgMult: 1.26, defMult: 1.20, magicGain: 1.32, bounty: 495, theme: 2,
       hazardId: 'eclipse_sanctum', ruleId: 'eclipse_veil', ruleName: 'Eclipse Veil',
+      minions: [
+        { name: 'KAGE', title: 'Dusk Assassin', weapon: 'twin_sai', gear: 'cloak' },
+        { name: 'YAMI', title: 'Veil Stalker', weapon: 'dual_katana', gear: 'kitsune' },
+        { name: 'NOCTIS', title: 'Night Hook', weapon: 'hook_swords', gear: 'tengu' },
+        { name: 'KUROHA', title: 'Ink Dancer', weapon: 'war_fans', gear: 'monk' },
+        { name: 'OBORO', title: 'Sanctum Blade', weapon: 'thorn_nagamaki', gear: 'sode' }
+      ],
       trial: { id: 't_umbra', desc: 'Score 2 Head Hits in this duel', reward: 240 },
       preDialogue: [
-        { who: 'MASTER UMBRA', line: 'You were hollowed by darkness — and now you crawl into its heart.' },
+        { who: 'MASTER UMBRA', line: 'Five phantoms erased from the veranda — yet you still step willingly into Eternal Night.' },
         { who: 'MASTER UMBRA', line: 'Which shadow is real? Guess wrong and fall.' }
       ],
       memory: { title: 'MEMORY VII · THE QUIET VEIL', text: 'Shadow bends calmly around your cloak. You remember that darkness was never the enemy — only silence between light.' },
-      ai: { react: 8, guard: 0.75, parry: 0.42, agg: 0.80, combo: 0.82, thr: 0.58, mag: 0.84, punish: 0.80, antiAir: 0.75, adapt: 0.72, evade: 0.64, superCancel: 0.38, quickBend: 0.66, reflect: 0.46, wallJuggle: 0.58, kdPause: 3 }
+      ai: { react: 9, guard: 0.75, parry: 0.42, agg: 0.80, combo: 0.82, thr: 0.58, mag: 0.84, punish: 0.80, antiAir: 0.75, adapt: 0.72, evade: 0.64, superCancel: 0.38, quickBend: 0.66, reflect: 0.46, wallJuggle: 0.56, kdPause: 3 }
     },
     {
-      id: 7, el: 'lava', title: 'MASTER MAGMA', subtitle: 'Warlord of the Obsidian Caldera', region: 'Obsidian Caldera',
-      rank: '8th Dan', stars: 4, mx: 0.87, my: 0.28, honorable: false, gear: 'kabuto',
-      storyDesc: 'The Eclipse warlord turns the entire dojo floor into molten traps and erupting geysers.',
-      hpMult: 1.38, dmgMult: 1.28, defMult: 1.22, magicGain: 1.36, bounty: 480, theme: 2,
+      id: 7, el: 'lava', title: 'MASTER MAGMA', subtitle: 'Warlord of the Obsidian Caldera', region: 'Obsidian Caldera', tribe: 'Caldera Tribe',
+      rank: '8th Realm', stars: 4, mx: 0.87, my: 0.28, honorable: false, gear: 'kabuto', bossScale: 1.12, bossRegalia: 'obsidian_crown',
+      storyDesc: 'Conquer five obsidian-forged Caldera Berserkers across the lava cliffs before Warlord Magma raises the Volcanic Titan.',
+      hpMult: 1.57, dmgMult: 1.31, defMult: 1.23, magicGain: 1.36, bounty: 550, theme: 2,
       hazardId: 'obsidian_caldera', ruleId: 'caldera_floor', ruleName: 'Caldera Floor',
+      minions: [
+        { name: 'ENMA', title: 'Cinder Raider', weapon: 'twin_scimitars', gear: 'tengu' },
+        { name: 'GHAZAN', title: 'Slag Crusher', weapon: 'great_hammer', gear: 'sode' },
+        { name: 'KAGERO', title: 'Basalt Lancer', weapon: 'naginata', gear: 'kasa' },
+        { name: 'SHAKUN', title: 'Magma Chain', weapon: 'nunchaku', gear: 'kabuto' },
+        { name: 'BALKAN', title: 'Caldera Warlord Guard', weapon: 'hook_swords', gear: 'kabuto' }
+      ],
       trial: { id: 't_magma', desc: 'Land a 5-hit combo or trigger Shatter/Combustion', reward: 280 },
       preDialogue: [
-        { who: 'MASTER MAGMA', line: 'Seven shards reclaimed, yet the crucible stops here.' },
-        { who: 'MASTER MAGMA', line: 'The floor itself obeys my fury!' }
+        { who: 'MASTER MAGMA', line: 'My five Caldera Berserkers burned to ash at your feet — impressive.' },
+        { who: 'MASTER MAGMA', line: 'The volcano itself obeys my fury!' }
       ],
-      memory: { title: 'MEMORY VIII · THE FORGE OF EARTH', text: 'Molten gold steadies in your veins. Four forgotten arts still wait across the outer sanctuaries.' },
-      ai: { react: 8, guard: 0.77, parry: 0.44, agg: 0.82, combo: 0.84, thr: 0.60, mag: 0.85, punish: 0.82, antiAir: 0.78, adapt: 0.76, evade: 0.66, superCancel: 0.44, quickBend: 0.70, reflect: 0.50, wallJuggle: 0.64, kdPause: 2 }
+      memory: { title: 'MEMORY VIII · THE FORGE OF EARTH', text: 'Molten gold steadies in your veins. Four ancient sanctuaries still guard the outer disciplines.' },
+      ai: { react: 8, guard: 0.78, parry: 0.45, agg: 0.82, combo: 0.84, thr: 0.60, mag: 0.85, punish: 0.82, antiAir: 0.78, adapt: 0.76, evade: 0.66, superCancel: 0.44, quickBend: 0.70, reflect: 0.50, wallJuggle: 0.64, kdPause: 2 }
     },
     {
-      id: 8, el: 'metal', title: 'MASTER TETSU', subtitle: 'Warden of the Ironclad Foundry', region: 'Ironclad Foundry',
-      rank: '9th Dan', stars: 4, mx: 0.89, my: 0.56, honorable: true, gear: 'sode',
-      storyDesc: 'A disciplined Wing Chun metalbender who deflects careless strikes with ringing iron recoil and steel grapples.',
-      hpMult: 1.41, dmgMult: 1.30, defMult: 1.24, magicGain: 1.38, bounty: 520, theme: 0,
+      id: 8, el: 'metal', title: 'MASTER TETSU', subtitle: 'Warden of the Ironclad Foundry', region: 'Ironclad Foundry', tribe: 'Metal Guild',
+      rank: '9th Realm', stars: 4, mx: 0.89, my: 0.56, honorable: true, gear: 'sode', bossScale: 1.11, bossRegalia: 'iron_shogun',
+      storyDesc: 'Prove your steel against five Ironclad Foundry smith-knights before Grandmaster Tetsu unleashes Iron Dominion.',
+      hpMult: 1.64, dmgMult: 1.36, defMult: 1.26, magicGain: 1.40, bounty: 610, theme: 0,
       hazardId: 'ironclad_foundry', ruleId: 'iron_bulwark', ruleName: 'Iron Bulwark',
+      minions: [
+        { name: 'KUROGANE', title: 'Anvil Vanguard', weapon: 'great_hammer', gear: 'sode' },
+        { name: 'SUZUME', title: 'Chrome Striker', weapon: 'twin_sai', gear: 'kitsune' },
+        { name: 'HAGANE', title: 'Alloy Halberd', weapon: 'naginata', gear: 'kabuto' },
+        { name: 'REN', title: 'Mercury Blade', weapon: 'dual_katana', gear: 'tengu' },
+        { name: 'JINTETSU', title: 'Foundry Captain', weapon: 'heavy_cleaver', gear: 'sode' }
+      ],
       trial: { id: 't_tetsu', desc: 'Trigger a Guard Break or Clash against Tetsu', reward: 300 },
       preDialogue: [
-        { who: 'MASTER TETSU', line: 'Earth refined by discipline becomes unbreakable steel.' },
-        { who: 'MASTER TETSU', line: 'Test your edge against my Hook Swords — if your poise holds, Metal is yours.' }
+        { who: 'MASTER TETSU', line: 'Five Ironclad Knights tempered your blade. Now face refined steel.' },
+        { who: 'MASTER TETSU', line: 'Hold your poise against my Iron Dominion — and Metal is yours.' }
       ],
       memory: { title: 'MEMORY IX · TEMPERED IRON', text: 'Sparks chime like temple bells. You remember bending forged steel ribbons mid-flight to shield a fallen comrade.' },
-      ai: { react: 7, guard: 0.80, parry: 0.48, agg: 0.82, combo: 0.85, thr: 0.62, mag: 0.86, punish: 0.84, antiAir: 0.80, adapt: 0.78, evade: 0.68, superCancel: 0.46, quickBend: 0.72, reflect: 0.54, wallJuggle: 0.66, kdPause: 2 }
+      ai: { react: 7, guard: 0.80, parry: 0.48, agg: 0.83, combo: 0.86, thr: 0.62, mag: 0.87, punish: 0.84, antiAir: 0.80, adapt: 0.78, evade: 0.68, superCancel: 0.48, quickBend: 0.73, reflect: 0.54, wallJuggle: 0.66, kdPause: 2 }
     },
     {
-      id: 9, el: 'nature', title: 'MASTER MORI', subtitle: 'Sage of the Verdant Grove', region: 'Verdant Grove',
-      rank: '10th Dan', stars: 5, mx: 0.80, my: 0.82, honorable: true, gear: 'kitsune',
-      storyDesc: 'A serene forest guardian weaving living briar snares and emerald vine whips that drain vitality.',
-      hpMult: 1.44, dmgMult: 1.32, defMult: 1.25, magicGain: 1.40, bounty: 560, theme: 1,
+      id: 9, el: 'nature', title: 'MASTER MORI', subtitle: 'Sage of the Verdant Grove', region: 'Verdant Grove', tribe: 'Forest Tribe',
+      rank: '10th Realm', stars: 5, mx: 0.80, my: 0.82, honorable: true, gear: 'kitsune', bossScale: 1.10, bossRegalia: 'antler_crown',
+      storyDesc: 'Pass through five Verdant Grove beast-wardens beneath the spirit banyan before Sage Mori summons the World Beast.',
+      hpMult: 1.71, dmgMult: 1.40, defMult: 1.28, magicGain: 1.44, bounty: 670, theme: 1,
       hazardId: 'verdant_grove', ruleId: 'briar_bloom', ruleName: 'Briar Bloom',
+      minions: [
+        { name: 'AOBARA', title: 'Thorn Stalker', weapon: 'shadow_sickles', gear: 'kitsune' },
+        { name: 'KUSANAGI', title: 'Root Warden', weapon: 'liquid_staff', gear: 'kasa' },
+        { name: 'MIDORI', title: 'Canopy Fan', weapon: 'war_fans', gear: 'monk' },
+        { name: 'HAYATE', title: 'Stag Hunter', weapon: 'twin_scimitars', gear: 'cloak' },
+        { name: 'TAIGA', title: 'Elder Bear Guard', weapon: 'great_hammer', gear: 'sode' }
+      ],
       trial: { id: 't_mori', desc: 'Land a 5-hit combo in the Verdant Grove', reward: 320 },
       preDialogue: [
-        { who: 'MASTER MORI', line: 'Even ash feeds new roots. Your spirit blooms brighter with every step.' },
-        { who: 'MASTER MORI', line: 'Cut cleanly through my briars, young Avatar.' }
+        { who: 'MASTER MORI', line: 'Our five forest guardians tested your roots, and your spirit only bloomed stronger.' },
+        { who: 'MASTER MORI', line: 'Stand tall against the World Beast, young Avatar.' }
       ],
       memory: { title: 'MEMORY X · LIVING ROOTS', text: 'Warm moss and emerald blossoms uncurl around your heels. You remember listening to the pulse of an ancient banyan tree.' },
-      ai: { react: 7, guard: 0.81, parry: 0.50, agg: 0.84, combo: 0.87, thr: 0.64, mag: 0.88, punish: 0.86, antiAir: 0.82, adapt: 0.80, evade: 0.70, superCancel: 0.50, quickBend: 0.74, reflect: 0.56, wallJuggle: 0.68, kdPause: 1 }
+      ai: { react: 7, guard: 0.82, parry: 0.50, agg: 0.85, combo: 0.88, thr: 0.64, mag: 0.88, punish: 0.86, antiAir: 0.82, adapt: 0.80, evade: 0.70, superCancel: 0.52, quickBend: 0.75, reflect: 0.56, wallJuggle: 0.68, kdPause: 1 }
     },
     {
-      id: 10, el: 'sand', title: 'MASTER SUNA', subtitle: 'Mirage of the Sunburst Dunes', region: 'Mirage Dunes',
-      rank: '11th Dan', stars: 5, mx: 0.62, my: 0.82, honorable: false, gear: 'tengu',
-      storyDesc: 'A ruthless desert duelist who conjures sand decoys, quicksand traps, and razor glass cyclones.',
-      hpMult: 1.47, dmgMult: 1.34, defMult: 1.26, magicGain: 1.44, bounty: 610, theme: 0,
+      id: 10, el: 'sand', title: 'MASTER SUNA', subtitle: 'Sovereign of the Mirage Dunes', region: 'Mirage Dunes', tribe: 'Desert Nomads',
+      rank: '11th Realm', stars: 5, mx: 0.62, my: 0.82, honorable: false, gear: 'tengu', bossScale: 1.10, bossRegalia: 'sunburst_crest',
+      storyDesc: 'Outlast five lethal Desert Nomad raiders across the sandstone citadel before Sovereign Suna buries you beneath Mirage Dunes.',
+      hpMult: 1.78, dmgMult: 1.45, defMult: 1.30, magicGain: 1.48, bounty: 740, theme: 0,
       hazardId: 'mirage_dunes', ruleId: 'mirage_veil', ruleName: 'Mirage Veil',
+      minions: [
+        { name: 'ZAHIR', title: 'Dune Skirmisher', weapon: 'twin_sai', gear: 'cloak' },
+        { name: 'TARIQ', title: 'Oasis Spear', weapon: 'naginata', gear: 'kasa' },
+        { name: 'SAMIRA', title: 'Glass Dancer', weapon: 'hook_swords', gear: 'kitsune' },
+        { name: 'KHALID', title: 'Sandstorm Cleaver', weapon: 'heavy_cleaver', gear: 'tengu' },
+        { name: 'SHAMS', title: 'Citadel Champion', weapon: 'thorn_nagamaki', gear: 'sode' }
+      ],
       trial: { id: 't_suna', desc: 'Score 2 Head Hits against Master Suna', reward: 350 },
       preDialogue: [
-        { who: 'MASTER SUNA', line: 'Ten disciplines reclaimed, yet your blade still swings at mirages!' },
-        { who: 'MASTER SUNA', line: 'Drown beneath the Sunburst Dunes!' }
+        { who: 'MASTER SUNA', line: 'You carved through five of my finest Dune Raiders — yet every blade swings at mirages here!' },
+        { who: 'MASTER SUNA', line: 'Drown beneath the Desert Sovereign!' }
       ],
       memory: { title: 'MEMORY XI · SHIFTING GLASS', text: 'Golden grains shimmer like silk in the sun. You remember fusing a desert storm into a wall of amber crystal.' },
-      ai: { react: 6, guard: 0.83, parry: 0.52, agg: 0.86, combo: 0.89, thr: 0.66, mag: 0.90, punish: 0.88, antiAir: 0.84, adapt: 0.82, evade: 0.74, superCancel: 0.54, quickBend: 0.78, reflect: 0.58, wallJuggle: 0.72, kdPause: 1 }
+      ai: { react: 6, guard: 0.84, parry: 0.52, agg: 0.87, combo: 0.90, thr: 0.66, mag: 0.90, punish: 0.88, antiAir: 0.84, adapt: 0.82, evade: 0.74, superCancel: 0.56, quickBend: 0.78, reflect: 0.58, wallJuggle: 0.72, kdPause: 1 }
     },
     {
-      id: 11, el: 'spirit', title: 'MASTER KAMI', subtitle: 'Oracle of the Astral Sanctum', region: 'Astral Sanctum',
-      rank: '12th Dan', stars: 5, mx: 0.68, my: 0.46, honorable: true, gear: 'monk',
-      storyDesc: 'An ethereal energybending oracle who floats above strikes and locks down reckless bending energy.',
-      hpMult: 1.50, dmgMult: 1.36, defMult: 1.27, magicGain: 1.46, bounty: 680, theme: 2,
+      id: 11, el: 'spirit', title: 'MASTER KAMI', subtitle: 'Oracle of the Astral Sanctum', region: 'Astral Sanctum', tribe: 'Spirit Order',
+      rank: '12th Realm', stars: 5, mx: 0.68, my: 0.46, honorable: true, gear: 'monk', bossScale: 1.11, bossRegalia: 'celestial_halo',
+      storyDesc: 'Purify five celestial Spirit Order guardians in the Astral Sanctum before Oracle Kami tests your soul for the Eclipse Throne.',
+      hpMult: 1.85, dmgMult: 1.49, defMult: 1.32, magicGain: 1.52, bounty: 820, theme: 2,
       hazardId: 'astral_sanctum', ruleId: 'astral_harmony', ruleName: 'Astral Harmony',
+      minions: [
+        { name: 'HIKARI', title: 'Lotus Acolyte', weapon: 'liquid_staff', gear: 'monk' },
+        { name: 'REIKO', title: 'Soul Blade', weapon: 'dual_katana', gear: 'kitsune' },
+        { name: 'SHINJI', title: 'Aether Chain', weapon: 'nunchaku', gear: 'cloak' },
+        { name: 'AYAME', title: 'Astral Reaver', weapon: 'shadow_sickles', gear: 'tengu' },
+        { name: 'TENMA', title: 'Sanctum Arbiter', weapon: 'thorn_nagamaki', gear: 'crown' }
+      ],
       trial: { id: 't_kami', desc: 'Use Quick-Bend or Sub-Bend 3 times against Kami', reward: 400 },
       preDialogue: [
-        { who: 'MASTER KAMI', line: 'Eleven elements sing within your silhouette. Only pure Spirit remains.' },
-        { who: 'MASTER KAMI', line: 'Quiet your chi — prove your soul is whole before facing the Eclipse.' }
+        { who: 'MASTER KAMI', line: 'Eleven disciplines sing within your silhouette, and five Astral Guardians bear witness.' },
+        { who: 'MASTER KAMI', line: 'Quiet your chi — prove your soul can resist the Shadow Avatar!' }
       ],
-      memory: { title: 'MEMORY XII · ASTRAL RESONANCE', text: 'Rose-gold light spills across the ink horizon. All twelve disciplines align in serene resonance — the Eclipse Citadel opens.' },
-      ai: { react: 6, guard: 0.84, parry: 0.54, agg: 0.88, combo: 0.90, thr: 0.68, mag: 0.90, punish: 0.88, antiAir: 0.86, adapt: 0.85, evade: 0.76, superCancel: 0.58, quickBend: 0.80, reflect: 0.62, wallJuggle: 0.76, kdPause: 0 }
+      memory: { title: 'MEMORY XII · ASTRAL RESONANCE', text: 'Rose-gold light spills across the ink horizon. All twelve disciplines align — the Shadow Avatar awaits upon the Eclipse Throne.' },
+      ai: { react: 6, guard: 0.85, parry: 0.55, agg: 0.88, combo: 0.91, thr: 0.68, mag: 0.91, punish: 0.89, antiAir: 0.86, adapt: 0.85, evade: 0.76, superCancel: 0.60, quickBend: 0.81, reflect: 0.62, wallJuggle: 0.76, kdPause: 0 }
     },
     {
-      id: 12, el: 'shadow', title: 'THE ECLIPSE MASTER', subtitle: 'Thief of the Twelve Elements', region: 'Eclipse Citadel',
-      rank: '13th Dan · Final Boss', stars: 5, mx: 0.48, my: 0.49, honorable: false, gear: 'crown',
-      storyDesc: 'The ancient sovereign who hollowed your soul wields all twelve disciplines in seamless succession.',
-      hpMult: 1.56, dmgMult: 1.40, defMult: 1.29, magicGain: 1.52, bounty: 950, theme: 2,
-      hazardId: 'avatar_convergence', ruleId: 'avatar_state', ruleName: 'Eclipse Avatar',
-      trial: { id: 't_eclipse', desc: 'Defeat the Eclipse Master to awaken Avatar State', reward: 550 },
+      id: 12, el: 'shadow', title: 'THE SHADOW AVATAR', subtitle: 'The Eclipse Master · Thief of Bending', region: 'Eclipse Throne', tribe: 'Eclipse Legion',
+      rank: 'Final Realm · Shadow Avatar', stars: 5, mx: 0.48, my: 0.49, honorable: false, gear: 'crown', bossScale: 1.15, bossRegalia: 'shadow_avatar',
+      storyDesc: 'Defeat the Shadow Avatar\'s 5 Elite Eclipse Generals to reach the Throne — then slay him before his Bending-Theft bar fills and strips your elements!',
+      hpMult: 1.96, dmgMult: 1.56, defMult: 1.36, magicGain: 1.60, bounty: 1200, theme: 2,
+      hazardId: 'avatar_convergence', ruleId: 'avatar_state', ruleName: 'Shadow Avatar · Bending Theft',
+      minions: [
+        { name: 'GENERAL KUROGANE', title: 'Eclipse Iron Vanguard', el: 'metal', weapon: 'hook_swords', gear: 'sode', eliteMult: 0.86 },
+        { name: 'GENERAL RAIJIN', title: 'Eclipse Storm Wraith', el: 'lightning', weapon: 'nunchaku', gear: 'tengu', eliteMult: 0.89 },
+        { name: 'GENERAL HYOGA', title: 'Eclipse Glacier Executioner', el: 'ice', weapon: 'naginata', gear: 'kasa', eliteMult: 0.91 },
+        { name: 'GENERAL KAZAN', title: 'Eclipse Caldera Ravager', el: 'lava', weapon: 'heavy_cleaver', gear: 'kabuto', eliteMult: 0.93 },
+        { name: 'GENERAL YOMI', title: 'Eclipse Astral Inquisitor', el: 'spirit', weapon: 'war_fans', gear: 'monk', eliteMult: 0.96 }
+      ],
+      trial: { id: 't_eclipse', desc: 'Defeat the Shadow Avatar to awaken full Avatar State', reward: 650 },
       preDialogue: [
-        { who: 'THE ECLIPSE MASTER', line: 'So the hollow silhouette stitched itself back together.' },
-        { who: 'THE ECLIPSE MASTER', line: 'I tore all twelve elements from your soul once. Watch me wield them as one!' }
+        { who: 'THE SHADOW AVATAR', line: 'My five Eclipse Generals lie broken at the steps of my Throne. So the hollow vessel finally arrives.' },
+        { who: 'THE SHADOW AVATAR', line: 'Watch my Eclipse Siphon fill — if you do not strike me down in time, I will tear EVERY element from your soul again!' }
       ],
       memory: { title: 'AWAKENING · THE FULL AVATAR', text: 'The eclipse shatters into dawn. Every element orbits your silhouette in radiant white-gold — you are whole, and Avatar State + the Endless Shadow Tower are yours.' },
       isFinal: true,
-      ai: { react: 5, guard: 0.86, parry: 0.58, agg: 0.90, combo: 0.92, thr: 0.70, mag: 0.92, punish: 0.90, antiAir: 0.88, adapt: 0.88, evade: 0.78, superCancel: 0.65, quickBend: 0.84, reflect: 0.66, wallJuggle: 0.80, kdPause: 0 }
+      ai: { react: 4, guard: 0.88, parry: 0.60, agg: 0.92, combo: 0.94, thr: 0.72, mag: 0.94, punish: 0.92, antiAir: 0.90, adapt: 0.90, evade: 0.80, superCancel: 0.68, quickBend: 0.86, reflect: 0.68, wallJuggle: 0.82, kdPause: 0 }
     }
   ];
 
   function loadSave() {
     const def = {
-      coins: 150, cleared: [], unlockedElements: ['water'], completedTrials: [],
+      coins: 150, cleared: [], realmProgress: {}, unlockedElements: ['water'], completedTrials: [],
       upgrades: { edge: 0, body: 0, flow: 0 },
       ownedGear: ['none'], equippedGear: 'none',
       ownedWeapons: ['default'], equippedWeapon: 'default',
@@ -2166,7 +2322,7 @@
       unlockedScrolls: [],
       playerName: 'SHADOW',
       storyIntroSeen: false, tutorialSeen: false, dojoLessonDone: false, avatarUnlocked: false,
-      endlessBest: 0, allySelected: '', sandboxUnlockAll: false, playerTag: 'smart', v33Save: true
+      endlessBest: 0, allySelected: '', sandboxUnlockAll: false, playerTag: 'smart', v33Save: true, v34Save: true
     };
     try {
       const raw = localStorage.getItem(SAVE_KEY) || localStorage.getItem('elemental_shadows_save_v1');
@@ -2178,9 +2334,12 @@
         cleared = cleared.filter(x => x !== 8);
         if (!cleared.includes(12)) cleared.push(12);
       }
+      const realmProgress = (d.realmProgress && typeof d.realmProgress === 'object') ? { ...d.realmProgress } : {};
+      cleared.forEach(cid => { realmProgress[cid] = 6; });
       return {
         coins: typeof d.coins === 'number' ? d.coins : 150,
         cleared,
+        realmProgress,
         unlockedElements: Array.isArray(d.unlockedElements) && d.unlockedElements.length ? d.unlockedElements : ['water'],
         completedTrials: Array.isArray(d.completedTrials) ? d.completedTrials : [],
         upgrades: { edge: d.upgrades?.edge || 0, body: d.upgrades?.body || 0, flow: d.upgrades?.flow || 0 },
@@ -2200,13 +2359,78 @@
         allySelected: d.allySelected || '',
         sandboxUnlockAll: Boolean(d.sandboxUnlockAll),
         playerTag: ['smart', 'always', 'minimal'].includes(d.playerTag) ? d.playerTag : 'smart',
-        v33Save: true
+        v33Save: true,
+        v34Save: true
       };
     } catch { return def; }
   }
   const PROG = loadSave();
   settings.playerTag = PROG.playerTag || 'smart';
   function saveProg() { try { localStorage.setItem(SAVE_KEY, JSON.stringify(PROG)); } catch {} }
+  function getRealmProgress(stageId) {
+    if (PROG.cleared.includes(stageId)) return 6;
+    const v = Number(PROG.realmProgress && PROG.realmProgress[stageId]);
+    return Number.isFinite(v) ? Math.max(0, Math.min(6, Math.trunc(v))) : 0;
+  }
+  function buildStageOpponent(stageIdx, boutIdx) {
+    const st = CAMPAIGN_STAGES[Math.max(0, Math.min(CAMPAIGN_STAGES.length - 1, stageIdx))];
+    const minions = st.minions || [];
+    const safeBout = Math.max(0, Math.min(5, boutIdx));
+    if (safeBout < minions.length) {
+      const mn = minions[safeBout];
+      const frac = mn.eliteMult || (0.68 + safeBout * 0.055);
+      const isFinalLegion = Boolean(st.isFinal);
+      const scaleAi = (v, floor, cap) => Math.max(floor, Math.min(cap, Number((v * (isFinalLegion ? (0.86 + safeBout * 0.025) : (0.66 + safeBout * 0.055))).toFixed(2))));
+      const mAi = {
+        ...st.ai,
+        react: Math.min(30, st.ai.react + (isFinalLegion ? Math.max(1, 5 - safeBout) : (10 - safeBout * 2))),
+        guard: scaleAi(st.ai.guard, 0.14, 0.84),
+        parry: scaleAi(st.ai.parry, 0.01, 0.52),
+        agg: scaleAi(st.ai.agg, 0.28, 0.88),
+        combo: scaleAi(st.ai.combo, 0.20, 0.88),
+        mag: scaleAi(st.ai.mag, 0.22, 0.88),
+        punish: scaleAi(st.ai.punish, 0.16, 0.86),
+        quickBend: scaleAi(st.ai.quickBend, 0.06, 0.78),
+        superCancel: isFinalLegion ? scaleAi(st.ai.superCancel, 0.28, 0.58) : (safeBout >= 3 ? scaleAi(st.ai.superCancel, 0.0, 0.35) : 0),
+        kdPause: st.ai.kdPause + (isFinalLegion ? Math.max(1, 4 - safeBout) : (10 - safeBout * 2))
+      };
+      return {
+        ...st,
+        stageId: st.id,
+        boutIdx: safeBout,
+        isMinion: true,
+        isRealmBoss: false,
+        isFinal: false,
+        el: mn.el || st.el,
+        title: mn.name,
+        subtitle: mn.title,
+        rank: isFinalLegion ? `Eclipse General ${safeBout + 1}/5` : `${st.tribe} · Warrior ${safeBout + 1}/5`,
+        weapon: mn.weapon || 'default',
+        gear: mn.gear || 'none',
+        bossScale: isFinalLegion ? 1.04 : 1.0,
+        bossRegalia: isFinalLegion ? 'eclipse_general' : '',
+        hpMult: Number((st.hpMult * frac).toFixed(2)),
+        dmgMult: Number((st.dmgMult * (isFinalLegion ? (0.86 + safeBout * 0.025) : (0.72 + safeBout * 0.045))).toFixed(2)),
+        defMult: Number((1 + (st.defMult - 1) * frac).toFixed(2)),
+        magicGain: Number((st.magicGain * (0.76 + safeBout * 0.04)).toFixed(2)),
+        bounty: Math.round(st.bounty * (isFinalLegion ? 0.50 : 0.32) + safeBout * 22),
+        ruleId: '',
+        ruleName: '',
+        trial: null,
+        memory: null,
+        preDialogue: null,
+        ai: mAi
+      };
+    }
+    return {
+      ...st,
+      stageId: st.id,
+      boutIdx: 5,
+      isMinion: false,
+      isRealmBoss: true,
+      weapon: 'default'
+    };
+  }
   function isAndroidOrTouch() {
     return Boolean(window.AndroidHaptics || window.AndroidWifiDuel) || _initTouch;
   }
@@ -2256,6 +2480,7 @@
   }
   function canFighterAvatarShift(f) {
     if (!f) return false;
+    if (f.id === 'p1' && match.bendingStolen) return false;
     if (match.mode === 'wifi' && f.loadout) return Boolean(f.loadout.avatarUnlocked);
     return f.id === 'p1' && (PROG.avatarUnlocked || PROG.sandboxUnlockAll);
   }
@@ -2280,8 +2505,9 @@
   function fighterSpeedMult(f) {
     const g = getActiveGear(f);
     const gearSpd = g === 'cloak' ? 1.09 : g === 'kitsune' ? 1.07 : 1.0;
-    if (match.mode === 'wifi') return gearSpd;
-    return f.id === 'p1' ? p1SpeedMult() : ((f.phase2 ? 1.14 : 1) * gearSpd);
+    const thSpd = f.thunderBuffF > 0 ? 1.22 : 1.0;
+    if (match.mode === 'wifi') return gearSpd * thSpd;
+    return (f.id === 'p1' ? p1SpeedMult() : ((f.phase2 ? 1.14 : 1) * gearSpd)) * thSpd;
   }
   function getWeaponSpec(f) {
     if (f.disarmed) {
@@ -2289,7 +2515,7 @@
     }
     const wId = (match.mode === 'wifi' && f.loadout)
       ? f.loadout.weapon
-      : (f.id === 'p1' ? PROG.equippedWeapon : 'default');
+      : (f.id === 'p1' ? PROG.equippedWeapon : ((match.boss && match.boss.weapon) || 'default'));
     if (wId && wId !== 'default') {
       const w = WEAPON_CATALOG.find(x => x.id === wId);
       if (w) return { id: w.id, name: w.name, wType: w.wType, reach: w.reach, speedMod: w.speedMod, dmgMod: w.dmgMod, perk: w.perk || '' };
@@ -2308,20 +2534,20 @@
     { id: 'seismic_crush', name: 'Seismic-Crush Seal', col: '#f2c057', prim: '#9c6c22', cost: 480, speed: 2, power: 5, reachPip: 4, ico: `<svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12,3 20,9 17,20 7,20 4,9"/></svg>`, bonus: 'Weapon blows shred +35% Guard Poise for instant Guard Shatters + gold trail.' }
   ];
 
-  // ===== 12 SECRET ATLA SUB-BENDING ARTS & UNLOCKABLE GRANDMASTER SCROLLS =====
+  // ===== 12 ADVANCED COMPENDIUM SUB-BENDING ARTS & UNLOCKABLE GRANDMASTER SCROLLS =====
   const SUB_BEND_ARTS = {
-    water:     { id: 'water', lbl: 'BLOODBEND', name: 'Full-Moon Puppet Grip', prim: '#991b2e', glow: '#ff4b6b', cost: 350, speed: 4, power: 5, reachPip: 4, ico: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/><path d="M12 7c2.4 3 3.6 5.2 3.6 7a3.6 3.6 0 1 1-7.2 0c0-1.8 1.2-4 3.6-7z" fill="currentColor"/></svg>`, bonus: 'Seizes foe under a crimson full moon, suspends & slams them down. Scroll: 35% cost & +35% dmg.' },
-    fire:      { id: 'fire', lbl: 'COMBUSTION', name: 'Third-Eye Combustion Beam', prim: '#c23616', glow: '#ffae34', cost: 350, speed: 5, power: 5, reachPip: 5, ico: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s4-6 10-6 10 6 10 6-4 6-10 6S2 12 2 12z"/><circle cx="12" cy="12" r="2.8" fill="currentColor"/></svg>`, bonus: 'Fires psychic shock-rings that detonate on impact in a colossal 3D blast. Scroll: 35% cost & +35% dmg.' },
-    earth:     { id: 'earth', lbl: 'METAL WIRE', name: 'Metalbending Cable Grapple', prim: '#64748b', glow: '#e2e8f0', cost: 350, speed: 5, power: 4, reachPip: 5, ico: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"><path d="M4 20L19 5"/><path d="M14 5h5v5"/><path d="M7 13l4 4"/></svg>`, bonus: 'Twin Republic-City steel cables snare distant enemies & yank them into melee. Scroll: 35% cost & +35% dmg.' },
-    air:       { id: 'air', lbl: 'VACUUM', name: 'Zaheer Vacuum Breath Sphere', prim: '#0f766e', glow: '#78ffd6', cost: 350, speed: 4, power: 4, reachPip: 4, ico: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4" stroke-dasharray="3 2"/></svg>`, bonus: 'Pulls foe into an airless sphere draining HP & meter before launching skyward. Scroll: 35% cost & +35% dmg.' },
-    ice:       { id: 'ice', lbl: 'FROST DOME', name: 'Thousand-Needles Frost Dome', prim: '#0369a1', glow: '#9ef6ff', cost: 350, speed: 4, power: 5, reachPip: 4, ico: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 4l2 14M12 3v17M18 4l-2 14M4 18h16"/></svg>`, bonus: 'Summons 7 jagged glacier spears overhead that rain down & chill foes. Scroll: 35% cost & +35% dmg.' },
-    lightning: { id: 'lightning', lbl: 'ARC STORM', name: "Heaven's Arc Field", prim: '#1d4ed8', glow: '#fde047', cost: 350, speed: 5, power: 5, reachPip: 5, ico: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M11 2L4 13h5l-1 9 9-12h-5l3-8z"/></svg>`, bonus: 'Calls 3 rapid staggered sky-to-floor lightning bolts across the arena. Scroll: 35% cost & +35% dmg.' },
-    shadow:    { id: 'shadow', lbl: 'SOUL BIND', name: 'Eclipse Tether Bind', prim: '#4c1d95', glow: '#d8b4fe', cost: 350, speed: 4, power: 4, reachPip: 4, ico: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="9" width="7" height="6" rx="3"/><rect x="14" y="9" width="7" height="6" rx="3"/><path d="M10 12h4"/></svg>`, bonus: 'Erupts shadow chains beneath the foe, rooting them & stealing 20% meter. Scroll: 35% cost & +35% dmg.' },
-    lava:      { id: 'lava', lbl: 'MAGMA RIFT', name: 'Tectonic Caldera Rift', prim: '#b91c1c', glow: '#ff951a', cost: 350, speed: 3, power: 5, reachPip: 4, ico: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M3 19l5-11 4 6 4-8 5 13z"/></svg>`, bonus: 'Splits the floor with twin erupting volcanic geysers & molten pools. Scroll: 35% cost & +35% dmg.' },
-    metal:     { id: 'metal', lbl: 'MAG CLAMP', name: 'Magnetic Gravity Clamp', prim: '#475569', glow: '#f1f5f9', cost: 350, speed: 5, power: 5, reachPip: 5, ico: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4v8a6 6 0 0 0 12 0V4"/><path d="M6 8h3M15 8h3"/></svg>`, bonus: 'Snaps iron shackles onto foe, grounding jumpers, clamping poise & crushing guard. Scroll: 35% cost & +35% dmg.' },
-    nature:    { id: 'nature', lbl: 'BRIAR CAGE', name: 'Elder Briar Prison', prim: '#15803d', glow: '#86efac', cost: 350, speed: 4, power: 4, reachPip: 4, ico: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 19C6 11 11 6 19 5"/><path d="M6 12l4 2M12 7l2 4M14 14l4 2"/></svg>`, bonus: 'Snares foe in thorny emerald vines, rooting them while leeching vitality. Scroll: 35% cost & +35% dmg.' },
-    sand:      { id: 'sand', lbl: 'SAND BURIAL', name: 'Desert Sandstone Coffin', prim: '#a16207', glow: '#fef08a', cost: 350, speed: 4, power: 5, reachPip: 4, ico: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12,3 21,19 3,19"/><line x1="7" y1="14" x2="17" y2="14"/></svg>`, bonus: 'Encases foe in hardening golden sand before crushing inward with Sand Haze. Scroll: 35% cost & +35% dmg.' },
-    spirit:    { id: 'spirit', lbl: 'CHI SEAL', name: 'Energybend Chi-Seal', prim: '#be185d', glow: '#f9a8d4', cost: 350, speed: 5, power: 5, reachPip: 5, ico: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/><path d="M12 4v16M4 12h16"/></svg>`, bonus: 'Converges twin astral beams to drain 25% meter and apply Chi Lock. Scroll: 35% cost & +35% dmg.' }
+    water:     { id: 'water', lbl: 'BLOODBEND', name: 'Blood Bending · Puppet Grip', prim: '#991b2e', glow: '#ff4b6b', cost: 350, speed: 4, power: 5, reachPip: 4, ico: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/><path d="M12 7c2.4 3 3.6 5.2 3.6 7a3.6 3.6 0 1 1-7.2 0c0-1.8 1.2-4 3.6-7z" fill="currentColor"/></svg>`, bonus: 'Seizes bodily fluids under a crimson moon, suspends & slams foe down. Scroll: 35% cost & +35% dmg.' },
+    fire:      { id: 'fire', lbl: 'PLASMA', name: 'Plasma Bending · Solar Combustion', prim: '#c23616', glow: '#ffe066', cost: 350, speed: 5, power: 5, reachPip: 5, ico: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s4-6 10-6 10 6 10 6-4 6-10 6S2 12 2 12z"/><circle cx="12" cy="12" r="2.8" fill="currentColor"/></svg>`, bonus: 'Fires superheated ionised plasma rings that detonate on impact to shatter guard. Scroll: 35% cost & +35% dmg.' },
+    earth:     { id: 'earth', lbl: 'TECTONIC', name: 'Tectonic Bending · Gravity Fault', prim: '#854d0e', glow: '#f5d061', cost: 350, speed: 4, power: 5, reachPip: 5, ico: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"><path d="M3 18l5-8 4 5 4-9 5 12"/><path d="M3 20h18"/></svg>`, bonus: 'Cracks a seismic fault across the floor with gravitational compression that pins & crushes poise. Scroll: 35% cost & +35% dmg.' },
+    air:       { id: 'air', lbl: 'VACUUM', name: 'Vacuum Bending · Zero-Pressure Sphere', prim: '#0f766e', glow: '#78ffd6', cost: 350, speed: 4, power: 4, reachPip: 4, ico: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4" stroke-dasharray="3 2"/></svg>`, bonus: 'Strips air around the foe into a suffocating vacuum sphere draining HP & meter before launching skyward. Scroll: 35% cost & +35% dmg.' },
+    ice:       { id: 'ice', lbl: 'THERMAL', name: 'Thermal Extraction · Flash Freeze', prim: '#0369a1', glow: '#9ef6ff', cost: 350, speed: 4, power: 5, reachPip: 4, ico: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3v18M4.5 7.5l15 9M19.5 7.5l-15 9"/><circle cx="12" cy="12" r="3" fill="currentColor"/></svg>`, bonus: 'Extracts all heat around foe to flash-freeze them solid in ice while siphoning +15% energy. Scroll: 35% cost & +35% dmg.' },
+    lightning: { id: 'lightning', lbl: 'EMP PULSE', name: 'Electromagnetic · Neural EMP Surge', prim: '#1d4ed8', glow: '#fde047', cost: 350, speed: 5, power: 5, reachPip: 5, ico: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M11 2L4 13h5l-1 9 9-12h-5l3-8z"/></svg>`, bonus: 'Discharges an electromagnetic pulse & dual rail-arcs that shock nerves and lock chi briefly. Scroll: 35% cost & +35% dmg.' },
+    shadow:    { id: 'shadow', lbl: 'DIMENSIONAL', name: 'Dimensional Bending · Shadow Rift', prim: '#4c1d95', glow: '#d8b4fe', cost: 350, speed: 5, power: 4, reachPip: 5, ico: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="12" rx="8" ry="4.5" transform="rotate(-30 12 12)"/><circle cx="12" cy="12" r="2.6" fill="currentColor"/></svg>`, bonus: 'Opens twin dimensional shadow rifts flanking the foe to ambush, root, & steal 20% meter. Scroll: 35% cost & +35% dmg.' },
+    lava:      { id: 'lava', lbl: 'ERUPTION', name: 'Volcanic Eruption · Obsidian Rift', prim: '#b91c1c', glow: '#ff951a', cost: 350, speed: 3, power: 5, reachPip: 4, ico: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M3 19l5-11 4 6 4-8 5 13z"/></svg>`, bonus: 'Splits the floor with twin volcanic geysers, razor obsidian shards & molten magma pools. Scroll: 35% cost & +35% dmg.' },
+    metal:     { id: 'metal', lbl: 'TRANSMUTE', name: 'Metal Transmutation · Forged Cage', prim: '#475569', glow: '#f1f5f9', cost: 350, speed: 5, power: 5, reachPip: 5, ico: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4v8a6 6 0 0 0 12 0V4"/><path d="M6 8h3M15 8h3"/></svg>`, bonus: 'Transmutes surrounding steel into converging blades & magnetic shackles that ground & crush guard. Scroll: 35% cost & +35% dmg.' },
+    nature:    { id: 'nature', lbl: 'CHIMERA', name: 'Biological Adaptation · Primal Beast', prim: '#15803d', glow: '#86efac', cost: 350, speed: 5, power: 5, reachPip: 5, ico: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 18c2-6 6-10 14-12-1 5-4 10-10 12"/><path d="M6 12l4-2M10 16l4-2M13 8l4 1"/></svg>`, bonus: 'Manifests primal beast claws & summons a charging emerald spirit-wolf that mauls foe & heals +10% HP. Scroll: 35% cost & +35% dmg.' },
+    sand:      { id: 'sand', lbl: 'GLASS FORGE', name: 'Glass Formation · Vitrified Tomb', prim: '#a16207', glow: '#fef08a', cost: 350, speed: 4, power: 5, reachPip: 4, ico: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12,3 21,19 3,19"/><line x1="7" y1="14" x2="17" y2="14"/></svg>`, bonus: 'Superheats sand around foe into razor amber-glass spears & a vitrified coffin that shatters with Sand Haze. Scroll: 35% cost & +35% dmg.' },
+    spirit:    { id: 'spirit', lbl: 'SOUL REND', name: 'Soul Manipulation · Astral Bind', prim: '#be185d', glow: '#f9a8d4', cost: 350, speed: 5, power: 5, reachPip: 5, ico: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/><path d="M12 4v16M4 12h16"/></svg>`, bonus: 'Projects an astral spirit double through the target to bind their soul, strip 25% meter & Chi-Lock. Scroll: 35% cost & +35% dmg.' }
   };
   const SCROLL_CATALOG = EL_ORDER.map(id => SUB_BEND_ARTS[id]);
 
@@ -2388,7 +2614,7 @@
       hp: el.hp, maxHp: el.hp, trailHp: el.hp, magic: 55,
       poise: 100, maxPoise: 100,
       customName: '', loadout: null,
-      octopusF: 0, octopusCd: 0, octopusGrabReady: false, octopusGrabCd: 0, octopusSwinging: false, airScooterF: 0, scooterHitCd: 0, fireJetF: 0, seismicWaveF: 0, gauntletsF: 0, frozenPrisonF: 0, irohBeamReady: false, stillF: 0,
+      octopusF: 0, octopusCd: 0, octopusGrabReady: false, octopusGrabCd: 0, octopusSwinging: false, airScooterF: 0, scooterHitCd: 0, fireJetF: 0, seismicWaveF: 0, gauntletsF: 0, frozenPrisonF: 0, irohBeamReady: false, stillF: 0, solarBuffF: 0, thunderBuffF: 0,
       dizzied: false, dizzyF: 0,
       phase2: false, phase2Used: false,
       artIdx: 0, castArtIdx: 0, quickBendDir: 'fwd', bendChargeF: 0, chargingBend: false,
@@ -2412,9 +2638,10 @@
   let p1 = createFighter('p1', 'water');
   let p2 = createFighter('p2', 'fire');
   const match = {
-    mode: 'duel', campaignStageIdx: -1, boss: null, inMenu: true, endlessWave: 0,
+    mode: 'duel', campaignStageIdx: -1, campaignBoutIdx: 0, boss: null, inMenu: true, endlessWave: 0,
     tutorialStep: 0, tutorialDone: false,
     wifiBiome: '', finishTarget: 'p2', wifiRematchP1: false, wifiRematchP2: false,
+    bendingTheft: 0, bendingStolen: false, theftWarn50: false, theftWarn80: false, theftBeamF: 0,
     round: 1, p1W: 0, p2W: 0, toWin: 2, timer: 99, tTick: 0, roundElapsed: 0, paused: false,
     lastSideOrder: 1, crossupTagF: 0,
     screen: 'fighting', intro: 64, over: 0, winner: null,
@@ -2478,9 +2705,9 @@
     f.maxHp = Math.round(f.el.hp * bossHpMult + bonusHp); f.hp = f.maxHp; f.trailHp = f.maxHp;
     f.magic = full ? 55 : Math.min(100, Math.max(55, f.magic * 0.6 + 30));
     const gPoise = getActiveGear(f) === 'sode' ? 25 : (getActiveGear(f) === 'kasa' ? 10 : 0);
-    f.maxPoise = ((match.mode === 'wifi') ? 100 : (100 + (f.id === 'p1' ? PROG.upgrades.body * 8 : (match.boss ? 20 : 0)))) + gPoise;
+    f.maxPoise = ((match.mode === 'wifi') ? 100 : (100 + (f.id === 'p1' ? PROG.upgrades.body * 8 : (match.boss ? (match.boss.isRealmBoss ? 30 : 12) : 0)))) + gPoise;
     f.poise = f.maxPoise;
-    f.octopusF = 0; f.octopusCd = 0; f.octopusGrabReady = false; f.octopusGrabCd = 0; f.octopusSwinging = false; f.airScooterF = 0; f.scooterHitCd = 0; f.fireJetF = 0; f.seismicWaveF = 0; f.gauntletsF = 0; f.frozenPrisonF = 0; f.irohBeamReady = false; f.stillF = 0;
+    f.octopusF = 0; f.octopusCd = 0; f.octopusGrabReady = false; f.octopusGrabCd = 0; f.octopusSwinging = false; f.airScooterF = 0; f.scooterHitCd = 0; f.fireJetF = 0; f.seismicWaveF = 0; f.gauntletsF = 0; f.frozenPrisonF = 0; f.irohBeamReady = false; f.stillF = 0; f.solarBuffF = 0; f.thunderBuffF = 0;
     f.dizzied = false; f.dizzyF = 0;
     if (full) { f.phase2 = false; f.phase2Used = false; }
     f.state = 'idle'; f.sf = 0; f.inv = 0; f.armor = 0; f.stun = 0; f.freezeRec = 0; f.avatarFlash = 0;
@@ -2566,13 +2793,15 @@
     clearMemoryStoryTimer();
     match.mode = opts.mode || (bossStage ? 'campaign' : 'duel');
     match.boss = bossStage;
-    match.campaignStageIdx = bossStage ? bossStage.id : -1;
+    match.campaignStageIdx = bossStage ? (bossStage.stageId ?? bossStage.id) : -1;
+    match.campaignBoutIdx = bossStage && typeof bossStage.boutIdx === 'number' ? bossStage.boutIdx : 5;
     match.tutorialStep = 0; match.tutorialDone = false;
     match.mutator = opts.mutator || null;
     match.dailyTrial = Boolean(opts.dailyTrial);
     match.wifiBiome = opts.wifiBiome || '';
     match.finishTarget = 'p2';
     match.wifiRematchP1 = false; match.wifiRematchP2 = false;
+    match.bendingTheft = 0; match.bendingStolen = false; match.theftWarn50 = false; match.theftWarn80 = false; match.theftBeamF = 0;
     match.mutTimer = 0;
     match.finisherAnim = null;
     match.awakening = null;
@@ -2586,8 +2815,9 @@
     if (bossStage && typeof bossStage.theme === 'number') {
       themeIdx = bossStage.theme;
     }
-    // Campaign Masters fight Best of 5 (3 rounds to win)!
-    match.toWin = opts.toWin || ((opts.mode === 'dojo' || opts.mode === 'tutorial') ? 999 : (bossStage ? 3 : (opts.mode === 'endless' ? 1 : (settings.format === 'bo3' ? 2 : settings.format === 'bo5' ? 3 : 999))));
+    // Tribe Warriors fight Best of 3 (2 rounds); Realm Grandmasters & Shadow Avatar fight Best of 5 (3 rounds)!
+    const defaultCampaignWins = bossStage ? (bossStage.isMinion ? 2 : 3) : 2;
+    match.toWin = opts.toWin || ((opts.mode === 'dojo' || opts.mode === 'tutorial') ? 999 : (bossStage ? defaultCampaignWins : (opts.mode === 'endless' ? 1 : (settings.format === 'bo3' ? 2 : settings.format === 'bo5' ? 3 : 999))));
     match.round = 1; match.p1W = 0; match.p2W = 0; match.winner = null; match.paused = false;
     match.finishHim = false; match.finishF = 0; match.eclipseFinished = false;
     match.stylePts = 0; match.styleRank = ''; match.styleT = 0; match.lastCat = '';
@@ -2611,22 +2841,27 @@
     return campaignElId;
   }
 
-  function startCampaignStage(stageIdx, skipDialogue = false) {
+  function startCampaignStage(stageIdx, boutIdx = null, skipDialogue = false) {
     clearMemoryStoryTimer();
-    const st = CAMPAIGN_STAGES[Math.max(0, Math.min(CAMPAIGN_STAGES.length - 1, stageIdx))];
+    const sIdx = Math.max(0, Math.min(CAMPAIGN_STAGES.length - 1, stageIdx));
+    const prog = getRealmProgress(sIdx);
+    const targetBout = (typeof boutIdx === 'number' && Number.isFinite(boutIdx))
+      ? Math.max(0, Math.min(5, boutIdx))
+      : Math.min(5, prog);
+    const oppSpec = buildStageOpponent(sIdx, targetBout);
     const heroElId = getCampaignPlayerElId();
-    const foeElObj = ELEMENTS[st.el] || ELEMENTS.water;
-    const altFoe = isAltPalettePair(heroElId, st.el) && Boolean(foeElObj.alt);
+    const foeElObj = ELEMENTS[oppSpec.el] || ELEMENTS.water;
+    const altFoe = isAltPalettePair(heroElId, oppSpec.el) && Boolean(foeElObj.alt);
     const foeAccent = altFoe ? foeElObj.alt.glow : foeElObj.glow;
-    if (!skipDialogue && st.preDialogue && st.preDialogue.length) {
-      openStorySequence('dialogue', st.preDialogue.map(d => ({
-        speaker: d.who, text: d.line, art: st.el, heroEl: heroElId, altFoe,
-        gear: st.gear || 'none', biome: st.hazardId, region: st.region, accent: foeAccent
+    if (!skipDialogue && oppSpec.isRealmBoss && oppSpec.preDialogue && oppSpec.preDialogue.length) {
+      openStorySequence('dialogue', oppSpec.preDialogue.map(d => ({
+        speaker: d.who, text: d.line, art: oppSpec.el, heroEl: heroElId, altFoe,
+        gear: oppSpec.gear || 'none', biome: oppSpec.hazardId, region: oppSpec.region, accent: foeAccent
       })), () => {
-        startMatch(heroElId, st.el, st, { mode: 'campaign' });
+        startMatch(heroElId, oppSpec.el, oppSpec, { mode: 'campaign' });
       });
     } else {
-      startMatch(heroElId, st.el, st, { mode: 'campaign' });
+      startMatch(heroElId, oppSpec.el, oppSpec, { mode: 'campaign' });
     }
   }
 
@@ -2644,6 +2879,7 @@
     ];
     bladeClash = null; bladeClashCd = 0;
     hitstop = 0; slowMoFrames = 0; dramaticZoom = 0; ultDimFrames = 0; stormFlashFrames = 0; inkFlashF = 0;
+    match.bendingTheft = 0; match.bendingStolen = false; match.theftWarn50 = false; match.theftWarn80 = false; match.theftBeamF = 0;
     match.finishHim = false; match.finishF = 0; match.eclipseFinished = false; match.finishTarget = 'p2';
     match.finisherAnim = null; match.awakening = null; match.mutTimer = 0;
     match.timer = 99; match.tTick = 0; match.roundElapsed = 0; match.intro = 56; match.over = 0;
@@ -2657,7 +2893,9 @@
     } else if (match.dailyTrial && match.mutator) {
       showBanner(match.round === 1 ? 'DAILY TRIAL · 2× COINS' : `ROUND ${match.round}`, `${match.mutator.name} · VS ${p2.el.fighter}`, match.mutator.col, 52);
     } else if (match.boss) {
-      showBanner(match.round === 1 ? match.boss.title : `ROUND ${match.round}`, `${match.boss.rank} · ${match.boss.region} · FIRST TO ${match.toWin}`, match.boss.isFinal ? '#f472b6' : p2.el.glow, 52);
+      const bTitle = match.round === 1 ? match.boss.title : `ROUND ${match.round}`;
+      const wepLbl = match.boss.isMinion ? ` · ${getWeaponSpec(p2).name.toUpperCase()}` : (match.boss.isFinal ? ' · KILL BEFORE BENDING THEFT!' : ' · REALM GRANDMASTER');
+      showBanner(bTitle, `${match.boss.rank} · ${match.boss.region}${wepLbl}`, match.boss.isFinal ? '#fb7185' : (match.boss.isRealmBoss ? '#fde68a' : p2.el.glow), 56);
     } else if (match.mode === 'dojo') {
       showBanner('DOJO SPARRING', `TRAINING VS ${p2.el.fighter}`, '#7cf0bd', 40);
     } else {
@@ -2695,14 +2933,14 @@
     }
     if (btn === 'block') { f.guardFrame = simFrame; return; }
     if (btn === 'magic') {
-      if (f.magic < 35) {
+      if ((f.id === 'p1' && match.bendingStolen) || f.magic < 35) {
         if (isLocalFighter(f)) { triggerDenyShake(document.getElementById('btn-magic')); sfx.deny(); }
         return;
       }
     }
     if (btn === 'subbend') {
       const need = hasFighterScroll(f, f.el.id) ? 35 : 45;
-      if (f.magic < need) {
+      if ((f.id === 'p1' && match.bendingStolen) || f.magic < need) {
         if (isLocalFighter(f)) { triggerDenyShake(document.getElementById('btn-sub')); sfx.deny(); }
         return;
       }
@@ -3197,7 +3435,7 @@
     }
   }
 
-  // ===== 12 SECRET ATLA SUB-BENDING ARTS (Dedicated SUB Button + Grandmaster Scroll Bonus!) =====
+  // ===== 12 COMPENDIUM ADVANCED SUB-BENDING ARTS (Dedicated SUB Button + Grandmaster Scroll Bonus!) =====
   function spawnSubBend(f, opp) {
     const el = f.el, dir = opp && Math.abs(opp.x - f.x) > 8 ? (opp.x >= f.x ? 1 : -1) : f.facing;
     f.facing = dir;
@@ -3215,6 +3453,7 @@
     pushCallout(tag, art.glow, f.x, f.y - 210);
 
     if (el.id === 'water') {
+      // BLOOD BENDING: Puppet Grip
       const bx = Math.abs(opp.x - f.x) <= 520
         ? opp.x
         : Math.max(ARENA_L + 60, Math.min(ARENA_R - 60, f.x + dir * 460));
@@ -3224,19 +3463,22 @@
         dmg: Math.round(115 * gmMult), age: 0, f: 50, max: 50, grabbed: false, hit: false, ult: false
       });
     } else if (el.id === 'fire') {
+      // PLASMA BENDING: Solar Combustion Beam-Ring
       bendingWaves.push({
         owner: f.id, el, kind: 'sub_combustion', noClash: true,
-        x: f.x + dir * 56, y: f.y - 122, vx: dir * 24.5, dir, w: 94, h: 74,
-        dmg: Math.round(122 * gmMult), age: 0, f: 34, max: 34, hit: false, ult: false
+        x: f.x + dir * 56, y: f.y - 122, vx: dir * 25.5, dir, w: 98, h: 78,
+        dmg: Math.round(124 * gmMult), age: 0, f: 34, max: 34, hit: false, ult: false
       });
     } else if (el.id === 'earth') {
+      // TECTONIC BENDING: Gravity Fault Crack & Seismic Compression
+      const ex = Math.max(ARENA_L + 60, Math.min(ARENA_R - 60, opp.x));
       bendingWaves.push({
-        owner: f.id, el, kind: 'sub_metal_wire', noClash: true,
-        x: f.x + dir * 28, y: f.y - 108, tipX: f.x + dir * 56, tipY: f.y - 108,
-        vx: 0, dir, w: 470, h: 130, phase: 'shoot',
-        dmg: Math.round(86 * gmMult), age: 0, f: 30, max: 30, grabbed: false, hit: false, ult: false
+        owner: f.id, el, kind: 'sub_tectonic', noClash: true,
+        x: ex, y: GROUND_Y, vx: 0, dir, w: 230, h: 180,
+        dmg: Math.round(112 * gmMult), age: 0, f: 34, max: 34, hit: false, ult: false
       });
     } else if (el.id === 'air') {
+      // VACUUM BENDING: Zero-Pressure Sphere
       const vx = Math.max(ARENA_L + 65, Math.min(ARENA_R - 65, opp.x));
       bendingWaves.push({
         owner: f.id, el, kind: 'sub_vacuum', noClash: true,
@@ -3244,79 +3486,91 @@
         dmg: Math.round(110 * gmMult), ticksLeft: 4, hitCd: 0, age: 0, f: 46, max: 46, hit: false, ult: false
       });
     } else if (el.id === 'ice') {
-      for (let k = -3; k <= 3; k++) {
-        const sx = Math.max(ARENA_L + 44, Math.min(ARENA_R - 44, opp.x + k * 56));
-        bendingWaves.push({
-          owner: f.id, el, kind: 'ice_rain', x: sx, y: 140, vx: 0, vy: 20.5, dir,
-          w: 54, h: 112, dmg: Math.round(32 * gmMult), ly: -5.5, low: false,
-          f: 28, max: 28, delay: Math.abs(k) * 3, hit: false, ult: false
-        });
-      }
-      if (FX3D) FX3D.spawnFloorRing(opp.x, '#9ef6ff', 250, 28);
-    } else if (el.id === 'lightning') {
-      stormFlashFrames = 6;
-      for (let k = -1; k <= 1; k++) {
-        const bx = Math.max(ARENA_L + 50, Math.min(ARENA_R - 50, opp.x + k * 92));
-        bendingWaves.push({
-          owner: f.id, el, kind: 'ult_thunder', x: bx, y: GROUND_Y - 220, vx: 0, dir,
-          w: 108, h: 450, dmg: Math.round(62 * gmMult), ly: -10.5, low: false,
-          microStun: true, f: 24 + (k + 1) * 6, max: 24, delay: (k + 1) * 6, hit: false, ult: false
-        });
-      }
-      if (FX3D) FX3D.flashSky('#fde047', 0.42);
-    } else if (el.id === 'shadow') {
-      const bx = Math.max(ARENA_L + 55, Math.min(ARENA_R - 55, opp.x));
+      // THERMAL EXTRACTION: Flash Freeze & Heat Siphon
+      const ix = Math.max(ARENA_L + 58, Math.min(ARENA_R - 58, opp.x));
       bendingWaves.push({
-        owner: f.id, el, kind: 'sub_soul_bind', noClash: true,
-        x: bx, y: GROUND_Y, vx: 0, dir, w: 150, h: 185,
-        dmg: Math.round(90 * gmMult), age: 0, f: 30, max: 30, hit: false, ult: false
+        owner: f.id, el, kind: 'sub_thermal_drain', noClash: true,
+        x: ix, y: opp.y - 96, vx: 0, dir, w: 180, h: 190,
+        dmg: Math.round(98 * gmMult), age: 0, f: 34, max: 34, hit: false, ult: false
+      });
+    } else if (el.id === 'lightning') {
+      // ELECTROMAGNETIC MANIPULATION: Neural EMP Pulse + Twin Arc
+      const lx = Math.max(ARENA_L + 58, Math.min(ARENA_R - 58, opp.x));
+      stormFlashFrames = 6;
+      bendingWaves.push({
+        owner: f.id, el, kind: 'sub_emp_pulse', noClash: true,
+        x: lx, y: opp.y - 98, vx: 0, dir, w: 210, h: 210,
+        dmg: Math.round(108 * gmMult), age: 0, f: 32, max: 32, hit: false, ult: false
+      });
+    } else if (el.id === 'shadow') {
+      // DIMENSIONAL BENDING: Twin Shadow Rift Ambush
+      const bx = Math.max(ARENA_L + 65, Math.min(ARENA_R - 65, opp.x));
+      bendingWaves.push({
+        owner: f.id, el, kind: 'sub_dim_rift', noClash: true,
+        x: bx, y: GROUND_Y - 102, vx: 0, dir, w: 200, h: 190,
+        dmg: Math.round(102 * gmMult), age: 0, f: 34, max: 34, hit: false, ult: false
       });
     } else if (el.id === 'metal') {
+      // METAL TRANSMUTATION: Forged Cage + Converging Steel Swords
       const mx = Math.max(ARENA_L + 55, Math.min(ARENA_R - 55, opp.x));
       bendingWaves.push({
         owner: f.id, el, kind: 'sub_mag_clamp', noClash: true,
-        x: mx, y: opp.y - 96, vx: 0, dir, w: 156, h: 176,
-        dmg: Math.round(108 * gmMult), age: 0, f: 34, max: 34, hit: false, ult: false
+        x: mx, y: opp.y - 96, vx: 0, dir, w: 162, h: 176,
+        dmg: Math.round(104 * gmMult), age: 0, f: 34, max: 34, hit: false, ult: false
+      });
+      bendingWaves.push({
+        owner: f.id, el, kind: 'metal_fan', x: f.x + dir * 64, y: f.y - 116, vx: dir * 23, dir,
+        w: 118, h: 52, dmg: Math.round(38 * gmMult), ly: -5, low: false, guardCrush: true, f: 24, max: 24, delay: 4, hit: false, ult: false
       });
     } else if (el.id === 'nature') {
-      const nx = Math.max(ARENA_L + 55, Math.min(ARENA_R - 55, opp.x));
+      // BIOLOGICAL ADAPTATION: Primal Chimera Spirit-Beast Lunge + Heal
       bendingWaves.push({
-        owner: f.id, el, kind: 'sub_briar_cage', noClash: true,
-        x: nx, y: GROUND_Y, vx: 0, dir, w: 162, h: 196,
-        dmg: Math.round(96 * gmMult), age: 0, f: 38, max: 38, hit: false, ult: false
+        owner: f.id, el, kind: 'sub_chimera_beast', noClash: true,
+        x: f.x + dir * 60, y: GROUND_Y - 68, vx: dir * 20.5, dir, w: 172, h: 130,
+        dmg: Math.round(108 * gmMult), age: 0, f: 32, max: 32, hit: false, ult: false
       });
-      spawnHazard(f, nx, 'briar');
+      spawnHazard(f, Math.max(ARENA_L + 55, Math.min(ARENA_R - 55, opp.x)), 'briar');
     } else if (el.id === 'sand') {
+      // GLASS FORMATION: Vitrified Amber-Glass Spears + Tomb
       const sx = Math.max(ARENA_L + 55, Math.min(ARENA_R - 55, opp.x));
       bendingWaves.push({
         owner: f.id, el, kind: 'sub_sand_coffin', noClash: true,
         x: sx, y: GROUND_Y, vx: 0, dir, w: 156, h: 190,
         dmg: Math.round(114 * gmMult), age: 0, f: 40, max: 40, grabbed: false, hit: false, ult: false
       });
+      bendingWaves.push({
+        owner: f.id, el, kind: 'sand_glass', x: f.x + dir * 62, y: f.y - 118, vx: dir * 22, dir,
+        w: 112, h: 58, dmg: Math.round(34 * gmMult), ly: -5, low: false, f: 24, max: 24, hit: false, ult: false
+      });
       spawnHazard(f, sx, 'sand');
     } else if (el.id === 'spirit') {
+      // SOUL MANIPULATION: Astral Soul Bind & Chi Drain
       const kx = Math.max(ARENA_L + 55, Math.min(ARENA_R - 55, opp.x));
       bendingWaves.push({
         owner: f.id, el, kind: 'sub_spirit_seal', noClash: true,
-        x: kx, y: opp.y - 104, vx: 0, dir, w: 170, h: 175,
-        dmg: Math.round(104 * gmMult), age: 0, f: 34, max: 34, hit: false, ult: false
+        x: kx, y: opp.y - 104, vx: 0, dir, w: 176, h: 180,
+        dmg: Math.round(108 * gmMult), age: 0, f: 34, max: 34, hit: false, ult: false
       });
     } else {
-      // LAVA: Tectonic Caldera Rift (twin erupting geysers + molten pools)
+      // LAVA: Volcanic Eruption & Obsidian Spear Rift
       for (const offset of [-64, 64]) {
         const lx = Math.max(ARENA_L + 52, Math.min(ARENA_R - 52, opp.x + offset));
         bendingWaves.push({
           owner: f.id, el, kind: 'ult_lava', x: lx, y: GROUND_Y, vx: 0, dir,
-          w: 118, h: 255, dmg: Math.round(74 * gmMult), ly: -15.6, low: true,
+          w: 118, h: 255, dmg: Math.round(70 * gmMult), ly: -15.6, low: true,
           launcher: true, f: 30, max: 30, delay: offset > 0 ? 5 : 0, hit: false, ult: false
         });
         spawnHazard(f, lx);
       }
+      bendingWaves.push({
+        owner: f.id, el, kind: 'ult_obsidian_spear', x: f.x + dir * 68, y: f.y - 114, vx: dir * 24, dir,
+        w: 136, h: 48, dmg: Math.round(44 * gmMult), ly: -6.5, low: false, guardCrush: true, f: 24, max: 24, delay: 3, hit: false, ult: false
+      });
       if (FX3D) FX3D.spawnFloorRing(opp.x, '#ff951a', 270, 32);
     }
   }
 
-  // ===== 36 DIFFERENTIATED AVATAR-STATE BENDING ARTS =====
+  // ===== 36 UNIQUE ELEMENTAL AVATAR-STATE ULTIMATE ARTS (ZERO SHARED VORTEX/ARM CLONES!) =====
   function getActiveArtIndex(f, dirOverride) {
     const d = dirOverride || f.dir;
     const r = relDir(f, d);
@@ -3339,61 +3593,182 @@
     dramaticZoom = 0.11;
     showBanner(art.name, el.fighter, pal.glow, 40, true);
     spawnSparks(caster.x, caster.y - 105, pal.primary, pal.core, 2.0, el.id === 'ice' || el.id === 'metal');
+    const tx = Math.max(ARENA_L + 68, Math.min(ARENA_R - 68, target.x));
 
-    // MODE 1: ELEMENT-DIFFERENTIATED VORTEX / TORNADO
-    if (art.mode === 'vortex') {
-      const vSpecs = {
-        water:     { w: 195, h: 375, dmg: 52, hits: 4, ly: -14.2, vx: 2.0, dur: 62 },
-        fire:      { w: 175, h: 390, dmg: 72, hits: 3, ly: -17.5, vx: 3.4, dur: 52 },
-        earth:     { w: 225, h: 340, dmg: 88, hits: 2, ly: -14.8, vx: 1.2, dur: 54 },
-        air:       { w: 215, h: 420, dmg: 44, hits: 5, ly: -18.8, vx: 3.8, dur: 64 },
-        lightning: { w: 165, h: 400, dmg: 58, hits: 4, ly: -12.5, vx: 3.2, dur: 48 },
-        ice:       { w: 200, h: 360, dmg: 64, hits: 3, ly: -11.5, vx: 1.6, dur: 58 },
-        shadow:    { w: 190, h: 380, dmg: 60, hits: 3, ly: -14.5, vx: 2.5, dur: 58 },
-        lava:      { w: 215, h: 370, dmg: 76, hits: 3, ly: -16.5, vx: 1.5, dur: 56 },
-        metal:     { w: 195, h: 365, dmg: 68, hits: 3, ly: -13.5, vx: 2.4, dur: 54 },
-        nature:    { w: 210, h: 380, dmg: 56, hits: 4, ly: -14.6, vx: 2.1, dur: 60 },
-        sand:      { w: 220, h: 395, dmg: 54, hits: 4, ly: -15.4, vx: 3.0, dur: 60 },
-        spirit:    { w: 185, h: 410, dmg: 60, hits: 4, ly: -16.2, vx: 2.8, dur: 56 }
-      }[el.id] || { w: 195, h: 375, dmg: 60, hits: 3, ly: -14.5, vx: 2.2, dur: 56 };
-      const vxX = Math.max(ARENA_L + 70, Math.min(ARENA_R - 70, target.x));
-      bendingWaves.push({
-        owner: caster.id, el, kind: 'ult_vortex', artName: art.name,
-        x: vxX, y: GROUND_Y, vx: dir * vSpecs.vx, dir, w: vSpecs.w, h: vSpecs.h,
-        dmg: vSpecs.dmg, ly: vSpecs.ly, low: false, f: vSpecs.dur, max: vSpecs.dur,
-        hitsLeft: vSpecs.hits, hitCd: 0, hit: false, ult: true, launcher: true
-      });
-      if (el.id === 'lava') spawnHazard(caster, vxX);
-      if (el.id === 'nature') spawnHazard(caster, vxX, 'briar');
-      if (el.id === 'sand') spawnHazard(caster, vxX, 'sand');
-      spawnDust(vxX, GROUND_Y, 0, 16, pal.glow);
+    // ===== 24 BESPOKE ELEMENT-SPECIFIC ULTIMATE MODES =====
+    if (art.mode === 'water_jet') {
+      // WATER: High-Pressure Razor Hydro Jet Cannon slicing the arena (3-hit piercing beam!)
+      bendingWaves.push({ owner: caster.id, el, kind: 'ult_hydro_beam', noClash: true, x: caster.x + dir * 210, y: caster.y - 112, vx: dir * 6, dir, w: 420, h: 108, dmg: 64, ly: -10.5, low: false, guardCrush: true, multiHits: 3, hitCd: 0, f: 34, max: 34, hit: false, ult: true });
+      if (FX3D) FX3D.spawnFloorRing(caster.x + dir * 120, pal.glow, 280, 30);
       return;
     }
-
-    // MODE 2: ELEMENT-DIFFERENTIATED ARM / WHIP GRAB & SLAM
-    if (art.mode === 'arm_swing') {
-      const aSpecs = {
-        water:     { reach: 450, dmg: 162, ly: -12.5, swingDur: 22 },
-        fire:      { reach: 420, dmg: 178, ly: -14.5, swingDur: 19 },
-        earth:     { reach: 380, dmg: 198, ly: -11.5, swingDur: 24 },
-        air:       { reach: 470, dmg: 156, ly: -17.0, swingDur: 18 },
-        lightning: { reach: 490, dmg: 168, ly: -11.5, swingDur: 16 },
-        ice:       { reach: 440, dmg: 172, ly: -12.0, swingDur: 21 },
-        shadow:    { reach: 460, dmg: 166, ly: -13.0, swingDur: 20 },
-        lava:      { reach: 410, dmg: 188, ly: -13.5, swingDur: 23 },
-        metal:     { reach: 475, dmg: 182, ly: -12.0, swingDur: 18 },
-        nature:    { reach: 465, dmg: 168, ly: -13.8, swingDur: 20 },
-        sand:      { reach: 445, dmg: 174, ly: -13.2, swingDur: 20 },
-        spirit:    { reach: 485, dmg: 170, ly: -15.2, swingDur: 17 }
-      }[el.id] || { reach: 440, dmg: 170, ly: -13.0, swingDur: 20 };
-      bendingWaves.push({
-        owner: caster.id, el, kind: 'ult_arm_swing', artName: art.name,
-        x: caster.x + dir * 40, y: caster.y - 118, vx: 0, dir,
-        w: aSpecs.reach, h: 170, dmg: aSpecs.dmg, ly: aSpecs.ly, low: false,
-        f: 44, max: 44, age: 0, phase: 'reach', swingF: 0, swingDur: aSpecs.swingDur,
-        tipX: caster.x + dir * 48, tipY: caster.y - 118,
-        grabStartDist: 180, grabbed: false, hit: false, ult: true
+    if (art.mode === 'water_whirlpool') {
+      // WATER: Abyssal Maelstrom horizontal sea-vortex dragging target inward before tidal eruption!
+      bendingWaves.push({ owner: caster.id, el, kind: 'ult_whirlpool', noClash: true, x: tx, y: GROUND_Y, vx: 0, dir, w: 265, h: 215, dmg: 52, ly: -15.5, low: true, hitsLeft: 4, hitCd: 0, age: 0, f: 56, max: 56, hit: false, ult: true });
+      if (FX3D) FX3D.spawnFloorRing(tx, pal.glow, 290, 38);
+      return;
+    }
+    if (art.mode === 'fire_solar') {
+      // FIRE: Solar Incarnation Nova — ignites caster (+25% dmg for 5s) + detonates expanding Sun Nova!
+      caster.solarBuffF = 300;
+      bendingWaves.push({ owner: caster.id, el, kind: 'ult_solar_nova', noClash: true, x: caster.x, y: caster.y - 104, vx: 0, dir, w: 420, h: 340, dmg: 182, ly: -14.5, low: false, guardCrush: true, heavyHit: true, age: 0, f: 36, max: 36, hit: false, ult: true });
+      if (FX3D) { FX3D.spawnFloorRing(caster.x, '#ffe066', 360, 36); FX3D.flashSky('#ff6a14', 0.55); }
+      return;
+    }
+    if (art.mode === 'fire_meteors') {
+      // FIRE: Compressed Flare Meteors — 5 angled fire meteors raining across target's zone!
+      for (let k = 0; k < 5; k++) {
+        const mx = Math.max(ARENA_L + 45, Math.min(ARENA_R - 45, tx + (k - 2) * 86 - dir * 90));
+        bendingWaves.push({ owner: caster.id, el, kind: 'ult_meteor', x: mx, y: 70, vx: dir * 6.5, vy: 19.5, dir, w: 96, h: 96, dmg: 64, ly: -11.5, low: false, guardCrush: true, f: 34, max: 34, delay: k * 5, hit: false, ult: true });
+      }
+      if (FX3D) FX3D.flashSky('#ff4514', 0.45);
+      return;
+    }
+    if (art.mode === 'ice_domain') {
+      // ICE: Absolute Winter Domain — sweeps flash-freeze glacial domain across the floor!
+      bendingWaves.push({ owner: caster.id, el, kind: 'ult_ice_domain', noClash: true, x: tx, y: GROUND_Y, vx: 0, dir, w: 380, h: 240, dmg: 148, ly: -9.5, low: true, freezePrison: true, guardCrush: true, age: 0, f: 42, max: 42, hit: false, ult: true });
+      spawnHazard(caster, Math.max(ARENA_L + 70, tx - 90), 'ice');
+      spawnHazard(caster, Math.min(ARENA_R - 70, tx + 90), 'ice');
+      if (FX3D) { FX3D.spawnFloorRing(tx, '#9ef6ff', 360, 38); FX3D.flashSky('#78eeff', 0.52); }
+      return;
+    }
+    if (art.mode === 'ice_prism') {
+      // ICE: Mirror Ice Prism — twin flanking crystal prisms firing converging refracted frost rays!
+      const lx = Math.max(ARENA_L + 44, tx - 175), rx = Math.min(ARENA_R - 44, tx + 175);
+      bendingWaves.push({ owner: caster.id, el, kind: 'ult_prism_beam', x: lx, y: GROUND_Y - 122, vx: 18, dir: 1, w: 185, h: 78, dmg: 96, ly: -10.5, low: false, guardCrush: true, f: 28, max: 28, hit: false, ult: true });
+      bendingWaves.push({ owner: caster.id, el, kind: 'ult_prism_beam', x: rx, y: GROUND_Y - 122, vx: -18, dir: -1, w: 185, h: 78, dmg: 96, ly: -10.5, low: false, guardCrush: true, f: 28, max: 28, delay: 4, hit: false, ult: true });
+      return;
+    }
+    if (art.mode === 'earth_monolith') {
+      // EARTH: Seismic Monolith Drop — colossal jagged meteor boulder crashing down from the heavens!
+      bendingWaves.push({ owner: caster.id, el, kind: 'ult_monolith_drop', noClash: true, x: tx, y: 60, vx: 0, vy: 22.5, dir, w: 225, h: 210, dmg: 196, ly: -14.8, low: false, guardCrush: true, heavyHit: true, f: 34, max: 34, hit: false, ult: true });
+      if (FX3D) FX3D.spawnFloorRing(tx, '#f5d061', 310, 34);
+      return;
+    }
+    if (art.mode === 'earth_crystals') {
+      // EARTH: Crystal Spire Clamp — twin diagonal golden-jade crystal jaws bursting around target!
+      bendingWaves.push({ owner: caster.id, el, kind: 'ult_crystal_clamp', noClash: true, x: tx, y: GROUND_Y, vx: 0, dir, w: 250, h: 250, dmg: 174, ly: -15.2, low: true, launcher: true, guardCrush: true, age: 0, f: 36, max: 36, hit: false, ult: true });
+      return;
+    }
+    if (art.mode === 'air_sonic') {
+      // AIR: Sonic Pressure Wave — 3 hypersonic expanding acoustic rings blasting across the arena!
+      for (let k = 0; k < 3; k++) {
+        bendingWaves.push({ owner: caster.id, el, kind: 'ult_sonic_ring', x: caster.x + dir * (78 + k * 22), y: caster.y - 110, vx: dir * (22 + k * 2.5), dir, w: 150, h: 250, dmg: 70, ly: -11.5, low: false, guardCrush: true, f: 34, max: 34, delay: k * 6, hit: false, ult: true });
+      }
+      return;
+    }
+    if (art.mode === 'air_dive') {
+      // AIR: Valkyrie Sky Dive — caster rockets skyward and dives diagonally down onto opponent!
+      caster.inv = Math.max(caster.inv, 20);
+      caster.x = Math.max(ARENA_L + 48, Math.min(ARENA_R - 48, tx - dir * 56));
+      caster.y = GROUND_Y - 140; caster.vy = 14.5; caster.vx = dir * 8.5; caster.afterTimer = 24;
+      bendingWaves.push({ owner: caster.id, el, kind: 'ult_sky_dive', noClash: true, x: tx, y: GROUND_Y, vx: 0, dir, w: 270, h: 245, dmg: 176, ly: -17.5, low: false, launcher: true, guardCrush: true, age: 0, f: 32, max: 32, delay: 4, hit: false, ult: true });
+      if (FX3D) FX3D.spawnFloorRing(tx, '#5effc8', 320, 32);
+      return;
+    }
+    if (art.mode === 'lightning_god') {
+      // LIGHTNING: Thunder God Overdrive — +22% speed buff for 5s, thunder-blinks beside foe & calls down Judgment!
+      caster.thunderBuffF = 300; stormFlashFrames = 10;
+      caster.x = Math.max(ARENA_L + 45, Math.min(ARENA_R - 45, tx - dir * 92));
+      caster.facing = target.x >= caster.x ? 1 : -1; caster.inv = Math.max(caster.inv, 18); caster.afterTimer = 26;
+      bendingWaves.push({ owner: caster.id, el, kind: 'ult_thunder', noClash: true, x: tx, y: GROUND_Y - 220, vx: 0, dir: caster.facing, w: 185, h: 480, dmg: 176, ly: -13.5, low: false, microStun: true, guardCrush: true, f: 34, max: 34, hit: false, ult: true });
+      if (FX3D) { FX3D.spawnFloorRing(tx, '#ffe066', 320, 34); FX3D.flashSky('#ffe066', 0.62); }
+      return;
+    }
+    if (art.mode === 'lightning_railgun') {
+      // LIGHTNING: Electromagnetic Railgun — instant hypersonic railgun beam spanning the arena!
+      stormFlashFrames = 8;
+      bendingWaves.push({ owner: caster.id, el, kind: 'ult_railgun', noClash: true, x: caster.x + dir * 240, y: caster.y - 114, vx: dir * 10, dir, w: 480, h: 98, dmg: 184, ly: -10.5, low: false, microStun: true, guardCrush: true, heavyHit: true, f: 28, max: 28, hit: false, ult: true });
+      if (FX3D) FX3D.flashSky('#78e2ff', 0.56);
+      return;
+    }
+    if (art.mode === 'shadow_legion') {
+      // SHADOW: Eternal Night Legion — summons 3 attacking Shadow Clones flanking both sides + void shockwave!
+      const wType = getWeaponSpec(caster).wType, gear = getActiveGear(caster);
+      [-155, 155, -dir * 85].forEach((off, idx) => {
+        const cx = Math.max(ARENA_L + 36, Math.min(ARENA_R - 36, tx + off));
+        decoyClones.push({ owner: caster.id, x: cx, y: GROUND_Y, facing: tx >= cx ? 1 : -1, vx: (tx >= cx ? 1 : -1) * 11.5, f: 88 + idx * 10, max: 98, swung: false, swingF: 0, el: ELEMENTS.shadow, wType, gear });
       });
+      bendingWaves.push({ owner: caster.id, el, kind: 'ult_shadow', noClash: true, x: tx, y: GROUND_Y, vx: 0, dir, w: 170, h: 270, dmg: 92, ly: -13.0, low: true, f: 34, max: 34, hit: false, ult: true });
+      return;
+    }
+    if (art.mode === 'shadow_rift') {
+      // SHADOW: Dimensional Rift Drop — caster warps into an overhead void portal and slams down!
+      caster.inv = Math.max(caster.inv, 22);
+      caster.x = Math.max(ARENA_L + 44, Math.min(ARENA_R - 44, tx));
+      caster.y = GROUND_Y - 150; caster.vy = 16.5; caster.vx = 0; caster.afterTimer = 26;
+      bendingWaves.push({ owner: caster.id, el, kind: 'ult_rift_drop', noClash: true, x: tx, y: GROUND_Y, vx: 0, dir, w: 250, h: 290, dmg: 182, ly: -14.5, low: false, guardCrush: true, heavyHit: true, age: 0, f: 34, max: 34, delay: 4, hit: false, ult: true });
+      if (FX3D) { FX3D.spawnFloorRing(tx, '#b49cff', 330, 36); FX3D.flashSky('#4c1d95', 0.55); }
+      return;
+    }
+    if (art.mode === 'lava_titan') {
+      // LAVA: Volcanic Titan Fist — colossal molten stone fist erupting from magma floor!
+      bendingWaves.push({ owner: caster.id, el, kind: 'ult_titan_fist', noClash: true, x: tx, y: GROUND_Y, vx: 0, dir, w: 220, h: 320, dmg: 192, ly: -17.5, low: true, launcher: true, guardCrush: true, heavyHit: true, age: 0, f: 38, max: 38, hit: false, ult: true });
+      spawnHazard(caster, Math.max(ARENA_L + 60, tx - 70));
+      spawnHazard(caster, Math.min(ARENA_R - 60, tx + 70));
+      return;
+    }
+    if (art.mode === 'lava_obsidian') {
+      // LAVA: Obsidian Spear Storm — 5 jagged glowing volcanic spears streaking at high velocity!
+      for (let k = 0; k < 5; k++) {
+        bendingWaves.push({ owner: caster.id, el, kind: 'ult_obsidian_spear', x: caster.x + dir * (65 + k * 18), y: caster.y - 165 + k * 28, vx: dir * (23 + k * 1.4), dir, w: 146, h: 52, dmg: 54, ly: -9.5, low: k === 4, guardCrush: true, f: 36, max: 36, delay: k * 3, hit: false, ult: true });
+      }
+      return;
+    }
+    if (art.mode === 'metal_dominion') {
+      // METAL: Iron Dominion Crush — twin massive forged steel walls slamming shut on the target!
+      bendingWaves.push({ owner: caster.id, el, kind: 'ult_iron_crush', noClash: true, x: tx, y: GROUND_Y, vx: 0, dir, w: 260, h: 260, dmg: 188, ly: -11.5, low: false, guardCrush: true, heavyHit: true, age: 0, f: 38, max: 38, hit: false, ult: true });
+      if (FX3D) FX3D.spawnFloorRing(tx, '#e2e8f0', 310, 34);
+      return;
+    }
+    if (art.mode === 'metal_mercury') {
+      // METAL: Liquid Mercury Surge — flowing silver mercury wave racing across the floor & spiking upward!
+      bendingWaves.push({ owner: caster.id, el, kind: 'ult_mercury_surge', x: caster.x + dir * 70, y: GROUND_Y - 58, vx: dir * 16.5, dir, w: 235, h: 175, dmg: 68, ly: -12.5, low: true, guardCrush: true, multiHits: 3, hitCd: 0, f: 46, max: 46, hit: false, ult: true });
+      return;
+    }
+    if (art.mode === 'nature_beast') {
+      // NATURE: World Beast Stampede — colossal emerald spirit-beast trampling across the entire arena + heal!
+      caster.hp = Math.min(caster.maxHp, caster.hp + Math.round(caster.maxHp * 0.12)); caster.trailHp = caster.hp;
+      bendingWaves.push({ owner: caster.id, el, kind: 'ult_world_beast', noClash: true, x: caster.x + dir * 85, y: GROUND_Y - 96, vx: dir * 18.5, dir, w: 255, h: 196, dmg: 178, ly: -15.5, low: false, launcher: true, guardCrush: true, lifeDrain: true, f: 48, max: 48, hit: false, ult: true });
+      return;
+    }
+    if (art.mode === 'nature_spores') {
+      // NATURE: Toxic Spore Canopy — huge overhead emerald bloom raining toxic multi-hit spores!
+      bendingWaves.push({ owner: caster.id, el, kind: 'ult_spore_canopy', noClash: true, x: tx, y: GROUND_Y, vx: 0, dir, w: 280, h: 270, dmg: 48, ly: -10.5, low: false, hitsLeft: 4, hitCd: 0, lifeDrain: true, age: 0, f: 56, max: 56, hit: false, ult: true });
+      spawnHazard(caster, tx, 'briar');
+      return;
+    }
+    if (art.mode === 'sand_pyramid') {
+      // SAND: Sandstone Pyramid Tomb — raises colossal golden pyramid over target that detonates!
+      bendingWaves.push({ owner: caster.id, el, kind: 'ult_pyramid_tomb', noClash: true, x: tx, y: GROUND_Y, vx: 0, dir, w: 250, h: 275, dmg: 184, ly: -15.5, low: true, guardCrush: true, heavyHit: true, age: 0, f: 44, max: 44, hit: false, ult: true });
+      spawnHazard(caster, tx, 'sand');
+      return;
+    }
+    if (art.mode === 'sand_legion') {
+      // SAND: Mirage Clone Assault — twin flanking Golden Sand Mirage clones + amber glass barrage!
+      const wType = getWeaponSpec(caster).wType, gear = getActiveGear(caster);
+      [-140, 140].forEach(off => {
+        const cx = Math.max(ARENA_L + 36, Math.min(ARENA_R - 36, tx + off));
+        decoyClones.push({ owner: caster.id, x: cx, y: GROUND_Y, facing: tx >= cx ? 1 : -1, vx: (tx >= cx ? 1 : -1) * 11.2, f: 88, max: 88, swung: false, swingF: 0, el: ELEMENTS.sand, wType, gear });
+      });
+      for (let k = 0; k < 3; k++) {
+        bendingWaves.push({ owner: caster.id, el, kind: 'sand_glass', x: caster.x + dir * (66 + k * 20), y: caster.y - 140 + k * 26, vx: dir * (21 + k), dir, w: 128, h: 64, dmg: 52, ly: -8.5, low: false, f: 34, max: 34, delay: k * 4, hit: false, ult: true });
+      }
+      return;
+    }
+    if (art.mode === 'spirit_ascension') {
+      // SPIRIT: Celestial Ascension — caster levitates, heals +12% HP, and launches 4 homing celestial orbs!
+      caster.hp = Math.min(caster.maxHp, caster.hp + Math.round(caster.maxHp * 0.12)); caster.trailHp = caster.hp;
+      caster.y = Math.max(GROUND_Y - 95, caster.y - 75); caster.vy = -4.5; caster.inv = Math.max(caster.inv, 20);
+      for (let k = 0; k < 4; k++) {
+        bendingWaves.push({ owner: caster.id, el, kind: 'ult_celestial_orb', x: caster.x + dir * 48, y: caster.y - 165 + k * 34, vx: dir * 16.5, vy: 0, dir, w: 94, h: 94, dmg: 54, ly: -10.5, low: false, guardCrush: true, f: 48, max: 48, delay: k * 5, hit: false, ult: true });
+      }
+      return;
+    }
+    if (art.mode === 'spirit_mandala') {
+      // SPIRIT: Soul Mandala Pillar — colossal rotating sacred lotus dropping a beam of astral light (-35% meter + Chi Lock)!
+      bendingWaves.push({ owner: caster.id, el, kind: 'ult_mandala', noClash: true, x: tx, y: GROUND_Y, vx: 0, dir, w: 240, h: 420, dmg: 176, ly: -13.5, low: false, guardCrush: true, age: 0, f: 42, max: 42, hit: false, ult: true });
+      if (FX3D) { FX3D.spawnFloorRing(tx, '#f9a8d4', 340, 38); FX3D.flashSky('#db2777', 0.52); }
       return;
     }
 
@@ -3580,6 +3955,14 @@
     }
     if (f.seismicWaveF > 0) f.seismicWaveF--;
     if (f.frozenPrisonF > 0) f.frozenPrisonF--;
+    if (f.solarBuffF > 0) {
+      f.solarBuffF--;
+      if (settings.vfx !== 'low' && f.solarBuffF % 5 === 0) pushParticle({ x: f.x + (Math.random() - 0.5) * 44, y: f.y - 40 - Math.random() * 110, vx: (Math.random() - 0.5) * 2, vy: -2.5, sz: 4.2, c: '#ffe066', age: 0, max: 16, g: -0.04, t: 'spark' });
+    }
+    if (f.thunderBuffF > 0) {
+      f.thunderBuffF--;
+      if (settings.vfx !== 'low' && f.thunderBuffF % 5 === 0) pushParticle({ x: f.x + (Math.random() - 0.5) * 44, y: f.y - 40 - Math.random() * 110, vx: (Math.random() - 0.5) * 3.5, vy: -1.5, sz: 3.8, c: '#78e2ff', age: 0, max: 12, g: 0, t: 'spark' });
+    }
     if (f.fireStreakT > 0 && --f.fireStreakT === 0) f.fireStreak = 0;
     if (f.multiHitCd > 0) f.multiHitCd--;
 
@@ -3618,7 +4001,12 @@
     f.desperate = f.hp > 0 && f.hp / f.maxHp < 0.2;
     const styleFlow = (match.mode !== 'wifi' && f.id === 'p1' && match.styleRank) ? (1 + ({ D: 0.04, C: 0.08, B: 0.14, A: 0.22, S: 0.30, AVATAR: 0.42 }[match.styleRank] || 0)) : 1;
     const mutMagMult = (match.mutator && match.mutator.id === 'supremacy') ? 3.0 : 1.0;
-    if (canCtrl && f.hp > 0 && !f.statuses.chilock) f.magic = Math.min(100, f.magic + 0.095 * mutMagMult * fighterFlowMult(f) * styleFlow);
+    const p1BendingSealed = f.id === 'p1' && Boolean(match.bendingStolen);
+    if (p1BendingSealed) {
+      f.magic = 0;
+    } else if (canCtrl && f.hp > 0 && !f.statuses.chilock) {
+      f.magic = Math.min(100, f.magic + 0.095 * mutMagMult * fighterFlowMult(f) * styleFlow);
+    }
 
     const isIceFloor = Boolean(match.boss && match.boss.hazardId === 'glacier_floor') || hazards.some(h => h.kind === 'ice' && Math.abs(f.x - h.x) < h.hw);
     const isTailwind = Boolean(match.boss && match.boss.hazardId === 'gale_tailwind' && (simFrame % 240 < 90));
@@ -3674,6 +4062,10 @@
 
     // Helper: Execute 35% Avatar Signature Bend OR 100% Avatar Ultimate!
     const triggerBend = (mb) => {
+      if (p1BendingSealed) {
+        if (isLocalFighter(f)) { triggerDenyShake(document.getElementById('btn-magic')); sfx.deny(); pushCallout('BENDING STOLEN!', '#ff4d6d', f.x, f.y - 190); }
+        return false;
+      }
       if (f.magic >= 100) {
         f.magic = 0;
         const rAct = relDir(f, mb.dir);
@@ -3691,8 +4083,12 @@
       return false;
     };
 
-    // Helper: Execute Secret ATLA Sub-Bending Art (45% meter, or 35% + 35% power with Grandmaster Scroll!)
+    // Helper: Execute Compendium Advanced Sub-Bending Art (45% meter, or 35% + 35% power with Grandmaster Scroll!)
     const triggerSubBend = () => {
+      if (p1BendingSealed) {
+        if (isLocalFighter(f)) { triggerDenyShake(document.getElementById('btn-sub')); sfx.deny(); pushCallout('BENDING STOLEN!', '#ff4d6d', f.x, f.y - 190); }
+        return false;
+      }
       const cost = hasFighterScroll(f, f.el.id) ? 35 : 45;
       if (f.magic >= cost) {
         f.magic = Math.max(0, f.magic - cost);
@@ -4219,6 +4615,8 @@
     let mult = atk.id === 'p1' ? p1DmgMult() : (match.boss ? (match.boss.dmgMult || 1) : 1);
     if (match.mutator && match.mutator.id === 'supremacy' && !isProj) mult *= 0.50;
     if (atk.phase2) mult *= 1.12;
+    if (atk.solarBuffF > 0) mult *= 1.25;
+    if (match.bendingStolen && atk.id === 'p2') mult *= 1.12;
     if (def.id === 'p2' && match.boss && match.boss.defMult) mult /= match.boss.defMult;
     let crit = m.crit;
     if (isProj && m.crit) mult *= fighterFlowMult(atk);
@@ -4414,8 +4812,16 @@
     def.hp = Math.max(0, nextHp); def.flash = 7; def.guardWear = 0;
     const saiBonus = (m.wep && wSpec.perk === 'sai_flow') ? 7 : 0;
     const fireFlow = atk.el.id === 'fire' && atk.fireStreak >= 2 ? 1.15 : 1.0;
-    if (!atk.statuses.chilock) atk.magic = Math.min(100, atk.magic + (m.mg + saiBonus) * fireFlow * fighterFlowMult(atk));
-    if (!def.statuses.chilock) def.magic = Math.min(100, def.magic + Math.round(m.mg * 0.72 * fighterFlowMult(def)));
+    if (!atk.statuses.chilock && !(atk.id === 'p1' && match.bendingStolen)) atk.magic = Math.min(100, atk.magic + (m.mg + saiBonus) * fireFlow * fighterFlowMult(atk));
+    if (!def.statuses.chilock && !(def.id === 'p1' && match.bendingStolen)) def.magic = Math.min(100, def.magic + Math.round(m.mg * 0.72 * fighterFlowMult(def)));
+    // Shadow Avatar Boss: Bending-Theft bar speeds up when Shadow Avatar lands hits, pushed back when player pressures him!
+    if (match.boss && match.boss.isFinal && !match.boss.isMinion && !match.bendingStolen) {
+      if (atk.id === 'p2') {
+        match.bendingTheft = Math.min(100, match.bendingTheft + (isProj ? 5.5 : 3.2));
+      } else if (atk.id === 'p1') {
+        match.bendingTheft = Math.max(0, match.bendingTheft - (isProj ? 3.2 : (isHeavyStrike ? 2.6 : 1.0)));
+      }
+    }
     if (m.wep && wSpec.perk === 'sickle_drain') {
       const drained = Math.min(14, def.magic);
       def.magic -= drained; if (!atk.statuses.chilock) atk.magic = Math.min(100, atk.magic + drained);
@@ -4507,12 +4913,13 @@
     if (heavy) spawnDust(def.x, GROUND_Y, atk.facing, 10, atkPal.glow);
   }
 
-  // ===== CAMPAIGN BOSS RULES, PHASE-2 AWAKENING & UNIQUE ARENA HAZARDS =====
+  // ===== CAMPAIGN BOSS RULES, PHASE-2 AWAKENING, BENDING-THEFT SIPHON & UNIQUE ARENA HAZARDS =====
   function tickBossRules(canFight) {
+    if (match.theftBeamF > 0) match.theftBeamF--;
     if (!canFight || !match.boss || p2.state === 'ko' || p2.state === 'victory') return;
     p2.bossTimer++;
-    // Boss Phase-2 Awakening ("Eclipse Surge") below 45% HP in Round 2+ / decisive rounds!
-    if (!p2.phase2Used && p2.hp > 0 && p2.hp / p2.maxHp < 0.45 && (match.round >= 2 || match.p1W >= 2)) {
+    // Realm Grandmaster & Shadow Avatar Phase-2 Awakening ("Eclipse Surge") below 45% HP!
+    if (!match.boss.isMinion && !p2.phase2Used && p2.hp > 0 && p2.hp / p2.maxHp < 0.45 && (match.round >= 2 || match.p1W >= 2)) {
       p2.phase2 = true; p2.phase2Used = true; p2.inv = 28; p2.avatarFlash = 44;
       p2.poise = p2.maxPoise; p2.magic = Math.min(100, p2.magic + 50);
       p1.vx = (p1.x >= p2.x ? 1 : -1) * 18;
@@ -4527,6 +4934,40 @@
       spawnSparks(p2.x, p2.y - 110, p2.el.glow, '#fde047', 2.6);
       if (FX3D) { FX3D.spawnFloorRing(p2.x, p2.el.glow, 260, 32); FX3D.flashSky(p2.el.glow, 0.45); }
     }
+
+    // THE SHADOW AVATAR — BENDING-THEFT SIPHON GAUGE (Kill him before the bar hits 100%!)
+    if (match.boss.isFinal && !match.boss.isMinion && !match.bendingStolen && p1.hp > 0) {
+      const rate = p2.phase2 ? 0.052 : 0.041;
+      match.bendingTheft = Math.min(100, match.bendingTheft + rate);
+      if (match.bendingTheft >= 50 && !match.theftWarn50) {
+        match.theftWarn50 = true;
+        pushCallout('BENDING SIPHON 50%!', '#ff6b8b', p2.x, p2.y - 220);
+      }
+      if (match.bendingTheft >= 80 && !match.theftWarn80) {
+        match.theftWarn80 = true;
+        sfx.gong();
+        pushCallout('STOP HIM · SIPHON 80%!', '#ff385c', p2.x, p2.y - 228);
+      }
+      if (match.bendingTheft >= 100) {
+        match.bendingTheft = 100;
+        match.bendingStolen = true;
+        match.theftBeamF = 44;
+        p1.magic = 0; p1.octopusF = 0; p1.airScooterF = 0; p1.fireJetF = 0; p1.gauntletsF = 0;
+        p2.magic = 100; p2.avatarFlash = 48;
+        slowMoFrames = 16; dramaticZoom = 0.16; inkFlashF = Math.max(inkFlashF, 6);
+        shake = Math.max(shake, 22 * settings.feedback);
+        sfx.awakening(); sfx.gong(); haptic('heavy');
+        spawnSparks(p1.x, p1.y - 110, '#dc2626', '#ffffff', 2.6);
+        spawnSparks(p2.x, p2.y - 110, '#ff4d6d', '#fde047', 2.8);
+        if (FX3D) {
+          FX3D.flashSky('#dc2626', 0.65);
+          FX3D.spawnFloorRing(p2.x, '#ef4444', 340, 38);
+          FX3D.spawnFloorRing(p1.x, '#991b1b', 240, 28);
+        }
+        showBanner('BENDING STOLEN!', 'THE SHADOW AVATAR SEALED YOUR BENDING · FINISH HIM WITH STEEL!', '#ff4d6d', 74, true);
+      }
+    }
+
     const rule = match.boss.ruleId;
     const hazard = match.boss.hazardId;
     const dist = Math.abs(p1.x - p2.x);
@@ -4849,7 +5290,10 @@
     'earth_spike', 'ice_spike', 'metal_spike', 'vine_spike',
     'sand_pillar', 'spirit_seal', 'ult_earth_pillar', 'ult_lava',
     'lava_pillar', 'ult_glacier', 'ult_shadow', 'ult_briar',
-    'sub_sand_coffin', 'sub_soul_bind', 'sub_briar_cage'
+    'sub_sand_coffin', 'sub_soul_bind', 'sub_briar_cage', 'sub_tectonic',
+    'ult_whirlpool', 'ult_ice_domain', 'ult_crystal_clamp', 'ult_sky_dive',
+    'ult_rift_drop', 'ult_titan_fist', 'ult_iron_crush', 'ult_spore_canopy',
+    'ult_pyramid_tomb', 'ult_mandala'
   ]);
   function getWaveBox(b) {
     if (b.kind === 'ult_vortex') return { x: b.x - b.w * 0.5, y: GROUND_Y - b.h, w: b.w, h: b.h };
@@ -5693,6 +6137,109 @@
         continue;
       }
 
+      if (b.kind === 'sub_tectonic') {
+        b.age++; b.f--;
+        if (b.age < 7) b.x += (d.x - b.x) * 0.25;
+        if (b.age === 7 && canFight && d.inv <= 0 && d.state !== 'ko' && d.state !== 'grabbed' && Math.abs(d.x - b.x) < 168) {
+          d.y = GROUND_Y; d.vy = 0; d.poise = Math.max(0, d.poise - 50);
+          sfx.slam(); shake = Math.max(shake, 20 * settings.feedback);
+          spawnDust(d.x, GROUND_Y, 0, 22, '#f5d061');
+          spawnSparks(d.x, GROUND_Y - 50, '#e8b038', '#fff4cc', 2.2, true);
+          if (FX3D) { FX3D.spawnFloorRing(d.x, '#f5d061', 280, 32); FX3D.spawnBurst(d.x, GROUND_Y - 40, '#e8b038', 22, true); }
+          pushCallout('TECTONIC FAULT!', '#f5d061', d.x, GROUND_Y - 210);
+          resolveHit(a, d, {
+            dmg: b.dmg, chip: 24, hs: 34, bs: 18, stop: 6,
+            kb: 6.5, ly: -13.5, kd: true, crit: true, guardCrush: true, heavyHit: true, rootF: 36, h: 'low', elStatus: true, mg: 0
+          }, d.x, GROUND_Y - 60, true);
+          if (match.finisherAnim) break;
+        }
+        if (b.f <= 0 && bendingWaves[i] === b) bendingWaves.splice(i, 1);
+        continue;
+      }
+
+      if (b.kind === 'sub_thermal_drain') {
+        b.age++; b.f--;
+        if (b.age < 7) { b.x += (d.x - b.x) * 0.32; b.y = d.y - 96; }
+        if (b.age === 7 && canFight && d.inv <= 0 && d.state !== 'ko' && d.state !== 'grabbed' && Math.abs(d.x - b.x) < 156) {
+          if (!a.statuses.chilock && !(a.id === 'p1' && match.bendingStolen)) a.magic = Math.min(100, a.magic + 15);
+          sfx.crystalShatter();
+          spawnSparks(d.x, d.y - 96, '#78eeff', '#ffffff', 2.4, true);
+          if (FX3D) { FX3D.spawnFloorRing(d.x, '#9ef6ff', 260, 30); FX3D.flashSky('#78eeff', 0.35); }
+          pushCallout('THERMAL EXTRACTION!', '#9ef6ff', d.x, d.y - 212);
+          resolveHit(a, d, {
+            dmg: b.dmg, chip: 18, hs: 30, bs: 14, stop: 5,
+            kb: 2.0, ly: 0, kd: false, crit: true, freezePrison: true, h: 'mid', elStatus: true, mg: 0
+          }, d.x, d.y - 96, true);
+          if (match.finisherAnim) break;
+        }
+        if (b.f <= 0 && bendingWaves[i] === b) bendingWaves.splice(i, 1);
+        continue;
+      }
+
+      if (b.kind === 'sub_emp_pulse') {
+        b.age++; b.f--;
+        if (b.age < 6) { b.x += (d.x - b.x) * 0.32; b.y = d.y - 98; }
+        if (b.age === 6 && canFight && d.inv <= 0 && d.state !== 'ko' && d.state !== 'grabbed' && Math.abs(d.x - b.x) < 168) {
+          applyStatus(d, 'shock', 220);
+          applyStatus(d, 'chilock', 180);
+          stormFlashFrames = 7;
+          sfx.elemBend('lightning');
+          spawnSparks(d.x, d.y - 98, '#fde047', '#78e2ff', 2.5);
+          if (FX3D) { FX3D.spawnFloorRing(d.x, '#fde047', 270, 30); FX3D.flashSky('#fde047', 0.42); }
+          pushCallout('NEURAL EMP SHOCK!', '#fde047', d.x, d.y - 212);
+          resolveHit(a, d, {
+            dmg: b.dmg, chip: 22, hs: 34, bs: 16, stop: 6,
+            kb: 11.5, ly: -8.5, kd: false, crit: true, microStun: true, guardCrush: true, h: 'mid', elStatus: true, mg: 0
+          }, d.x, d.y - 98, true);
+          if (match.finisherAnim) break;
+        }
+        if (b.f <= 0 && bendingWaves[i] === b) bendingWaves.splice(i, 1);
+        continue;
+      }
+
+      if (b.kind === 'sub_dim_rift') {
+        b.age++; b.f--;
+        if (b.age < 7) b.x += (d.x - b.x) * 0.3;
+        if (b.age === 7 && canFight && d.inv <= 0 && d.state !== 'ko' && d.state !== 'grabbed' && Math.abs(d.x - b.x) < 154) {
+          const stolen = Math.min(20, d.magic);
+          d.magic = Math.max(0, d.magic - stolen);
+          if (!a.statuses.chilock && !(a.id === 'p1' && match.bendingStolen)) a.magic = Math.min(100, a.magic + stolen + 6);
+          sfx.elemBend('shadow');
+          spawnSparks(d.x, GROUND_Y - 96, '#8b5cf6', '#f6f2ff', 2.4);
+          if (FX3D) { FX3D.spawnFloorRing(d.x, '#d8b4fe', 260, 30); FX3D.flashSky('#4c1d95', 0.38); }
+          pushCallout('DIMENSIONAL RIFT · -20% METER!', '#d8b4fe', d.x, GROUND_Y - 212);
+          resolveHit(a, d, {
+            dmg: b.dmg, chip: 20, hs: 34, bs: 14, stop: 5,
+            kb: 3.5, ly: -8.0, kd: false, crit: true, rootF: 40, guardCrush: true, h: 'mid', elStatus: true, mg: 0
+          }, d.x, GROUND_Y - 92, true);
+          if (match.finisherAnim) break;
+        }
+        if (b.f <= 0 && bendingWaves[i] === b) bendingWaves.splice(i, 1);
+        continue;
+      }
+
+      if (b.kind === 'sub_chimera_beast') {
+        b.age++; b.f--;
+        b.x += b.vx;
+        if (settings.vfx !== 'low' && b.age % 2 === 0) pushParticle({ x: b.x - b.dir * 32, y: b.y + 18, vx: -b.dir * 3, vy: -2.2, sz: 5.5, c: '#86efac', age: 0, max: 16, g: 0.04, t: 'spark' });
+        if (canFight && !b.hit && d.inv <= 0 && d.state !== 'ko' && d.state !== 'grabbed' && rectsHit(getWaveBox(b), getHurtbox(d))) {
+          b.hit = true;
+          applyStatus(d, 'entangle', 240);
+          a.hp = Math.min(a.maxHp, a.hp + Math.round(a.maxHp * 0.10)); a.trailHp = a.hp;
+          sfx.elemBend('nature'); sfx.slam();
+          spawnSparks(d.x, d.y - 84, '#16a34a', '#bbf7d0', 2.4);
+          if (FX3D) { FX3D.spawnFloorRing(d.x, '#86efac', 260, 30); FX3D.spawnBurst(d.x, d.y - 80, '#4ade80', 20, false); }
+          pushCallout('PRIMAL CHIMERA · +10% HP!', '#86efac', d.x, d.y - 208);
+          resolveHit(a, d, {
+            dmg: b.dmg, chip: 20, hs: 32, bs: 14, stop: 6,
+            kb: 12.5, ly: -13.2, kd: true, crit: true, launcher: true, lifeDrain: true, h: 'mid', elStatus: true, mg: 0
+          }, d.x, d.y - 84, true);
+          if (match.finisherAnim) break;
+        }
+        if ((b.f <= 0 || b.x < ARENA_L - 120 || b.x > ARENA_R + 120) && bendingWaves[i] === b) bendingWaves.splice(i, 1);
+        continue;
+      }
+
       // Toph's Seismic Sense Live-Tracking Sonar Wave -> erupts Rock Monolith straight underneath enemy's LIVE x!
       if (b.kind === 'seismic_sonar') {
         const dirToD = d.x >= b.x ? 1 : -1;
@@ -5904,8 +6451,35 @@
         continue;
       }
 
-      // Standard / Quick-Bend / Assault Waves (+ Ghazan 3-Hit Boomerang Lava Shuriken & Ice Rain!)
+      if (b.kind === 'ult_whirlpool' || b.kind === 'ult_spore_canopy') {
+        b.age = (b.age || 0) + 1; b.f--;
+        if (b.hitCd > 0) b.hitCd--;
+        const zBox = { x: b.x - b.w * 0.5, y: GROUND_Y - b.h, w: b.w, h: b.h };
+        if (canFight && b.hitsLeft > 0 && b.hitCd <= 0 && d.inv <= 0 && d.state !== 'ko' && d.state !== 'grabbed' && rectsHit(zBox, getHurtbox(d))) {
+          b.hitsLeft--; b.hitCd = 11;
+          const isFinal = b.hitsLeft === 0;
+          const pullVx = b.kind === 'ult_whirlpool' ? (b.x - d.x) * 0.14 : 0;
+          resolveHit(a, d, {
+            dmg: b.dmg, chip: 14, hs: 26, bs: 12, stop: isFinal ? 6 : 3,
+            kb: isFinal ? 12 : 4, forceVx: pullVx, ly: isFinal ? b.ly : -4.5, kd: isFinal,
+            crit: isFinal, launcher: isFinal, lifeDrain: Boolean(b.lifeDrain), h: b.low ? 'low' : 'mid', elStatus: true, mg: 0
+          }, d.x, d.y - 98, true);
+          if (match.finisherAnim) break;
+        }
+        if (b.f <= 0 && bendingWaves[i] === b) bendingWaves.splice(i, 1);
+        continue;
+      }
+
+      // Standard / Quick-Bend / Assault Waves (+ Ghazan 3-Hit Boomerang, Homing Celestial Orbs & Falling Meteors!)
       if (b.hitCd > 0) b.hitCd--;
+      b.age = (b.age || 0) + 1;
+      if (b.kind === 'ult_celestial_orb') {
+        const tx = d.x, ty = d.y - 102;
+        const dx = tx - b.x, dy = ty - b.y;
+        const len = Math.max(1, Math.hypot(dx, dy));
+        b.vx += ((dx / len) * 18 - b.vx) * 0.14;
+        b.vy = (b.vy || 0) + ((dy / len) * 16 - (b.vy || 0)) * 0.16;
+      }
       b.x += b.vx;
       if (b.boomerang && b.f === Math.floor(b.max * 0.48)) {
         b.vx = -b.vx * 1.05; b.dir = -b.dir; b.hit = false;
@@ -5917,7 +6491,21 @@
         b.y += b.vy;
         if (b.y >= GROUND_Y) {
           b.y = GROUND_Y; b.f = 0;
-          spawnSparks(b.x, GROUND_Y - 12, b.el.glow, '#ffffff', 0.9, true);
+          const isHeavyDrop = b.kind === 'ult_monolith_drop' || b.kind === 'ult_meteor';
+          spawnSparks(b.x, GROUND_Y - 12, b.el.glow, '#ffffff', isHeavyDrop ? 2.4 : 0.9, true);
+          if (isHeavyDrop) {
+            sfx.slam(); shake = Math.max(shake, (b.kind === 'ult_monolith_drop' ? 24 : 15) * settings.feedback);
+            spawnDust(b.x, GROUND_Y, 0, b.kind === 'ult_monolith_drop' ? 24 : 12, b.el.glow);
+            if (FX3D) FX3D.spawnFloorRing(b.x, b.el.glow, b.kind === 'ult_monolith_drop' ? 320 : 190, 28);
+            if (canFight && !b.hit && d.inv <= 0 && d.state !== 'ko' && d.state !== 'grabbed' && Math.abs(d.x - b.x) < (b.kind === 'ult_monolith_drop' ? 168 : 108)) {
+              b.hit = true;
+              resolveHit(a, d, {
+                dmg: b.dmg, chip: Math.round(b.dmg * 0.25), hs: 36, bs: 18, stop: 6,
+                kb: 15.5, ly: b.ly, kd: true, crit: true, guardCrush: true, heavyHit: true, h: 'mid', elStatus: true, mg: 0
+              }, d.x, GROUND_Y - 70, true);
+              if (match.finisherAnim) break;
+            }
+          }
         }
       }
       if (b.bounces > 0 && (b.x <= ARENA_L + 24 || b.x >= ARENA_R - 24)) {
@@ -5956,6 +6544,11 @@
             b.multiHits--; b.hitCd = 6; b.vx *= 0.78;
           } else {
             b.hit = true;
+          }
+          if (b.kind === 'ult_mandala') {
+            d.magic = Math.max(0, d.magic - 35);
+            applyStatus(d, 'chilock', 260);
+            pushCallout('SOUL MANDALA · -35% CHI!', '#f9a8d4', d.x, d.y - 216);
           }
           resolveHit(a, d, {
             dmg: b.dmg, chip: Math.round(b.dmg * 0.24), hs: b.ult ? 34 : 22, bs: b.ult ? 18 : 12,
@@ -6147,23 +6740,39 @@
       let subTxt = `${match.p1W} — ${match.p2W}${extraTags ? ' · ' + extraTags : ''} · +${reward} COINS`;
       let showMemoryStage = null;
 
-      if (match.winner === 'p1' && match.boss) {
+      if (match.winner === 'p1' && match.boss && match.mode === 'campaign') {
         const st = match.boss;
-        const firstClear = !PROG.cleared.includes(st.id);
-        reward += firstClear ? st.bounty : Math.round(st.bounty * 0.45);
-        const trialBonus = checkRegionalTrial(st);
-        reward += trialBonus;
-        if (firstClear) {
-          PROG.cleared.push(st.id);
-          if (!PROG.unlockedElements.includes(st.el)) PROG.unlockedElements.push(st.el);
-          showMemoryStage = st;
-        }
-        if (st.isFinal) {
-          PROG.avatarUnlocked = true;
-          if (!PROG.ownedGear.includes('crown')) { PROG.ownedGear.push('crown'); PROG.equippedGear = 'crown'; }
-          subTxt = `THE ECLIPSE BROKEN · AVATAR STATE UNLOCKED · +${reward} COINS`;
+        const stageObj = CAMPAIGN_STAGES[st.stageId] || st;
+        if (st.isMinion) {
+          const curProg = getRealmProgress(st.stageId);
+          const nextBout = (st.boutIdx || 0) + 1;
+          const isFirstBout = nextBout > curProg;
+          if (!PROG.realmProgress || typeof PROG.realmProgress !== 'object') PROG.realmProgress = {};
+          PROG.realmProgress[st.stageId] = Math.max(curProg, nextBout);
+          reward += isFirstBout ? st.bounty : Math.round(st.bounty * 0.45);
+          const nextNote = nextBout < 5
+            ? `${st.isFinal ? 'ECLIPSE GENERAL' : 'WARRIOR'} ${nextBout + 1}/5 NEXT`
+            : (st.isFinal ? 'SHADOW AVATAR THRONE UNLOCKED!' : `${stageObj.title} UNLOCKED!`);
+          subTxt = `${st.title} DEFEATED · ${nextNote} · +${reward} COINS`;
         } else {
-          subTxt = `${ELEMENTS[st.el].name.toUpperCase()} RECLAIMED${extraTags ? ' · ' + extraTags : ''} · +${reward} COINS${trialBonus ? ' · SCROLL MASTERED!' : ''}`;
+          if (!PROG.realmProgress || typeof PROG.realmProgress !== 'object') PROG.realmProgress = {};
+          PROG.realmProgress[st.stageId] = 6;
+          const firstClear = !PROG.cleared.includes(stageObj.id);
+          reward += firstClear ? stageObj.bounty : Math.round(stageObj.bounty * 0.45);
+          const trialBonus = checkRegionalTrial(stageObj);
+          reward += trialBonus;
+          if (firstClear) {
+            PROG.cleared.push(stageObj.id);
+            if (!PROG.unlockedElements.includes(stageObj.el)) PROG.unlockedElements.push(stageObj.el);
+            showMemoryStage = stageObj;
+          }
+          if (stageObj.isFinal) {
+            PROG.avatarUnlocked = true;
+            if (!PROG.ownedGear.includes('crown')) { PROG.ownedGear.push('crown'); PROG.equippedGear = 'crown'; }
+            subTxt = `THE SHADOW AVATAR VANQUISHED · AVATAR STATE UNLOCKED · +${reward} COINS`;
+          } else {
+            subTxt = `${ELEMENTS[stageObj.el].name.toUpperCase()} GRANDMASTER DEFEATED${extraTags ? ' · ' + extraTags : ''} · +${reward} COINS${trialBonus ? ' · SCROLL MASTERED!' : ''}`;
+          }
         }
       }
       PROG.coins += reward;
@@ -6248,7 +6857,7 @@
     targetCtx.restore();
   }
 
-  // ===== COHESIVE VISUAL PIPELINE: 8/8 BESPOKE HAND-PAINTED NANO BANANA SUMI-E REALMS + DOJO ARMORY FORGE =====
+  // ===== COHESIVE VISUAL PIPELINE: 13/13 BESPOKE CULTURAL SUMI-E REALMS + DOJO ARMORY FORGE =====
   const ART = {
     dojo: new Image(),
     tidal: new Image(),
@@ -6258,6 +6867,9 @@
     storm: new Image(),
     caldera: new Image(),
     eclipse: new Image(),
+    foundry: new Image(),
+    grove: new Image(),
+    astral: new Image(),
     armoryForge: new Image(),
     worldMap: new Image()
   };
@@ -6284,7 +6896,7 @@
     buildBackdrop();
     if (storyState && !storyOverlay.classList.contains('hidden')) renderStoryStep();
   };
-  ['dojo', 'tidal', 'sky', 'frozen', 'iron', 'storm', 'caldera', 'eclipse'].forEach(k => { ART[k].onload = onArenaImgLoad; });
+  ['dojo', 'tidal', 'sky', 'frozen', 'iron', 'storm', 'caldera', 'eclipse', 'foundry', 'grove', 'astral'].forEach(k => { ART[k].onload = onArenaImgLoad; });
   ART.worldMap.onload = () => { if (!campaignModal.classList.contains('hidden')) drawWorldMapCanvas(); };
   ART.dojo.src = 'assets/arena_blazing_dojo.webp';
   ART.tidal.src = 'assets/arena_tidal_shrine.webp';
@@ -6294,6 +6906,9 @@
   ART.storm.src = 'assets/arena_storm_spire.webp';
   ART.caldera.src = 'assets/arena_obsidian_caldera.webp';
   ART.eclipse.src = 'assets/arena_eclipse_citadel.webp';
+  ART.foundry.src = 'assets/arena_ironclad_foundry.webp';
+  ART.grove.src = 'assets/arena_verdant_grove.webp';
+  ART.astral.src = 'assets/arena_astral_sanctum.webp';
   ART.armoryForge.src = 'assets/armory_forge.webp';
   ART.worldMap.src = 'assets/world_map.webp';
 
@@ -6338,33 +6953,132 @@
       return { img: ART.storm, flip: false, mist: 'rgba(208,232,252,0.22)', rim: 'rgba(164,212,255,0.48)', floorTint: 'rgba(10,14,22,0.48)', kind: 'storm' };
     }
     if (biome === 'obsidian_caldera') {
-      return {
-        img: ART.caldera, flip: false,
-        mist: 'rgba(255,216,162,0.18)', rim: 'rgba(255,154,72,0.52)', floorTint: 'rgba(24,10,6,0.46)', kind: 'lava'
-      };
+      return { img: ART.caldera, flip: false, mist: 'rgba(255,216,162,0.18)', rim: 'rgba(255,154,72,0.52)', floorTint: 'rgba(24,10,6,0.46)', kind: 'lava' };
     }
     if (biome === 'ironclad_foundry') {
-      return { img: ART.iron, flip: true, mist: 'rgba(218,228,242,0.22)', rim: 'rgba(226,232,240,0.48)', floorTint: 'rgba(14,18,24,0.48)', kind: 'metal' };
+      return { img: ART.foundry, flip: false, mist: 'rgba(220,232,244,0.20)', rim: 'rgba(226,232,240,0.48)', floorTint: 'rgba(14,18,24,0.48)', kind: 'metal' };
     }
     if (biome === 'verdant_grove') {
-      return { img: ART.sky, flip: true, mist: 'rgba(210,252,224,0.20)', rim: 'rgba(134,239,172,0.46)', floorTint: 'rgba(10,22,14,0.44)', kind: 'nature' };
+      return { img: ART.grove, flip: false, mist: 'rgba(216,252,228,0.18)', rim: 'rgba(134,239,172,0.46)', floorTint: 'rgba(10,22,14,0.44)', kind: 'nature' };
     }
     if (biome === 'mirage_dunes') {
-      return { img: ART.dojo, flip: true, mist: 'rgba(255,244,196,0.24)', rim: 'rgba(254,240,138,0.50)', floorTint: 'rgba(26,18,6,0.46)', kind: 'sand' };
+      return { img: null, procedural: 'mirage_dunes', flip: false, mist: 'rgba(255,244,196,0.24)', rim: 'rgba(254,240,138,0.52)', floorTint: 'rgba(26,18,6,0.46)', kind: 'sand' };
     }
     if (biome === 'astral_sanctum') {
-      return { img: ART.eclipse, flip: true, mist: 'rgba(252,216,238,0.20)', rim: 'rgba(249,168,212,0.48)', floorTint: 'rgba(22,8,20,0.46)', kind: 'spirit' };
+      return { img: ART.astral, flip: false, mist: 'rgba(252,222,240,0.18)', rim: 'rgba(249,168,212,0.48)', floorTint: 'rgba(20,8,20,0.46)', kind: 'spirit' };
     }
-    // eclipse_sanctum / avatar_convergence / Main Menu (Crimson Maple Dusk Veranda)
+    if (biome === 'avatar_convergence') {
+      return { img: null, procedural: 'avatar_convergence', flip: false, mist: 'rgba(255,200,175,0.22)', rim: 'rgba(255,100,120,0.56)', floorTint: 'rgba(14,5,14,0.54)', kind: 'avatar_throne' };
+    }
+    // eclipse_sanctum / Main Menu (Crimson Maple Dusk Veranda)
     return { img: ART.eclipse, flip: false, mist: 'rgba(255,212,170,0.16)', rim: 'rgba(255,170,112,0.42)', floorTint: 'rgba(18,8,8,0.40)', kind: 'eclipse' };
+  }
+
+  function renderMirageDunesBackdrop(g) {
+    // Sand Tribe Cultural Arena: Golden Desert Oasis, Silk-Road Sandstone Arches, Obelisks & Sunset Dunes!
+    const sky = g.createLinearGradient(0, 0, 0, GROUND_Y);
+    sky.addColorStop(0, '#5e2c14'); sky.addColorStop(0.28, '#c26922'); sky.addColorStop(0.62, '#f2b857'); sky.addColorStop(1, '#fff1c1');
+    g.fillStyle = sky; g.fillRect(0, 0, W, GROUND_Y);
+    // Blazing desert sun disk
+    const sun = g.createRadialGradient(W * 0.52, 224, 18, W * 0.52, 224, 240);
+    sun.addColorStop(0, '#fffdf2'); sun.addColorStop(0.32, '#ffe58a'); sun.addColorStop(0.68, 'rgba(245,168,52,0.34)'); sun.addColorStop(1, 'rgba(245,168,52,0)');
+    g.fillStyle = sun; g.beginPath(); g.arc(W * 0.52, 224, 240, 0, Math.PI * 2); g.fill();
+    // Distant sandstone citadel domes & minarets
+    g.fillStyle = '#9c5220';
+    g.beginPath(); g.moveTo(0, 440); g.quadraticCurveTo(220, 355, 470, 415); g.quadraticCurveTo(790, 340, 1040, 405); g.quadraticCurveTo(1180, 370, W, 420); g.lineTo(W, GROUND_Y); g.lineTo(0, GROUND_Y); g.closePath(); g.fill();
+    // Silhouette desert domes & spire towers
+    g.fillStyle = '#6b3315';
+    [[340, 385, 58], [640, 368, 76], [940, 388, 56]].forEach(([cx, cy, r]) => {
+      g.beginPath(); g.arc(cx, cy, r, Math.PI, 0); g.lineTo(cx + r, GROUND_Y); g.lineTo(cx - r, GROUND_Y); g.closePath(); g.fill();
+      g.fillRect(cx - 4, cy - r - 28, 8, 30);
+    });
+    // Midground windswept golden dunes
+    g.fillStyle = '#7e3c16';
+    g.beginPath(); g.moveTo(0, 490); g.bezierCurveTo(260, 415, 480, 515, 760, 452); g.bezierCurveTo(960, 410, 1140, 478, W, 448); g.lineTo(W, GROUND_Y); g.lineTo(0, GROUND_Y); g.closePath(); g.fill();
+    // Framing Sand Tribe Sandstone Arches & Carved Obelisks (left & right)
+    g.fillStyle = '#241208';
+    [95, W - 95].forEach(px => {
+      g.fillRect(px - 34, 150, 68, GROUND_Y - 150);
+      g.beginPath(); g.moveTo(px - 42, 154); g.lineTo(px, 98); g.lineTo(px + 42, 154); g.closePath(); g.fill();
+      // Carved golden sun glyph
+      g.strokeStyle = 'rgba(254,230,138,0.52)'; g.lineWidth = 2.2;
+      g.beginPath(); g.arc(px, 240, 16, 0, Math.PI * 2); g.stroke();
+      g.beginPath(); g.moveTo(px, 270); g.lineTo(px, 470); g.stroke();
+    });
+    // Overhead sandstone arch bridge + silk drapes
+    g.fillStyle = '#1f0f07';
+    g.beginPath(); g.moveTo(0, 0); g.lineTo(W, 0); g.lineTo(W, 130);
+    g.quadraticCurveTo(W * 0.78, 58, W * 0.5, 92); g.quadraticCurveTo(W * 0.22, 58, 0, 130); g.closePath(); g.fill();
+    // Bright horizon sand mist for 10:1 fighter readability
+    const mist = g.createLinearGradient(0, 320, 0, GROUND_Y);
+    mist.addColorStop(0, 'rgba(255,244,200,0)'); mist.addColorStop(1, 'rgba(255,242,190,0.44)');
+    g.fillStyle = mist; g.fillRect(0, 320, W, GROUND_Y - 320);
+    // Carved sandstone courtyard floor
+    const fl = g.createLinearGradient(0, GROUND_Y, 0, H);
+    fl.addColorStop(0, '#593216'); fl.addColorStop(0.35, '#2b1609'); fl.addColorStop(1, '#110803');
+    g.fillStyle = fl; g.fillRect(0, GROUND_Y, W, H - GROUND_Y);
+    g.strokeStyle = 'rgba(254,236,148,0.68)'; g.lineWidth = 2.4;
+    g.beginPath(); g.moveTo(0, GROUND_Y); g.lineTo(W, GROUND_Y); g.stroke();
+  }
+
+  function renderAvatarThroneBackdrop(g) {
+    // Shadow Avatar's Final Realm: Eclipse Throne of the Twelve Elements!
+    const sky = g.createLinearGradient(0, 0, 0, GROUND_Y);
+    sky.addColorStop(0, '#0a0414'); sky.addColorStop(0.32, '#2d0c2e'); sky.addColorStop(0.68, '#7c1a3a'); sky.addColorStop(1, '#e87954');
+    g.fillStyle = sky; g.fillRect(0, 0, W, GROUND_Y);
+    // Colossal Total Solar Eclipse Corona directly behind center stage!
+    const cx = W * 0.5, cy = 238;
+    const corona = g.createRadialGradient(cx, cy, 86, cx, cy, 290);
+    corona.addColorStop(0, '#fff7cc'); corona.addColorStop(0.28, '#ff5a36'); corona.addColorStop(0.55, 'rgba(185,28,96,0.42)'); corona.addColorStop(1, 'rgba(0,0,0,0)');
+    g.fillStyle = corona; g.beginPath(); g.arc(cx, cy, 290, 0, Math.PI * 2); g.fill();
+    g.fillStyle = '#07030d'; g.strokeStyle = '#ffd878'; g.lineWidth = 4;
+    g.beginPath(); g.arc(cx, cy, 94, 0, Math.PI * 2); g.fill(); g.stroke();
+    // 12 Floating Shattered Elemental Monolith Shards orbiting the Eclipse!
+    for (let k = 0; k < 12; k++) {
+      const ang = (k / 12) * Math.PI * 2 - Math.PI * 0.5;
+      const rx = cx + Math.cos(ang) * 210, ry = cy + Math.sin(ang) * 142;
+      if (ry > GROUND_Y - 30) continue;
+      const eCol = ELEMENTS[EL_ORDER[k]].glow;
+      g.fillStyle = '#12081c'; g.strokeStyle = eCol; g.lineWidth = 2;
+      g.beginPath(); g.moveTo(rx, ry - 20); g.lineTo(rx + 11, ry); g.lineTo(rx, ry + 20); g.lineTo(rx - 11, ry); g.closePath(); g.fill(); g.stroke();
+    }
+    // Distant jagged obsidian cathedral mountains
+    g.fillStyle = '#16081d';
+    g.beginPath(); g.moveTo(0, 445); g.lineTo(170, 320); g.lineTo(310, 415); g.lineTo(470, 345); g.lineTo(640, 405);
+    g.lineTo(810, 345); g.lineTo(970, 415); g.lineTo(1110, 320); g.lineTo(W, 445); g.lineTo(W, GROUND_Y); g.lineTo(0, GROUND_Y); g.closePath(); g.fill();
+    // Twin Towering Obsidian Eclipse Pillars framing the Throne Dais
+    g.fillStyle = '#090410';
+    [108, W - 108].forEach(px => {
+      g.fillRect(px - 32, 70, 64, GROUND_Y - 70);
+      g.strokeStyle = 'rgba(255,108,136,0.58)'; g.lineWidth = 2.4;
+      g.beginPath(); g.arc(px, 210, 22, 0, Math.PI * 2); g.stroke();
+      g.beginPath(); g.moveTo(px, 240); g.lineTo(px, 530); g.stroke();
+    });
+    // Center contrast glow mist behind fighters
+    const mist = g.createLinearGradient(0, 340, 0, GROUND_Y);
+    mist.addColorStop(0, 'rgba(255,180,150,0)'); mist.addColorStop(1, 'rgba(255,212,188,0.34)');
+    g.fillStyle = mist; g.fillRect(0, 340, W, GROUND_Y - 340);
+    // Etched Black-Mirror Obsidian Throne Floor
+    const fl = g.createLinearGradient(0, GROUND_Y, 0, H);
+    fl.addColorStop(0, '#2a0f26'); fl.addColorStop(0.32, '#120714'); fl.addColorStop(1, '#050208');
+    g.fillStyle = fl; g.fillRect(0, GROUND_Y, W, H - GROUND_Y);
+    g.strokeStyle = 'rgba(255,112,138,0.72)'; g.lineWidth = 2.6;
+    g.beginPath(); g.moveTo(0, GROUND_Y); g.lineTo(W, GROUND_Y); g.stroke();
   }
 
   function renderBiomeBackdrop(g, biome) {
     const th = THEMES[themeIdx];
     const spec = getPaintedSpec(biome);
     const hasImg = spec && spec.img && spec.img.complete && spec.img.naturalWidth > 0;
+    let painted = hasImg;
 
-    if (hasImg) {
+    if (spec && spec.procedural === 'mirage_dunes') {
+      renderMirageDunesBackdrop(g);
+      painted = true;
+    } else if (spec && spec.procedural === 'avatar_convergence') {
+      renderAvatarThroneBackdrop(g);
+      painted = true;
+    } else if (hasImg) {
       g.save();
       if (spec.flip) { g.translate(W, 0); g.scale(-1, 1); }
       g.drawImage(spec.img, 0, 0, W, H);
@@ -6409,7 +7123,7 @@
     const vig = g.createRadialGradient(W * 0.5, H * 0.45, W * 0.34, W * 0.5, H * 0.5, W * 0.72);
     vig.addColorStop(0, 'rgba(0,0,0,0)'); vig.addColorStop(1, 'rgba(10,7,5,0.36)');
     g.fillStyle = vig; g.fillRect(0, 0, W, H);
-    return hasImg;
+    return painted;
   }
 
   function buildBackdrop() {
@@ -7397,13 +8111,285 @@
     }
   }
 
-  // ===== DRAW DRAMATIC AVATAR BENDING WAVES, TORNADOS, SUB-BENDING & ELEMENTAL ARMS (ZERO-BLUR FAST PATH) =====
+  // ===== DRAW DRAMATIC AVATAR BENDING WAVES, UNIQUE ULTIMATES & COMPENDIUM SUB-BENDINGS (ZERO-BLUR FAST PATH) =====
   function drawBendingWave(b) {
     if (b.delay && b.delay > 0) return;
     const t = 1 - b.f / b.max, d = b.dir, el = b.el, pal = getOwnerPalette(b.owner, el);
     ctx.save();
 
-    // 0) SECRET ATLA SUB-BENDING ARTS RENDERERS (Bloodbend, Metal Wire, Combustion, Vacuum, Soul Bind!)
+    // 00) NEW COMPENDIUM ADVANCED SUB-BENDINGS & 24 BESPOKE UNIQUE ULTIMATE RENDERERS
+    if (b.kind === 'sub_tectonic') {
+      const fade = Math.min(1, b.f / 9), prog = Math.min(1, (b.age || 1) / 8);
+      ctx.globalAlpha = 0.94 * fade;
+      ctx.strokeStyle = '#1b140d'; ctx.lineWidth = 10;
+      ctx.beginPath(); ctx.moveTo(b.x - 135 * prog, GROUND_Y + 2); ctx.lineTo(b.x - 45 * prog, GROUND_Y - 12); ctx.lineTo(b.x, GROUND_Y + 4); ctx.lineTo(b.x + 52 * prog, GROUND_Y - 10); ctx.lineTo(b.x + 135 * prog, GROUND_Y + 2); ctx.stroke();
+      ctx.strokeStyle = pal.glow; ctx.lineWidth = 3.5; ctx.stroke();
+      for (let k = -2; k <= 2; k++) {
+        const sh = (45 + (2 - Math.abs(k)) * 36) * prog;
+        ctx.fillStyle = '#20170f'; ctx.strokeStyle = pal.core; ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.moveTo(b.x + k * 42 - 14, GROUND_Y + 4); ctx.lineTo(b.x + k * 42, GROUND_Y - sh); ctx.lineTo(b.x + k * 42 + 14, GROUND_Y + 4); ctx.closePath(); ctx.fill(); ctx.stroke();
+      }
+      ctx.restore(); return;
+    }
+    if (b.kind === 'sub_thermal_drain') {
+      const fade = Math.min(1, b.f / 9), r = 74 + Math.sin(simFrame * 0.45) * 6;
+      ctx.globalAlpha = 0.92 * fade;
+      const g = ctx.createRadialGradient(b.x, b.y, 10, b.x, b.y, r);
+      g.addColorStop(0, '#ffffff'); g.addColorStop(0.55, pal.glow + 'aa'); g.addColorStop(1, pal.primary + '00');
+      ctx.fillStyle = g; ctx.beginPath(); ctx.arc(b.x, b.y, r, 0, Math.PI * 2); ctx.fill();
+      ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 2.6;
+      for (let k = 0; k < 6; k++) {
+        const a = simFrame * 0.08 + (k * Math.PI) / 3;
+        ctx.beginPath(); ctx.moveTo(b.x + Math.cos(a) * 18, b.y + Math.sin(a) * 18); ctx.lineTo(b.x + Math.cos(a) * r, b.y + Math.sin(a) * r); ctx.stroke();
+      }
+      ctx.restore(); return;
+    }
+    if (b.kind === 'sub_emp_pulse') {
+      const fade = Math.min(1, b.f / 8), prog = Math.min(1, (b.age || 1) / 10);
+      ctx.globalAlpha = 0.95 * fade;
+      for (let k = 0; k < 3; k++) {
+        const rr = 26 + prog * (90 + k * 28);
+        ctx.strokeStyle = k === 0 ? '#ffffff' : (k === 1 ? '#fde047' : pal.glow);
+        ctx.lineWidth = 4.5 - k; ctx.beginPath(); ctx.arc(b.x, b.y, rr, 0, Math.PI * 2); ctx.stroke();
+      }
+      for (let k = 0; k < 6; k++) {
+        const a = simFrame * 0.25 + k * 1.05;
+        ctx.strokeStyle = '#fde047'; ctx.lineWidth = 2.6;
+        ctx.beginPath(); ctx.moveTo(b.x, b.y);
+        ctx.lineTo(b.x + Math.cos(a + 0.15) * 48, b.y + Math.sin(a + 0.15) * 48);
+        ctx.lineTo(b.x + Math.cos(a) * 104, b.y + Math.sin(a) * 104); ctx.stroke();
+      }
+      ctx.restore(); return;
+    }
+    if (b.kind === 'sub_dim_rift') {
+      const fade = Math.min(1, b.f / 9), prog = Math.min(1, (b.age || 1) / 7);
+      ctx.globalAlpha = 0.94 * fade;
+      for (const side of [-1, 1]) {
+        const px = b.x + side * 78;
+        ctx.fillStyle = '#070214'; ctx.strokeStyle = pal.glow; ctx.lineWidth = 3.2;
+        ctx.beginPath(); ctx.ellipse(px, b.y, 18, 72 * prog, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+        // Slashing void blade emerging inward
+        ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 4;
+        ctx.beginPath(); ctx.moveTo(px, b.y); ctx.lineTo(b.x - side * 12, b.y + side * 18); ctx.stroke();
+      }
+      ctx.restore(); return;
+    }
+    if (b.kind === 'sub_chimera_beast' || b.kind === 'ult_world_beast') {
+      const isUlt = b.kind === 'ult_world_beast';
+      const sc = isUlt ? 1.42 : 1.02;
+      ctx.save(); ctx.translate(b.x, b.y); ctx.scale(d * sc, sc);
+      ctx.globalAlpha = 0.94 * Math.min(1, b.f / 6);
+      // Glowing Emerald Spirit Wolf/Stag Chimera silhouette lunging forward!
+      ctx.fillStyle = '#062614'; ctx.strokeStyle = pal.glow; ctx.lineWidth = 3.2;
+      ctx.beginPath();
+      ctx.moveTo(-74, 24); ctx.quadraticCurveTo(-48, -32, 12, -30); ctx.lineTo(42, -52);
+      ctx.lineTo(54, -26); ctx.lineTo(84, -10); ctx.lineTo(64, 12); ctx.lineTo(36, 16);
+      ctx.lineTo(54, 46); ctx.lineTo(26, 46); ctx.lineTo(8, 22); ctx.lineTo(-34, 24);
+      ctx.lineTo(-56, 48); ctx.lineTo(-76, 44); ctx.closePath(); ctx.fill(); ctx.stroke();
+      // Glowing antler/mane energy streaks & fierce glowing eye
+      ctx.strokeStyle = pal.core; ctx.lineWidth = 2.4;
+      ctx.beginPath(); ctx.moveTo(28, -42); ctx.lineTo(14, -70); ctx.moveTo(36, -40); ctx.lineTo(48, -68); ctx.stroke();
+      ctx.fillStyle = '#ffffff'; ctx.beginPath(); ctx.arc(54, -18, 4.5, 0, Math.PI * 2); ctx.fill();
+      ctx.restore(); ctx.restore(); return;
+    }
+    if (b.kind === 'ult_hydro_beam' || b.kind === 'ult_railgun' || b.kind === 'ult_prism_beam') {
+      const fade = Math.min(1, b.f / 8), bh = b.kind === 'ult_prism_beam' ? 24 : 38;
+      ctx.globalAlpha = 0.96 * fade;
+      const g = ctx.createLinearGradient(b.x - b.w * 0.5, b.y, b.x + b.w * 0.5, b.y);
+      g.addColorStop(0, pal.primary + '22'); g.addColorStop(0.5, pal.glow); g.addColorStop(1, '#ffffff');
+      ctx.fillStyle = g;
+      ctx.beginPath(); ctx.roundRect(b.x - b.w * 0.5, b.y - bh, b.w, bh * 2, bh); ctx.fill();
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath(); ctx.roundRect(b.x - b.w * 0.48, b.y - bh * 0.36, b.w * 0.96, bh * 0.72, bh * 0.36); ctx.fill();
+      if (b.kind === 'ult_railgun') {
+        ctx.strokeStyle = '#fde047'; ctx.lineWidth = 3.2;
+        for (let k = -2; k <= 2; k++) {
+          ctx.beginPath(); ctx.ellipse(b.x + k * 78, b.y, 12, bh * 1.45, 0, 0, Math.PI * 2); ctx.stroke();
+        }
+      }
+      ctx.restore(); return;
+    }
+    if (b.kind === 'ult_whirlpool') {
+      const fade = Math.min(1, b.f / 10);
+      ctx.globalAlpha = 0.92 * fade;
+      for (let k = 0; k < 5; k++) {
+        const rr = 34 + k * 28;
+        ctx.strokeStyle = k % 2 === 0 ? pal.core : pal.glow; ctx.lineWidth = 5 - k * 0.6;
+        ctx.beginPath(); ctx.ellipse(b.x, GROUND_Y + 2, rr, rr * 0.22, 0, simFrame * 0.25 + k, simFrame * 0.25 + k + Math.PI * 1.4); ctx.stroke();
+      }
+      // Surging central sea geyser
+      const gh = 140 + Math.sin(simFrame * 0.45) * 32;
+      const wg = ctx.createLinearGradient(b.x, GROUND_Y, b.x, GROUND_Y - gh);
+      wg.addColorStop(0, pal.primary); wg.addColorStop(0.65, pal.glow); wg.addColorStop(1, pal.core + '22');
+      ctx.fillStyle = wg;
+      ctx.beginPath(); ctx.moveTo(b.x - 56, GROUND_Y + 4); ctx.quadraticCurveTo(b.x - 28, GROUND_Y - gh * 0.6, b.x - 74, GROUND_Y - gh); ctx.lineTo(b.x + 74, GROUND_Y - gh); ctx.quadraticCurveTo(b.x + 28, GROUND_Y - gh * 0.6, b.x + 56, GROUND_Y + 4); ctx.closePath(); ctx.fill();
+      ctx.restore(); return;
+    }
+    if (b.kind === 'ult_solar_nova') {
+      const prog = Math.min(1, (b.age || 1) / 14), fade = Math.min(1, b.f / 10);
+      const r = 45 + prog * 195;
+      ctx.globalAlpha = 0.94 * fade;
+      const sg = ctx.createRadialGradient(b.x, b.y, 12, b.x, b.y, r);
+      sg.addColorStop(0, '#ffffff'); sg.addColorStop(0.45, '#ffe066dd'); sg.addColorStop(0.78, pal.primary + 'aa'); sg.addColorStop(1, pal.primary + '00');
+      ctx.fillStyle = sg; ctx.beginPath(); ctx.arc(b.x, b.y, r, 0, Math.PI * 2); ctx.fill();
+      ctx.strokeStyle = '#fff9d6'; ctx.lineWidth = 6 * (1 - prog * 0.5);
+      ctx.beginPath(); ctx.arc(b.x, b.y, r * 0.88, 0, Math.PI * 2); ctx.stroke();
+      ctx.restore(); return;
+    }
+    if (b.kind === 'ult_meteor' || b.kind === 'ult_monolith_drop') {
+      const isMono = b.kind === 'ult_monolith_drop';
+      const r = isMono ? 76 : 36;
+      ctx.save(); ctx.translate(b.x, b.y);
+      ctx.fillStyle = isMono ? '#20170f' : '#2a0804'; ctx.strokeStyle = pal.glow; ctx.lineWidth = isMono ? 4 : 3;
+      ctx.beginPath();
+      for (let k = 0; k < 7; k++) {
+        const a = (k / 7) * Math.PI * 2 + simFrame * 0.08;
+        const rad = r * (k % 2 === 0 ? 1.05 : 0.78);
+        k === 0 ? ctx.moveTo(Math.cos(a) * rad, Math.sin(a) * rad) : ctx.lineTo(Math.cos(a) * rad, Math.sin(a) * rad);
+      }
+      ctx.closePath(); ctx.fill(); ctx.stroke();
+      // Blazing reentry tail
+      ctx.strokeStyle = pal.core; ctx.lineWidth = isMono ? 7 : 5;
+      ctx.beginPath(); ctx.moveTo(-b.vx * 3, -b.vy * 3.5); ctx.lineTo(0, 0); ctx.stroke();
+      ctx.restore(); ctx.restore(); return;
+    }
+    if (b.kind === 'ult_ice_domain') {
+      const fade = Math.min(1, b.f / 10), prog = Math.min(1, (b.age || 1) / 9);
+      ctx.globalAlpha = 0.88 * fade;
+      const ig = ctx.createRadialGradient(b.x, GROUND_Y - 60, 20, b.x, GROUND_Y - 60, 210 * prog);
+      ig.addColorStop(0, '#ffffffcc'); ig.addColorStop(0.55, pal.glow + '88'); ig.addColorStop(1, pal.primary + '00');
+      ctx.fillStyle = ig; ctx.beginPath(); ctx.arc(b.x, GROUND_Y - 60, 210 * prog, 0, Math.PI * 2); ctx.fill();
+      for (let k = -3; k <= 3; k++) {
+        const sx = b.x + k * 52, sh = (90 + (3 - Math.abs(k)) * 38) * prog;
+        ctx.fillStyle = pal.primary + 'aa'; ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 2.2;
+        ctx.beginPath(); ctx.moveTo(sx - 18, GROUND_Y + 4); ctx.lineTo(sx, GROUND_Y - sh); ctx.lineTo(sx + 18, GROUND_Y + 4); ctx.closePath(); ctx.fill(); ctx.stroke();
+      }
+      ctx.restore(); return;
+    }
+    if (b.kind === 'ult_crystal_clamp' || b.kind === 'ult_iron_crush') {
+      const isIron = b.kind === 'ult_iron_crush';
+      const fade = Math.min(1, b.f / 10), snap = Math.min(1, (b.age || 1) / 8);
+      const gap = (1 - snap) * 110 + 18;
+      ctx.globalAlpha = 0.95 * fade;
+      for (const side of [-1, 1]) {
+        const sx = b.x + side * gap;
+        ctx.fillStyle = isIron ? '#1e293b' : '#241a0d'; ctx.strokeStyle = pal.glow; ctx.lineWidth = 3.2;
+        ctx.beginPath();
+        if (isIron) {
+          ctx.rect(side < 0 ? sx - 68 : sx, GROUND_Y - 235, 68, 238);
+        } else {
+          ctx.moveTo(sx + side * 66, GROUND_Y + 4); ctx.lineTo(sx - side * 26, GROUND_Y - 225); ctx.lineTo(sx + side * 44, GROUND_Y - 145); ctx.closePath();
+        }
+        ctx.fill(); ctx.stroke();
+      }
+      ctx.restore(); return;
+    }
+    if (b.kind === 'ult_sonic_ring') {
+      const fade = Math.min(1, b.f / 8);
+      ctx.globalAlpha = 0.92 * fade;
+      for (let k = 0; k < 3; k++) {
+        ctx.strokeStyle = k === 0 ? '#ffffff' : pal.glow; ctx.lineWidth = 6 - k * 1.4;
+        ctx.beginPath(); ctx.ellipse(b.x - d * k * 20, b.y, 26 + k * 8, 96 + k * 14, 0, 0, Math.PI * 2); ctx.stroke();
+      }
+      ctx.restore(); return;
+    }
+    if (b.kind === 'ult_sky_dive' || b.kind === 'ult_rift_drop') {
+      const fade = Math.min(1, b.f / 10), prog = Math.min(1, (b.age || 1) / 8);
+      ctx.globalAlpha = 0.94 * fade;
+      if (b.kind === 'ult_rift_drop') {
+        ctx.fillStyle = '#070214'; ctx.strokeStyle = pal.glow; ctx.lineWidth = 3.5;
+        ctx.beginPath(); ctx.ellipse(b.x, GROUND_Y - 240, 96 * prog, 22, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+      }
+      const cg = ctx.createLinearGradient(b.x, GROUND_Y - 260, b.x, GROUND_Y);
+      cg.addColorStop(0, pal.primary + '00'); cg.addColorStop(0.65, pal.glow + 'aa'); cg.addColorStop(1, '#ffffff');
+      ctx.fillStyle = cg;
+      ctx.beginPath(); ctx.moveTo(b.x - 35, GROUND_Y - 255); ctx.lineTo(b.x + 35, GROUND_Y - 255); ctx.lineTo(b.x + 128 * prog, GROUND_Y + 4); ctx.lineTo(b.x - 128 * prog, GROUND_Y + 4); ctx.closePath(); ctx.fill();
+      ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 4;
+      ctx.beginPath(); ctx.ellipse(b.x, GROUND_Y + 2, 138 * prog, 24, 0, 0, Math.PI * 2); ctx.stroke();
+      ctx.restore(); return;
+    }
+    if (b.kind === 'ult_titan_fist') {
+      const fade = Math.min(1, b.f / 10), rise = Math.min(1, (b.age || 1) / 8);
+      const fy = GROUND_Y - 210 * rise;
+      ctx.globalAlpha = 0.96 * fade;
+      ctx.fillStyle = '#240c06'; ctx.strokeStyle = pal.glow; ctx.lineWidth = 4;
+      ctx.beginPath(); ctx.roundRect(b.x - 62, fy, 124, 215 * rise, 22); ctx.fill(); ctx.stroke();
+      ctx.strokeStyle = pal.core; ctx.lineWidth = 3;
+      for (let k = -1; k <= 1; k++) {
+        ctx.beginPath(); ctx.moveTo(b.x + k * 34, fy + 16); ctx.lineTo(b.x + k * 28, fy + 85); ctx.stroke();
+      }
+      ctx.restore(); return;
+    }
+    if (b.kind === 'ult_obsidian_spear') {
+      ctx.save(); ctx.translate(b.x, b.y); ctx.scale(d, 1);
+      ctx.fillStyle = '#14080c'; ctx.strokeStyle = pal.glow; ctx.lineWidth = 2.6;
+      ctx.beginPath(); ctx.moveTo(68, 0); ctx.lineTo(-16, -15); ctx.lineTo(-54, 0); ctx.lineTo(-16, 15); ctx.closePath(); ctx.fill(); ctx.stroke();
+      ctx.strokeStyle = pal.core; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(62, 0); ctx.lineTo(-40, 0); ctx.stroke();
+      ctx.restore(); ctx.restore(); return;
+    }
+    if (b.kind === 'ult_mercury_surge') {
+      const fade = Math.min(1, b.f / 9);
+      ctx.globalAlpha = 0.94 * fade;
+      const mg = ctx.createLinearGradient(b.x, GROUND_Y, b.x, GROUND_Y - 140);
+      mg.addColorStop(0, '#334155'); mg.addColorStop(0.55, '#cbd5e1'); mg.addColorStop(1, '#ffffff');
+      ctx.fillStyle = mg; ctx.strokeStyle = '#0f172a'; ctx.lineWidth = 2.8;
+      ctx.beginPath(); ctx.moveTo(b.x - 105, GROUND_Y + 4);
+      for (let k = -3; k <= 3; k++) {
+        const sy = GROUND_Y - 78 - Math.abs(Math.sin(simFrame * 0.35 + k)) * 72;
+        ctx.lineTo(b.x + k * 32, sy);
+      }
+      ctx.lineTo(b.x + 105, GROUND_Y + 4); ctx.closePath(); ctx.fill(); ctx.stroke();
+      ctx.restore(); return;
+    }
+    if (b.kind === 'ult_spore_canopy') {
+      const fade = Math.min(1, b.f / 10);
+      ctx.globalAlpha = 0.88 * fade;
+      const cg = ctx.createRadialGradient(b.x, GROUND_Y - 220, 18, b.x, GROUND_Y - 210, 148);
+      cg.addColorStop(0, '#bbf7d0'); cg.addColorStop(0.55, '#16a34acc'); cg.addColorStop(1, '#14532d00');
+      ctx.fillStyle = cg; ctx.beginPath(); ctx.ellipse(b.x, GROUND_Y - 210, 148, 62, 0, 0, Math.PI * 2); ctx.fill();
+      for (let k = 0; k < 10; k++) {
+        const px = b.x - 115 + k * 25 + Math.sin(simFrame * 0.2 + k) * 10;
+        const py = GROUND_Y - 205 + ((simFrame * 4 + k * 23) % 195);
+        ctx.fillStyle = k % 2 === 0 ? '#dcfce7' : '#4ade80';
+        ctx.beginPath(); ctx.arc(px, py, 5.2, 0, Math.PI * 2); ctx.fill();
+      }
+      ctx.restore(); return;
+    }
+    if (b.kind === 'ult_pyramid_tomb') {
+      const fade = Math.min(1, b.f / 10), rise = Math.min(1, (b.age || 1) / 9);
+      const h = 250 * rise;
+      ctx.globalAlpha = 0.94 * fade;
+      const pg = ctx.createLinearGradient(b.x, GROUND_Y, b.x, GROUND_Y - h);
+      pg.addColorStop(0, '#713f12'); pg.addColorStop(0.55, pal.primary); pg.addColorStop(1, pal.core);
+      ctx.fillStyle = pg; ctx.strokeStyle = '#fffbeb'; ctx.lineWidth = 3.2;
+      ctx.beginPath(); ctx.moveTo(b.x - 122, GROUND_Y + 4); ctx.lineTo(b.x, GROUND_Y - h); ctx.lineTo(b.x + 122, GROUND_Y + 4); ctx.closePath(); ctx.fill(); ctx.stroke();
+      ctx.strokeStyle = pal.glow; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(b.x, GROUND_Y - h); ctx.lineTo(b.x, GROUND_Y + 4); ctx.stroke();
+      ctx.restore(); return;
+    }
+    if (b.kind === 'ult_celestial_orb') {
+      ctx.globalAlpha = 0.95;
+      const og = ctx.createRadialGradient(b.x, b.y, 4, b.x, b.y, 38);
+      og.addColorStop(0, '#ffffff'); og.addColorStop(0.45, pal.glow); og.addColorStop(1, pal.primary + '00');
+      ctx.fillStyle = og; ctx.beginPath(); ctx.arc(b.x, b.y, 38, 0, Math.PI * 2); ctx.fill();
+      ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 2.4;
+      ctx.beginPath(); ctx.arc(b.x, b.y, 20, simFrame * 0.2, simFrame * 0.2 + Math.PI * 1.3); ctx.stroke();
+      ctx.restore(); return;
+    }
+    if (b.kind === 'ult_mandala') {
+      const fade = Math.min(1, b.f / 10), prog = Math.min(1, (b.age || 1) / 8);
+      ctx.globalAlpha = 0.94 * fade;
+      const bg = ctx.createLinearGradient(b.x, GROUND_Y - 400, b.x, GROUND_Y);
+      bg.addColorStop(0, '#ffffff'); bg.addColorStop(0.45, pal.glow + 'dd'); bg.addColorStop(1, pal.primary + '44');
+      ctx.fillStyle = bg; ctx.fillRect(b.x - 86 * prog, GROUND_Y - 400, 172 * prog, 404);
+      // Rotating Sacred Lotus Mandala overhead & floor
+      ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 3;
+      ctx.beginPath(); ctx.ellipse(b.x, GROUND_Y - 350, 118 * prog, 26, 0, 0, Math.PI * 2); ctx.stroke();
+      ctx.beginPath(); ctx.ellipse(b.x, GROUND_Y + 2, 128 * prog, 24, 0, 0, Math.PI * 2); ctx.stroke();
+      ctx.restore(); return;
+    }
+
+    // 0) SECRET SUB-BENDING ARTS RENDERERS (Bloodbend, Metal Wire, Combustion, Vacuum, Soul Bind!)
     if (b.kind === 'sub_bloodbend') {
       const fade = Math.min(1, b.f / 8) * Math.min(1, b.age / 6);
       // Giant Crimson Full Moon looming behind the puppet-gripped enemy!
@@ -8382,9 +9368,73 @@
     g.restore();
   }
 
+  // ===== BESPOKE REALM GRANDMASTER & SHADOW AVATAR REGALIA (Clearly Distinguishes Bosses From Tribe Minions!) =====
+  function drawBossRegalia(g, regalia, pal, sash) {
+    if (!regalia) return;
+    g.save();
+    if (regalia === 'tidal_halo' || regalia === 'celestial_halo' || regalia === 'wind_rings') {
+      // Floating glowing Grandmaster Ring Halo behind shoulders
+      g.strokeStyle = pal.glow; g.lineWidth = 2.6;
+      g.beginPath(); g.arc(-6, -42, 34, 0, Math.PI * 2); g.stroke();
+      g.strokeStyle = pal.core; g.lineWidth = 1.4;
+      g.beginPath(); g.arc(-6, -42, 26, 0, Math.PI * 2); g.stroke();
+    } else if (regalia === 'flame_horns' || regalia === 'obsidian_crown' || regalia === 'glacier_crown') {
+      // Towering Imperial Spiked Mantle / Horns behind torso
+      g.fillStyle = '#05070c'; g.strokeStyle = pal.glow; g.lineWidth = 2.0;
+      g.beginPath();
+      g.moveTo(-16, -54); g.lineTo(-42, -88); g.lineTo(-18, -68);
+      g.lineTo(-8, -98); g.lineTo(4, -68); g.lineTo(28, -92); g.lineTo(14, -52);
+      g.closePath(); g.fill(); g.stroke();
+    } else if (regalia === 'thunder_drums') {
+      // Raijin Floating Ring of 5 Thunder Drums behind shoulders!
+      g.strokeStyle = pal.glow; g.lineWidth = 1.8;
+      g.beginPath(); g.arc(-4, -46, 40, Math.PI * 0.85, Math.PI * 2.15); g.stroke();
+      for (let k = 0; k < 5; k++) {
+        const a = Math.PI * 0.92 + (k / 4) * Math.PI * 1.16;
+        const dx = -4 + Math.cos(a) * 40, dy = -46 + Math.sin(a) * 40;
+        g.fillStyle = '#05070c'; g.strokeStyle = pal.core; g.lineWidth = 1.8;
+        g.beginPath(); g.arc(dx, dy, 7.5, 0, Math.PI * 2); g.fill(); g.stroke();
+      }
+    } else if (regalia === 'eclipse_wings' || regalia === 'eclipse_general') {
+      // Jagged Shadow-Feather Mantle Wings unfurling from back!
+      const sw = Math.sin(sash * 1.5) * 4;
+      g.fillStyle = '#05070c'; g.strokeStyle = pal.glow; g.lineWidth = 1.8;
+      g.beginPath();
+      g.moveTo(-12, -52); g.lineTo(-56, -84 + sw); g.lineTo(-42, -54 + sw);
+      g.lineTo(-62, -38 + sw); g.lineTo(-34, -28); g.lineTo(-10, -24);
+      g.closePath(); g.fill(); g.stroke();
+    } else if (regalia === 'stone_mantle' || regalia === 'iron_shogun') {
+      // Massive Imperial Shogun Dual Shoulder Pauldrons & War Crest!
+      g.fillStyle = '#05070c'; g.strokeStyle = pal.glow; g.lineWidth = 2.0;
+      g.beginPath(); g.moveTo(-24, -62); g.lineTo(-40, -40); g.lineTo(-22, -26); g.lineTo(-8, -46); g.closePath(); g.fill(); g.stroke();
+      g.beginPath(); g.moveTo(16, -62); g.lineTo(34, -42); g.lineTo(18, -28); g.lineTo(6, -46); g.closePath(); g.fill(); g.stroke();
+    } else if (regalia === 'antler_crown' || regalia === 'sunburst_crest') {
+      // Radiant Sovereign Antlers / Sunburst Rays radiating from upper back!
+      g.strokeStyle = pal.glow; g.lineWidth = 2.6; g.lineCap = 'round';
+      for (let k = -3; k <= 3; k++) {
+        const a = -Math.PI * 0.5 + k * 0.36;
+        g.beginPath(); g.moveTo(-4 + Math.cos(a) * 16, -48 + Math.sin(a) * 16);
+        g.lineTo(-4 + Math.cos(a) * (k % 2 === 0 ? 50 : 38), -48 + Math.sin(a) * (k % 2 === 0 ? 50 : 38)); g.stroke();
+      }
+    } else if (regalia === 'shadow_avatar') {
+      // THE SHADOW AVATAR: Colossal Eclipse Wings + Sovereign Twin-Horn Mantle + Dark Solar Halo!
+      const sw = Math.sin(sash * 1.4) * 5;
+      g.fillStyle = '#05070c'; g.strokeStyle = '#ff4d6d'; g.lineWidth = 2.2;
+      g.beginPath();
+      g.moveTo(-10, -54); g.lineTo(-68, -98 + sw); g.lineTo(-48, -60 + sw);
+      g.lineTo(-72, -34 + sw); g.lineTo(-42, -16); g.lineTo(-10, -18);
+      g.closePath(); g.fill(); g.stroke();
+      g.strokeStyle = '#ffd878'; g.lineWidth = 2.8;
+      g.beginPath(); g.arc(-2, -48, 44, 0, Math.PI * 2); g.stroke();
+    }
+    g.restore();
+  }
+
   function drawFighter(f) {
     if (!f.dpose) animateFighter(f);
-    const p = f.dpose, sc = 1.18;
+    const bossScale = (f.id === 'p2' && match.boss && match.boss.bossScale) ? match.boss.bossScale : 1.0;
+    const bossRegalia = (f.id === 'p2' && match.boss && match.boss.bossRegalia) ? match.boss.bossRegalia : '';
+    const p = f.dpose, sc = 1.18 * bossScale;
     const pal = getFighterPalette(f);
     const bSx = (f.el.body && f.el.body.sx) || 1.0, bSy = (f.el.body && f.el.body.sy) || 1.0;
     const wSpec = getWeaponSpec(f);
@@ -8397,6 +9447,24 @@
     const jx = struck ? (Math.random() - 0.5) * (f.state === 'hitstun' || f.state === 'knockdown_air' ? 7 : 4) : 0;
 
     drawAmbientBendingAura(f);
+
+    // THE SHADOW AVATAR: 12 Orbiting Elemental Orbs + Dark Eclipse Corona behind him!
+    if (bossRegalia === 'shadow_avatar' && f.state !== 'ko') {
+      ctx.save();
+      const ox = f.x + jx, oy = f.y - 122;
+      const eg = ctx.createRadialGradient(ox, oy, 26, ox, oy, 118);
+      eg.addColorStop(0, 'rgba(20,4,18,0.62)'); eg.addColorStop(0.55, 'rgba(220,38,88,0.28)'); eg.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = eg; ctx.beginPath(); ctx.arc(ox, oy, 118, 0, Math.PI * 2); ctx.fill();
+      for (let k = 0; k < 12; k++) {
+        const ang = simFrame * 0.032 + (k / 12) * Math.PI * 2;
+        const rx = ox + Math.cos(ang) * 86, ry = oy + Math.sin(ang) * 58;
+        const eCol = ELEMENTS[EL_ORDER[k]].glow;
+        ctx.fillStyle = eCol; ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 1.2;
+        ctx.globalAlpha = 0.88;
+        ctx.beginPath(); ctx.arc(rx, ry, 5.2, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+      }
+      ctx.restore();
+    }
 
     const tipLocal = computeWeaponTip(p, f.facing, sc);
     const wx = f.x + tipLocal.x, wy = f.y + tipLocal.y;
@@ -8426,9 +9494,10 @@
     sctx.fillStyle = '#05070c';
     sctx.beginPath(); sctx.moveTo(-6, 1); sctx.quadraticCurveTo(-20, 14, sx2, sy2); sctx.lineTo(sx2 + 5, sy2 + 5); sctx.quadraticCurveTo(-14, 20, -2, 8); sctx.fill();
 
-    // Torso (+ Element Back Accents / Cloak / Sode Banner / Spirit Ribbon!)
+    // Torso (+ Element Back Accents + Bespoke Realm Grandmaster Regalia!)
     const activeGear = getActiveGear(f);
     sctx.save(); sctx.translate(0, -4); sctx.rotate(p.tr);
+    if (bossRegalia) drawBossRegalia(sctx, bossRegalia, pal, f.sash);
     drawElementTorsoBack(sctx, f.el.id, pal, f.sash, activeGear);
     sctx.fillStyle = '#05070c';
     sctx.save(); sctx.translate(-5, -52); sctx.rotate(p.bs); drawHumanUpperArm(sctx);
@@ -8443,7 +9512,7 @@
     drawElementTorsoAccents(sctx, f.el.id, pal, activeGear);
 
     sctx.save(); sctx.translate(2, -64); sctx.rotate(p.hr || 0);
-    const glowEyes = f.avatarFlash > 0 || f.magic >= 100 || f.phase2 || (f.id === 'p2' && match.boss && match.boss.isFinal);
+    const glowEyes = f.avatarFlash > 0 || f.magic >= 100 || f.phase2 || (f.id === 'p2' && match.boss && match.boss.isRealmBoss);
     drawElementHeadAndGear(sctx, f.el.id, pal, activeGear, f.pTail, Math.sin(simFrame * 0.1), glowEyes);
     sctx.restore();
 
@@ -10069,6 +11138,27 @@
     drawFighter(p1);
     drawFighter(p2);
 
+    // Shadow Avatar Bending-Theft Soul-Siphon Beam & High-Charge Tendrils!
+    if (!match.inMenu && match.boss && match.boss.isFinal && !match.boss.isMinion && p1.state !== 'ko' && p2.state !== 'ko') {
+      if (match.theftBeamF > 0) {
+        const alpha = Math.min(1, match.theftBeamF / 16);
+        const mx = (p1.x + p2.x) * 0.5, my = Math.min(p1.y, p2.y) - 135;
+        ctx.save(); ctx.globalAlpha = 0.94 * alpha;
+        ctx.strokeStyle = '#991b1b'; ctx.lineWidth = 22 * alpha; ctx.lineCap = 'round';
+        ctx.beginPath(); ctx.moveTo(p1.x, p1.y - 108); ctx.quadraticCurveTo(mx, my + Math.sin(simFrame * 0.5) * 18, p2.x, p2.y - 118); ctx.stroke();
+        ctx.strokeStyle = '#ff4d6d'; ctx.lineWidth = 10 * alpha; ctx.stroke();
+        ctx.strokeStyle = '#fff5cc'; ctx.lineWidth = 3.5 * alpha; ctx.stroke();
+        ctx.restore();
+      } else if (!match.bendingStolen && match.bendingTheft >= 55) {
+        const intensity = Math.min(1, (match.bendingTheft - 55) / 45);
+        ctx.save(); ctx.globalAlpha = 0.28 + intensity * 0.42;
+        ctx.strokeStyle = '#ff4d6d'; ctx.lineWidth = 2.2 + intensity * 1.8;
+        ctx.setLineDash([12, 10]); ctx.lineDashOffset = -simFrame * 4;
+        ctx.beginPath(); ctx.moveTo(p1.x, p1.y - 105); ctx.quadraticCurveTo((p1.x + p2.x) * 0.5, Math.min(p1.y, p2.y) - 140, p2.x, p2.y - 115); ctx.stroke();
+        ctx.setLineDash([]); ctx.restore();
+      }
+    }
+
     bendingWaves.forEach(drawBendingWave);
     drawFinisherAnim();
 
@@ -10194,6 +11284,7 @@
     p2Mag: document.getElementById('p2-mag'), p2MagW: document.getElementById('p2-mag-wrap'),
     p1Poise: document.getElementById('p1-poise'), p1PoiseW: document.getElementById('p1-poise-wrap'),
     p2Poise: document.getElementById('p2-poise'), p2PoiseW: document.getElementById('p2-poise-wrap'),
+    siphonWrap: document.getElementById('siphon-wrap'), siphonFill: document.getElementById('siphon-fill'), siphonLbl: document.getElementById('siphon-lbl'),
     wepBtnIco: document.getElementById('weapon-btn-ico'),
     p1Badges: document.getElementById('p1-badges'), p2Badges: document.getElementById('p2-badges'),
     p1Jewels: document.getElementById('p1-jewels'), p2Jewels: document.getElementById('p2-jewels'),
@@ -10213,7 +11304,7 @@
     wifiPingPill: document.getElementById('wifi-ping-pill'),
     wifiPingVal: document.getElementById('wifi-ping-val')
   };
-  let lastE1 = '', lastE2 = '', lastJw = '', lastWepIco = '', lastSR = '', lastBendLbl = '', lastSubKey = '', lastMutKey = '', lastLocalMagEl = '', lastPingTxt = '';
+  let lastE1 = '', lastE2 = '', lastJw = '', lastWepIco = '', lastSR = '', lastBendLbl = '', lastSubKey = '', lastMutKey = '', lastLocalMagEl = '', lastPingTxt = '', lastSiphonKey = '';
   let lastB1 = '', lastB2 = '', lastC1 = -1, lastC2 = -1, lastTmr = '', lastBanKey = '';
   let lastH1 = '', lastHT1 = '', lastH2 = '', lastHT2 = '', lastM1 = '', lastM2 = '', lastP1 = '', lastP2 = '';
   const FIST_SVG = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M7 11V7a1.5 1.5 0 0 1 3 0v3M10 10V6a1.5 1.5 0 0 1 3 0v4M13 10V7a1.5 1.5 0 0 1 3 0v3M16 11V9a1.5 1.5 0 0 1 3 0v5a6 6 0 0 1-6 6h-2a5 5 0 0 1-5-5v-3.5a1.5 1.5 0 0 1 3 0"/></svg>`;
@@ -10235,12 +11326,18 @@
       elRefs.p1Name.innerHTML = escapeHtml(getFighterDisplayName('p1')) + (isWifi && lf.id === 'p1' ? '<span class="you-tag">YOU</span>' : '');
       elRefs.p1Mag.style.background = `linear-gradient(90deg, ${p1Pal.primary}, ${p1Pal.glow})`;
     }
-    const p2Key = `${p2.el.id}:${p2Pal.isAlt ? 1 : 0}:${match.boss ? match.boss.id : -1}:${p2.customName}:${isWifi ? (lf.id === 'p2' ? 1 : 0) : -1}`;
+    const p2Key = `${p2.el.id}:${p2Pal.isAlt ? 1 : 0}:${match.boss ? `${match.boss.stageId}_${match.boss.boutIdx}_${match.boss.title}` : -1}:${p2.customName}:${isWifi ? (lf.id === 'p2' ? 1 : 0) : -1}`;
     if (lastE2 !== p2Key) {
       lastE2 = p2Key;
       elRefs.p2Crest.innerHTML = p2.el.svg; elRefs.p2Crest.style.color = p2Pal.primary; elRefs.p2Crest.style.borderColor = p2Pal.glow;
       elRefs.p2Crest.style.boxShadow = `0 0 14px ${p2Pal.primary}88`;
-      elRefs.p2Name.innerHTML = (isWifi && lf.id === 'p2' ? '<span class="you-tag">YOU</span>' : '') + escapeHtml(getFighterDisplayName('p2'));
+      let roleTag = '';
+      if (isWifi && lf.id === 'p2') roleTag = '<span class="you-tag">YOU</span>';
+      else if (match.mode === 'campaign' && match.boss) {
+        if (match.boss.isRealmBoss) roleTag = `<span class="boss-tag">${match.boss.isFinal ? 'SHADOW AVATAR' : 'GRANDMASTER'}</span>`;
+        else if (match.boss.isMinion) roleTag = `<span class="minion-tag">${match.boss.isFinal ? 'GENERAL' : 'WARRIOR'} ${(match.boss.boutIdx || 0) + 1}/5</span>`;
+      }
+      elRefs.p2Name.innerHTML = roleTag + escapeHtml(getFighterDisplayName('p2'));
       elRefs.p2Mag.style.background = `linear-gradient(270deg, ${p2Pal.primary}, ${p2Pal.glow})`;
     }
 
@@ -10320,18 +11417,43 @@
       elRefs.p2MagW.classList.toggle('ready', p2.magic >= 100);
       elRefs.p2MagW.classList.toggle('ex-ready', p2.magic >= 35 && p2.magic < 100);
     }
-    const lfUltRdy = lf.magic >= 100, lfExRdy = lf.magic >= 35 && !lfUltRdy;
+    const lfSealed = lf.id === 'p1' && Boolean(match.bendingStolen);
+    const lfUltRdy = !lfSealed && lf.magic >= 100, lfExRdy = !lfSealed && lf.magic >= 35 && !lfUltRdy;
     const subCost = gmMastered ? 35 : 45;
     elRefs.btnMag.classList.toggle('ready', lfUltRdy);
     elRefs.btnMag.classList.toggle('ex-ready', lfExRdy);
-    if (elRefs.btnSub) elRefs.btnSub.classList.toggle('sub-ready', lf.magic >= subCost);
+    elRefs.btnMag.classList.toggle('sealed', lfSealed);
+    if (elRefs.btnSub) {
+      elRefs.btnSub.classList.toggle('sub-ready', !lfSealed && lf.magic >= subCost);
+      elRefs.btnSub.classList.toggle('sealed', lfSealed);
+    }
+    if (btnAvatar) btnAvatar.classList.toggle('sealed', lfSealed);
 
-    const bl = lf.magic >= 100 ? 'ULTIMATE' : (lf.magic >= 35 ? (BEND_TRICKS[lf.el.id]?.fwd || 'BEND') : 'BEND');
+    const bl = lfSealed ? 'SEALED' : (lf.magic >= 100 ? 'ULTIMATE' : (lf.magic >= 35 ? (BEND_TRICKS[lf.el.id]?.fwd || 'BEND') : 'BEND'));
     if (elRefs.bendLbl && bl !== lastBendLbl) { lastBendLbl = bl; elRefs.bendLbl.textContent = bl; }
     const po1 = `${Math.max(0, Math.min(100, p1.poise / (p1.maxPoise || 100) * 100)).toFixed(0)}%`;
     if (elRefs.p1Poise && po1 !== lastP1) { lastP1 = po1; elRefs.p1Poise.style.width = po1; elRefs.p1PoiseW.classList.toggle('low', p1.poise / (p1.maxPoise || 100) < 0.34); }
     const po2 = `${Math.max(0, Math.min(100, p2.poise / (p2.maxPoise || 100) * 100)).toFixed(0)}%`;
     if (elRefs.p2Poise && po2 !== lastP2) { lastP2 = po2; elRefs.p2Poise.style.width = po2; elRefs.p2PoiseW.classList.toggle('low', p2.poise / (p2.maxPoise || 100) < 0.34); }
+
+    // Shadow Avatar Bending-Theft Siphon Bar (Right HUD beneath P2 Poise)
+    if (elRefs.siphonWrap) {
+      const showSiphon = Boolean(match.boss && match.boss.isFinal && !match.boss.isMinion && !isWifi);
+      const pct = Math.max(0, Math.min(100, Math.round(match.bendingTheft || 0)));
+      const sKey = `${showSiphon ? 1 : 0}:${pct}:${match.bendingStolen ? 1 : 0}`;
+      if (sKey !== lastSiphonKey) {
+        lastSiphonKey = sKey;
+        elRefs.siphonWrap.classList.toggle('hidden', !showSiphon);
+        if (showSiphon) {
+          elRefs.siphonFill.style.width = `${pct}%`;
+          elRefs.siphonWrap.classList.toggle('danger', pct >= 75 && !match.bendingStolen);
+          elRefs.siphonWrap.classList.toggle('stolen', Boolean(match.bendingStolen));
+          elRefs.siphonLbl.textContent = match.bendingStolen
+            ? 'BENDING STOLEN · SEALED!'
+            : (pct >= 75 ? `DANGER: BENDING THEFT ${pct}%` : `BENDING THEFT · ${pct}%`);
+        }
+      }
+    }
 
     const tmr = match.toWin > 10 ? '∞' : String(match.timer).padStart(2, '0');
     if (tmr !== lastTmr) { lastTmr = tmr; elRefs.timer.textContent = tmr; }
@@ -10384,7 +11506,7 @@
     }
 
     const rmKey = isWifi ? `${match.wifiRematchP1 ? 1 : 0}${match.wifiRematchP2 ? 1 : 0}:${WIFI && WIFI.connected ? 1 : 0}` : '';
-    const banKey = match.banner ? `${match.banner.text}|${match.banner.sub||''}|${match.banner.color}|${match.banner.isUlt?1:0}|${match.screen}|${rmKey}` : '';
+    const banKey = match.banner ? `${match.banner.text}|${match.banner.sub||''}|${match.banner.color}|${match.banner.isUlt?1:0}|${match.screen}|${rmKey}|${match.campaignStageIdx}:${match.campaignBoutIdx}` : '';
     if (banKey !== lastBanKey) {
       lastBanKey = banKey;
       if (match.banner) {
@@ -10395,8 +11517,22 @@
         elRefs.bTitle.textContent = match.banner.text; elRefs.bTitle.style.color = match.banner.color;
         elRefs.bSub.textContent = match.banner.sub || '';
         elRefs.mActs.classList.toggle('hidden', !hasActs);
-        const canAdvance = hasActs && !isWifi && match.winner === 'p1' && match.mode === 'campaign' && match.campaignStageIdx >= 0 && match.campaignStageIdx < CAMPAIGN_STAGES.length - 1;
+        const isMinionWin = Boolean(match.boss && match.boss.isMinion);
+        const hasNextBout = isMinionWin && match.campaignBoutIdx < 5;
+        const hasNextRealm = !isMinionWin && match.campaignStageIdx >= 0 && match.campaignStageIdx < CAMPAIGN_STAGES.length - 1;
+        const canAdvance = hasActs && !isWifi && match.winner === 'p1' && match.mode === 'campaign' && (hasNextBout || hasNextRealm);
         elRefs.btnNextBoss.classList.toggle('hidden', !canAdvance);
+        if (canAdvance) {
+          if (hasNextBout) {
+            if (match.campaignBoutIdx === 4) {
+              elRefs.btnNextBoss.textContent = match.boss.isFinal ? 'FACE SHADOW AVATAR' : 'CHALLENGE GRANDMASTER';
+            } else {
+              elRefs.btnNextBoss.textContent = `${match.boss.isFinal ? 'NEXT GENERAL' : 'NEXT WARRIOR'} (${match.campaignBoutIdx + 2}/5)`;
+            }
+          } else {
+            elRefs.btnNextBoss.textContent = 'NEXT REALM';
+          }
+        }
         const wifiConn = isWifi && WIFI && WIFI.connected;
         if (elRefs.btnWifiLobbyEnd) elRefs.btnWifiLobbyEnd.classList.toggle('hidden', !wifiConn);
         if (elRefs.btnArmoryEnd) elRefs.btnArmoryEnd.classList.toggle('hidden', isWifi);
@@ -11071,10 +12207,10 @@
     } else {
       const mvs = [
         ['Wi-Fi / Hotspot 2-Player Duet', 'Main Menu -> WI-FI DUET (100% Offline)', 'Connect two Android phones on the same Wi-Fi or turn on one phone\'s Wi-Fi Hotspot (no internet needed). Host taps HOST DUEL, Player 2 taps the discovered Dojo card or enters the short Dojo Code!'],
-        ['Fighter Identity & Alt Clan Mirror Mode', 'Grounded YOU Ring · Cross-Up Tag · Distinct Silhouettes', 'Every Element has a unique martial silhouette, colored obi/trim accents, and grounded YOU ring (solid gold ring + forward chevron vs dashed rival ring). Mirror or same-color matchups automatically tint P2 in an Alt Clan palette!'],
-        ['Shadow Fight 2 4-Button Cluster', 'PUNCH · KICK · BEND · SUB-BEND', 'Streamlined 4 large buttons: PUNCH (Weapon/Fist + close Fwd/Back Throw), KICK, BEND (35% Signature / 100% Ultimate), and SUB-BEND (45% Secret Art). Stand neutral or hold Back to Block & Parry; double-tap stick to Dash/Roll!'],
-        ['12 Secret Sub-Bending Arts & Scrolls', 'Tap SUB (or Key I / O) at 45%+ Meter (35% with Scroll)', 'Water = Bloodbend; Fire = Combustion; Earth = Metal Grapple; Air = Vacuum; Ice = Frost Dome; Lightning = Arc Storm; Shadow = Soul Bind; Lava = Magma Rift; Metal = Mag Clamp; Nature = Briar Cage; Sand = Sand Burial; Spirit = Chi Seal!'],
-        ['12 Elemental Signatures (35% Meter · Instant Tap!)', 'Tap or Swipe BEND (U / Space)', 'Includes Water 8-Arm Octopus Multi-Slam, Fire Jet-Step, Earth Stone Gauntlets, Air Scooter, Lightning Redirect, Ice Cryo Prison, Shadow Swap Clone, Lava Shuriken, Metal Magnetic Pull, Nature Thorn Lash, Sand Mirage Clone, and Spirit Chi Beam!'],
+        ['36 Unique Elemental Ultimates (Zero Clones!)', '100% Meter + Neutral / Up / Down + BEND', 'Every one of the 12 elements has 3 completely distinct Ultimates: Ocean Tsunami/Hydro Jet/Maelstrom, Solar Nova/Flare Meteors, Absolute Winter/Mirror Prisms, Seismic Monolith/Crystal Clamp, Sonic Wave/Sky Dive, Thunder God/Railgun, Eternal Night Legion/Rift Drop, Volcanic Titan/Obsidian Spears, Iron Dominion/Liquid Mercury, World Beast/Spore Canopy, Pyramid Tomb/Mirage Legion, and Celestial Ascension/Soul Mandala!'],
+        ['12 Compendium Advanced Sub-Bendings', 'Tap SUB (or Key I / O) at 45%+ Meter (35% with Scroll)', 'Water = Blood Bending; Fire = Plasma Combustion; Earth = Tectonic Gravity Fault; Air = Vacuum Sphere; Ice = Thermal Extraction; Lightning = Neural EMP Pulse; Shadow = Dimensional Rift; Lava = Volcanic Eruption; Metal = Metal Transmutation; Nature = Primal Chimera Beast; Sand = Vitrified Glass Forge; Spirit = Soul Rend!'],
+        ['Story Mode 6-Bout Realm Gauntlet & Shadow Avatar', '5 Tribe Warriors (5 Weapons) -> Realm Grandmaster Boss', 'Conquer all 13 cultural realms! Defeat 5 distinct tribe warriors wielding different weapons to unlock each Realm Grandmaster Boss. In Realm 13, survive 5 Elite Eclipse Generals and defeat THE SHADOW AVATAR before his Bending-Theft bar reaches 100% and seals your bending!'],
+        ['Fighter Identity & Alt Clan Mirror Mode', 'Grounded YOU Ring · Cross-Up Tag · Distinct Silhouettes', 'Every Element has a unique martial silhouette, colored obi/trim accents, and grounded YOU ring (solid gold ring + forward chevron vs dashed rival ring). Realm Bosses wear unique Grandmaster Regalia!'],
         ['Armory Forge Weapons, Enchants & Gear', 'Armory -> 12 Weapons · 5 Enchants · 9 Silhouette Masks/Gear', 'Forge Hook Swords, Thorn Nagamaki, Twin Scimitars, War Fans, Kitsune/Tengu Masks, Iron Sode Pauldrons, Monk Beads, and 3D Volumetric Weapon Enchantment Seals!']
       ];
       body = mvs.map(([n, i, d]) => `<div class="mrow"><b>${n}</b><small>${i}</small><span>${d}</span></div>`).join('');
@@ -11227,9 +12363,11 @@
   }
 
   // ===== INTERACTIVE 12-REGION INK WORLD MAP ('THE HOLLOW AVATAR' CAMPAIGN) =====
+  let mapBoutIdx = -1;
   function openCampaign() {
     closeAllModals(); match.paused = true;
     mapSelIdx = getNextStoryStageIdx();
+    mapBoutIdx = Math.min(5, getRealmProgress(mapSelIdx));
     campaignElId = getCampaignPlayerElId();
     campaignModal.classList.remove('hidden');
     renderCampaign();
@@ -11240,6 +12378,12 @@
     const el = ELEMENTS[st.el];
     const cleared = PROG.cleared.includes(st.id);
     const unlocked = isStageUnlocked(st.id);
+    const realmProg = getRealmProgress(st.id);
+    const maxAllowedBout = unlocked ? (cleared ? 5 : Math.min(5, realmProg)) : 0;
+    if (mapBoutIdx < 0 || mapBoutIdx > maxAllowedBout) mapBoutIdx = maxAllowedBout;
+    const selOpp = buildStageOpponent(st.id, mapBoutIdx);
+    const selWep = WEAPON_CATALOG.find(w => w.id === selOpp.weapon);
+    const selWepName = selWep ? selWep.name : (ELEMENTS[selOpp.el]?.weapon || 'Signature Weapon');
     const activeStoryEl = getCampaignPlayerElId();
     const trialDone = st.trial && PROG.completedTrials.includes(st.trial.id);
     const starFull = `<svg viewBox="0 0 20 20" fill="currentColor"><polygon points="10,1.6 12.6,7 18.6,7.8 14.2,12 15.3,18 10,15.1 4.7,18 5.8,12 1.4,7.8 7.4,7"/></svg>`;
@@ -11253,6 +12397,20 @@
 
     const oldMap = campaignModal.querySelector('#map-canvas');
     if (oldMap && (oldMap.width > 1 || oldMap.height > 1)) { oldMap.width = 1; oldMap.height = 1; }
+
+    const pipsHtml = Array.from({ length: 6 }, (_, bi) => {
+      const isBossPip = bi === 5;
+      const done = bi < realmProg;
+      const locked = !unlocked || bi > maxAllowedBout;
+      const isCur = bi === mapBoutIdx && unlocked;
+      const lbl = isBossPip ? 'BOSS' : String(bi + 1);
+      return `<button class="gpip ${isBossPip ? 'boss' : ''} ${done ? 'done' : ''} ${isCur ? 'cur' : ''} ${locked ? 'locked' : ''}" data-bout="${bi}" ${locked ? 'disabled' : ''}>${lbl}</button>`;
+    }).join('');
+    const fightBtnTxt = !unlocked
+      ? 'LOCKED'
+      : (mapBoutIdx === 5
+        ? (st.isFinal ? 'FACE SHADOW AVATAR' : (cleared ? 'REMATCH GRANDMASTER' : 'CHALLENGE GRANDMASTER'))
+        : (mapBoutIdx < realmProg ? `REMATCH ${st.isFinal ? 'GENERAL' : 'WARRIOR'} ${mapBoutIdx + 1}/5` : `FIGHT ${st.isFinal ? 'GENERAL' : 'WARRIOR'} ${mapBoutIdx + 1}/5`));
 
     campaignModal.innerHTML = `
       <section class="wm-screen" style="--accent:${el.glow}">
@@ -11271,21 +12429,28 @@
           <div class="ornate-frame map-canvas-wrap"><canvas id="map-canvas" width="640" height="380"></canvas></div>
           <div class="ornate-frame wm-detail">
             <div>
-              <div style="display:flex;align-items:center;gap:11px;margin-bottom:6px;flex-wrap:nowrap">
+              <div style="display:flex;align-items:center;gap:11px;margin-bottom:4px;flex-wrap:nowrap">
                 <div class="md-crest">${el.svg}</div>
                 <div style="min-width:0;flex:1">
                   <div class="md-title">${st.title}</div>
-                  <div class="md-sub">${st.subtitle} · ${st.rank}</div>
+                  <div class="md-sub">${st.region} · ${st.rank}</div>
                 </div>
               </div>
               <div class="wm-stars">${starsHtml}</div>
+              <div class="gauntlet-box" id="realm-gauntlet">
+                <div class="gauntlet-row">${pipsHtml}</div>
+                <div class="g-meta">
+                  <span><b>${escapeHtml(selOpp.title)}</b> · ${escapeHtml(selWepName)}</span>
+                  <span>${realmProg}/6</span>
+                </div>
+              </div>
               <p class="md-desc">${st.storyDesc}</p>
               <div class="wm-div"><span></span></div>
               ${st.trial ? `<div class="md-trial"><b>REGIONAL TRIAL ${trialDone ? '· COMPLETED' : `· +${st.trial.reward} COINS`}</b><span style="display:inline-flex;align-items:center;gap:5px"><svg viewBox="0 0 10 10" width="8" height="8" fill="#e6a93c"><polygon points="5,0 10,5 5,10 0,5"/></svg>${st.trial.desc}</span></div>` : ''}
             </div>
             <div class="wm-actions">
               <button class="pill with-ico" id="c-armory">${bladesSvg}<span>ARMORY</span></button>
-              <button class="pill primary with-ico" id="c-fight" ${!unlocked ? 'disabled' : ''}>${toriiSvg}<span>${unlocked ? (cleared ? 'REMATCH' : 'CHALLENGE') : 'LOCKED'}</span></button>
+              <button class="pill primary with-ico" id="c-fight" ${!unlocked ? 'disabled' : ''}>${toriiSvg}<span>${fightBtnTxt}</span></button>
             </div>
             ${cleared && st.honorable ? `<button class="pill" id="c-spar" style="width:100%">SPAR ALLY (DOJO)</button>` : ''}
           </div>
@@ -11312,14 +12477,24 @@
         const d = Math.hypot(s.mx - x, s.my - y);
         if (d < bestD) { bestD = d; best = s.id; }
       });
-      if (best !== mapSelIdx) { mapSelIdx = best; sfx.bend(); renderCampaign(); }
+      if (best !== mapSelIdx) {
+        mapSelIdx = best;
+        mapBoutIdx = Math.min(5, getRealmProgress(best));
+        sfx.bend(); renderCampaign();
+      }
     };
+    campaignModal.querySelectorAll('[data-bout]').forEach(b => b.onclick = () => {
+      const bi = Number(b.dataset.bout);
+      if (Number.isFinite(bi) && bi >= 0 && bi <= maxAllowedBout) {
+        mapBoutIdx = bi; sfx.bend(); renderCampaign();
+      }
+    });
     campaignModal.querySelectorAll('[data-p1el]').forEach(b => b.onclick = () => {
       campaignElId = b.dataset.p1el;
       if (match.inMenu) { p1.el = ELEMENTS[campaignElId]; lastE1 = ''; }
       sfx.elemBend(campaignElId); renderCampaign();
     });
-    campaignModal.querySelector('#c-fight').onclick = () => { closeAllModals(); startCampaignStage(mapSelIdx); };
+    campaignModal.querySelector('#c-fight').onclick = () => { closeAllModals(); startCampaignStage(mapSelIdx, mapBoutIdx); };
     const sparBtn = campaignModal.querySelector('#c-spar');
     if (sparBtn) sparBtn.onclick = () => { closeAllModals(); startMatch(getCampaignPlayerElId(), st.el, null, { mode: 'dojo' }); };
     campaignModal.querySelector('#c-armory').onclick = openArmory;
@@ -11798,7 +12973,8 @@
     { id: 'verdant_grove', label: 'Verdant Grove' },
     { id: 'mirage_dunes', label: 'Mirage Dunes' },
     { id: 'astral_sanctum', label: 'Astral Sanctum' },
-    { id: 'eclipse_sanctum', label: 'Eclipse Citadel' }
+    { id: 'eclipse_sanctum', label: 'Eclipse Citadel' },
+    { id: 'avatar_convergence', label: 'Eclipse Throne' }
   ];
 
   function createWifiDuelEngine() {
@@ -13289,7 +14465,14 @@
   document.getElementById('mm-settings').onclick = () => { unlockAudio(); match.paused = true; pauseModal.classList.remove('hidden'); renderPause(); };
 
   document.getElementById('btn-pause').onclick = () => { unlockAudio(); togglePause(); };
-  document.getElementById('btn-next-boss').onclick = () => { unlockAudio(); startCampaignStage(match.campaignStageIdx + 1); };
+  document.getElementById('btn-next-boss').onclick = () => {
+    unlockAudio();
+    if (match.boss && match.boss.isMinion && match.campaignBoutIdx < 5) {
+      startCampaignStage(match.campaignStageIdx, match.campaignBoutIdx + 1);
+    } else {
+      startCampaignStage(match.campaignStageIdx + 1, 0);
+    }
+  };
   document.getElementById('btn-open-armory-end').onclick = () => { unlockAudio(); openArmory(); };
   document.getElementById('btn-wifi-lobby-end').onclick = () => { unlockAudio(); if (WIFI) WIFI.returnToLobby(true); };
   document.getElementById('btn-rematch').onclick = () => {
