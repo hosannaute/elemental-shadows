@@ -66,8 +66,10 @@ jobs:
           mkdir -p out
           cp android/app/build/outputs/apk/release/app-release.apk out/ElementalShadows-v3.5.0-android.apk
           ls -lh out/ElementalShadows-v3.5.0-android.apk
-          APKSIGNER=$(ls -1d "${ANDROID_HOME:-$ANDROID_SDK_ROOT}"/build-tools/*/apksigner | sort -V | tail -n1)
-          "$APKSIGNER" verify --print-certs out/ElementalShadows-v3.5.0-android.apk
+          BT_DIR=$(ls -1d "${ANDROID_HOME:-$ANDROID_SDK_ROOT}"/build-tools/* | sort -V | tail -n1)
+          "$BT_DIR/zipalign" -c 4 out/ElementalShadows-v3.5.0-android.apk
+          "$BT_DIR/aapt2" dump badging out/ElementalShadows-v3.5.0-android.apk | head -n 10
+          "$BT_DIR/apksigner" verify --verbose --print-certs out/ElementalShadows-v3.5.0-android.apk
 
       - name: Upload APK workflow artifact
         uses: actions/upload-artifact@v4
@@ -84,7 +86,7 @@ jobs:
           NOTES=$(cat <<'EOF'
           Standalone 100% offline Android APK of **Elemental Shadows — The Hollow Avatar**.
 
-          > **Install Note:** Signed with our **permanent release keystore** (same signing key as `v3.3.x` / `v3.4.0`, bumped to `versionCode 14`). Installing `v3.5.0` directly over `v3.4.0` updates cleanly in-place with zero conflicts and preserves all saved story progress, armory unlocks, and settings.
+          > **Install Note:** Signed with our **permanent release keystore** (V1 + V2 + V3 signing, same signing key as `v3.3.x` / `v3.4.0`, bumped to `versionCode 15`). Installing `v3.5.0` directly over `v3.4.0` updates cleanly in-place with zero conflicts and preserves all saved story progress, armory unlocks, and settings.
 
           ### What's New in v3.5.0 (Combat Overhaul, Progressive Difficulty, Shadow Portal Drop & Engagement Update)
           - **Steeper Progressive Story Difficulty & 5 Distinct Warrior Archetypes:**
