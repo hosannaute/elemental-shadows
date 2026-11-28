@@ -105,6 +105,7 @@ public class WifiDuelManager {
     private DatagramSocket beaconSocket;
     private DatagramSocket scanSocket;
     private WifiManager.MulticastLock multicastLock;
+    private WifiManager.WifiLock wifiLock;
 
     private OutboundQueue sendQueue;
     private volatile String hostName = "SHADOW";
@@ -765,8 +766,18 @@ public class WifiDuelManager {
                 return;
             }
 
-            // Atomically claim the Host session slot and attach OutboundQueue BEFORE emitting connected event
+            // Write and flush hs_ok BEFORE closing serverSocket/beaconSocket so a mid-flush peer disconnect never leaves Host stuck
             String sessionTok = randomHex(16);
+            JSONObject ok = new JSONObject();
+            ok.put("t", "hs_ok");
+            ok.put("v", 2);
+            ok.put("tok", sessionTok);
+            if (!sProof.isEmpty()) ok.put("sProof", sProof);
+            writer.write(ok.toString());
+            writer.write('\n');
+            writer.flush();
+
+            // Atomically claim the Host session slot and attach OutboundQueue BEFORE emitting connected event
             final OutboundQueue hostQueue = new OutboundQueue();
             synchronized (stateLock) {
                 if (!isSessionActiveLocked(sid) || peerSocket != null) {
@@ -789,15 +800,6 @@ public class WifiDuelManager {
                 syncMulticastLockLocked();
                 promoted = true;
             }
-
-            JSONObject ok = new JSONObject();
-            ok.put("t", "hs_ok");
-            ok.put("v", 2);
-            ok.put("tok", sessionTok);
-            if (!sProof.isEmpty()) ok.put("sProof", sProof);
-            writer.write(ok.toString());
-            writer.write('\n');
-            writer.flush();
 
             configureRealtimeSocket(cand, PEER_SO_TIMEOUT_MS);
             try {
@@ -983,8 +985,8 @@ public class WifiDuelManager {
                     String expectedMac = hmacSha256Hex(BEACON_HMAC_KEY, signedCore).substring(0, 16);
                     if (!constantTimeEqualsHex(rxMac, expectedMac)) continue;
 
-                    // Bind discovered host strictly to the actual UDP packet source IP (defeats IP spoofing)
-                    String rateKey = srcIp + ":" + hPort;
+                    // Bind discovered host strictly to the actual UDP packet source IP (defeats IP spoofing & multi-port flood)
+                    String rateKey = srcIp;
                     Long prevAt = lastEmitByIp.get(rateKey);
                     long tNow = SystemClock.elapsedRealtime();
                     if (prevAt != null && tNow - prevAt < 400L) continue;
@@ -1316,10 +1318,25 @@ public class WifiDuelManager {
     private void recordAuthFailure(String ip) {
         if (ip == null || ip.isEmpty()) return;
         synchronized (stateLock) {
-            if (failedAuthByIp.size() > 32 && !failedAuthByIp.containsKey(ip)) {
-                failedAuthByIp.clear();
-            }
             int nowSec = (int) (SystemClock.elapsedRealtime() / 1000L);
+            if (failedAuthByIp.size() > 32 && !failedAuthByIp.containsKey(ip)) {
+                Iterator<Map.Entry<String, int[]>> it = failedAuthByIp.entrySet().iterator();
+                String oldestIp = null;
+                int oldestTs = Integer.MAX_VALUE;
+                while (it.hasNext()) {
+                    Map.Entry<String, int[]> e = it.next();
+                    int ts = e.getValue()[1];
+                    if (nowSec - ts > 10) {
+                        it.remove();
+                    } else if (ts < oldestTs) {
+                        oldestTs = ts;
+                        oldestIp = e.getKey();
+                    }
+                }
+                if (failedAuthByIp.size() > 32 && oldestIp != null) {
+                    failedAuthByIp.remove(oldestIp);
+                }
+            }
             int[] entry = failedAuthByIp.get(ip);
             if (entry == null || nowSec - entry[1] > 10) {
                 failedAuthByIp.put(ip, new int[]{1, nowSec});
@@ -1416,7 +1433,7 @@ public class WifiDuelManager {
             oct[i] = val;
         }
         int o0 = oct[0], o1 = oct[1], o2 = oct[2], o3 = oct[3];
-        if (o0 == 255 && o1 == 255 && o2 == 255 && o3 == 255) return null;
+        if (o3 == 0 || o3 == 255) return null;
         boolean rfc1918 = (o0 == 10)
                 || (o0 == 172 && o1 >= 16 && o1 <= 31)
                 || (o0 == 192 && o1 == 168);
@@ -1549,29 +1566,50 @@ public class WifiDuelManager {
     }
 
     /**
-     * Must ONLY be called while holding stateLock! Eliminates all MulticastLock TOCTOU races (B-2, L-1).
+     * Must ONLY be called while holding stateLock! Eliminates all MulticastLock & WifiLock TOCTOU races (B-2, L-1, W-3).
      */
+    @SuppressWarnings("deprecation")
     private void syncMulticastLockLocked() {
-        boolean needLock = !destroyed && !paused
+        boolean needMcast = !destroyed && !paused
                 && (scanningActive || ("host".equals(activeRole) && peerSocket == null && serverSocket != null));
+        boolean needLowLatWifi = !destroyed && !paused
+                && (peerSocket != null || connectingSocket != null);
         try {
-            if (needLock) {
-                if (multicastLock != null && multicastLock.isHeld()) return;
-                WifiManager wm = (WifiManager) activity.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-                if (wm != null) {
-                    if (multicastLock == null) {
-                        multicastLock = wm.createMulticastLock("ElementalShadowsDuel");
-                        multicastLock.setReferenceCounted(false);
-                    }
-                    if (!multicastLock.isHeld()) {
-                        multicastLock.acquire();
-                    }
+            WifiManager wm = null;
+            if (needMcast || needLowLatWifi) {
+                wm = (WifiManager) activity.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+            }
+            if (needMcast) {
+                if (multicastLock == null && wm != null) {
+                    multicastLock = wm.createMulticastLock("ElementalShadowsDuel");
+                    multicastLock.setReferenceCounted(false);
+                }
+                if (multicastLock != null && !multicastLock.isHeld()) {
+                    multicastLock.acquire();
                 }
             } else {
                 WifiManager.MulticastLock lock = multicastLock;
                 multicastLock = null;
                 if (lock != null && lock.isHeld()) {
                     lock.release();
+                }
+            }
+            if (needLowLatWifi) {
+                if (wifiLock == null && wm != null) {
+                    int mode = android.os.Build.VERSION.SDK_INT >= 29
+                            ? WifiManager.WIFI_MODE_FULL_LOW_LATENCY
+                            : WifiManager.WIFI_MODE_FULL_HIGH_PERF;
+                    wifiLock = wm.createWifiLock(mode, "ElementalShadowsLowLat");
+                    wifiLock.setReferenceCounted(false);
+                }
+                if (wifiLock != null && !wifiLock.isHeld()) {
+                    wifiLock.acquire();
+                }
+            } else {
+                WifiManager.WifiLock wLock = wifiLock;
+                wifiLock = null;
+                if (wLock != null && wLock.isHeld()) {
+                    wLock.release();
                 }
             }
         } catch (Throwable ignored) { }
@@ -1607,6 +1645,7 @@ public class WifiDuelManager {
         if (destroyed) return;
         long delayMs = 0L;
         boolean shouldSchedule = false;
+        boolean urgentInput = !isEvent && !isPureSnapshot && !isHeartbeat && OutboundQueue.isInputPacket(payload);
         synchronized (jsLock) {
             if (destroyed) return;
             if (isHeartbeat) {
@@ -1635,11 +1674,21 @@ public class WifiDuelManager {
                 pendingJsItems.add(new JsItem(isEvent, payload, false, false));
             }
 
-            if (!paused && !jsFlushScheduled && !pendingJsItems.isEmpty()) {
-                jsFlushScheduled = true;
-                shouldSchedule = true;
-                long elapsed = SystemClock.uptimeMillis() - lastJsFlushAt;
-                delayMs = elapsed >= JS_COALESCE_FRAME_MS ? 0L : (JS_COALESCE_FRAME_MS - elapsed);
+            if (!paused && !pendingJsItems.isEmpty()) {
+                if (urgentInput) {
+                    // Bypass 16ms coalescing for peer input packets on Host to cut Client input latency by a full frame!
+                    if (jsFlushScheduled) {
+                        mainHandler.removeCallbacks(jsFlushRunnable);
+                    }
+                    jsFlushScheduled = true;
+                    shouldSchedule = true;
+                    delayMs = 0L;
+                } else if (!jsFlushScheduled) {
+                    jsFlushScheduled = true;
+                    shouldSchedule = true;
+                    long elapsed = SystemClock.uptimeMillis() - lastJsFlushAt;
+                    delayMs = elapsed >= JS_COALESCE_FRAME_MS ? 0L : (JS_COALESCE_FRAME_MS - elapsed);
+                }
             }
         }
         if (shouldSchedule) {

@@ -947,13 +947,95 @@
     .style-rank .sr-grade { font-family: var(--font-head); font-size: 20px; font-weight: 900; line-height: 1; text-shadow: 0 0 12px currentColor; }
     .style-rank .sr-lbl { font-family: var(--font-head); font-size: 9.5px; letter-spacing: 0.14em; color: var(--gold-light); line-height: 1.1; }
     .combo.c1 { top: 162px; left: 16px; }
+    .combo.c2 { top: 162px; right: 16px; left: auto; }
+    .p2 .fname .boss-tag, .p2 .fname .minion-tag { margin-left: 0; margin-right: 6px; }
+    .wm-detail { overflow-y: auto; -webkit-overflow-scrolling: touch; }
     .bend-dir-pill { min-width: 24px; width: auto; padding: 0 6px; font-size: 9px; letter-spacing: 0.06em; white-space: nowrap; }
     .b-magic .mt { font-size: 6.8px; letter-spacing: 0.01em; max-width: 96%; overflow: hidden; white-space: nowrap; }
+
+    /* ===== v3.5 ENGAGEMENT UI: VICTORY CARD, WI-FI RIVALRY, DAILY LOOP & CHRONICLES ===== */
+    .wifi-rivalry {
+      position: absolute; top: 54px; left: 50%; transform: translateX(-50%);
+      display: inline-flex; align-items: center; gap: 7px; padding: 3px 10px;
+      background: linear-gradient(180deg, rgba(16, 12, 10, 0.92), rgba(28, 20, 14, 0.86));
+      border: 1px solid rgba(124, 232, 255, 0.45); border-radius: 12px;
+      font-family: var(--font-head); font-size: 10.5px; letter-spacing: 0.08em; color: #e2f6ff;
+      white-space: nowrap; pointer-events: none; z-index: 6;
+    }
+    .wifi-rivalry .wr-crown { width: 12px; height: 12px; color: #f6c453; flex-shrink: 0; }
+    .wifi-rivalry .wr-mode { color: #7ce8ff; font-size: 9.5px; border-left: 1px solid rgba(255,255,255,0.2); padding-left: 6px; }
+    .match-card {
+      margin-top: 8px; padding: 9px 14px; min-width: 290px; max-width: 540px;
+      background: linear-gradient(180deg, rgba(16, 11, 9, 0.94), rgba(26, 18, 13, 0.92));
+      border: 1px solid rgba(230, 178, 96, 0.48); border-radius: 6px;
+      display: flex; flex-direction: column; gap: 6px; text-align: left;
+      box-shadow: 0 8px 26px rgba(0, 0, 0, 0.6); pointer-events: auto;
+    }
+    .mc-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; font-size: 11px; color: #eadbc2; }
+    .mc-row b { font-family: var(--font-head); color: var(--gold-light); letter-spacing: 0.06em; }
+    .mc-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
+    .mc-stat {
+      background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(230, 178, 96, 0.22);
+      border-radius: 4px; padding: 4px 6px; text-align: center;
+    }
+    .mc-stat span { display: block; font-size: 8.5px; color: #bfa989; letter-spacing: 0.08em; }
+    .mc-stat b { display: block; font-family: var(--font-head); font-size: 12.5px; color: #fff4dd; }
+    .mc-bar { width: 100%; height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden; }
+    .mc-bar-fill { height: 100%; background: linear-gradient(90deg, #d9932e, #fde68a); transition: width 0.35s ease; }
+    .mc-cue {
+      font-family: var(--font-head); font-size: 10px; letter-spacing: 0.08em;
+      color: #86efac; background: rgba(22, 163, 74, 0.16); border: 1px solid rgba(134, 239, 172, 0.4);
+      border-radius: 4px; padding: 3px 8px; text-align: center;
+    }
+    .rank-pill {
+      display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px;
+      background: linear-gradient(180deg, rgba(28, 20, 13, 0.92), rgba(15, 10, 7, 0.92));
+      border: 1px solid rgba(230, 178, 96, 0.52); border-radius: 14px;
+      font-family: var(--font-head); font-size: 10.5px; letter-spacing: 0.08em; color: #fde68a;
+      cursor: pointer; white-space: nowrap;
+    }
+    .rank-pill small { color: #cbb696; font-size: 9px; letter-spacing: 0.04em; }
+    .mm-daily-bar {
+      position: absolute; right: 20px; bottom: 44px; width: 256px; max-width: 44vw;
+      background: linear-gradient(180deg, rgba(16, 11, 9, 0.90), rgba(22, 15, 11, 0.88));
+      border: 1px solid rgba(230, 178, 96, 0.45); border-radius: 6px; padding: 8px 10px;
+      display: flex; flex-direction: column; gap: 5px; z-index: 4;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.55);
+    }
+    .mm-daily-head { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
+    .mm-daily-head b { font-family: var(--font-head); font-size: 10.5px; color: #fde68a; letter-spacing: 0.08em; }
+    .mm-daily-head button { padding: 3px 8px; font-size: 9.5px; }
+    .mm-dchal {
+      display: flex; align-items: center; justify-content: space-between; gap: 6px;
+      font-size: 10px; color: #dfd0b8; padding: 3px 5px;
+      background: rgba(255,255,255,0.03); border-radius: 4px; border: 1px solid rgba(255,255,255,0.06);
+    }
+    .mm-dchal.ready { border-color: rgba(134, 239, 172, 0.55); background: rgba(22, 163, 74, 0.14); }
+    .mm-dchal.done { opacity: 0.55; }
+    .mm-dchal button { padding: 2px 7px; font-size: 9px; }
+    .ach-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; max-height: 54vh; overflow-y: auto; padding-right: 4px; }
+    .ach-card {
+      padding: 8px 10px; border-radius: 5px;
+      background: rgba(20, 14, 11, 0.86); border: 1px solid rgba(230, 178, 96, 0.24);
+      display: flex; flex-direction: column; gap: 3px;
+    }
+    .ach-card.unlocked { border-color: rgba(253, 230, 138, 0.65); background: linear-gradient(180deg, rgba(46, 32, 16, 0.72), rgba(20, 14, 10, 0.9)); }
+    .ach-card b { font-family: var(--font-head); font-size: 11px; color: #fde68a; }
+    .ach-card span { font-size: 10px; color: #cbb79a; line-height: 1.25; }
+    .ach-card small { font-size: 9px; color: #86efac; font-family: var(--font-head); letter-spacing: 0.06em; }
 
     @media (max-height: 480px) {
       .style-rank { top: 92px; left: 12px; padding: 2px 8px 2px 6px; }
       .style-rank .sr-grade { font-size: 15px; }
       .combo.c1 { top: 122px; left: 12px; }
+      .combo.c2 { top: 122px; right: 12px; left: auto; }
+      .wifi-rivalry { top: 44px; padding: 2px 8px; font-size: 9.2px; }
+      .match-card { margin-top: 5px; padding: 6px 10px; min-width: 240px; gap: 4px; }
+      .mc-row { font-size: 9.8px; }
+      .mc-stat b { font-size: 11px; }
+      .mm-daily-bar { right: 12px; bottom: 30px; width: 222px; padding: 6px 8px; gap: 3px; }
+      .mm-dchal { font-size: 9px; padding: 2px 4px; }
+      .rank-pill { padding: 3px 8px; font-size: 9.5px; }
       .mm-rule { width: 220px; margin: 2px 0; }
       .mm-nav { max-width: 242px; gap: 5px; }
       .mm-btn { padding: 5px 11px; gap: 8px; }
@@ -1171,6 +1253,7 @@
       </header>
 
       <button class="pause-corner" id="btn-pause" title="Pause (Esc)" aria-label="Pause"><svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4.2" height="16" rx="1"/><rect x="13.8" y="4" width="4.2" height="16" rx="1"/></svg></button>
+      <div class="wifi-rivalry hidden" id="wifi-rivalry"></div>
       <div class="tut-pill hidden" id="tut-pill"><b id="tut-step">DOJO LESSON 1 / 4</b><span id="tut-desc"></span></div>
       <div class="mutator-pill hidden" id="mutator-pill"><b id="mut-title">TRIAL MUTATOR</b><span id="mut-desc"></span></div>
       <div class="style-rank" id="style-rank"><div class="sr-grade" id="sr-grade">D</div><div class="sr-lbl" id="sr-lbl">FLOW</div></div>
@@ -1181,9 +1264,11 @@
       <div class="banner hidden" id="banner">
         <div class="banner-title" id="banner-title">ROUND 1</div>
         <div class="banner-sub" id="banner-sub"></div>
+        <div class="match-card hidden" id="match-card"></div>
         <div class="match-actions hidden" id="match-actions">
           <button class="pill primary hidden" id="btn-next-boss">NEXT MASTER</button>
           <button class="pill primary" id="btn-rematch">REMATCH</button>
+          <button class="pill hidden" id="btn-wifi-respect">RESPECT</button>
           <button class="pill hidden" id="btn-wifi-lobby-end">SWITCH ELEMENT</button>
           <button class="pill" id="btn-open-armory-end">ARMORY</button>
           <button class="pill" id="btn-to-menu-end">MAIN MENU</button>
@@ -1244,6 +1329,7 @@
           <div class="mm-sub" id="mm-rank-sub">THE HOLLOW AVATAR</div>
         </div>
         <div class="mm-status">
+          <button class="rank-pill" id="mm-rank-pill" title="Warrior Rank, Mastery &amp; Achievements"><span id="mm-rank-lbl">INITIATE</span><small id="mm-ach-cnt">0/18</small></button>
           <span class="coin-hex" id="mm-coins-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="9"/><path d="M12 7.2a4.8 4.8 0 1 1-3.4 1.4"/><circle cx="12" cy="12" r="1.8" fill="currentColor"/></svg><span id="mm-coins">150</span></span>
           <button class="oct-btn" id="mm-settings" title="Settings" aria-label="Settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3h.1a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9v.1a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
         </div>
@@ -1266,7 +1352,7 @@
         </button>
         <button class="mm-btn" id="mm-dojo">
           <span class="mm-ico"><svg viewBox="0 0 36 36" fill="currentColor"><circle cx="18" cy="11" r="3.4"/><path d="M18 7.6c4.2 0 6.8 3.2 6.8 6.4-2.2-1.8-4.4-2-6.8-1z"/><circle cx="12" cy="22" r="3.4"/><path d="M9 23.6c-2-3.6-.5-7.6 2.4-9.2-.4 2.8.5 4.8 2.6 6.4z"/><circle cx="24" cy="22" r="3.4"/><path d="M27 23.6c-2 3.6-6.2 4.6-9.2 2.8 2.6-.8 4.2-2.6 4.4-5.2z"/></svg></span>
-          <div class="mm-txt"><b>DOJO</b><small>Train &amp; Spar with Freed Allies</small></div>
+          <div class="mm-txt"><b>DOJO</b><small>Train, Combo Trials &amp; Ally Spar</small></div>
           <span class="arr"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="5,3 10,7 5,11"/></svg></span>
         </button>
         <button class="mm-btn" id="mm-armory">
@@ -1275,6 +1361,7 @@
           <span class="arr"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="5,3 10,7 5,11"/></svg></span>
         </button>
       </nav>
+      <div class="mm-daily-bar" id="mm-daily-bar"></div>
       <div class="mm-foot">
         <span>Offline Solo &amp; 2P Wi-Fi Duet · 13 Realms · 12 Disciplines · 12 Weapons</span>
         <span id="mm-avatar-badge"></span>
@@ -1305,6 +1392,7 @@
     <div class="backdrop wm-full hidden" id="campaign-modal"></div>
     <div class="backdrop center hidden" id="armory-modal"></div>
     <div class="backdrop center hidden" id="wifi-modal"></div>
+    <div class="backdrop center hidden" id="chronicles-modal"></div>
   </div>
 </div>
 
@@ -2314,7 +2402,7 @@
 
   function loadSave() {
     const def = {
-      coins: 150, cleared: [], realmProgress: {}, unlockedElements: ['water'], completedTrials: [],
+      coins: 90, cleared: [], realmProgress: {}, unlockedElements: ['water'], completedTrials: [],
       upgrades: { edge: 0, body: 0, flow: 0 },
       ownedGear: ['none'], equippedGear: 'none',
       ownedWeapons: ['default'], equippedWeapon: 'default',
@@ -2322,7 +2410,11 @@
       unlockedScrolls: [],
       playerName: 'SHADOW',
       storyIntroSeen: false, tutorialSeen: false, dojoLessonDone: false, avatarUnlocked: false,
-      endlessBest: 0, allySelected: '', sandboxUnlockAll: false, playerTag: 'smart', v33Save: true, v34Save: true
+      endlessBest: 0, allySelected: '', sandboxUnlockAll: false, playerTag: 'smart',
+      xp: 0, elMastery: {}, achievements: [],
+      dailyStreak: 0, lastDailyDate: '', dailyChestDate: '', dailyChalsDate: '', dailyChals: [],
+      dojoTrialsDone: [], wifiWins: 0, totalWins: 0,
+      v33Save: true, v34Save: true, v35Save: true
     };
     try {
       const raw = localStorage.getItem(SAVE_KEY) || localStorage.getItem('elemental_shadows_save_v1');
@@ -2337,7 +2429,7 @@
       const realmProgress = (d.realmProgress && typeof d.realmProgress === 'object') ? { ...d.realmProgress } : {};
       cleared.forEach(cid => { realmProgress[cid] = 6; });
       return {
-        coins: typeof d.coins === 'number' ? d.coins : 150,
+        coins: typeof d.coins === 'number' ? d.coins : 90,
         cleared,
         realmProgress,
         unlockedElements: Array.isArray(d.unlockedElements) && d.unlockedElements.length ? d.unlockedElements : ['water'],
@@ -2359,41 +2451,217 @@
         allySelected: d.allySelected || '',
         sandboxUnlockAll: Boolean(d.sandboxUnlockAll),
         playerTag: ['smart', 'always', 'minimal'].includes(d.playerTag) ? d.playerTag : 'smart',
+        xp: typeof d.xp === 'number' ? d.xp : (cleared.length * 140),
+        elMastery: (d.elMastery && typeof d.elMastery === 'object') ? { ...d.elMastery } : {},
+        achievements: Array.isArray(d.achievements) ? d.achievements : [],
+        dailyStreak: typeof d.dailyStreak === 'number' ? d.dailyStreak : 0,
+        lastDailyDate: typeof d.lastDailyDate === 'string' ? d.lastDailyDate : '',
+        dailyChestDate: typeof d.dailyChestDate === 'string' ? d.dailyChestDate : '',
+        dailyChalsDate: typeof d.dailyChalsDate === 'string' ? d.dailyChalsDate : '',
+        dailyChals: Array.isArray(d.dailyChals) ? d.dailyChals : [],
+        dojoTrialsDone: Array.isArray(d.dojoTrialsDone) ? d.dojoTrialsDone : [],
+        wifiWins: typeof d.wifiWins === 'number' ? d.wifiWins : 0,
+        totalWins: typeof d.totalWins === 'number' ? d.totalWins : cleared.length,
         v33Save: true,
-        v34Save: true
+        v34Save: true,
+        v35Save: true
       };
     } catch { return def; }
   }
   const PROG = loadSave();
   settings.playerTag = PROG.playerTag || 'smart';
   function saveProg() { try { localStorage.setItem(SAVE_KEY, JSON.stringify(PROG)); } catch {} }
+
+  // ===== v3.5 ENGAGEMENT SYSTEMS: RANKS, MASTERY, DAILY STREAK/CHALLENGES, ACHIEVEMENTS & DOJO TRIALS =====
+  const WARRIOR_RANKS = [
+    { name: 'INITIATE', minXp: 0, col: '#cfc0a8' },
+    { name: 'DISCIPLE', minXp: 250, col: '#7cf0bd' },
+    { name: 'ADEPT', minXp: 700, col: '#5ad8ff' },
+    { name: 'MASTER', minXp: 1500, col: '#ffb347' },
+    { name: 'GRANDMASTER', minXp: 2800, col: '#ff6b4a' },
+    { name: 'AVATAR', minXp: 4600, col: '#fde68a' }
+  ];
+  function getWarriorRank(xp = PROG.xp || 0) {
+    let cur = WARRIOR_RANKS[0];
+    for (const r of WARRIOR_RANKS) { if (xp >= r.minXp) cur = r; }
+    return cur;
+  }
+  function getElMasteryXp(elId) { return Math.max(0, Number(PROG.elMastery && PROG.elMastery[elId]) || 0); }
+  function getElMasteryLevel(elId) { return Math.min(10, 1 + Math.floor(getElMasteryXp(elId) / 120)); }
+
+  const ACHIEVEMENTS = [
+    { id: 'first_blood', name: 'First Blood', desc: 'Win your first battle in any mode.', reward: 25 },
+    { id: 'realm_1', name: 'Tide Breaker', desc: 'Defeat Grandmaster Mizu and conquer Realm 1.', reward: 35 },
+    { id: 'realm_6', name: 'Halfway Path', desc: 'Conquer 6 elemental realms in Story Mode.', reward: 55 },
+    { id: 'shadow_fall', name: 'Eclipse Ended', desc: 'Vanquish THE SHADOW AVATAR in Realm 13.', reward: 90 },
+    { id: 'seal_breaker', name: 'Seal Breaker', desc: 'Shatter the Shadow Avatar\'s Bending-Theft Seal with a Parry or Guard Break.', reward: 60 },
+    { id: 'untouched_seal', name: 'Unbroken Spirit', desc: 'Defeat THE SHADOW AVATAR without losing your bending.', reward: 75 },
+    { id: 'parry_ace', name: 'Iron Reflex', desc: 'Land 3 Perfect Parries in a single match.', reward: 35 },
+    { id: 'combo_king', name: 'Flow State', desc: 'Chain a 6-hit combo in live combat.', reward: 35 },
+    { id: 'shogun_rank', name: 'Shogun Style', desc: 'Achieve Style Rank S or AVATAR in a match.', reward: 40 },
+    { id: 'executioner', name: 'Final Stroke', desc: 'Finish an opponent with an Elemental Execution.', reward: 30 },
+    { id: 'brazier_surge', name: 'Shrine Spark', desc: 'Shatter an Arena Brazier to claim Elemental Surge.', reward: 25 },
+    { id: 'tower_5', name: 'Tower Climber', desc: 'Reach Wave 5 in the Shadow Tower.', reward: 40 },
+    { id: 'tower_10', name: 'Tower Warlord', desc: 'Reach Wave 10 in the Shadow Tower.', reward: 65 },
+    { id: 'arsenal_3', name: 'Forged Steel', desc: 'Own 3 or more Armory weapons.', reward: 35 },
+    { id: 'arsenal_all', name: 'Grand Arsenal', desc: 'Collect all 12 Armory weapons.', reward: 100 },
+    { id: 'mastery_5', name: 'True Disciple', desc: 'Reach Mastery Lv.5 with any Element.', reward: 40 },
+    { id: 'dojo_3', name: 'Scroll Scholar', desc: 'Complete 3 Elemental Dojo Combo Trials.', reward: 45 },
+    { id: 'wifi_rival', name: 'Local Rival', desc: 'Win a 2-Player Wi-Fi Duet match.', reward: 40 }
+  ];
+  function unlockAchievement(id) {
+    if (!id || PROG.achievements.includes(id)) return null;
+    const def = ACHIEVEMENTS.find(a => a.id === id);
+    if (!def) return null;
+    PROG.achievements.push(id);
+    PROG.coins += def.reward;
+    PROG.xp = (PROG.xp || 0) + 45;
+    saveProg();
+    if (!match.inMenu) pushCallout(`ACHIEVEMENT: ${def.name.toUpperCase()} (+${def.reward}C)`, '#fde68a', W * 0.5, 165);
+    return def;
+  }
+
+  const DAILY_CHAL_POOL = [
+    { id: 'dc_wins', type: 'win', target: 2, label: 'Win 2 Matches', reward: 40 },
+    { id: 'dc_story', type: 'story', target: 1, label: 'Clear 1 Story Bout', reward: 35 },
+    { id: 'dc_parry', type: 'parry', target: 3, label: 'Land 3 Perfect Parries', reward: 45 },
+    { id: 'dc_sub', type: 'sub', target: 2, label: 'Use Advanced Sub-Bend 2x', reward: 35 },
+    { id: 'dc_ult', type: 'ult', target: 1, label: 'Unleash 1 Ultimate Art', reward: 35 },
+    { id: 'dc_tower', type: 'tower', target: 1, label: 'Clear 1 Shadow Tower Wave', reward: 40 },
+    { id: 'dc_combo', type: 'combo4', target: 2, label: 'Land 2 Combos of 4+ Hits', reward: 40 }
+  ];
+  const DAILY_CHEST_REWARDS = [25, 35, 45, 55, 65, 80, 120];
+  function getTodayKey() { return new Date().toISOString().slice(0, 10); }
+  function syncDailyState() {
+    const today = getTodayKey();
+    if (PROG.lastDailyDate !== today) {
+      if (PROG.lastDailyDate) {
+        const diffDays = Math.round((new Date(today + 'T00:00:00Z') - new Date(PROG.lastDailyDate + 'T00:00:00Z')) / 86400000);
+        PROG.dailyStreak = (diffDays === 1) ? Math.min(7, (PROG.dailyStreak || 0) + 1) : 1;
+      } else {
+        PROG.dailyStreak = 1;
+      }
+      PROG.lastDailyDate = today;
+    }
+    if (PROG.dailyChalsDate !== today || !Array.isArray(PROG.dailyChals) || PROG.dailyChals.length !== 3) {
+      let h = 0; for (let i = 0; i < today.length; i++) h = (h * 33 + today.charCodeAt(i)) >>> 0;
+      const picked = [];
+      const pool = DAILY_CHAL_POOL.slice();
+      for (let k = 0; k < 3 && pool.length; k++) {
+        const idx = (h + k * 7) % pool.length;
+        const c = pool.splice(idx, 1)[0];
+        picked.push({ id: c.id, type: c.type, target: c.target, label: c.label, reward: c.reward, prog: 0, claimed: false });
+      }
+      PROG.dailyChalsDate = today;
+      PROG.dailyChals = picked;
+    }
+    saveProg();
+  }
+  function recordDailyProgress(type, amount = 1) {
+    syncDailyState();
+    let changed = false;
+    (PROG.dailyChals || []).forEach(c => {
+      if (!c.claimed && c.type === type && c.prog < c.target) {
+        c.prog = Math.min(c.target, c.prog + amount);
+        changed = true;
+      }
+    });
+    if (changed) saveProg();
+  }
+  function claimDailyChest() {
+    syncDailyState();
+    const today = getTodayKey();
+    if (PROG.dailyChestDate === today) return 0;
+    const dayIdx = Math.max(0, Math.min(6, (PROG.dailyStreak || 1) - 1));
+    const coins = DAILY_CHEST_REWARDS[dayIdx];
+    PROG.dailyChestDate = today;
+    PROG.coins += coins;
+    PROG.xp = (PROG.xp || 0) + 30;
+    saveProg();
+    return coins;
+  }
+  function claimDailyChallenge(idx) {
+    syncDailyState();
+    const c = PROG.dailyChals && PROG.dailyChals[idx];
+    if (!c || c.claimed || c.prog < c.target) return 0;
+    c.claimed = true;
+    PROG.coins += c.reward;
+    PROG.xp = (PROG.xp || 0) + 35;
+    saveProg();
+    return c.reward;
+  }
+  function awardXpAndMastery(elId, xpGain, masteryGain) {
+    PROG.xp = (PROG.xp || 0) + xpGain;
+    if (elId && ELEMENTS[elId]) {
+      if (!PROG.elMastery || typeof PROG.elMastery !== 'object') PROG.elMastery = {};
+      PROG.elMastery[elId] = (PROG.elMastery[elId] || 0) + masteryGain;
+      if (getElMasteryLevel(elId) >= 5) unlockAchievement('mastery_5');
+    }
+  }
+  function hasAffordableArmoryItem() {
+    const w = WEAPON_CATALOG.find(x => x.cost > 0 && !PROG.ownedWeapons.includes(x.id) && PROG.coins >= x.cost);
+    if (w) return `WEAPON READY: ${w.name.toUpperCase()} (${w.cost}C)`;
+    const g = GEAR_CATALOG.find(x => x.cost > 0 && !PROG.ownedGear.includes(x.id) && PROG.coins >= x.cost);
+    if (g) return `GEAR READY: ${g.name.toUpperCase()} (${g.cost}C)`;
+    const u = UPGRADE_SPECS.find(x => {
+      const lv = PROG.upgrades[x.id] || 0;
+      return lv < x.max && PROG.coins >= (x.baseCost + lv * x.stepCost);
+    });
+    if (u) return `UPGRADE READY: ${u.name.toUpperCase()}`;
+    return '';
+  }
+  syncDailyState();
+
   function getRealmProgress(stageId) {
     if (PROG.cleared.includes(stageId)) return 6;
     const v = Number(PROG.realmProgress && PROG.realmProgress[stageId]);
     return Number.isFinite(v) ? Math.max(0, Math.min(6, Math.trunc(v))) : 0;
   }
+
+  // 5 Distinct Tribe Warrior Archetype Roles (escalating difficulty + variety per realm!)
+  const WARRIOR_ROLES = [
+    { id: 'scout', label: 'SCOUT', twist: 'SWIFT VANGUARD', taunt: 'Show me if your blade can keep pace!' },
+    { id: 'hazard', label: 'HAZARD SPECIALIST', twist: 'ARENA HAZARD ACTIVE', taunt: 'Our sacred ground itself will break you!' },
+    { id: 'ambush', label: 'AMBUSH ELITE', twist: '1-ROUND SUDDEN DEATH · CHEST', taunt: 'One round. No second chances!' },
+    { id: 'enforcer', label: 'ARMORED ENFORCER', twist: 'HEAVY POISE ARMOR', taunt: 'Strike my iron guard if you dare!' },
+    { id: 'guardian', label: 'TEMPLE GUARDIAN', twist: 'GATEKEEPER TO GRANDMASTER', taunt: 'Only steel forged in blood enters the Grandmaster\'s hall!' }
+  ];
+
   function buildStageOpponent(stageIdx, boutIdx) {
     const st = CAMPAIGN_STAGES[Math.max(0, Math.min(CAMPAIGN_STAGES.length - 1, stageIdx))];
     const minions = st.minions || [];
     const safeBout = Math.max(0, Math.min(5, boutIdx));
+    const realmTier = st.id / 12; // 0.0 (Realm 1) -> 1.0 (Realm 13)
     if (safeBout < minions.length) {
       const mn = minions[safeBout];
-      const frac = mn.eliteMult || (0.68 + safeBout * 0.055);
+      const role = WARRIOR_ROLES[safeBout] || WARRIOR_ROLES[0];
       const isFinalLegion = Boolean(st.isFinal);
-      const scaleAi = (v, floor, cap) => Math.max(floor, Math.min(cap, Number((v * (isFinalLegion ? (0.86 + safeBout * 0.025) : (0.66 + safeBout * 0.055))).toFixed(2))));
+      // Steep progressive scaling: each Warrior gets harder within a realm, AND each Tribe gets much stronger than the previous!
+      const boutProg = safeBout / 4; // 0.0 -> 1.0
+      const hpFrac = isFinalLegion
+        ? (0.94 + boutProg * 0.16)
+        : (0.78 + boutProg * 0.24 + realmTier * 0.14);
+      const dmgFrac = isFinalLegion
+        ? (0.94 + boutProg * 0.14)
+        : (0.80 + boutProg * 0.22 + realmTier * 0.16);
+      const scaleAi = (v, boost, floor, cap) => Math.max(floor, Math.min(cap, Number((v * (isFinalLegion ? (0.94 + boutProg * 0.10) : (0.82 + boutProg * 0.22)) + boost).toFixed(2))));
       const mAi = {
         ...st.ai,
-        react: Math.min(30, st.ai.react + (isFinalLegion ? Math.max(1, 5 - safeBout) : (10 - safeBout * 2))),
-        guard: scaleAi(st.ai.guard, 0.14, 0.84),
-        parry: scaleAi(st.ai.parry, 0.01, 0.52),
-        agg: scaleAi(st.ai.agg, 0.28, 0.88),
-        combo: scaleAi(st.ai.combo, 0.20, 0.88),
-        mag: scaleAi(st.ai.mag, 0.22, 0.88),
-        punish: scaleAi(st.ai.punish, 0.16, 0.86),
-        quickBend: scaleAi(st.ai.quickBend, 0.06, 0.78),
-        superCancel: isFinalLegion ? scaleAi(st.ai.superCancel, 0.28, 0.58) : (safeBout >= 3 ? scaleAi(st.ai.superCancel, 0.0, 0.35) : 0),
-        kdPause: st.ai.kdPause + (isFinalLegion ? Math.max(1, 4 - safeBout) : (10 - safeBout * 2))
+        react: Math.max(5, Math.min(20, Math.round(st.ai.react - 4 - realmTier * 6 + (isFinalLegion ? (3 - safeBout) : (6 - safeBout * 1.3))))),
+        guard: scaleAi(st.ai.guard, 0.08 + realmTier * 0.10, 0.28, 0.88),
+        parry: scaleAi(st.ai.parry, 0.04 + realmTier * 0.08, 0.06, 0.56),
+        agg: scaleAi(st.ai.agg, 0.16 + realmTier * 0.12 + (role.id === 'scout' ? 0.08 : 0), 0.48, 0.94),
+        combo: scaleAi(st.ai.combo, 0.14 + realmTier * 0.12, 0.36, 0.92),
+        mag: scaleAi(st.ai.mag, 0.10 + realmTier * 0.12, 0.34, 0.92),
+        punish: scaleAi(st.ai.punish, 0.12 + realmTier * 0.12, 0.30, 0.90),
+        quickBend: scaleAi(st.ai.quickBend, 0.08 + realmTier * 0.12, 0.16, 0.82),
+        superCancel: isFinalLegion ? scaleAi(st.ai.superCancel, 0.12, 0.35, 0.65) : (safeBout >= 2 ? scaleAi(st.ai.superCancel, 0.08 + realmTier * 0.10, 0.10, 0.48) : 0),
+        kdPause: Math.max(4, Math.round(st.ai.kdPause * 0.55) + (isFinalLegion ? Math.max(0, 3 - safeBout) : Math.max(0, 5 - safeBout)))
       };
+      const guardianDialogue = safeBout === 4 ? [
+        { who: mn.name, line: `${role.taunt} Best me, and ${st.title} awaits beyond these gates.` },
+        { who: 'HOLLOW SHADOW', line: '...' }
+      ] : null;
       return {
         ...st,
         stageId: st.id,
@@ -2401,34 +2669,65 @@
         isMinion: true,
         isRealmBoss: false,
         isFinal: false,
+        isFinalLegion,
+        roleId: role.id,
+        roleLabel: role.label,
+        roleTwist: role.twist,
+        taunt: role.taunt,
         el: mn.el || st.el,
         title: mn.name,
-        subtitle: mn.title,
-        rank: isFinalLegion ? `Eclipse General ${safeBout + 1}/5` : `${st.tribe} · Warrior ${safeBout + 1}/5`,
+        subtitle: `${mn.title} · ${role.label}`,
+        rank: isFinalLegion ? `Eclipse General ${safeBout + 1}/5` : `${st.tribe} · ${role.label} ${safeBout + 1}/5`,
         weapon: mn.weapon || 'default',
         gear: mn.gear || 'none',
-        bossScale: isFinalLegion ? 1.04 : 1.0,
+        bossScale: isFinalLegion ? 1.05 : (role.id === 'enforcer' ? 1.04 : 1.0),
         bossRegalia: isFinalLegion ? 'eclipse_general' : '',
-        hpMult: Number((st.hpMult * frac).toFixed(2)),
-        dmgMult: Number((st.dmgMult * (isFinalLegion ? (0.86 + safeBout * 0.025) : (0.72 + safeBout * 0.045))).toFixed(2)),
-        defMult: Number((1 + (st.defMult - 1) * frac).toFixed(2)),
-        magicGain: Number((st.magicGain * (0.76 + safeBout * 0.04)).toFixed(2)),
-        bounty: Math.round(st.bounty * (isFinalLegion ? 0.50 : 0.32) + safeBout * 22),
-        ruleId: '',
-        ruleName: '',
+        hpMult: Number((st.hpMult * hpFrac * (role.id === 'scout' ? 0.92 : role.id === 'enforcer' ? 1.08 : 1.0)).toFixed(2)),
+        dmgMult: Number((st.dmgMult * dmgFrac * (role.id === 'ambush' ? 1.08 : 1.0)).toFixed(2)),
+        defMult: Number((1 + (st.defMult - 1) * hpFrac + realmTier * 0.14).toFixed(2)),
+        magicGain: Number((st.magicGain * (0.90 + boutProg * 0.18)).toFixed(2)),
+        bounty: Math.round(32 + st.id * 10 + safeBout * 7 + (isFinalLegion ? 28 : 0)),
+        ruleId: role.id === 'enforcer' ? 'enforcer_armor' : (role.id === 'hazard' ? st.ruleId : ''),
+        ruleName: role.id === 'enforcer' ? 'Heavy Poise Armor' : (role.id === 'hazard' ? st.ruleName : ''),
+        hazardActive: role.id === 'hazard',
+        suddenDeath: role.id === 'ambush',
+        toWin: role.id === 'ambush' ? 1 : 2,
         trial: null,
         memory: null,
-        preDialogue: null,
+        preDialogue: guardianDialogue,
         ai: mAi
       };
     }
+    // REALM GRANDMASTERS & SHADOW AVATAR: Way more aggressive, sharper reactions, stronger stats scaling up every realm!
+    const bossAi = {
+      ...st.ai,
+      react: Math.max(4, Math.round(st.ai.react * 0.56) - Math.floor(st.id * 0.35)),
+      guard: Math.min(0.92, Number((st.ai.guard + 0.14 + realmTier * 0.12).toFixed(2))),
+      parry: Math.min(0.68, Number((st.ai.parry + 0.10 + realmTier * 0.12).toFixed(2))),
+      agg: Math.min(0.97, Number((st.ai.agg + 0.24 + realmTier * 0.14).toFixed(2))),
+      combo: Math.min(0.96, Number((st.ai.combo + 0.22 + realmTier * 0.14).toFixed(2))),
+      mag: Math.min(0.95, Number((st.ai.mag + 0.18 + realmTier * 0.14).toFixed(2))),
+      punish: Math.min(0.94, Number((st.ai.punish + 0.20 + realmTier * 0.14).toFixed(2))),
+      quickBend: Math.min(0.88, Number((st.ai.quickBend + 0.18 + realmTier * 0.16).toFixed(2))),
+      superCancel: Math.min(0.75, Number(((st.ai.superCancel || 0.12) + 0.16 + realmTier * 0.18).toFixed(2))),
+      kdPause: Math.max(3, Math.round(st.ai.kdPause * 0.38))
+    };
     return {
       ...st,
       stageId: st.id,
       boutIdx: 5,
       isMinion: false,
       isRealmBoss: true,
-      weapon: 'default'
+      isFinalLegion: false,
+      toWin: 3,
+      hpMult: Number((st.hpMult * (1.14 + realmTier * 0.22)).toFixed(2)),
+      dmgMult: Number((st.dmgMult * (1.14 + realmTier * 0.22)).toFixed(2)),
+      defMult: Number((st.defMult + 0.08 + realmTier * 0.18).toFixed(2)),
+      magicGain: Number((st.magicGain * (1.12 + realmTier * 0.12)).toFixed(2)),
+      bounty: Math.round(75 + st.id * 20 + (st.isFinal ? 120 : 0)),
+      hazardActive: true,
+      weapon: 'default',
+      ai: bossAi
     };
   }
   function isAndroidOrTouch() {
@@ -2542,7 +2841,7 @@
     air:       { id: 'air', lbl: 'VACUUM', name: 'Vacuum Bending · Zero-Pressure Sphere', prim: '#0f766e', glow: '#78ffd6', cost: 350, speed: 4, power: 4, reachPip: 4, ico: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4" stroke-dasharray="3 2"/></svg>`, bonus: 'Strips air around the foe into a suffocating vacuum sphere draining HP & meter before launching skyward. Scroll: 35% cost & +35% dmg.' },
     ice:       { id: 'ice', lbl: 'THERMAL', name: 'Thermal Extraction · Flash Freeze', prim: '#0369a1', glow: '#9ef6ff', cost: 350, speed: 4, power: 5, reachPip: 4, ico: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3v18M4.5 7.5l15 9M19.5 7.5l-15 9"/><circle cx="12" cy="12" r="3" fill="currentColor"/></svg>`, bonus: 'Extracts all heat around foe to flash-freeze them solid in ice while siphoning +15% energy. Scroll: 35% cost & +35% dmg.' },
     lightning: { id: 'lightning', lbl: 'EMP PULSE', name: 'Electromagnetic · Neural EMP Surge', prim: '#1d4ed8', glow: '#fde047', cost: 350, speed: 5, power: 5, reachPip: 5, ico: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M11 2L4 13h5l-1 9 9-12h-5l3-8z"/></svg>`, bonus: 'Discharges an electromagnetic pulse & dual rail-arcs that shock nerves and lock chi briefly. Scroll: 35% cost & +35% dmg.' },
-    shadow:    { id: 'shadow', lbl: 'DIMENSIONAL', name: 'Dimensional Bending · Shadow Rift', prim: '#4c1d95', glow: '#d8b4fe', cost: 350, speed: 5, power: 4, reachPip: 5, ico: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="12" rx="8" ry="4.5" transform="rotate(-30 12 12)"/><circle cx="12" cy="12" r="2.6" fill="currentColor"/></svg>`, bonus: 'Opens twin dimensional shadow rifts flanking the foe to ambush, root, & steal 20% meter. Scroll: 35% cost & +35% dmg.' },
+    shadow:    { id: 'shadow', lbl: 'DIMENSIONAL', name: 'Dimensional Bending · Shadow Rift', prim: '#4c1d95', glow: '#d8b4fe', cost: 350, speed: 5, power: 4, reachPip: 5, ico: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="12" rx="8" ry="4.5" transform="rotate(-30 12 12)"/><circle cx="12" cy="12" r="2.6" fill="currentColor"/></svg>`, bonus: 'Opens a void portal that sucks the foe in, rips a sky portal above, drops them to slam the ground & steals 20% meter. Scroll: 35% cost & +35% dmg.' },
     lava:      { id: 'lava', lbl: 'ERUPTION', name: 'Volcanic Eruption · Obsidian Rift', prim: '#b91c1c', glow: '#ff951a', cost: 350, speed: 3, power: 5, reachPip: 4, ico: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M3 19l5-11 4 6 4-8 5 13z"/></svg>`, bonus: 'Splits the floor with twin volcanic geysers, razor obsidian shards & molten magma pools. Scroll: 35% cost & +35% dmg.' },
     metal:     { id: 'metal', lbl: 'TRANSMUTE', name: 'Metal Transmutation · Forged Cage', prim: '#475569', glow: '#f1f5f9', cost: 350, speed: 5, power: 5, reachPip: 5, ico: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4v8a6 6 0 0 0 12 0V4"/><path d="M6 8h3M15 8h3"/></svg>`, bonus: 'Transmutes surrounding steel into converging blades & magnetic shackles that ground & crush guard. Scroll: 35% cost & +35% dmg.' },
     nature:    { id: 'nature', lbl: 'CHIMERA', name: 'Biological Adaptation · Primal Beast', prim: '#15803d', glow: '#86efac', cost: 350, speed: 5, power: 5, reachPip: 5, ico: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 18c2-6 6-10 14-12-1 5-4 10-10 12"/><path d="M6 12l4-2M10 16l4-2M13 8l4 1"/></svg>`, bonus: 'Manifests primal beast claws & summons a charging emerald spirit-wolf that mauls foe & heals +10% HP. Scroll: 35% cost & +35% dmg.' },
@@ -2789,6 +3088,55 @@
     syncTutorialPill();
   }
 
+  function syncDojoComboPill() {
+    if (match.mode !== 'dojo' || match.inMenu) return;
+    const pill = document.getElementById('tut-pill');
+    const stEl = document.getElementById('tut-step');
+    const dsEl = document.getElementById('tut-desc');
+    if (!pill || !stEl || !dsEl) return;
+    const elId = p1.el.id;
+    const done = PROG.dojoTrialsDone && PROG.dojoTrialsDone.includes(elId);
+    const subArt = SUB_BEND_ARTS[elId] || SUB_BEND_ARTS.water;
+    const steps = [
+      `1. Land a 3-Hit Strike/Kick Combo (${p1.el.name})`,
+      `2. Chain a 35% Quick-Bend (${p1.el.name} Flow)`,
+      `3. Unleash ${subArt.lbl} Sub-Bend or 100% Ultimate`
+    ];
+    pill.classList.remove('hidden');
+    if (done || match.dojoTrialStep >= 3) {
+      stEl.textContent = `${p1.el.name.toUpperCase()} TRIAL · MASTERED`;
+      dsEl.textContent = 'Switch Elements in Roster to master all 12 Dojo Trials!';
+    } else {
+      stEl.textContent = `${p1.el.name.toUpperCase()} COMBO TRIAL ${match.dojoTrialStep + 1} / 3`;
+      dsEl.textContent = steps[match.dojoTrialStep];
+    }
+  }
+  function advanceDojoTrial(kind) {
+    if (match.mode !== 'dojo' || match.dojoTrialStep >= 3) return;
+    const need = match.dojoTrialStep === 0 ? 'combo3' : match.dojoTrialStep === 1 ? 'quick' : 'art';
+    if (kind !== need) return;
+    match.dojoTrialStep++;
+    if (match.dojoTrialStep >= 3) {
+      const elId = p1.el.id;
+      let bonus = 0;
+      if (!PROG.dojoTrialsDone.includes(elId)) {
+        PROG.dojoTrialsDone.push(elId);
+        bonus = 45;
+        PROG.coins += bonus;
+        awardXpAndMastery(elId, 60, 80);
+        if (PROG.dojoTrialsDone.length >= 3) unlockAchievement('dojo_3');
+        saveProg();
+      }
+      sfx.gong();
+      showBanner(`${p1.el.name.toUpperCase()} TRIAL CLEAR!`, bonus ? `+${bonus} COINS · +80 MASTERY` : 'COMBO MASTERED!', p1.el.glow, 80, true);
+    } else {
+      pushCallout('TRIAL STEP CLEAR!', '#4ade80', p1.x, p1.y - 210);
+      if (match.dojoTrialStep === 1) p1.magic = Math.max(p1.magic, 50);
+      if (match.dojoTrialStep === 2) p1.magic = 100;
+    }
+    syncDojoComboPill();
+  }
+
   function startMatch(e1, e2, bossStage = null, opts = {}) {
     clearMemoryStoryTimer();
     match.mode = opts.mode || (bossStage ? 'campaign' : 'duel');
@@ -2796,15 +3144,20 @@
     match.campaignStageIdx = bossStage ? (bossStage.stageId ?? bossStage.id) : -1;
     match.campaignBoutIdx = bossStage && typeof bossStage.boutIdx === 'number' ? bossStage.boutIdx : 5;
     match.tutorialStep = 0; match.tutorialDone = false;
+    match.dojoTrialStep = (match.mode === 'dojo' && PROG.dojoTrialsDone.includes(e1)) ? 3 : 0;
     match.mutator = opts.mutator || null;
     match.dailyTrial = Boolean(opts.dailyTrial);
     match.wifiBiome = opts.wifiBiome || '';
+    match.wifiMode = opts.wifiMode || 'standard';
     match.finishTarget = 'p2';
     match.wifiRematchP1 = false; match.wifiRematchP2 = false;
-    match.bendingTheft = 0; match.bendingStolen = false; match.theftWarn50 = false; match.theftWarn80 = false; match.theftBeamF = 0;
+    match.bendingTheft = 0; match.bendingStolen = false; match.sealShattered = false; match.everLostBending = false;
+    match.theftWarn50 = false; match.theftWarn80 = false; match.theftBeamF = 0;
+    match.roundConcluded = false; match.matchStartMs = performance.now();
     match.mutTimer = 0;
     match.finisherAnim = null;
     match.awakening = null;
+    match.lastMatchCardHtml = '';
     p1.el = ELEMENTS[e1] || ELEMENTS.water;
     p2.el = ELEMENTS[bossStage ? bossStage.el : e2] || ELEMENTS.fire;
     p1.customName = opts.p1Name || '';
@@ -2815,21 +3168,29 @@
     if (bossStage && typeof bossStage.theme === 'number') {
       themeIdx = bossStage.theme;
     }
-    // Tribe Warriors fight Best of 3 (2 rounds); Realm Grandmasters & Shadow Avatar fight Best of 5 (3 rounds)!
-    const defaultCampaignWins = bossStage ? (bossStage.isMinion ? 2 : 3) : 2;
-    match.toWin = opts.toWin || ((opts.mode === 'dojo' || opts.mode === 'tutorial') ? 999 : (bossStage ? defaultCampaignWins : (opts.mode === 'endless' ? 1 : (settings.format === 'bo3' ? 2 : settings.format === 'bo5' ? 3 : 999))));
+    // Enforce exact round counts: Realm Grandmasters & Shadow Avatar ALWAYS require 3 round wins (Best of 5);
+    // Ambush Elite (Warrior 3) is 1-Round Sudden Death; other Tribe Warriors are Best of 3 (2 rounds)!
+    const defaultCampaignWins = bossStage
+      ? ((bossStage.isRealmBoss || !bossStage.isMinion) ? 3 : (bossStage.suddenDeath ? 1 : 2))
+      : 2;
+    const isCampaignBoss = match.mode === 'campaign' && bossStage && (bossStage.isRealmBoss || !bossStage.isMinion);
+    match.toWin = isCampaignBoss
+      ? 3
+      : (opts.toWin || ((opts.mode === 'dojo' || opts.mode === 'tutorial') ? 999 : (bossStage ? defaultCampaignWins : (opts.mode === 'endless' ? 1 : (settings.format === 'bo3' ? 2 : settings.format === 'bo5' ? 3 : 999)))));
     match.round = 1; match.p1W = 0; match.p2W = 0; match.winner = null; match.paused = false;
     match.finishHim = false; match.finishF = 0; match.eclipseFinished = false;
     match.stylePts = 0; match.styleRank = ''; match.styleT = 0; match.lastCat = '';
-    match.maxComboP1 = 0; match.headHitsP1 = 0;
+    match.maxComboP1 = 0; match.maxComboP2 = 0; match.headHitsP1 = 0; match.headHitsP2 = 0;
+    match.p1Dmg = 0; match.p2Dmg = 0; match.p1Parries = 0; match.p2Parries = 0;
     match.p1Blocked = false; match.p1QuickBends = 0; match.p1AirWins = false;
-    match.p1WallSplats = 0; match.p1Clashes = 0; match.p1Reactions = 0; match.allyUsed = false;
+    match.p1WallSplats = 0; match.p1Clashes = 0; match.p2Clashes = 0; match.p1Reactions = 0; match.allyUsed = false;
     lastE1 = ''; lastE2 = ''; lastSubKey = ''; lastWepIco = ''; lastBanKey = ''; lastJw = ''; lastPingTxt = ''; lastLocalMagEl = '';
     enterBattleUI();
     buildBackdrop();
     resetFighter(p1, true); resetFighter(p2, true);
     if (match.mode === 'tutorial') p1.magic = 65;
-    syncTutorialPill();
+    if (match.mode === 'dojo') { p1.magic = 75; syncDojoComboPill(); }
+    else syncTutorialPill();
     beginRound();
   }
 
@@ -2853,10 +3214,10 @@
     const foeElObj = ELEMENTS[oppSpec.el] || ELEMENTS.water;
     const altFoe = isAltPalettePair(heroElId, oppSpec.el) && Boolean(foeElObj.alt);
     const foeAccent = altFoe ? foeElObj.alt.glow : foeElObj.glow;
-    if (!skipDialogue && oppSpec.isRealmBoss && oppSpec.preDialogue && oppSpec.preDialogue.length) {
+    if (!skipDialogue && oppSpec.preDialogue && oppSpec.preDialogue.length) {
       openStorySequence('dialogue', oppSpec.preDialogue.map(d => ({
         speaker: d.who, text: d.line, art: oppSpec.el, heroEl: heroElId, altFoe,
-        gear: oppSpec.gear || 'none', biome: oppSpec.hazardId, region: oppSpec.region, accent: foeAccent
+        gear: oppSpec.gear || 'none', bossRegalia: oppSpec.bossRegalia || '', biome: oppSpec.hazardId, region: oppSpec.region, accent: foeAccent
       })), () => {
         startMatch(heroElId, oppSpec.el, oppSpec, { mode: 'campaign' });
       });
@@ -2871,6 +3232,7 @@
       buildBackdrop();
     }
     resetFighter(p1, false); resetFighter(p2, match.mode === 'endless');
+    p1.brazierBuffF = 0; p2.brazierBuffF = 0;
     bendingWaves = []; hazards = []; particles = []; ghosts = []; droppedWeapons = []; rockWalls = []; decoyClones = [];
     if (FX3D) FX3D.clearTransients();
     braziers = [
@@ -2879,27 +3241,40 @@
     ];
     bladeClash = null; bladeClashCd = 0;
     hitstop = 0; slowMoFrames = 0; dramaticZoom = 0; ultDimFrames = 0; stormFlashFrames = 0; inkFlashF = 0;
-    match.bendingTheft = 0; match.bendingStolen = false; match.theftWarn50 = false; match.theftWarn80 = false; match.theftBeamF = 0;
+    match.roundConcluded = false;
+    match.bendingTheft = 0; match.bendingStolen = false; match.sealShattered = false;
+    match.theftWarn50 = false; match.theftWarn80 = false; match.theftBeamF = 0;
     match.finishHim = false; match.finishF = 0; match.eclipseFinished = false; match.finishTarget = 'p2';
     match.finisherAnim = null; match.awakening = null; match.mutTimer = 0;
     match.timer = 99; match.tTick = 0; match.roundElapsed = 0; match.intro = 56; match.over = 0;
     match.lastSideOrder = 1; match.crossupTagF = 0;
     match.c1 = 0; match.c1Live = false; match.c2 = 0; match.c2Live = false; match.callouts = []; match.screen = 'fighting';
+    const isDecider = match.toWin < 10 && (match.p1W === match.toWin - 1 || match.p2W === match.toWin - 1);
+    if (isDecider && FX3D) FX3D.flashSky('#f59e0b', 0.28);
     if (match.mode === 'wifi') {
-      showBanner(`ROUND ${match.round}`, `${getFighterDisplayName('p1')} VS ${getFighterDisplayName('p2')} · FIRST TO ${match.toWin}`, '#7ce8ff', 44);
+      const mTag = match.wifiMode && match.wifiMode !== 'standard' ? ` · ${match.wifiMode.toUpperCase()}` : '';
+      showBanner(`ROUND ${match.round}${isDecider ? ' · MATCH POINT' : ''}`, `${getFighterDisplayName('p1')} VS ${getFighterDisplayName('p2')} · FIRST TO ${match.toWin}${mTag}`, isDecider ? '#fde68a' : '#7ce8ff', 48);
     } else if (match.mode === 'endless') {
-      const mSub = match.mutator ? `${p2.el.fighter} · ${match.mutator.name}` : p2.el.fighter;
+      const bestNote = PROG.endlessBest ? ` · BEST WAVE ${PROG.endlessBest}` : '';
+      const mSub = (match.mutator ? `${p2.el.fighter} · ${match.mutator.name}` : p2.el.fighter) + bestNote;
       showBanner(`SHADOW TOWER · WAVE ${match.endlessWave}`, mSub, match.mutator ? match.mutator.col : p2.el.glow, 48);
     } else if (match.dailyTrial && match.mutator) {
       showBanner(match.round === 1 ? 'DAILY TRIAL · 2× COINS' : `ROUND ${match.round}`, `${match.mutator.name} · VS ${p2.el.fighter}`, match.mutator.col, 52);
     } else if (match.boss) {
-      const bTitle = match.round === 1 ? match.boss.title : `ROUND ${match.round}`;
-      const wepLbl = match.boss.isMinion ? ` · ${getWeaponSpec(p2).name.toUpperCase()}` : (match.boss.isFinal ? ' · KILL BEFORE BENDING THEFT!' : ' · REALM GRANDMASTER');
-      showBanner(bTitle, `${match.boss.rank} · ${match.boss.region}${wepLbl}`, match.boss.isFinal ? '#fb7185' : (match.boss.isRealmBoss ? '#fde68a' : p2.el.glow), 56);
+      const bTitle = match.round === 1 ? match.boss.title : `ROUND ${match.round}${isDecider ? ' · MATCH POINT' : ''}`;
+      if (match.boss.isMinion) {
+        const subLine = match.round === 1 && match.boss.taunt
+          ? `${match.boss.roleTwist} · "${match.boss.taunt}"`
+          : `${match.boss.rank} · ${getWeaponSpec(p2).name.toUpperCase()}`;
+        showBanner(bTitle, subLine, match.boss.suddenDeath ? '#fb7185' : p2.el.glow, 60);
+      } else {
+        const wepLbl = match.boss.isFinal ? ' · FIRST TO 3 · KILL BEFORE BENDING THEFT!' : ' · GRANDMASTER · FIRST TO 3 ROUNDS';
+        showBanner(bTitle, `${match.boss.rank} · ${match.boss.region}${wepLbl}`, match.boss.isFinal ? '#fb7185' : '#fde68a', 60);
+      }
     } else if (match.mode === 'dojo') {
-      showBanner('DOJO SPARRING', `TRAINING VS ${p2.el.fighter}`, '#7cf0bd', 40);
+      showBanner('DOJO COMBO TRIAL', `TRAINING VS ${p2.el.fighter}`, '#7cf0bd', 44);
     } else {
-      showBanner(`ROUND ${match.round}`, '', '#ffd685', 38);
+      showBanner(`ROUND ${match.round}${isDecider ? ' · MATCH POINT' : ''}`, '', isDecider ? '#fde68a' : '#ffd685', 38);
     }
     sfx.gong();
   }
@@ -3008,6 +3383,7 @@
 
   // Bending bursts fired on Weapon / Finisher / Sweep moves!
   function spawnStrikeBending(f, opp, kind, moveId = '') {
+    if (f.id === 'p1' && match.bendingStolen) return;
     const el = f.el, dir = f.facing;
     const wSpec = getWeaponSpec(f);
     sfx.elemBend(el.id);
@@ -3503,12 +3879,13 @@
         dmg: Math.round(108 * gmMult), age: 0, f: 32, max: 32, hit: false, ult: false
       });
     } else if (el.id === 'shadow') {
-      // DIMENSIONAL BENDING: Twin Shadow Rift Ambush
-      const bx = Math.max(ARENA_L + 65, Math.min(ARENA_R - 65, opp.x));
+      // DIMENSIONAL BENDING: Void Portal Sucks Foe In -> Opens Sky Portal Above -> Drops Opponent to Slam the Ground!
+      const bx = Math.max(ARENA_L + 75, Math.min(ARENA_R - 75, opp.x));
+      const dropX = Math.max(ARENA_L + 85, Math.min(ARENA_R - 85, f.x + dir * 155));
       bendingWaves.push({
         owner: f.id, el, kind: 'sub_dim_rift', noClash: true,
-        x: bx, y: GROUND_Y - 102, vx: 0, dir, w: 200, h: 190,
-        dmg: Math.round(102 * gmMult), age: 0, f: 34, max: 34, hit: false, ult: false
+        x: bx, y: GROUND_Y - 68, dropX, vx: 0, dir, w: 220, h: 195,
+        dmg: Math.round(108 * gmMult), age: 0, f: 52, max: 52, phase: 'suck', grabbed: false, hit: false, ult: false
       });
     } else if (el.id === 'metal') {
       // METAL TRANSMUTATION: Forged Cage + Converging Steel Swords
@@ -3531,15 +3908,15 @@
       });
       spawnHazard(f, Math.max(ARENA_L + 55, Math.min(ARENA_R - 55, opp.x)), 'briar');
     } else if (el.id === 'sand') {
-      // GLASS FORMATION: Vitrified Amber-Glass Spears + Tomb
+      // GLASS FORMATION: Vitrified Amber-Glass Spears + Tomb (delay tomb slightly so glass spear connects cleanly at range)
       const sx = Math.max(ARENA_L + 55, Math.min(ARENA_R - 55, opp.x));
       bendingWaves.push({
         owner: f.id, el, kind: 'sub_sand_coffin', noClash: true,
         x: sx, y: GROUND_Y, vx: 0, dir, w: 156, h: 190,
-        dmg: Math.round(114 * gmMult), age: 0, f: 40, max: 40, grabbed: false, hit: false, ult: false
+        dmg: Math.round(114 * gmMult), age: 0, f: 40, max: 40, delay: 6, grabbed: false, hit: false, ult: false
       });
       bendingWaves.push({
-        owner: f.id, el, kind: 'sand_glass', x: f.x + dir * 62, y: f.y - 118, vx: dir * 22, dir,
+        owner: f.id, el, kind: 'sand_glass', x: f.x + dir * 62, y: f.y - 118, vx: dir * 26, dir,
         w: 112, h: 58, dmg: Math.round(34 * gmMult), ly: -5, low: false, f: 24, max: 24, hit: false, ult: false
       });
       spawnHazard(f, sx, 'sand');
@@ -3552,22 +3929,23 @@
         dmg: Math.round(108 * gmMult), age: 0, f: 34, max: 34, hit: false, ult: false
       });
     } else {
-      // LAVA: Volcanic Eruption & Obsidian Spear Rift
-      for (const offset of [-64, 64]) {
+      // LAVA: Volcanic Eruption & Obsidian Spear Rift (dir-relative offsets eliminate left-facing bias!)
+      [-dir * 64, dir * 64].forEach((offset, idx) => {
         const lx = Math.max(ARENA_L + 52, Math.min(ARENA_R - 52, opp.x + offset));
         bendingWaves.push({
           owner: f.id, el, kind: 'ult_lava', x: lx, y: GROUND_Y, vx: 0, dir,
           w: 118, h: 255, dmg: Math.round(70 * gmMult), ly: -15.6, low: true,
-          launcher: true, f: 30, max: 30, delay: offset > 0 ? 5 : 0, hit: false, ult: false
+          launcher: true, f: 30, max: 30, delay: idx === 1 ? 5 : 0, hit: false, ult: false
         });
         spawnHazard(f, lx);
-      }
+      });
       bendingWaves.push({
         owner: f.id, el, kind: 'ult_obsidian_spear', x: f.x + dir * 68, y: f.y - 114, vx: dir * 24, dir,
         w: 136, h: 48, dmg: Math.round(44 * gmMult), ly: -6.5, low: false, guardCrush: true, f: 24, max: 24, delay: 3, hit: false, ult: false
       });
       if (FX3D) FX3D.spawnFloorRing(opp.x, '#ff951a', 270, 32);
     }
+    if (f.id === 'p1' && match.mode !== 'wifi') { recordDailyProgress('sub', 1); advanceDojoTrial('art'); }
   }
 
   // ===== 36 UNIQUE ELEMENTAL AVATAR-STATE ULTIMATE ARTS (ZERO SHARED VORTEX/ARM CLONES!) =====
@@ -3593,6 +3971,7 @@
     dramaticZoom = 0.11;
     showBanner(art.name, el.fighter, pal.glow, 40, true);
     spawnSparks(caster.x, caster.y - 105, pal.primary, pal.core, 2.0, el.id === 'ice' || el.id === 'metal');
+    if (caster.id === 'p1' && match.mode !== 'wifi') { recordDailyProgress('ult', 1); advanceDojoTrial('art'); }
     const tx = Math.max(ARENA_L + 68, Math.min(ARENA_R - 68, target.x));
 
     // ===== 24 BESPOKE ELEMENT-SPECIFIC ULTIMATE MODES =====
@@ -3659,6 +4038,7 @@
     }
     if (art.mode === 'air_dive') {
       // AIR: Valkyrie Sky Dive — caster rockets skyward and dives diagonally down onto opponent!
+      caster.hitDone = true;
       caster.inv = Math.max(caster.inv, 20);
       caster.x = Math.max(ARENA_L + 48, Math.min(ARENA_R - 48, tx - dir * 56));
       caster.y = GROUND_Y - 140; caster.vy = 14.5; caster.vx = dir * 8.5; caster.afterTimer = 24;
@@ -3668,6 +4048,7 @@
     }
     if (art.mode === 'lightning_god') {
       // LIGHTNING: Thunder God Overdrive — +22% speed buff for 5s, thunder-blinks beside foe & calls down Judgment!
+      caster.hitDone = true;
       caster.thunderBuffF = 300; stormFlashFrames = 10;
       caster.x = Math.max(ARENA_L + 45, Math.min(ARENA_R - 45, tx - dir * 92));
       caster.facing = target.x >= caster.x ? 1 : -1; caster.inv = Math.max(caster.inv, 18); caster.afterTimer = 26;
@@ -3693,11 +4074,16 @@
       return;
     }
     if (art.mode === 'shadow_rift') {
-      // SHADOW: Dimensional Rift Drop — caster warps into an overhead void portal and slams down!
-      caster.inv = Math.max(caster.inv, 22);
-      caster.x = Math.max(ARENA_L + 44, Math.min(ARENA_R - 44, tx));
-      caster.y = GROUND_Y - 150; caster.vy = 16.5; caster.vx = 0; caster.afterTimer = 26;
-      bendingWaves.push({ owner: caster.id, el, kind: 'ult_rift_drop', noClash: true, x: tx, y: GROUND_Y, vx: 0, dir, w: 250, h: 290, dmg: 182, ly: -14.5, low: false, guardCrush: true, heavyHit: true, age: 0, f: 34, max: 34, delay: 4, hit: false, ult: true });
+      // SHADOW: Dimensional Rift Drop — opens a devouring void portal beneath foe, sucks them in, opens sky portal above & slams them into the ground!
+      caster.hitDone = true;
+      caster.inv = Math.max(caster.inv, 24);
+      const dropX = Math.max(ARENA_L + 85, Math.min(ARENA_R - 85, caster.x + dir * 165));
+      bendingWaves.push({
+        owner: caster.id, el, kind: 'ult_rift_drop', noClash: true,
+        x: tx, y: GROUND_Y - 68, dropX, vx: 0, dir, w: 260, h: 290,
+        dmg: 186, ly: -15.5, low: false, guardCrush: true, heavyHit: true,
+        age: 0, f: 54, max: 54, phase: 'suck', grabbed: false, hit: false, ult: true
+      });
       if (FX3D) { FX3D.spawnFloorRing(tx, '#b49cff', 330, 36); FX3D.flashSky('#4c1d95', 0.55); }
       return;
     }
@@ -4243,7 +4629,7 @@
       if (f.sf === f.ms) {
         const wSpec = getWeaponSpec(f);
         if (f.moveId === 'magic_cast') spawnAvatarUltimate(f, opp);
-        else if (f.moveId === 'quick_bend') { spawnQuickBend(f, opp, f.quickBendDir, f.quickBendCharge || 0); if (f.id === 'p1') advanceTutorial('quick_bend'); }
+        else if (f.moveId === 'quick_bend') { spawnQuickBend(f, opp, f.quickBendDir, f.quickBendCharge || 0); if (f.id === 'p1') { advanceTutorial('quick_bend'); advanceDojoTrial('quick'); } }
         else if (f.moveId === 'sub_bend') { spawnSubBend(f, opp); if (f.id === 'p1') advanceTutorial('quick_bend'); }
         else if (m.bendWave) spawnStrikeBending(f, opp, m.bendWave, f.moveId);
         else if (m.bendBurst) spawnSparks(f.x + f.facing * 72, f.y - 118, f.el.primary, f.el.core, 0.95, f.el.id === 'ice');
@@ -4281,7 +4667,8 @@
         }
       }
       // FREE-FLOW SHADOW FIGHT 2 / MORTAL KOMBAT CROSS-COMBOS (P -> K -> W + Same-Button Chains!)
-      if (canCtrl && m.cw && f.sf >= m.cw && f.freezeRec === 0 && f.moveId !== 'magic_cast' && f.moveId !== 'quick_bend' && f.moveId !== 'sub_bend' && !m.isThrow) {
+      const scaledCw = m.cw ? Math.max(f.ms + 1, Math.round(m.cw * (f.ms / Math.max(1, m.s || 1)))) : 0;
+      if (canCtrl && scaledCw && f.sf >= scaledCw && f.freezeRec === 0 && f.moveId !== 'magic_cast' && f.moveId !== 'quick_bend' && f.moveId !== 'sub_bend' && !m.isThrow) {
         const exp = m.wep ? 'weapon' : m.leg ? 'kick' : 'punch';
         const chainBtn = consumeBtn(f, [exp, 'weapon', 'kick', 'punch']);
         if (chainBtn) {
@@ -4299,13 +4686,16 @@
           }
         }
       }
-      // Responsive Roll-Cancel & Block-Cancel out of late recovery so controls NEVER feel stiff!
+      // Responsive Roll-Cancel & Block-Cancel out of late recovery (also enabled for Mobile Touch stick back / double-tap!)
       if (canCtrl && f.sf >= f.ms + f.ma + 2 && f.freezeRec === 0 && f.moveId !== 'magic_cast') {
-        if (f.held.has('block') && f.y >= GROUND_Y - 0.5) {
+        if ((f.held.has('block') || rel.back) && f.y >= GROUND_Y - 0.5) {
           f.move = null; f.moveId = null; f.armor = 0; f.state = rel.down ? 'block_low' : 'block_high'; f.sf = 0; return;
         }
         const ev = consumeBtn(f, ['evade']);
         if (ev) { startDash(f, relDir(f, ev.dir).fwd); return; }
+        if (!isRooted && f.dblTap && simFrame - f.dblTap.f <= settings.buffer) {
+          const dt = f.dblTap; f.dblTap = null; startDash(f, dt.x === f.facing); return;
+        }
       }
       if (f.sf >= total) {
         // Whiffing heavy swings drains a bit of poise
@@ -4554,6 +4944,17 @@
         def.guardWear = 0; def.poise = def.maxPoise;
         def.state = 'hitstun'; def.sf = 0; def.stun = 38; def.vx = atk.facing * 12.5;
         if (atk.id === 'p1') { match.p1WallSplats++; addStyle(18, 'crush'); }
+        // SHATTER THE SEAL! Guard-breaking Shadow Avatar while bending is stolen reclaims your bending once per round!
+        if (atk.id === 'p1' && def.id === 'p2' && match.bendingStolen && !match.sealShattered) {
+          match.sealShattered = true; match.bendingStolen = false; match.bendingTheft = 40;
+          match.theftWarn50 = false; match.theftWarn80 = false;
+          p1.magic = Math.max(p1.magic, 50); p1.avatarFlash = 36;
+          def.stun = Math.max(def.stun, 46);
+          sfx.awakening(); sfx.gong(); haptic('ko');
+          if (FX3D) { FX3D.flashSky('#fde047', 0.62); FX3D.spawnFloorRing(p1.x, '#fde047', 320, 34); }
+          showBanner('SEAL SHATTERED!', 'BENDING RECLAIMED · +50% ENERGY SURGE!', '#fde047', 66, true);
+          unlockAchievement('seal_breaker');
+        }
         sfx.headHit(); haptic('heavy'); hitstop = 6; inkFlashF = 4; slowMoFrames = Math.max(slowMoFrames, 8);
         shake = Math.max(shake, 14 * settings.feedback);
         spawnSparks(ix, iy, '#ffd84a', '#ffffff', 1.7);
@@ -4567,8 +4968,8 @@
       const chipMult = (def.statuses.burn || def.statuses.scorched ? 1.45 : 1) * (def.statuses.chill ? 1.35 : 1) * (def.statuses.haze ? 1.30 : 1) * ((m.wep && wSpec.perk === 'naginata_chip') ? 1.4 : 1);
       const chip = perf ? 0 : Math.round(m.chip * chipMult);
       def.hp = Math.max(1, def.hp - chip);
-      if (!def.statuses.chilock) def.magic = Math.min(100, def.magic + (perf ? 18 : 9) * fighterFlowMult(def));
-      if (!atk.statuses.chilock) atk.magic = Math.min(100, atk.magic + m.mg * 0.5 * fighterFlowMult(atk));
+      if (!def.statuses.chilock && !(def.id === 'p1' && match.bendingStolen)) def.magic = Math.min(100, def.magic + (perf ? 18 : 9) * fighterFlowMult(def));
+      if (!atk.statuses.chilock && !(atk.id === 'p1' && match.bendingStolen)) atk.magic = Math.min(100, atk.magic + m.mg * 0.5 * fighterFlowMult(atk));
       sfx.guard(perf);
       spawnSparks(ix, iy, perf ? defPal.glow : '#d8ecff', '#ffffff', perf ? 1.3 : 0.9, perf);
       hitstop = Math.max(hitstop, Math.round((perf ? 4 : 3) * settings.feedback));
@@ -4578,7 +4979,27 @@
       if (perf) {
         def.guardWear = 0; def.reflectStanceF = 0;
         def.poise = Math.min(def.maxPoise, def.poise + 24);
-        if (def.id === 'p1') addStyle(16, 'parry');
+        if (def.id === 'p1') {
+          match.p1Parries = (match.p1Parries || 0) + 1;
+          addStyle(16, 'parry');
+          if (match.mode !== 'wifi') {
+            recordDailyProgress('parry', 1);
+            if (match.p1Parries >= 3) unlockAchievement('parry_ace');
+          }
+          // SHATTER THE SEAL! Perfect Parry vs Shadow Avatar breaks the Bending-Theft Seal once per round!
+          if (atk.id === 'p2' && match.bendingStolen && !match.sealShattered) {
+            match.sealShattered = true; match.bendingStolen = false; match.bendingTheft = 40;
+            match.theftWarn50 = false; match.theftWarn80 = false;
+            p1.magic = Math.max(p1.magic, 50); p1.avatarFlash = 38;
+            atk.vx = -atk.facing * 16; atk.state = 'hitstun'; atk.stun = 34; atk.sf = 0;
+            sfx.awakening(); sfx.gong(); haptic('ko');
+            if (FX3D) { FX3D.flashSky('#fde047', 0.62); FX3D.spawnFloorRing(p1.x, '#fde047', 320, 34); }
+            showBanner('SEAL SHATTERED!', 'PERFECT PARRY BROKE THE SIPHON · +50% ENERGY!', '#fde047', 66, true);
+            unlockAchievement('seal_breaker');
+          }
+        } else {
+          match.p2Parries = (match.p2Parries || 0) + 1;
+        }
         pushCallout('PERFECT PARRY!', '#9cf4ff', def.x, def.y - 182);
         // Sai Class Perk: Perfect Parry against a weapon disarms the opponent!
         if (!isProj && !def.disarmed && defWSpec.perk === 'sai_flow' && m.wep && !atk.disarmed) {
@@ -4612,10 +5033,26 @@
 
     if (def.invisible) { def.invisible = false; pushCallout('VEIL BROKEN!', '#c4b5fd', def.x, def.y - 190); }
 
+    // Guarded on-hit Sub-Bend & Ultimate side-effects (only trigger when NOT blocked/parried/reflected! G-5)
+    if (m.drainMeter && m.drainMeter > 0) {
+      const stolen = Math.min(m.drainMeter, def.magic);
+      def.magic = Math.max(0, def.magic - stolen);
+      if (m.stealMeter && !atk.statuses.chilock && !(atk.id === 'p1' && match.bendingStolen)) {
+        atk.magic = Math.min(100, atk.magic + stolen + (m.stealBonus || 0));
+      }
+    }
+    if (m.applyStatusKey) applyStatus(def, m.applyStatusKey, m.applyStatusDur || 210);
+    if (m.healFrac && m.healFrac > 0) {
+      atk.hp = Math.min(atk.maxHp, atk.hp + Math.round(atk.maxHp * m.healFrac));
+      atk.trailHp = Math.max(atk.trailHp, atk.hp);
+    }
+    if (m.calloutTxt) pushCallout(m.calloutTxt, m.calloutCol || atkPal.glow, def.x, def.y - 214);
+
     let mult = atk.id === 'p1' ? p1DmgMult() : (match.boss ? (match.boss.dmgMult || 1) : 1);
     if (match.mutator && match.mutator.id === 'supremacy' && !isProj) mult *= 0.50;
-    if (atk.phase2) mult *= 1.12;
+    if (atk.phase2) mult *= 1.18;
     if (atk.solarBuffF > 0) mult *= 1.25;
+    if (atk.brazierBuffF > 0) mult *= 1.12;
     if (match.bendingStolen && atk.id === 'p2') mult *= 1.12;
     if (def.id === 'p2' && match.boss && match.boss.defMult) mult /= match.boss.defMult;
     let crit = m.crit;
@@ -4679,6 +5116,7 @@
     if (isHeadHit) {
       mult *= critGear ? 1.48 : 1.35;
       if (atk.id === 'p1') { match.headHitsP1++; addStyle(12, 'head'); }
+      else match.headHitsP2 = (match.headHitsP2 || 0) + 1;
       inkFlashF = Math.max(inkFlashF, 3);
       pushCallout('HEAD HIT!', '#ffe066', def.x, def.y - 212); sfx.headHit();
     }
@@ -4693,11 +5131,14 @@
       match.c1 = match.c1Live ? match.c1 + 1 : 1;
       match.c1Live = true; match.c1t = 54; cCount = match.c1;
       if (cCount > match.maxComboP1) match.maxComboP1 = cCount;
-      if (cCount >= 3) advanceTutorial('combo3');
+      if (cCount >= 3) { advanceTutorial('combo3'); advanceDojoTrial('combo3'); }
+      if (cCount === 4 && match.mode !== 'wifi') recordDailyProgress('combo4', 1);
+      if (cCount >= 6 && match.mode !== 'wifi') unlockAchievement('combo_king');
       addStyle(isProj ? 10 : (m.isThrow ? 14 : (m.wep ? 9 : 7)), isProj ? 'proj' : (m.isThrow ? 'throw' : (m.wep ? 'wep' : (m.leg ? 'kick' : 'punch'))));
     } else {
       match.c2 = match.c2Live ? match.c2 + 1 : 1;
       match.c2Live = true; match.c2t = 54; cCount = match.c2;
+      if (cCount > (match.maxComboP2 || 0)) match.maxComboP2 = cCount;
       // Taking a clean hit dips Player 1's style gauge slightly
       if (match.stylePts > 0) match.stylePts = Math.max(0, match.stylePts - 14);
     }
@@ -4745,6 +5186,8 @@
 
     const scale = Math.max(0.42, 1 - (cCount - 1) * 0.11);
     let dmg = Math.round((m.wep ? m.dmg * wSpec.dmgMod : m.dmg) * mult * scale);
+    if (atk.id === 'p1') match.p1Dmg = (match.p1Dmg || 0) + dmg;
+    else match.p2Dmg = (match.p2Dmg || 0) + dmg;
 
     // Earth Passive Trait: Super-Armor against light hits (cannot be staggered by light pokes)!
     let armored = false;
@@ -4918,10 +5361,10 @@
     if (match.theftBeamF > 0) match.theftBeamF--;
     if (!canFight || !match.boss || p2.state === 'ko' || p2.state === 'victory') return;
     p2.bossTimer++;
-    // Realm Grandmaster & Shadow Avatar Phase-2 Awakening ("Eclipse Surge") below 45% HP!
-    if (!match.boss.isMinion && !p2.phase2Used && p2.hp > 0 && p2.hp / p2.maxHp < 0.45 && (match.round >= 2 || match.p1W >= 2)) {
-      p2.phase2 = true; p2.phase2Used = true; p2.inv = 28; p2.avatarFlash = 44;
-      p2.poise = p2.maxPoise; p2.magic = Math.min(100, p2.magic + 50);
+    // Realm Grandmaster & Shadow Avatar Phase-2 Awakening ("Eclipse Surge") at 35% HP (or <45% from Round 2+)!
+    if (!match.boss.isMinion && !p2.phase2Used && p2.hp > 0 && (p2.hp / p2.maxHp <= 0.35 || (p2.hp / p2.maxHp < 0.45 && (match.round >= 2 || match.p1W >= 1)))) {
+      p2.phase2 = true; p2.phase2Used = true; p2.inv = 28; p2.avatarFlash = 48;
+      p2.poise = p2.maxPoise; p2.magic = Math.min(100, p2.magic + 55);
       p1.vx = (p1.x >= p2.x ? 1 : -1) * 18;
       match.awakening = {
         f: 48, max: 48,
@@ -4937,7 +5380,7 @@
 
     // THE SHADOW AVATAR — BENDING-THEFT SIPHON GAUGE (Kill him before the bar hits 100%!)
     if (match.boss.isFinal && !match.boss.isMinion && !match.bendingStolen && p1.hp > 0) {
-      const rate = p2.phase2 ? 0.052 : 0.041;
+      const rate = p2.phase2 ? 0.056 : 0.044;
       match.bendingTheft = Math.min(100, match.bendingTheft + rate);
       if (match.bendingTheft >= 50 && !match.theftWarn50) {
         match.theftWarn50 = true;
@@ -4951,8 +5394,15 @@
       if (match.bendingTheft >= 100) {
         match.bendingTheft = 100;
         match.bendingStolen = true;
+        match.everLostBending = true;
         match.theftBeamF = 44;
-        p1.magic = 0; p1.octopusF = 0; p1.airScooterF = 0; p1.fireJetF = 0; p1.gauntletsF = 0;
+        // Purge active P1 bending energy, stances, mid-startup casts & lingering waves cleanly (G-7)
+        p1.magic = 0; p1.octopusF = 0; p1.octopusSwinging = false; p1.airScooterF = 0; p1.fireJetF = 0;
+        p1.gauntletsF = 0; p1.reflectStanceF = 0; p1.solarBuffF = 0; p1.thunderBuffF = 0;
+        if (p1.state === 'attack' && (p1.moveId === 'magic_cast' || p1.moveId === 'sub_bend' || p1.moveId === 'quick_bend')) {
+          p1.state = 'idle'; p1.move = null; p1.moveId = null; p1.sf = 0;
+        }
+        bendingWaves = bendingWaves.filter(w => w.owner !== 'p1');
         p2.magic = 100; p2.avatarFlash = 48;
         slowMoFrames = 16; dramaticZoom = 0.16; inkFlashF = Math.max(inkFlashF, 6);
         shake = Math.max(shake, 22 * settings.feedback);
@@ -4964,7 +5414,8 @@
           FX3D.spawnFloorRing(p2.x, '#ef4444', 340, 38);
           FX3D.spawnFloorRing(p1.x, '#991b1b', 240, 28);
         }
-        showBanner('BENDING STOLEN!', 'THE SHADOW AVATAR SEALED YOUR BENDING · FINISH HIM WITH STEEL!', '#ff4d6d', 74, true);
+        const tip = match.sealShattered ? 'FINISH HIM WITH STEEL!' : 'PERFECT PARRY OR GUARD-BREAK TO SHATTER THE SEAL!';
+        showBanner('BENDING STOLEN!', tip, '#ff4d6d', 78, true);
       }
     }
 
@@ -4979,10 +5430,14 @@
       pushCallout('MONSOON TAILWIND', '#5effc8', W * 0.5, 220);
     }
 
-    if (rule === 'blazing_aura' && dist < 98 && p2.bossTimer % 70 === 0 && p1.inv <= 0) {
+    if (rule === 'enforcer_armor' && p2.bossTimer % 190 === 45 && p2.armor < 1) {
+      p2.armor = 1;
+      spawnSparks(p2.x, p2.y - 102, '#f2c057', '#fff4cc', 1.3);
+      pushCallout('IRON GUARD ARMOR', '#f2c057', p2.x, p2.y - 196);
+    } else if (rule === 'blazing_aura' && dist < 98 && p2.bossTimer % 70 === 0 && p1.inv <= 0) {
       applyStatus(p1, 'burn');
       spawnSparks(p2.x, p2.y - 105, '#ff5514', '#ffe57f', 1.1);
-    } else if (rule === 'titan_poise' && p2.bossTimer % 270 === 0 && p2.armor < 1) {
+    } else if (rule === 'titan_poise' && p2.bossTimer % 240 === 0 && p2.armor < 1) {
       p2.armor = 1;
       spawnSparks(p2.x, p2.y - 100, '#d8a64c', '#fff4cc', 1.3);
       pushCallout('TITAN POISE', '#f2c057', p2.x, p2.y - 205);
@@ -5338,31 +5793,19 @@
       WIFI.stepClientFrame();
       return;
     }
-    simFrame++;
     tickMusic();
     if (dramaticZoom > 0.001) dramaticZoom *= 0.94; else dramaticZoom = 0;
     if (ultDimFrames > 0) ultDimFrames--;
     if (inkFlashF > 0) inkFlashF--;
     if (stormFlashFrames > 0) stormFlashFrames--;
+    if (p1.brazierBuffF > 0) p1.brazierBuffF--;
+    if (p2.brazierBuffF > 0) p2.brazierBuffF--;
     if (match.styleT > 0) {
       match.styleT--;
     } else if (match.stylePts > 0) {
       match.stylePts = Math.max(0, match.stylePts - 0.16);
       const p = match.stylePts;
       match.styleRank = p >= 100 ? 'AVATAR' : p >= 76 ? 'S' : p >= 54 ? 'A' : p >= 34 ? 'B' : p >= 18 ? 'C' : p >= 8 ? 'D' : '';
-    }
-
-    if (settings.vfx !== 'low' && simFrame % 4 === 0) {
-      [p1, p2].forEach(f => {
-        const pal = getFighterPalette(f);
-        pushParticle({
-          x: f.x + (Math.random() - 0.5) * 76, y: f.y - 18 - Math.random() * 145,
-          vx: (Math.random() - 0.5) * 1.6, vy: -1.0 - Math.random() * 2.2,
-          sz: 2.5 + Math.random() * 4.2, c: Math.random() < 0.45 ? pal.core : pal.glow,
-          age: 0, max: 22 + Math.random() * 16, g: (f.el.id === 'earth' || f.el.id === 'sand') ? 0.05 : -0.02,
-          t: (f.el.id === 'ice' || f.el.id === 'earth' || f.el.id === 'metal') ? 'shard' : 'spark'
-        });
-      });
     }
 
     if (hitstop > 0) { hitstop--; updateParticles(); return; }
@@ -5384,6 +5827,20 @@
       updateParticles();
       if (aw.f <= 0) { match.awakening = null; dramaticZoom = 0.08; }
       return;
+    }
+
+    simFrame++;
+    if (settings.vfx !== 'low' && simFrame % 4 === 0) {
+      [p1, p2].forEach(f => {
+        const pal = getFighterPalette(f);
+        pushParticle({
+          x: f.x + (Math.random() - 0.5) * 76, y: f.y - 18 - Math.random() * 145,
+          vx: (Math.random() - 0.5) * 1.6, vy: -1.0 - Math.random() * 2.2,
+          sz: 2.5 + Math.random() * 4.2, c: Math.random() < 0.45 ? pal.core : pal.glow,
+          age: 0, max: 22 + Math.random() * 16, g: (f.el.id === 'earth' || f.el.id === 'sand') ? 0.05 : -0.02,
+          t: (f.el.id === 'ice' || f.el.id === 'earth' || f.el.id === 'metal') ? 'shard' : 'spark'
+        });
+      });
     }
 
     // ===== 12 UNIQUE PER-ELEMENT "FINISH THEM!" CINEMATIC EXECUTIONS (1.5s) =====
@@ -5749,6 +6206,19 @@
           }
           if (hitDecoy) { if (match.finisherAnim) break; continue; }
 
+          // Interactive Arena Braziers: striking an intact brazier shatters it for a 5s Elemental Surge!
+          for (const br of braziers) {
+            if (br.intact && Math.abs((hb.x + hb.w * 0.5) - br.x) < 62 && hb.y + hb.h > GROUND_Y - 120) {
+              br.intact = false; br.hitFlash = 16;
+              a.brazierBuffF = 300;
+              if (!a.statuses.chilock && !(a.id === 'p1' && match.bendingStolen)) a.magic = Math.min(100, a.magic + 15);
+              sfx.gong(); spawnSparks(br.x, GROUND_Y - 56, '#fde047', a.el.glow, 2.0, true);
+              if (FX3D) FX3D.spawnFloorRing(br.x, '#fde047', 190, 22);
+              pushCallout('SHRINE SURGE · +12% DMG!', '#fde047', a.x, a.y - 208);
+              if (a.id === 'p1' && match.mode !== 'wifi') unlockAchievement('brazier_surge');
+            }
+          }
+
           if (d.inv > 0 || d.state === 'ko' || d.state === 'grabbed') continue;
           if (d.state === 'grounded' && !am.hitsDown) continue;
           if (rectsHit(hb, db) && a.multiHitCd <= 0) {
@@ -6044,15 +6514,14 @@
         b.age++; b.f--;
         if (b.age < 7) { b.x += (d.x - b.x) * 0.35; b.y = d.y - 96; }
         if (b.age === 7 && canFight && d.inv <= 0 && d.state !== 'ko' && d.state !== 'grabbed' && Math.abs(d.x - b.x) < 138) {
-          d.y = GROUND_Y; d.vy = 0; d.poise = Math.max(0, d.poise - 45);
-          applyStatus(d, 'weighted', 260);
           sfx.bladeClash(); sfx.slam();
           spawnSparks(d.x, GROUND_Y - 88, '#94a3b8', '#ffffff', 2.2, true);
           if (FX3D) { FX3D.spawnFloorRing(d.x, '#e2e8f0', 240, 30); FX3D.spawnBurst(d.x, GROUND_Y - 82, '#cbd5e1', 20, true); }
-          pushCallout('MAGNETIC CLAMP!', '#f1f5f9', d.x, GROUND_Y - 208);
           resolveHit(a, d, {
             dmg: b.dmg, chip: 22, hs: 34, bs: 16, stop: 6,
-            kb: 2.0, ly: 0, kd: false, crit: true, guardCrush: true, rootF: 38, h: 'mid', elStatus: true, mg: 0
+            kb: 2.0, ly: 0, kd: false, crit: true, guardCrush: true, rootF: 38, h: 'mid', elStatus: true, mg: 0,
+            applyStatusKey: 'weighted', applyStatusDur: 260,
+            calloutTxt: 'MAGNETIC CLAMP!', calloutCol: '#f1f5f9'
           }, d.x, GROUND_Y - 86, true);
           if (match.finisherAnim) break;
         }
@@ -6063,15 +6532,14 @@
       if (b.kind === 'sub_briar_cage') {
         b.age++; b.f--;
         if (b.age === 7 && canFight && d.inv <= 0 && d.state !== 'ko' && d.state !== 'grabbed' && Math.abs(d.x - b.x) < 132) {
-          applyStatus(d, 'entangle', 260);
-          a.hp = Math.min(a.maxHp, a.hp + Math.round(a.maxHp * 0.08)); a.trailHp = a.hp;
           sfx.elemBend('nature');
           spawnSparks(d.x, GROUND_Y - 84, '#16a34a', '#bbf7d0', 2.1);
           if (FX3D) { FX3D.spawnFloorRing(d.x, '#86efac', 240, 30); FX3D.spawnBurst(d.x, GROUND_Y - 80, '#4ade80', 18, false); }
-          pushCallout('BRIAR CAGE · +HP!', '#86efac', d.x, GROUND_Y - 206);
           resolveHit(a, d, {
             dmg: b.dmg, chip: 18, hs: 32, bs: 14, stop: 5,
-            kb: 1.5, ly: 0, kd: false, crit: true, rootF: 44, lifeDrain: true, h: 'low', elStatus: true, mg: 0
+            kb: 1.5, ly: 0, kd: false, crit: true, rootF: 44, lifeDrain: true, h: 'low', elStatus: true, mg: 0,
+            applyStatusKey: 'entangle', applyStatusDur: 260, healFrac: 0.08,
+            calloutTxt: 'BRIAR CAGE · +HP!', calloutCol: '#86efac'
           }, d.x, GROUND_Y - 72, true);
           if (match.finisherAnim) break;
         }
@@ -6087,7 +6555,7 @@
         }
         b.age++; b.f--;
         if (b.age < 7 && !b.grabbed) { b.x += (d.x - b.x) * 0.3; }
-        else if (b.age === 7 && !b.grabbed && canFight && d.inv <= 0 && d.state !== 'ko' && d.state !== 'grabbed' && Math.abs(d.x - b.x) < 132) {
+        else if (b.age === 7 && !b.grabbed && canFight && d.inv <= 0 && d.state !== 'ko' && d.state !== 'grabbed' && d.y >= GROUND_Y - 48 && Math.abs(d.x - b.x) < 132) {
           b.grabbed = true; d.state = 'grabbed'; d.vx = 0; d.vy = 0; d.y = GROUND_Y;
           d.reflectStanceF = 0; d.irohBeamReady = false;
           sfx.elemBend('sand');
@@ -6120,16 +6588,14 @@
         b.age++; b.f--;
         if (b.age < 7) { b.x += (d.x - b.x) * 0.35; b.y = d.y - 102; }
         if (b.age === 7 && canFight && d.inv <= 0 && d.state !== 'ko' && d.state !== 'grabbed' && Math.abs(d.x - b.x) < 142) {
-          const drained = Math.min(25, d.magic);
-          d.magic = Math.max(0, d.magic - drained);
-          applyStatus(d, 'chilock', 260);
           sfx.elemBend('spirit'); sfx.gong();
           spawnSparks(d.x, d.y - 102, '#db2777', '#ffffff', 2.3);
           if (FX3D) { FX3D.spawnFloorRing(d.x, '#f9a8d4', 250, 30); FX3D.flashSky('#db2777', 0.32); }
-          pushCallout('CHI SEALED · -25% METER!', '#f9a8d4', d.x, d.y - 212);
           resolveHit(a, d, {
             dmg: b.dmg, chip: 20, hs: 30, bs: 14, stop: 5,
-            kb: 11.0, ly: -9.5, kd: true, crit: true, guardCrush: true, h: 'mid', elStatus: true, mg: 0
+            kb: 11.0, ly: -9.5, kd: true, crit: true, guardCrush: true, h: 'mid', elStatus: true, mg: 0,
+            drainMeter: 25, stealMeter: true, applyStatusKey: 'chilock', applyStatusDur: 240,
+            calloutTxt: 'CHI SEALED · -25% METER!', calloutCol: '#f9a8d4'
           }, d.x, d.y - 100, true);
           if (match.finisherAnim) break;
         }
@@ -6140,16 +6606,15 @@
       if (b.kind === 'sub_tectonic') {
         b.age++; b.f--;
         if (b.age < 7) b.x += (d.x - b.x) * 0.25;
-        if (b.age === 7 && canFight && d.inv <= 0 && d.state !== 'ko' && d.state !== 'grabbed' && Math.abs(d.x - b.x) < 168) {
-          d.y = GROUND_Y; d.vy = 0; d.poise = Math.max(0, d.poise - 50);
+        if (b.age === 7 && canFight && d.inv <= 0 && d.state !== 'ko' && d.state !== 'grabbed' && d.y >= GROUND_Y - 48 && Math.abs(d.x - b.x) < 168) {
           sfx.slam(); shake = Math.max(shake, 20 * settings.feedback);
           spawnDust(d.x, GROUND_Y, 0, 22, '#f5d061');
           spawnSparks(d.x, GROUND_Y - 50, '#e8b038', '#fff4cc', 2.2, true);
           if (FX3D) { FX3D.spawnFloorRing(d.x, '#f5d061', 280, 32); FX3D.spawnBurst(d.x, GROUND_Y - 40, '#e8b038', 22, true); }
-          pushCallout('TECTONIC FAULT!', '#f5d061', d.x, GROUND_Y - 210);
           resolveHit(a, d, {
             dmg: b.dmg, chip: 24, hs: 34, bs: 18, stop: 6,
-            kb: 6.5, ly: -13.5, kd: true, crit: true, guardCrush: true, heavyHit: true, rootF: 36, h: 'low', elStatus: true, mg: 0
+            kb: 6.5, ly: -13.5, kd: true, crit: true, guardCrush: true, heavyHit: true, rootF: 36, h: 'low', elStatus: true, mg: 0,
+            calloutTxt: 'TECTONIC FAULT!', calloutCol: '#f5d061'
           }, d.x, GROUND_Y - 60, true);
           if (match.finisherAnim) break;
         }
@@ -6161,14 +6626,14 @@
         b.age++; b.f--;
         if (b.age < 7) { b.x += (d.x - b.x) * 0.32; b.y = d.y - 96; }
         if (b.age === 7 && canFight && d.inv <= 0 && d.state !== 'ko' && d.state !== 'grabbed' && Math.abs(d.x - b.x) < 156) {
-          if (!a.statuses.chilock && !(a.id === 'p1' && match.bendingStolen)) a.magic = Math.min(100, a.magic + 15);
           sfx.crystalShatter();
           spawnSparks(d.x, d.y - 96, '#78eeff', '#ffffff', 2.4, true);
           if (FX3D) { FX3D.spawnFloorRing(d.x, '#9ef6ff', 260, 30); FX3D.flashSky('#78eeff', 0.35); }
-          pushCallout('THERMAL EXTRACTION!', '#9ef6ff', d.x, d.y - 212);
           resolveHit(a, d, {
             dmg: b.dmg, chip: 18, hs: 30, bs: 14, stop: 5,
-            kb: 2.0, ly: 0, kd: false, crit: true, freezePrison: true, h: 'mid', elStatus: true, mg: 0
+            kb: 2.0, ly: 0, kd: false, crit: true, freezePrison: true, h: 'mid', elStatus: true, mg: 0,
+            drainMeter: 1, stealMeter: true, stealBonus: 14,
+            calloutTxt: 'THERMAL EXTRACTION!', calloutCol: '#9ef6ff'
           }, d.x, d.y - 96, true);
           if (match.finisherAnim) break;
         }
@@ -6180,16 +6645,15 @@
         b.age++; b.f--;
         if (b.age < 6) { b.x += (d.x - b.x) * 0.32; b.y = d.y - 98; }
         if (b.age === 6 && canFight && d.inv <= 0 && d.state !== 'ko' && d.state !== 'grabbed' && Math.abs(d.x - b.x) < 168) {
-          applyStatus(d, 'shock', 220);
-          applyStatus(d, 'chilock', 180);
           stormFlashFrames = 7;
           sfx.elemBend('lightning');
           spawnSparks(d.x, d.y - 98, '#fde047', '#78e2ff', 2.5);
           if (FX3D) { FX3D.spawnFloorRing(d.x, '#fde047', 270, 30); FX3D.flashSky('#fde047', 0.42); }
-          pushCallout('NEURAL EMP SHOCK!', '#fde047', d.x, d.y - 212);
           resolveHit(a, d, {
             dmg: b.dmg, chip: 22, hs: 34, bs: 16, stop: 6,
-            kb: 11.5, ly: -8.5, kd: false, crit: true, microStun: true, guardCrush: true, h: 'mid', elStatus: true, mg: 0
+            kb: 11.5, ly: -8.5, kd: false, crit: true, microStun: true, guardCrush: true, h: 'mid', elStatus: true, mg: 0,
+            applyStatusKey: 'chilock', applyStatusDur: 180,
+            calloutTxt: 'NEURAL EMP SHOCK!', calloutCol: '#fde047'
           }, d.x, d.y - 98, true);
           if (match.finisherAnim) break;
         }
@@ -6197,24 +6661,89 @@
         continue;
       }
 
-      if (b.kind === 'sub_dim_rift') {
+      // SHADOW PORTAL BENDING (Both Sub-Bend & Ultimate): Sucks Opponent Into Void Portal -> Opens Overhead Sky Portal -> Drops & Slams Opponent Into the Ground!
+      if (b.kind === 'sub_dim_rift' || b.kind === 'ult_rift_drop') {
+        const isUlt = b.kind === 'ult_rift_drop';
         b.age++; b.f--;
-        if (b.age < 7) b.x += (d.x - b.x) * 0.3;
-        if (b.age === 7 && canFight && d.inv <= 0 && d.state !== 'ko' && d.state !== 'grabbed' && Math.abs(d.x - b.x) < 154) {
-          const stolen = Math.min(20, d.magic);
-          d.magic = Math.max(0, d.magic - stolen);
-          if (!a.statuses.chilock && !(a.id === 'p1' && match.bendingStolen)) a.magic = Math.min(100, a.magic + stolen + 6);
-          sfx.elemBend('shadow');
-          spawnSparks(d.x, GROUND_Y - 96, '#8b5cf6', '#f6f2ff', 2.4);
-          if (FX3D) { FX3D.spawnFloorRing(d.x, '#d8b4fe', 260, 30); FX3D.flashSky('#4c1d95', 0.38); }
-          pushCallout('DIMENSIONAL RIFT · -20% METER!', '#d8b4fe', d.x, GROUND_Y - 212);
-          resolveHit(a, d, {
-            dmg: b.dmg, chip: 20, hs: 34, bs: 14, stop: 5,
-            kb: 3.5, ly: -8.0, kd: false, crit: true, rootF: 40, guardCrush: true, h: 'mid', elStatus: true, mg: 0
-          }, d.x, GROUND_Y - 92, true);
-          if (match.finisherAnim) break;
+        if (b.dropX === undefined) b.dropX = Math.max(ARENA_L + 85, Math.min(ARENA_R - 85, b.x));
+        if (!b.grabbed) {
+          b.phase = 'suck';
+          if (b.age <= 11 && canFight && d.inv <= 0 && d.state !== 'ko' && d.state !== 'grabbed') {
+            const dx = b.x - d.x;
+            const pullRange = isUlt ? 245 : 195;
+            if (Math.abs(dx) < pullRange) {
+              // Visible gravitational void suction toward the ground portal!
+              d.x = Math.max(ARENA_L + 28, Math.min(ARENA_R - 28, d.x + dx * (isUlt ? 0.24 : 0.18)));
+              if (b.age % 3 === 0) spawnSparks(d.x, d.y - 76, '#8b5cf6', '#d8b4fe', 1.1);
+            }
+            if (b.age >= 7 && Math.abs(d.x - b.x) < (isUlt ? 148 : 118)) {
+              const dRel = relDir(d);
+              const dBlocking = !isUlt && (d.state === 'block_high' || d.state === 'block_low' || d.held.has('block') || dRel.back);
+              if (dBlocking) {
+                // Blocked sub-portal snaps shut with chip & poise pressure instead of unfairly teleporting a blocker
+                b.hit = true; b.f = Math.min(b.f, 8);
+                resolveHit(a, d, {
+                  dmg: b.dmg, chip: 18, hs: 26, bs: 14, stop: 4,
+                  kb: 7.5, ly: -5, kd: false, crit: false, guardCrush: true, h: 'mid', elStatus: true, mg: 0
+                }, d.x, d.y - 90, true);
+              } else {
+                // SUCKED INTO THE VOID PORTAL!
+                b.grabbed = true; b.phase = 'swallow'; b.grabAge = b.age;
+                d.state = 'grabbed'; d.sf = 0; d.vx = 0; d.vy = 0; d.move = null; d.moveId = null;
+                d.x = b.x; d.y = GROUND_Y + 46;
+                sfx.elemBend('shadow');
+                spawnSparks(b.x, GROUND_Y - 40, '#8b5cf6', '#f6f2ff', 2.4);
+                if (FX3D) { FX3D.spawnFloorRing(b.x, '#d8b4fe', 250, 26); FX3D.flashSky('#4c1d95', 0.34); }
+                pushCallout('VOID PORTAL CAPTURE!', '#d8b4fe', b.x, GROUND_Y - 196);
+              }
+            }
+          }
+        } else {
+          const gElapsed = b.age - (b.grabAge || 7);
+          if (gElapsed < 10) {
+            // Inside dimensional rift — overhead sky portal rips open above dropX!
+            b.phase = 'swallow';
+            d.state = 'grabbed'; d.x = b.dropX; d.y = GROUND_Y + 48; d.vx = 0; d.vy = 0;
+            if (gElapsed === 5) {
+              sfx.elemBend('shadow');
+              spawnSparks(b.dropX, GROUND_Y - 290, '#c084fc', '#ffffff', 2.2);
+            }
+          } else if (gElapsed === 10) {
+            // EJECTED FROM OVERHEAD SKY PORTAL!
+            b.phase = 'drop';
+            d.state = 'knockdown_air'; d.sf = 0;
+            d.x = b.dropX; d.y = GROUND_Y - 278;
+            d.vx = b.dir * 2.2; d.vy = 23.0;
+            sfx.elemBend('shadow');
+            spawnSparks(b.dropX, GROUND_Y - 275, '#d8b4fe', '#ffffff', 2.6);
+            pushCallout('DIMENSIONAL DROP!', '#e9d5ff', b.dropX, GROUND_Y - 290);
+          } else if (!b.hit) {
+            b.phase = 'drop';
+            d.vy = Math.max(d.vy, 22.0);
+            if (d.y >= GROUND_Y - 14 || gElapsed >= 23) {
+              // DEVASTATING GROUND SLAM IMPACT!
+              b.hit = true; b.phase = 'slam';
+              d.y = GROUND_Y; d.vy = 0;
+              sfx.slam(); shake = Math.max(shake, (isUlt ? 26 : 19) * settings.feedback);
+              inkFlashF = Math.max(inkFlashF, isUlt ? 6 : 4);
+              spawnDust(d.x, GROUND_Y, 0, isUlt ? 26 : 18, '#c084fc');
+              spawnSparks(d.x, GROUND_Y - 40, '#8b5cf6', '#ffffff', isUlt ? 3.0 : 2.4);
+              if (FX3D) { FX3D.spawnFloorRing(d.x, '#d8b4fe', isUlt ? 340 : 260, 32); FX3D.flashSky('#4c1d95', 0.48); }
+              resolveHit(a, d, {
+                dmg: b.dmg, chip: 0, hs: 38, bs: 16, stop: isUlt ? 7 : 5,
+                kb: isUlt ? 12.0 : 7.0, ly: isUlt ? -13.5 : -10.5, kd: true, crit: true,
+                unblockable: true, heavyHit: true, h: 'mid', elStatus: true, mg: 0,
+                drainMeter: isUlt ? 0 : 20, stealMeter: !isUlt, stealBonus: 6,
+                calloutTxt: isUlt ? 'VOID PORTAL SLAM!' : 'PORTAL SLAM · -20% METER!', calloutCol: '#d8b4fe'
+              }, d.x, GROUND_Y - 40, true);
+              if (match.finisherAnim) break;
+            }
+          }
         }
-        if (b.f <= 0 && bendingWaves[i] === b) bendingWaves.splice(i, 1);
+        if (b.f <= 0 && bendingWaves[i] === b) {
+          if (b.grabbed && d.state === 'grabbed') { d.y = GROUND_Y; d.state = 'idle'; }
+          bendingWaves.splice(i, 1);
+        }
         continue;
       }
 
@@ -6224,15 +6753,14 @@
         if (settings.vfx !== 'low' && b.age % 2 === 0) pushParticle({ x: b.x - b.dir * 32, y: b.y + 18, vx: -b.dir * 3, vy: -2.2, sz: 5.5, c: '#86efac', age: 0, max: 16, g: 0.04, t: 'spark' });
         if (canFight && !b.hit && d.inv <= 0 && d.state !== 'ko' && d.state !== 'grabbed' && rectsHit(getWaveBox(b), getHurtbox(d))) {
           b.hit = true;
-          applyStatus(d, 'entangle', 240);
-          a.hp = Math.min(a.maxHp, a.hp + Math.round(a.maxHp * 0.10)); a.trailHp = a.hp;
           sfx.elemBend('nature'); sfx.slam();
           spawnSparks(d.x, d.y - 84, '#16a34a', '#bbf7d0', 2.4);
           if (FX3D) { FX3D.spawnFloorRing(d.x, '#86efac', 260, 30); FX3D.spawnBurst(d.x, d.y - 80, '#4ade80', 20, false); }
-          pushCallout('PRIMAL CHIMERA · +10% HP!', '#86efac', d.x, d.y - 208);
           resolveHit(a, d, {
             dmg: b.dmg, chip: 20, hs: 32, bs: 14, stop: 6,
-            kb: 12.5, ly: -13.2, kd: true, crit: true, launcher: true, lifeDrain: true, h: 'mid', elStatus: true, mg: 0
+            kb: 12.5, ly: -13.2, kd: true, crit: true, launcher: true, lifeDrain: true, h: 'mid', elStatus: true, mg: 0,
+            applyStatusKey: 'entangle', applyStatusDur: 240, healFrac: 0.10,
+            calloutTxt: 'PRIMAL CHIMERA · +10% HP!', calloutCol: '#86efac'
           }, d.x, d.y - 84, true);
           if (match.finisherAnim) break;
         }
@@ -6516,7 +7044,11 @@
       if (settings.vfx !== 'low' && b.f % 2 === 0) {
         pushParticle({ x: b.x + (Math.random() - 0.5) * b.w * 0.6, y: b.y - Math.random() * b.h * 0.5, vx: -b.vx * 0.15 + (Math.random() - 0.5) * 3, vy: -1.5 - Math.random() * 2.5, sz: b.ult ? 5.5 : 3.5, c: Math.random() < 0.5 ? b.el.core : b.el.glow, age: 0, max: 18, g: 0.08, t: b.el.id === 'ice' || b.el.id === 'earth' ? 'shard' : 'spark' });
       }
-      if (canFight && !b.hit && !(b.hitCd > 0)) {
+      const isHeavySkyDrop = b.kind === 'ult_monolith_drop' || b.kind === 'ult_meteor';
+      const isDelayedPeakUlt = b.kind === 'ult_solar_nova' || b.kind === 'ult_ice_domain' || b.kind === 'ult_crystal_clamp' || b.kind === 'ult_titan_fist' || b.kind === 'ult_iron_crush' || b.kind === 'ult_pyramid_tomb' || b.kind === 'ult_mandala';
+      const activeHitWindow = (!isDelayedPeakUlt || (b.age >= 6 && b.age <= 14))
+        && (!isHeavySkyDrop || d.y < GROUND_Y - 30 || b.y >= GROUND_Y - 95);
+      if (canFight && !b.hit && !(b.hitCd > 0) && activeHitWindow) {
         const box = getWaveBox(b);
         if (d.inv <= 0 && d.state !== 'ko' && d.state !== 'grabbed' && rectsHit(box, getHurtbox(d))) {
           // Katara's Octopus Form intercepts & deflects enemy projectiles automatically!
@@ -6540,27 +7072,28 @@
             pushCallout('REDIRECTED!', '#9cf4ff', d.x, d.y - 188);
             continue;
           }
-          if (b.multiHits && b.multiHits > 1) {
+          const isMultiHit = Boolean(b.multiHits && b.multiHits > 1);
+          if (isMultiHit) {
             b.multiHits--; b.hitCd = 6; b.vx *= 0.78;
           } else {
             b.hit = true;
           }
-          if (b.kind === 'ult_mandala') {
-            d.magic = Math.max(0, d.magic - 35);
-            applyStatus(d, 'chilock', 260);
-            pushCallout('SOUL MANDALA · -35% CHI!', '#f9a8d4', d.x, d.y - 216);
-          }
+          const isMandala = b.kind === 'ult_mandala';
           resolveHit(a, d, {
             dmg: b.dmg, chip: Math.round(b.dmg * 0.24), hs: b.ult ? 34 : 22, bs: b.ult ? 18 : 12,
-            stop: b.ult ? 6 : 4, kb: b.ult ? 15.5 : (b.multiHits ? 5.2 : 10.5), ly: b.ly, kd: b.ult || b.ly < -8,
+            stop: b.ult ? 6 : 4, kb: isMultiHit ? 5.2 : (b.ult ? 15.5 : 10.5), ly: b.ly, kd: (!isMultiHit && b.ult) || b.ly < -8,
             crit: b.ult || b.heavyHit, launcher: b.launcher, guardCrush: b.guardCrush,
             microStun: b.microStun, pullTo: b.pullTo, rootF: b.rootF, freezePrison: b.freezePrison, lifeDrain: b.lifeDrain, heavyHit: b.heavyHit,
+            drainMeter: isMandala ? 35 : 0, applyStatusKey: isMandala ? 'chilock' : '', applyStatusDur: 240,
+            calloutTxt: isMandala ? 'SOUL MANDALA · -35% CHI!' : '', calloutCol: '#f9a8d4',
             h: b.low ? 'low' : 'mid', elStatus: true, mg: b.ult ? 0 : 8
           }, d.x, d.y - 100, true);
           if (match.finisherAnim) break;
         }
       }
-      if ((b.f <= 0 || b.x < ARENA_L - 180 || b.x > ARENA_R + 180) && bendingWaves[i] === b) bendingWaves.splice(i, 1);
+      const isWideBeam = b.kind === 'ult_railgun' || b.kind === 'ult_hydro_beam' || b.kind === 'ult_prism_beam';
+      const outOfBounds = !isWideBeam && (b.x < ARENA_L - 180 || b.x > ARENA_R + 180);
+      if ((b.f <= 0 || outOfBounds) && bendingWaves[i] === b) bendingWaves.splice(i, 1);
     }
 
     // Update Dropped Weapons Physics & Automatic Recovery Pickup!
@@ -6670,28 +7203,82 @@
     return 0;
   }
 
+  function buildMatchCardHtml(opts) {
+    const {
+      isWifi, isWin, reward, lossTenth, xpGain, elId,
+      gauntletCur, gauntletMax, chestBonus, milestoneBonus, armoryCue
+    } = opts;
+    if (isWifi) {
+      const n1 = escapeHtml(getFighterDisplayName('p1'));
+      const n2 = escapeHtml(getFighterDisplayName('p2'));
+      const sess = (WIFI && WIFI.state) ? `${WIFI.state.sessionW1 || 0} — ${WIFI.state.sessionW2 || 0}` : `${match.p1W} — ${match.p2W}`;
+      const streakTxt = (WIFI && WIFI.state && WIFI.state.streakCount >= 2)
+        ? ` · ${escapeHtml(WIFI.state.streakWho === 'p1' ? getFighterDisplayName('p1') : getFighterDisplayName('p2'))} ${WIFI.state.streakCount} STREAK`
+        : '';
+      return `
+        <div class="mc-row"><b>SESSION RIVALRY · ${sess}${streakTxt}</b><span>+${reward} COINS${lossTenth ? ' (1/10 LOSS)' : ''}</span></div>
+        <div class="mc-grid">
+          <div class="mc-stat"><span>${n1} DMG</span><b>${match.p1Dmg || 0}</b></div>
+          <div class="mc-stat"><span>${n2} DMG</span><b>${match.p2Dmg || 0}</b></div>
+          <div class="mc-stat"><span>MAX COMBO</span><b>${match.maxComboP1 || 0} / ${match.maxComboP2 || 0}</b></div>
+          <div class="mc-stat"><span>PARRIES</span><b>${match.p1Parries || 0} / ${match.p2Parries || 0}</b></div>
+        </div>
+        <div class="mc-row"><span>HEAD HITS: ${match.headHitsP1 || 0} / ${match.headHitsP2 || 0}</span><span>CLASHES: ${match.p1Clashes || 0} / ${match.p2Clashes || 0}</span></div>`;
+    }
+    const rk = getWarriorRank(PROG.xp);
+    const mLv = getElMasteryLevel(elId);
+    const elName = (ELEMENTS[elId] && ELEMENTS[elId].name) ? ELEMENTS[elId].name.toUpperCase() : 'ELEMENT';
+    const gBar = (typeof gauntletCur === 'number' && gauntletMax > 0)
+      ? `<div class="mc-row"><span>REALM GAUNTLET PROGRESS</span><b>${gauntletCur} / ${gauntletMax}</b></div>
+         <div class="mc-bar"><div class="mc-bar-fill" style="width:${Math.round((gauntletCur / gauntletMax) * 100)}%"></div></div>`
+      : '';
+    const extraLine = [
+      chestBonus ? `MID-REALM CHEST +${chestBonus}C` : '',
+      milestoneBonus ? `TOWER MILESTONE +${milestoneBonus}C` : ''
+    ].filter(Boolean).join(' · ');
+    return `
+      <div class="mc-row"><b>${rk.name} · ${elName} LV.${mLv}</b><span>+${reward} COINS${lossTenth ? ' (1/10 CONSOLATION)' : ''} · +${xpGain} XP</span></div>
+      ${extraLine ? `<div class="mc-row" style="color:#fde68a"><b>${extraLine}</b><span>TOTAL: ${PROG.coins}C</span></div>` : ''}
+      <div class="mc-grid">
+        <div class="mc-stat"><span>STYLE</span><b>${match.styleRank || 'C'}</b></div>
+        <div class="mc-stat"><span>MAX COMBO</span><b>x${match.maxComboP1 || 0}</b></div>
+        <div class="mc-stat"><span>PARRIES</span><b>${match.p1Parries || 0}</b></div>
+        <div class="mc-stat"><span>DAMAGE</span><b>${match.p1Dmg || 0}</b></div>
+      </div>
+      ${gBar}
+      ${armoryCue ? `<div class="mc-cue">${escapeHtml(armoryCue)} · VISIT ARMORY TO GROW STRONGER!</div>` : ''}`;
+  }
+
   function concludeRound(w) {
+    if (match.roundConcluded) return;
+    match.roundConcluded = true;
     if (w === 'p1') match.p1W++; else if (w === 'p2') match.p2W++;
     sfx.gong();
 
-    // Endless Shadow Tower escalating survival + Rotating Mutators every 3 waves!
+    // Endless Shadow Tower escalating survival + Rotating Mutators every 3 waves + Milestone Rewards!
     if (match.mode === 'endless') {
       if (w === 'p1') {
         const clearedWave = match.endlessWave;
         if (clearedWave > PROG.endlessBest) PROG.endlessBest = clearedWave;
-        const mutMult = match.mutator ? 2 : 1;
-        const waveCoins = (85 + clearedWave * 15) * mutMult;
+        const mutMult = match.mutator ? 1.5 : 1;
+        const baseWaveCoins = Math.round((35 + clearedWave * 8) * mutMult);
+        const milestoneBonus = clearedWave === 5 ? 60 : clearedWave === 10 ? 100 : clearedWave === 15 ? 150 : clearedWave === 20 ? 250 : 0;
+        const waveCoins = baseWaveCoins + milestoneBonus;
         PROG.coins += waveCoins;
+        awardXpAndMastery(p1.el.id, 30 + clearedWave * 4, 24);
+        recordDailyProgress('tower', 1);
+        if (clearedWave >= 5) unlockAchievement('tower_5');
+        if (clearedWave >= 10) unlockAchievement('tower_10');
         saveProg();
         match.endlessWave = clearedWave + 1;
         const nextEl = EL_ORDER[(match.endlessWave - 1) % EL_ORDER.length];
-        const waveScale = 1 + (match.endlessWave - 1) * 0.08;
+        const waveScale = 1 + (match.endlessWave - 1) * 0.09;
         match.boss = {
           id: 100 + match.endlessWave, el: nextEl, title: `SHADOW WAVE ${match.endlessWave}`,
           region: 'Shadow Tower', rank: `Wave ${match.endlessWave}`,
-          hpMult: waveScale, dmgMult: 0.95 + (match.endlessWave - 1) * 0.05, defMult: 1 + (match.endlessWave - 1) * 0.03,
+          hpMult: waveScale, dmgMult: 0.98 + (match.endlessWave - 1) * 0.06, defMult: 1 + (match.endlessWave - 1) * 0.04,
           magicGain: 1.15, theme: (match.endlessWave - 1) % 3,
-          ai: AI_CFG[match.endlessWave < 4 ? 'warrior' : match.endlessWave < 7 ? 'master' : 'shadow']
+          ai: AI_CFG[match.endlessWave < 3 ? 'warrior' : match.endlessWave < 6 ? 'master' : 'shadow']
         };
         if (match.endlessWave >= 3) {
           match.mutator = TOWER_MUTATORS[Math.floor((match.endlessWave - 3) / 3) % TOWER_MUTATORS.length];
@@ -6700,12 +7287,22 @@
         }
         p2.el = ELEMENTS[nextEl];
         match.screen = 'round_over'; match.over = 100;
+        const msTag = milestoneBonus ? ` · MILESTONE +${milestoneBonus}C!` : '';
         const nextMutTag = match.mutator ? ` · NEXT: ${match.mutator.name}` : '';
-        showBanner(`${getFighterDisplayName('p1')} WINS`, `WAVE ${clearedWave} CLEARED · +${waveCoins} COINS${nextMutTag}`, '#fde68a', 96);
+        showBanner(`${getFighterDisplayName('p1')} WINS`, `WAVE ${clearedWave} CLEARED · +${waveCoins} COINS${msTag}${nextMutTag}`, '#fde68a', 96);
         return;
       } else {
         match.screen = 'match_over'; match.winner = 'p2';
-        showBanner(`${getFighterDisplayName('p2')} WINS`, `BEST STREAK: ${PROG.endlessBest} WAVES`, '#4be3ff', 99999);
+        const wavePotential = Math.round(35 + (match.endlessWave || 1) * 8);
+        const lossCoins = Math.max(1, Math.round(wavePotential * 0.1));
+        PROG.coins += lossCoins;
+        awardXpAndMastery(p1.el.id, 12, 10);
+        saveProg();
+        match.lastMatchCardHtml = buildMatchCardHtml({
+          isWifi: false, isWin: false, reward: lossCoins, lossTenth: true, xpGain: 12, elId: p1.el.id,
+          armoryCue: hasAffordableArmoryItem()
+        });
+        showBanner(`${getFighterDisplayName('p2')} WINS`, `BEST STREAK: ${PROG.endlessBest} WAVES · +${lossCoins} COINS`, '#4be3ff', 99999);
         return;
       }
     }
@@ -6715,69 +7312,144 @@
       if (match.mode === 'wifi') {
         match.wifiRematchP1 = false; match.wifiRematchP2 = false;
         const winName = getFighterDisplayName(match.winner);
-        const hostReward = match.winner === 'p1' ? 110 : 55;
+        const fightSec = (performance.now() - (match.matchStartMs || 0)) / 1000;
+        const eligibleCoins = fightSec >= 6;
+        const wifiWinCoins = 50;
+        const hostReward = !eligibleCoins ? 0 : (match.winner === 'p1' ? wifiWinCoins : Math.max(1, Math.round(wifiWinCoins * 0.1)));
+        if (WIFI && WIFI.recordSessionWin) WIFI.recordSessionWin(match.winner);
         PROG.coins += hostReward;
+        awardXpAndMastery(p1.el.id, match.winner === 'p1' ? 45 : 15, match.winner === 'p1' ? 35 : 12);
+        if (match.winner === 'p1') {
+          PROG.wifiWins = (PROG.wifiWins || 0) + 1;
+          PROG.totalWins = (PROG.totalWins || 0) + 1;
+          unlockAchievement('first_blood');
+          unlockAchievement('wifi_rival');
+          recordDailyProgress('win', 1);
+        }
         saveProg();
+        match.lastMatchCardHtml = buildMatchCardHtml({
+          isWifi: true, isWin: match.winner === 'p1', reward: hostReward,
+          lossTenth: eligibleCoins && match.winner !== 'p1', xpGain: match.winner === 'p1' ? 45 : 15, elId: p1.el.id
+        });
         const subWifi = `${match.p1W} — ${match.p2W}${match.eclipseFinished ? ' · EXECUTION' : ''} · WI-FI DUET`;
         showBanner(`${winName} WINS`, subWifi, match.winner === 'p1' ? '#ffae34' : '#4be3ff', 99999, false, true);
         if (WIFI && WIFI.isHostInMatch()) {
-          WIFI.sendRaw({ t: 'over', ms: WIFI.state.matchSeq, w: match.winner, w1: match.p1W, w2: match.p2W, ex: match.eclipseFinished ? 1 : 0 });
+          WIFI.sendRaw({
+            t: 'over', ms: WIFI.state.matchSeq, w: match.winner, w1: match.p1W, w2: match.p2W,
+            ex: match.eclipseFinished ? 1 : 0,
+            d1: match.p1Dmg || 0, d2: match.p2Dmg || 0,
+            c1: match.maxComboP1 || 0, c2: match.maxComboP2 || 0,
+            pr1: match.p1Parries || 0, pr2: match.p2Parries || 0,
+            hh1: match.headHitsP1 || 0, hh2: match.headHitsP2 || 0,
+            cl1: match.p1Clashes || 0, cl2: match.p2Clashes || 0
+          });
         }
         haptic('ko');
         return;
       }
-      const styleBonus = ({ D: 10, C: 20, B: 35, A: 55, S: 80, AVATAR: 120 }[match.styleRank] || 0);
-      const finisherBonus = match.eclipseFinished ? 75 : 0;
-      let reward = match.winner === 'p1' ? 120 : 35;
-      reward += match.maxComboP1 * 8 + match.headHitsP1 * 15 + styleBonus + finisherBonus;
-      if (match.dailyTrial || match.mutator) reward *= 2;
-      const winName = getFighterDisplayName(match.winner);
-      const extraTags = [
-        match.dailyTrial ? 'DAILY 2×' : (match.mutator ? 'MUTATOR 2×' : ''),
-        match.eclipseFinished ? 'EXECUTION' : '',
-        match.styleRank ? `RANK ${match.styleRank}` : ''
-      ].filter(Boolean).join(' · ');
-      let subTxt = `${match.p1W} — ${match.p2W}${extraTags ? ' · ' + extraTags : ''} · +${reward} COINS`;
-      let showMemoryStage = null;
 
-      if (match.winner === 'p1' && match.boss && match.mode === 'campaign') {
+      // Tightened, balanced coin economy: winning earns purposeful progression coins; losing earns EXACTLY 1/10th!
+      const styleBonus = ({ D: 4, C: 8, B: 14, A: 20, S: 28, AVATAR: 38 }[match.styleRank] || 0);
+      const finisherBonus = match.eclipseFinished ? 25 : 0;
+      const baseWin = (match.boss && match.mode === 'campaign') ? (match.boss.isMinion ? 30 : 48) : 42;
+      let winPotential = baseWin + Math.min(24, (match.maxComboP1 || 0) * 2) + Math.min(20, (match.headHitsP1 || 0) * 4) + styleBonus + finisherBonus;
+      if (match.dailyTrial || match.mutator) winPotential = Math.round(winPotential * 1.5);
+
+      let showMemoryStage = null;
+      let chestBonus = 0;
+      let gauntletCur = null;
+      let gauntletMax = 0;
+      let subTxt = '';
+      let reward = 0;
+
+      if (match.boss && match.mode === 'campaign') {
         const st = match.boss;
         const stageObj = CAMPAIGN_STAGES[st.stageId] || st;
+        const curProg = getRealmProgress(st.stageId);
+        gauntletMax = 6;
         if (st.isMinion) {
-          const curProg = getRealmProgress(st.stageId);
           const nextBout = (st.boutIdx || 0) + 1;
           const isFirstBout = nextBout > curProg;
-          if (!PROG.realmProgress || typeof PROG.realmProgress !== 'object') PROG.realmProgress = {};
-          PROG.realmProgress[st.stageId] = Math.max(curProg, nextBout);
-          reward += isFirstBout ? st.bounty : Math.round(st.bounty * 0.45);
-          const nextNote = nextBout < 5
-            ? `${st.isFinal ? 'ECLIPSE GENERAL' : 'WARRIOR'} ${nextBout + 1}/5 NEXT`
-            : (st.isFinal ? 'SHADOW AVATAR THRONE UNLOCKED!' : `${stageObj.title} UNLOCKED!`);
-          subTxt = `${st.title} DEFEATED · ${nextNote} · +${reward} COINS`;
-        } else {
-          if (!PROG.realmProgress || typeof PROG.realmProgress !== 'object') PROG.realmProgress = {};
-          PROG.realmProgress[st.stageId] = 6;
-          const firstClear = !PROG.cleared.includes(stageObj.id);
-          reward += firstClear ? stageObj.bounty : Math.round(stageObj.bounty * 0.45);
-          const trialBonus = checkRegionalTrial(stageObj);
-          reward += trialBonus;
-          if (firstClear) {
-            PROG.cleared.push(stageObj.id);
-            if (!PROG.unlockedElements.includes(stageObj.el)) PROG.unlockedElements.push(stageObj.el);
-            showMemoryStage = stageObj;
-          }
-          if (stageObj.isFinal) {
-            PROG.avatarUnlocked = true;
-            if (!PROG.ownedGear.includes('crown')) { PROG.ownedGear.push('crown'); PROG.equippedGear = 'crown'; }
-            subTxt = `THE SHADOW AVATAR VANQUISHED · AVATAR STATE UNLOCKED · +${reward} COINS`;
+          const boutBounty = isFirstBout ? st.bounty : Math.round(st.bounty * 0.35);
+          if (st.suddenDeath && isFirstBout) chestBonus = 45 + st.stageId * 8;
+          winPotential += boutBounty + chestBonus;
+          if (match.winner === 'p1') {
+            reward = winPotential;
+            if (!PROG.realmProgress || typeof PROG.realmProgress !== 'object') PROG.realmProgress = {};
+            PROG.realmProgress[st.stageId] = Math.max(curProg, nextBout);
+            gauntletCur = PROG.realmProgress[st.stageId];
+            const nextNote = nextBout < 5
+              ? `${st.isFinalLegion ? 'ECLIPSE GENERAL' : 'WARRIOR'} ${nextBout + 1}/5 NEXT`
+              : (st.isFinalLegion ? 'SHADOW AVATAR THRONE UNLOCKED!' : `${stageObj.title} UNLOCKED!`);
+            subTxt = `${st.title} DEFEATED · ${nextNote} · +${reward} COINS`;
           } else {
-            subTxt = `${ELEMENTS[stageObj.el].name.toUpperCase()} GRANDMASTER DEFEATED${extraTags ? ' · ' + extraTags : ''} · +${reward} COINS${trialBonus ? ' · SCROLL MASTERED!' : ''}`;
+            reward = Math.max(1, Math.round(winPotential * 0.1));
+            gauntletCur = curProg;
+            subTxt = `${match.p1W} — ${match.p2W} · +${reward} COINS (1/10 CONSOLATION) · UPGRADE IN ARMORY!`;
+          }
+        } else {
+          const firstClear = !PROG.cleared.includes(stageObj.id);
+          const bossBounty = firstClear ? stageObj.bounty : Math.round(stageObj.bounty * 0.35);
+          winPotential += bossBounty;
+          if (match.winner === 'p1') {
+            if (!PROG.realmProgress || typeof PROG.realmProgress !== 'object') PROG.realmProgress = {};
+            PROG.realmProgress[st.stageId] = 6;
+            gauntletCur = 6;
+            const rawTrial = checkRegionalTrial(stageObj);
+            const trialBonus = rawTrial ? Math.round(rawTrial * 0.45) : 0;
+            reward = winPotential + trialBonus;
+            if (firstClear) {
+              PROG.cleared.push(stageObj.id);
+              if (!PROG.unlockedElements.includes(stageObj.el)) PROG.unlockedElements.push(stageObj.el);
+              showMemoryStage = stageObj;
+            }
+            if (stageObj.id === 0) unlockAchievement('realm_1');
+            if (PROG.cleared.length >= 6) unlockAchievement('realm_6');
+            if (stageObj.isFinal) {
+              PROG.avatarUnlocked = true;
+              if (!PROG.ownedGear.includes('crown')) { PROG.ownedGear.push('crown'); PROG.equippedGear = 'crown'; }
+              unlockAchievement('shadow_fall');
+              if (!match.everLostBending) unlockAchievement('untouched_seal');
+              subTxt = `THE SHADOW AVATAR VANQUISHED · AVATAR STATE UNLOCKED · +${reward} COINS`;
+            } else {
+              subTxt = `${ELEMENTS[stageObj.el].name.toUpperCase()} GRANDMASTER DEFEATED · +${reward} COINS${trialBonus ? ' · SCROLL MASTERED!' : ''}`;
+            }
+          } else {
+            reward = Math.max(1, Math.round(winPotential * 0.1));
+            gauntletCur = curProg;
+            subTxt = `${match.p1W} — ${match.p2W} · +${reward} COINS (1/10 CONSOLATION) · FORGE STRONGER STEEL!`;
           }
         }
+      } else {
+        const extraTags = [
+          match.dailyTrial ? 'DAILY 1.5×' : (match.mutator ? 'MUTATOR 1.5×' : ''),
+          match.eclipseFinished ? 'EXECUTION' : '',
+          match.styleRank ? `RANK ${match.styleRank}` : ''
+        ].filter(Boolean).join(' · ');
+        reward = match.winner === 'p1' ? winPotential : Math.max(1, Math.round(winPotential * 0.1));
+        subTxt = `${match.p1W} — ${match.p2W}${extraTags ? ' · ' + extraTags : ''} · +${reward} COINS${match.winner !== 'p1' ? ' (1/10)' : ''}`;
       }
+
+      const winName = getFighterDisplayName(match.winner);
+      const isWin = match.winner === 'p1';
+      const xpGain = isWin ? (match.boss && match.boss.isRealmBoss ? 85 : 48) : 14;
+      const masteryGain = isWin ? 42 : 12;
       PROG.coins += reward;
+      awardXpAndMastery(p1.el.id, xpGain, masteryGain);
+      if (isWin) {
+        PROG.totalWins = (PROG.totalWins || 0) + 1;
+        unlockAchievement('first_blood');
+        recordDailyProgress('win', 1);
+        if (match.mode === 'campaign') recordDailyProgress('story', 1);
+        if (match.styleRank === 'S' || match.styleRank === 'AVATAR') unlockAchievement('shogun_rank');
+        if (match.eclipseFinished) unlockAchievement('executioner');
+      }
       saveProg();
-      showBanner(`${winName} WINS`, subTxt, match.winner === 'p1' ? '#ffae34' : '#4be3ff', 99999);
+      match.lastMatchCardHtml = buildMatchCardHtml({
+        isWifi: false, isWin, reward, lossTenth: !isWin, xpGain, elId: p1.el.id,
+        gauntletCur, gauntletMax, chestBonus: isWin ? chestBonus : 0, armoryCue: hasAffordableArmoryItem()
+      });
+      showBanner(`${winName} WINS`, subTxt, isWin ? '#ffae34' : '#4be3ff', 99999);
 
       // Show Post-Win Ink-Silhouette Memory Vignette on first Story clear!
       if (showMemoryStage && showMemoryStage.memory) {
@@ -6801,7 +7473,7 @@
       match.screen = 'round_over'; match.over = 104;
       haptic('ko');
       const titleTxt = w === 'draw' ? 'DRAW ROUND' : `${getFighterDisplayName(w)} WINS`;
-      const subRound = w === 'draw' ? `ROUND ${match.round} TIED` : `ROUND ${match.round} · ${match.p1W} — ${match.p2W}`;
+      const subRound = w === 'draw' ? `ROUND ${match.round} TIED` : `ROUND ${match.round} · ${match.p1W} — ${match.p2W} (FIRST TO ${match.toWin})`;
       showBanner(titleTxt, subRound, w === 'p1' ? '#ffae34' : '#4be3ff', 100);
     }
   }
@@ -6828,16 +7500,16 @@
   syncGameCanvasDpr();
   window.addEventListener('resize', syncGameCanvasDpr);
 
-  const silBuf = document.createElement('canvas'); silBuf.width = 480; silBuf.height = 440;
+  const silBuf = document.createElement('canvas'); silBuf.width = 600; silBuf.height = 560;
   const sctx = silBuf.getContext('2d');
-  const rimBuf = document.createElement('canvas'); rimBuf.width = 480; rimBuf.height = 440;
+  const rimBuf = document.createElement('canvas'); rimBuf.width = 600; rimBuf.height = 560;
   const rctx = rimBuf.getContext('2d');
   const bgBuf = document.createElement('canvas'); bgBuf.width = W; bgBuf.height = H;
   const bctx = bgBuf.getContext('2d');
   let lastBackdropPainted = false;
 
-  // Stamp a crisp zero-blur elemental rim outline from cropped active fighter sub-rect in silBuf (cuts Android pixel fill ~50%!)
-  const SIL_RX = 30, SIL_RY = 12, SIL_RW = 420, SIL_RH = 408;
+  // Stamp a crisp zero-blur elemental rim outline from cropped active fighter sub-rect in silBuf (expanded to 600x560 so long weapons never clip!)
+  const SIL_RX = 12, SIL_RY = 10, SIL_RW = 576, SIL_RH = 532;
   function drawTintedRim(targetCtx, x, y, rimColor, spread = 2.2, alpha = 0.72) {
     rctx.save();
     rctx.globalCompositeOperation = 'source-over';
@@ -8161,16 +8833,51 @@
       }
       ctx.restore(); return;
     }
-    if (b.kind === 'sub_dim_rift') {
-      const fade = Math.min(1, b.f / 9), prog = Math.min(1, (b.age || 1) / 7);
-      ctx.globalAlpha = 0.94 * fade;
-      for (const side of [-1, 1]) {
-        const px = b.x + side * 78;
-        ctx.fillStyle = '#070214'; ctx.strokeStyle = pal.glow; ctx.lineWidth = 3.2;
-        ctx.beginPath(); ctx.ellipse(px, b.y, 18, 72 * prog, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-        // Slashing void blade emerging inward
-        ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 4;
-        ctx.beginPath(); ctx.moveTo(px, b.y); ctx.lineTo(b.x - side * 12, b.y + side * 18); ctx.stroke();
+    if (b.kind === 'sub_dim_rift' || b.kind === 'ult_rift_drop') {
+      const isUlt = b.kind === 'ult_rift_drop';
+      const fade = Math.min(1, b.f / 9), prog = Math.min(1, (b.age || 1) / 8);
+      const dropX = b.dropX !== undefined ? b.dropX : b.x;
+      ctx.globalAlpha = 0.96 * fade;
+      // 1) Ground Suction Void Portal pulling opponent inward
+      const gRad = (isUlt ? 116 : 86) * prog;
+      const vg = ctx.createRadialGradient(b.x, GROUND_Y - 12, 8, b.x, GROUND_Y - 12, gRad * 1.15);
+      vg.addColorStop(0, '#04010c'); vg.addColorStop(0.55, pal.primary + 'dd'); vg.addColorStop(0.85, pal.glow + '99'); vg.addColorStop(1, pal.primary + '00');
+      ctx.fillStyle = vg;
+      ctx.beginPath(); ctx.ellipse(b.x, GROUND_Y - 10, gRad, gRad * 0.28, 0, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = '#050112'; ctx.strokeStyle = pal.glow; ctx.lineWidth = isUlt ? 4 : 3;
+      ctx.beginPath(); ctx.ellipse(b.x, GROUND_Y - 10, gRad * 0.72, gRad * 0.2, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+      // Swirling inward suction arcs
+      for (let k = 0; k < 4; k++) {
+        const ang = simFrame * 0.22 + (k * Math.PI * 0.5);
+        const rIn = gRad * (0.35 + ((simFrame + k * 7) % 12) / 14);
+        ctx.strokeStyle = k % 2 === 0 ? '#ffffff' : pal.glow; ctx.lineWidth = 2.4;
+        ctx.beginPath();
+        ctx.moveTo(b.x + Math.cos(ang) * rIn * 1.35, GROUND_Y - 18 - Math.abs(Math.sin(ang)) * 52);
+        ctx.lineTo(b.x + Math.cos(ang) * rIn * 0.35, GROUND_Y - 10);
+        ctx.stroke();
+      }
+      // 2) Overhead Sky Portal opening high above dropX to hurl the opponent downward!
+      if (b.phase === 'swallow' || b.phase === 'drop' || b.phase === 'slam') {
+        const skyY = GROUND_Y - 295;
+        const sRad = (isUlt ? 118 : 92) * Math.min(1, (b.age || 10) / 14);
+        ctx.fillStyle = '#050112'; ctx.strokeStyle = pal.glow; ctx.lineWidth = isUlt ? 4.2 : 3.2;
+        ctx.beginPath(); ctx.ellipse(dropX, skyY, sRad, 26, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+        ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 2.2;
+        ctx.beginPath(); ctx.ellipse(dropX, skyY, sRad * 0.68, 14, 0, simFrame * 0.25, simFrame * 0.25 + Math.PI * 1.5); ctx.stroke();
+        if (b.phase === 'drop' || b.phase === 'slam') {
+          const beam = ctx.createLinearGradient(dropX, skyY, dropX, GROUND_Y);
+          beam.addColorStop(0, pal.glow + 'cc'); beam.addColorStop(0.55, pal.primary + '66'); beam.addColorStop(1, '#ffffffaa');
+          ctx.fillStyle = beam;
+          ctx.beginPath();
+          ctx.moveTo(dropX - sRad * 0.42, skyY + 12); ctx.lineTo(dropX + sRad * 0.42, skyY + 12);
+          ctx.lineTo(dropX + (b.phase === 'slam' ? sRad * 1.25 : sRad * 0.65), GROUND_Y + 2);
+          ctx.lineTo(dropX - (b.phase === 'slam' ? sRad * 1.25 : sRad * 0.65), GROUND_Y + 2);
+          ctx.closePath(); ctx.fill();
+        }
+        if (b.phase === 'slam') {
+          ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 4.5;
+          ctx.beginPath(); ctx.ellipse(dropX, GROUND_Y + 2, sRad * 1.45, 28, 0, 0, Math.PI * 2); ctx.stroke();
+        }
       }
       ctx.restore(); return;
     }
@@ -9476,7 +10183,7 @@
     drawRibbon(f.wTrail, wepPrim, wepRim, wepCore);
 
     sctx.clearRect(0, 0, silBuf.width, silBuf.height);
-    sctx.save(); sctx.translate(240, 330); sctx.scale(f.facing * sc * bSx * (p.sqx || 1), sc * bSy * (p.sqy || 1)); sctx.fillStyle = '#05070c';
+    sctx.save(); sctx.translate(300, 450); sctx.scale(f.facing * sc * bSx * (p.sqx || 1), sc * bSy * (p.sqy || 1)); sctx.fillStyle = '#05070c';
     sctx.translate(p.px || 0, p.py); sctx.rotate(p.pr);
 
     // Back leg
@@ -9541,7 +10248,7 @@
       ctx.translate(f.x + jx, GROUND_Y + 2);
       ctx.scale(1, -0.25);
       ctx.globalAlpha = 0.17 * airFade * (f.invisible ? 0.25 : 1);
-      ctx.drawImage(silBuf, -240, -(f.y - GROUND_Y + 330));
+      ctx.drawImage(silBuf, -300, -(f.y - GROUND_Y + 450));
       ctx.restore();
     }
 
@@ -9553,18 +10260,18 @@
     const soulGlow = match.mode === 'wifi'
       ? (canFighterAvatarShift(f) ? 1.24 : 1.08)
       : (f.id === 'p1' ? (0.50 + Math.min(12, PROG.unlockedElements.length) * 0.08 + (PROG.avatarUnlocked ? 0.35 : 0)) : (f.phase2 ? 1.35 : 1.0));
-    const boost = (f.avatarFlash > 0 || f.magic >= 100 || f.phase2 ? 1.38 : 1.0) * invPulse * soulGlow;
-    const rimCol = (f.flash > 0 || f.avatarFlash > 0 || (isInvuln && f.sf % 4 < 2)) ? '#ffffff' : (f.phase2 ? '#ff6a32' : (isInvuln ? '#8ef5ff' : (f.rockArmorF > 0 || f.gauntletsF > 0 ? '#f5ba42' : pal.glow)));
+    const boost = (f.avatarFlash > 0 || f.magic >= 100 || f.phase2 || f.brazierBuffF > 0 ? 1.38 : 1.0) * invPulse * soulGlow;
+    const rimCol = (f.flash > 0 || f.avatarFlash > 0 || (isInvuln && f.sf % 4 < 2)) ? '#ffffff' : (f.phase2 ? '#ff6a32' : (f.brazierBuffF > 0 ? '#fde047' : (isInvuln ? '#8ef5ff' : (f.rockArmorF > 0 || f.gauntletsF > 0 ? '#f5ba42' : pal.glow))));
     const airHoverY = f.airScooterF > 0 ? -42 + Math.sin(simFrame * 0.35) * 4 : 0;
     if (settings.vfx !== 'low') {
       ctx.shadowColor = rimCol;
       ctx.shadowBlur = (settings.vfx === 'high' ? 12 : 7) * boost;
-      ctx.drawImage(silBuf, f.x + jx - 240, f.y + airHoverY - 330);
+      ctx.drawImage(silBuf, f.x + jx - 300, f.y + airHoverY - 450);
     } else {
       ctx.shadowBlur = 0;
       const rimAlpha = (f.invisible ? 0.16 : 0.80) * Math.min(1, 0.75 + boost * 0.25);
-      drawTintedRim(ctx, f.x + jx - 240, f.y + airHoverY - 330, rimCol, boost > 1.2 ? 2.6 : 2.1, rimAlpha);
-      ctx.drawImage(silBuf, f.x + jx - 240, f.y + airHoverY - 330);
+      drawTintedRim(ctx, f.x + jx - 300, f.y + airHoverY - 450, rimCol, boost > 1.2 ? 2.6 : 2.1, rimAlpha);
+      ctx.drawImage(silBuf, f.x + jx - 300, f.y + airHoverY - 450);
     }
     ctx.restore();
 
@@ -9631,6 +10338,7 @@
           ctx.fillStyle = '#fff5b8';
           ctx.beginPath(); ctx.moveTo(fx, fy - 6); ctx.lineTo(fx - f.facing * (54 + flick * 0.5), fy + 4); ctx.lineTo(fx, fy + 8); ctx.closePath(); ctx.fill();
         }
+        ctx.globalAlpha = 1;
       }
       // 4) Toph's Seismic Sense: expanding white-gold sonar rings along the arena floor!
       if (f.seismicWaveF > 0) {
@@ -9639,6 +10347,7 @@
         ctx.beginPath(); ctx.ellipse(f.x, GROUND_Y + 1, 34 + prog * 480, 10 + prog * 20, 0, 0, Math.PI * 2); ctx.stroke();
         ctx.strokeStyle = '#e8b038'; ctx.lineWidth = 2.0;
         ctx.beginPath(); ctx.ellipse(f.x, GROUND_Y + 1, 18 + prog * 330, 6 + prog * 14, 0, 0, Math.PI * 2); ctx.stroke();
+        ctx.globalAlpha = 1;
       }
       // 5) Katara's Cryo Prison: faceted translucent Sub-Zero Ice Crystal Block encasing frozen fighter!
       if (f.frozenPrisonF > 0) {
@@ -9754,13 +10463,13 @@
   }
 
   // Shared seamless silhouette renderer (routes through silBuf so Armory, Story & Decoy Clones match live fighters 1:1!)
-  function renderStaticSilhouetteToBuf({ st, elId = 'water', dir = 1, sc = 1.15, wType = null, primary = null, rim = '#e6a93c', core = '#fff4d6', gearId = 'none', glowingEyes = false, br = 0, swingAmt = 0 }) {
+  function renderStaticSilhouetteToBuf({ st, elId = 'water', dir = 1, sc = 1.15, wType = null, primary = null, rim = '#e6a93c', core = '#fff4d6', gearId = 'none', bossRegalia = '', glowingEyes = false, br = 0, swingAmt = 0 }) {
     const elObj = ELEMENTS[elId] || ELEMENTS.water;
     const bSx = (elObj.body && elObj.body.sx) || 1.0, bSy = (elObj.body && elObj.body.sy) || 1.0;
     const pal = { primary: primary || elObj.primary || rim, glow: rim, core };
     sctx.clearRect(0, 0, silBuf.width, silBuf.height);
     sctx.save();
-    sctx.translate(240, 330);
+    sctx.translate(300, 450);
     sctx.scale(dir * sc * bSx, sc * bSy);
     sctx.fillStyle = '#050609';
     sctx.shadowBlur = 0;
@@ -9776,6 +10485,7 @@
     sctx.strokeStyle = pal.glow; sctx.lineWidth = 1.4; sctx.stroke();
     // Torso
     sctx.save(); sctx.translate(0, -4); sctx.rotate(st.tr + br * 0.025 + swingAmt * 0.14);
+    if (bossRegalia) drawBossRegalia(sctx, bossRegalia, pal, 0.35 + br * 0.12);
     drawElementTorsoBack(sctx, elId, pal, 0.35 + br * 0.12, gearId);
     // Back arm
     sctx.fillStyle = '#050609';
@@ -10423,7 +11133,7 @@
         atmoMat.size = isVolc ? 18 : isIce ? 15 : isStorm ? 12 : 16;
         atmoMat.opacity = isEclipse ? 0.42 : (settings.vfx === 'low' ? 0.56 : 0.78);
         atmoMat.blending = (isIce || isStorm) ? T.NormalBlending : T.AdditiveBlending;
-        mapleLeaves.forEach(l => { l.mesh.visible = isEclipse; });
+        mapleLeaves.forEach(l => { l.mesh.visible = (hz === 'eclipse_sanctum'); });
       }
 
       // Sync Camera 1:1 with #game + Subtle Cinematic 2.5D Perspective Tilt on Ultimates, Clashes, 8-Arm Whip, Awakenings & Finishers!
@@ -11106,8 +11816,8 @@
       });
       ctx.save();
       ctx.globalAlpha = 0.78 * fade;
-      drawTintedRim(ctx, dc.x - 240, GROUND_Y - 330, dcRim, 2.4, 0.85 * fade);
-      ctx.drawImage(silBuf, dc.x - 240, GROUND_Y - 330);
+      drawTintedRim(ctx, dc.x - 300, GROUND_Y - 450, dcRim, 2.4, 0.85 * fade);
+      ctx.drawImage(silBuf, dc.x - 300, GROUND_Y - 450);
       if (dc.swung && dc.swingF > 4) {
         ctx.translate(dc.x + dc.facing * 42, GROUND_Y - 115);
         ctx.scale(dc.facing, 1);
@@ -11291,6 +12001,8 @@
     timer: document.getElementById('timer'), c1: document.getElementById('combo-p1'), c2: document.getElementById('combo-p2'),
     banner: document.getElementById('banner'), bTitle: document.getElementById('banner-title'),
     bSub: document.getElementById('banner-sub'), mActs: document.getElementById('match-actions'),
+    matchCard: document.getElementById('match-card'),
+    wifiRivalry: document.getElementById('wifi-rivalry'),
     btnMag: document.getElementById('btn-magic'), magIcon: document.getElementById('magic-icon'),
     bendLbl: document.getElementById('bend-lbl'),
     btnSub: document.getElementById('btn-sub'), subIcon: document.getElementById('sub-icon'), subLbl: document.getElementById('sub-lbl'),
@@ -11298,13 +12010,14 @@
     styleRank: document.getElementById('style-rank'), srGrade: document.getElementById('sr-grade'), srLbl: document.getElementById('sr-lbl'),
     btnNextBoss: document.getElementById('btn-next-boss'),
     btnRematch: document.getElementById('btn-rematch'),
+    btnWifiRespect: document.getElementById('btn-wifi-respect'),
     btnWifiLobbyEnd: document.getElementById('btn-wifi-lobby-end'),
     btnArmoryEnd: document.getElementById('btn-open-armory-end'),
     btnMenuEnd: document.getElementById('btn-to-menu-end'),
     wifiPingPill: document.getElementById('wifi-ping-pill'),
     wifiPingVal: document.getElementById('wifi-ping-val')
   };
-  let lastE1 = '', lastE2 = '', lastJw = '', lastWepIco = '', lastSR = '', lastBendLbl = '', lastSubKey = '', lastMutKey = '', lastLocalMagEl = '', lastPingTxt = '', lastSiphonKey = '';
+  let lastE1 = '', lastE2 = '', lastJw = '', lastWepIco = '', lastSR = '', lastBendLbl = '', lastSubKey = '', lastMutKey = '', lastLocalMagEl = '', lastPingTxt = '', lastSiphonKey = '', lastRivalryKey = '';
   let lastB1 = '', lastB2 = '', lastC1 = -1, lastC2 = -1, lastTmr = '', lastBanKey = '';
   let lastH1 = '', lastHT1 = '', lastH2 = '', lastHT2 = '', lastM1 = '', lastM2 = '', lastP1 = '', lastP2 = '';
   const FIST_SVG = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M7 11V7a1.5 1.5 0 0 1 3 0v3M10 10V6a1.5 1.5 0 0 1 3 0v4M13 10V7a1.5 1.5 0 0 1 3 0v3M16 11V9a1.5 1.5 0 0 1 3 0v5a6 6 0 0 1-6 6h-2a5 5 0 0 1-5-5v-3.5a1.5 1.5 0 0 1 3 0"/></svg>`;
@@ -11334,8 +12047,8 @@
       let roleTag = '';
       if (isWifi && lf.id === 'p2') roleTag = '<span class="you-tag">YOU</span>';
       else if (match.mode === 'campaign' && match.boss) {
-        if (match.boss.isRealmBoss) roleTag = `<span class="boss-tag">${match.boss.isFinal ? 'SHADOW AVATAR' : 'GRANDMASTER'}</span>`;
-        else if (match.boss.isMinion) roleTag = `<span class="minion-tag">${match.boss.isFinal ? 'GENERAL' : 'WARRIOR'} ${(match.boss.boutIdx || 0) + 1}/5</span>`;
+        if (match.boss.isRealmBoss) roleTag = `<span class="boss-tag${match.boss.isFinal ? ' avatar' : ''}">${match.boss.isFinal ? 'FINAL BOSS' : 'GRANDMASTER'}</span>`;
+        else if (match.boss.isMinion) roleTag = `<span class="minion-tag">${match.boss.isFinalLegion ? 'GENERAL' : (match.boss.roleLabel || 'WARRIOR')} ${(match.boss.boutIdx || 0) + 1}/5</span>`;
       }
       elRefs.p2Name.innerHTML = roleTag + escapeHtml(getFighterDisplayName('p2'));
       elRefs.p2Mag.style.background = `linear-gradient(270deg, ${p2Pal.primary}, ${p2Pal.glow})`;
@@ -11505,8 +12218,29 @@
       }
     }
 
+    // Wi-Fi Session Rivalry Scoreboard + Streak Crown in HUD
+    if (elRefs.wifiRivalry) {
+      const sw1 = (isWifi && WIFI && WIFI.state) ? (WIFI.state.sessionW1 || 0) : 0;
+      const sw2 = (isWifi && WIFI && WIFI.state) ? (WIFI.state.sessionW2 || 0) : 0;
+      const stWho = (isWifi && WIFI && WIFI.state) ? (WIFI.state.streakWho || '') : '';
+      const stCnt = (isWifi && WIFI && WIFI.state) ? (WIFI.state.streakCount || 0) : 0;
+      const rKey = `${isWifi ? 1 : 0}:${sw1}:${sw2}:${stWho}:${stCnt}:${match.wifiMode || ''}`;
+      if (rKey !== lastRivalryKey) {
+        lastRivalryKey = rKey;
+        const showRiv = isWifi && (sw1 > 0 || sw2 > 0 || (match.wifiMode && match.wifiMode !== 'standard'));
+        elRefs.wifiRivalry.classList.toggle('hidden', !showRiv);
+        if (showRiv) {
+          const crownSvg = `<svg class="wr-crown" viewBox="0 0 24 24" fill="currentColor"><path d="M3 18h18v2H3v-2zm0-2L5 7l5 4 2-6 2 6 5-4 2 9H3z"/></svg>`;
+          const p1Crown = stWho === 'p1' && stCnt >= 1 ? crownSvg : '';
+          const p2Crown = stWho === 'p2' && stCnt >= 1 ? crownSvg : '';
+          const modeTag = match.wifiMode && match.wifiMode !== 'standard' ? `<span class="wr-mode">${escapeHtml(match.wifiMode.toUpperCase())}</span>` : '';
+          elRefs.wifiRivalry.innerHTML = `${p1Crown}<span>${escapeHtml(getFighterDisplayName('p1'))} ${sw1} — ${sw2} ${escapeHtml(getFighterDisplayName('p2'))}</span>${p2Crown}${modeTag}`;
+        }
+      }
+    }
+
     const rmKey = isWifi ? `${match.wifiRematchP1 ? 1 : 0}${match.wifiRematchP2 ? 1 : 0}:${WIFI && WIFI.connected ? 1 : 0}` : '';
-    const banKey = match.banner ? `${match.banner.text}|${match.banner.sub||''}|${match.banner.color}|${match.banner.isUlt?1:0}|${match.screen}|${rmKey}|${match.campaignStageIdx}:${match.campaignBoutIdx}` : '';
+    const banKey = match.banner ? `${match.banner.text}|${match.banner.sub||''}|${match.banner.color}|${match.banner.isUlt?1:0}|${match.screen}|${rmKey}|${match.campaignStageIdx}:${match.campaignBoutIdx}|${match.lastMatchCardHtml ? 1 : 0}` : '';
     if (banKey !== lastBanKey) {
       lastBanKey = banKey;
       if (match.banner) {
@@ -11516,6 +12250,11 @@
         elRefs.banner.classList.toggle('has-actions', hasActs);
         elRefs.bTitle.textContent = match.banner.text; elRefs.bTitle.style.color = match.banner.color;
         elRefs.bSub.textContent = match.banner.sub || '';
+        if (elRefs.matchCard) {
+          const showCard = hasActs && Boolean(match.lastMatchCardHtml);
+          elRefs.matchCard.classList.toggle('hidden', !showCard);
+          if (showCard) elRefs.matchCard.innerHTML = match.lastMatchCardHtml;
+        }
         elRefs.mActs.classList.toggle('hidden', !hasActs);
         const isMinionWin = Boolean(match.boss && match.boss.isMinion);
         const hasNextBout = isMinionWin && match.campaignBoutIdx < 5;
@@ -11525,15 +12264,16 @@
         if (canAdvance) {
           if (hasNextBout) {
             if (match.campaignBoutIdx === 4) {
-              elRefs.btnNextBoss.textContent = match.boss.isFinal ? 'FACE SHADOW AVATAR' : 'CHALLENGE GRANDMASTER';
+              elRefs.btnNextBoss.textContent = match.boss.isFinalLegion ? 'FACE SHADOW AVATAR' : 'CHALLENGE GRANDMASTER';
             } else {
-              elRefs.btnNextBoss.textContent = `${match.boss.isFinal ? 'NEXT GENERAL' : 'NEXT WARRIOR'} (${match.campaignBoutIdx + 2}/5)`;
+              elRefs.btnNextBoss.textContent = `${match.boss.isFinalLegion ? 'NEXT GENERAL' : 'NEXT WARRIOR'} (${match.campaignBoutIdx + 2}/5)`;
             }
           } else {
             elRefs.btnNextBoss.textContent = 'NEXT REALM';
           }
         }
         const wifiConn = isWifi && WIFI && WIFI.connected;
+        if (elRefs.btnWifiRespect) elRefs.btnWifiRespect.classList.toggle('hidden', !wifiConn);
         if (elRefs.btnWifiLobbyEnd) elRefs.btnWifiLobbyEnd.classList.toggle('hidden', !wifiConn);
         if (elRefs.btnArmoryEnd) elRefs.btnArmoryEnd.classList.toggle('hidden', isWifi);
         if (elRefs.btnRematch) {
@@ -11550,6 +12290,7 @@
       } else {
         elRefs.banner.classList.add('hidden');
         elRefs.banner.classList.remove('ult-banner', 'has-actions');
+        if (elRefs.matchCard) elRefs.matchCard.classList.add('hidden');
       }
     }
     syncTouchVis();
@@ -11835,49 +12576,15 @@
     stickKnob.style.transform = `translate(${(Math.cos(ang)*cl).toFixed(1)}px,${(Math.sin(ang)*cl).toFixed(1)}px)`;
     if (dist < 11) { sDx = 0; sDy = 0; } else {
       const nx = dx / dist, ny = dy / dist;
-      sDx = nx > 0.34 ? 1 : nx < -0.34 ? -1 : 0; sDy = ny > 0.36 ? 1 : ny < -0.36 ? -1 : 0;
+      sDx = nx > 0.34 ? 1 : nx < -0.34 ? -1 : 0; sDy = ny > 0.42 ? 1 : ny < -0.52 ? -1 : 0;
     }
     flushDir();
   }
   document.querySelectorAll('[data-act]').forEach(btn => {
     const act = btn.dataset.act;
     if (act === 'magic') {
-      btn.addEventListener('pointerdown', e => {
-        e.preventDefault(); unlockAudio();
-        if (match.inMenu || match.paused || match.screen !== 'fighting') return;
-        btn.classList.add('pressed');
-        bendSwipePtr = e.pointerId; bendStartX = e.clientX; bendStartY = e.clientY;
-        bendSwDx = 0; bendSwDy = 0; bendSwMoved = false;
-        try { btn.setPointerCapture(e.pointerId); } catch {}
-      });
-      btn.addEventListener('pointermove', e => {
-        if (e.pointerId !== bendSwipePtr) return;
-        const dx = e.clientX - bendStartX, dy = e.clientY - bendStartY;
-        if (Math.hypot(dx, dy) >= 18) {
-          bendSwMoved = true;
-          btn.classList.add('swiping');
-          if (Math.abs(dy) >= Math.abs(dx)) { bendSwDx = 0; bendSwDy = dy < 0 ? -1 : 1; }
-          else { bendSwDx = dx > 0 ? 1 : -1; bendSwDy = 0; }
-          const lf = getLocalFighter();
-          if (bendDirPill && lf.magic >= 35) {
-            bendDirPill.classList.add('show');
-            bendDirPill.textContent = getTrickPillText(bendSwDx, bendSwDy);
-          }
-        }
-      });
-      const cancelBend = e => {
-        if (e.pointerId !== bendSwipePtr) return;
-        bendSwipePtr = null; bendSwMoved = false; bendSwDx = 0; bendSwDy = 0;
-        btn.classList.remove('pressed', 'swiping');
-        if (bendDirPill) bendDirPill.classList.remove('show');
-      };
-      const finishBend = e => {
-        if (e.pointerId !== bendSwipePtr) return;
-        const moved = bendSwMoved, swDx = bendSwDx, swDy = bendSwDy;
-        bendSwipePtr = null; bendSwMoved = false; bendSwDx = 0; bendSwDy = 0;
-        btn.classList.remove('pressed', 'swiping');
-        if (bendDirPill) bendDirPill.classList.remove('show');
-        if (match.inMenu || match.paused || match.screen !== 'fighting') return;
+      let bendFiredEarly = false;
+      const fireBendNow = (moved, swDx, swDy) => {
         const lf = getLocalFighter();
         if (WIFI && WIFI.isClientInMatch()) {
           if (!bladeClash && lf.magic < 35) { triggerDenyShake(document.getElementById('btn-magic')); _sfxRaw.deny(); return; }
@@ -11897,6 +12604,55 @@
           releaseBtn(lf, 'magic');
         }
       };
+      btn.addEventListener('pointerdown', e => {
+        e.preventDefault(); unlockAudio();
+        if (match.inMenu || match.paused || match.screen !== 'fighting') return;
+        btn.classList.add('pressed');
+        bendSwipePtr = e.pointerId; bendStartX = e.clientX; bendStartY = e.clientY;
+        bendSwDx = 0; bendSwDy = 0; bendSwMoved = false; bendFiredEarly = false;
+        try { btn.setPointerCapture(e.pointerId); } catch {}
+        // Instant zero-delay fire on pointerdown during Blade Clash or when left stick already holds a direction! (R-1)
+        if (bladeClash || sDx !== 0 || sDy !== 0) {
+          bendFiredEarly = true;
+          fireBendNow(false, 0, 0);
+        }
+      });
+      btn.addEventListener('pointermove', e => {
+        if (e.pointerId !== bendSwipePtr || bendFiredEarly) return;
+        const dx = e.clientX - bendStartX, dy = e.clientY - bendStartY;
+        const dist = Math.hypot(dx, dy);
+        if (dist >= 16) {
+          bendSwMoved = true;
+          btn.classList.add('swiping');
+          if (Math.abs(dy) >= Math.abs(dx)) { bendSwDx = 0; bendSwDy = dy < 0 ? -1 : 1; }
+          else { bendSwDx = dx > 0 ? 1 : -1; bendSwDy = 0; }
+          const lf = getLocalFighter();
+          if (bendDirPill && lf.magic >= 35) {
+            bendDirPill.classList.add('show');
+            bendDirPill.textContent = getTrickPillText(bendSwDx, bendSwDy);
+          }
+          // Fire immediately once swipe crosses 26px without waiting for finger lift!
+          if (dist >= 26) {
+            bendFiredEarly = true;
+            fireBendNow(true, bendSwDx, bendSwDy);
+          }
+        }
+      });
+      const cancelBend = e => {
+        if (e.pointerId !== bendSwipePtr) return;
+        bendSwipePtr = null; bendSwMoved = false; bendSwDx = 0; bendSwDy = 0; bendFiredEarly = false;
+        btn.classList.remove('pressed', 'swiping');
+        if (bendDirPill) bendDirPill.classList.remove('show');
+      };
+      const finishBend = e => {
+        if (e.pointerId !== bendSwipePtr) return;
+        const moved = bendSwMoved, swDx = bendSwDx, swDy = bendSwDy, alreadyFired = bendFiredEarly;
+        bendSwipePtr = null; bendSwMoved = false; bendSwDx = 0; bendSwDy = 0; bendFiredEarly = false;
+        btn.classList.remove('pressed', 'swiping');
+        if (bendDirPill) bendDirPill.classList.remove('show');
+        if (alreadyFired || match.inMenu || match.paused || match.screen !== 'fighting') return;
+        fireBendNow(moved, swDx, swDy);
+      };
       btn.addEventListener('pointerup', finishBend);
       btn.addEventListener('pointercancel', cancelBend);
       return;
@@ -11910,12 +12666,14 @@
     btn.addEventListener('pointerup', rel); btn.addEventListener('pointercancel', rel); btn.addEventListener('pointerleave', rel);
   });
   function isAnyModalOpen() {
+    const chm = document.getElementById('chronicles-modal');
     return !storyOverlay.classList.contains('hidden')
       || !pauseModal.classList.contains('hidden')
       || !rosterModal.classList.contains('hidden')
       || !campaignModal.classList.contains('hidden')
       || !armoryModal.classList.contains('hidden')
-      || (wifiModal && !wifiModal.classList.contains('hidden'));
+      || (wifiModal && !wifiModal.classList.contains('hidden'))
+      || (chm && !chm.classList.contains('hidden'));
   }
   function shouldShowTouch() {
     if (match.inMenu || match.paused || match.screen !== 'fighting' || match.intro > 18) return false;
@@ -11991,6 +12749,93 @@
   const stCtx = storyCanvas.getContext('2d');
   let storyState = null;
 
+  const chroniclesModal = document.getElementById('chronicles-modal');
+  function renderDailyBar() {
+    const bar = document.getElementById('mm-daily-bar');
+    if (!bar) return;
+    syncDailyState();
+    const today = getTodayKey();
+    const chestReady = PROG.dailyChestDate !== today;
+    const dayNum = Math.max(1, Math.min(7, PROG.dailyStreak || 1));
+    const chestReward = DAILY_CHEST_REWARDS[dayNum - 1];
+    const chals = PROG.dailyChals || [];
+    bar.innerHTML = `
+      <div class="mm-daily-head">
+        <b>DAILY STREAK · DAY ${dayNum}/7</b>
+        <button class="pill ${chestReady ? 'primary' : ''}" id="mm-claim-chest" ${chestReady ? '' : 'disabled'}>${chestReady ? `CLAIM +${chestReward}C` : 'CLAIMED'}</button>
+      </div>
+      ${chals.map((c, idx) => {
+        const done = c.claimed;
+        const ready = !done && c.prog >= c.target;
+        return `<div class="mm-dchal ${ready ? 'ready' : ''} ${done ? 'done' : ''}">
+          <span>${escapeHtml(c.label)} (${c.prog}/${c.target})</span>
+          ${done ? '<span style="color:#86efac">DONE</span>' : (ready ? `<button class="pill primary" data-dclaim="${idx}">+${c.reward}C</button>` : `<span style="color:#f5ba42">+${c.reward}C</span>`)}
+        </div>`;
+      }).join('')}`;
+    const cBtn = bar.querySelector('#mm-claim-chest');
+    if (cBtn && chestReady) {
+      cBtn.onclick = () => {
+        const amt = claimDailyChest();
+        if (amt > 0) {
+          sfx.gong();
+          document.getElementById('mm-coins').textContent = String(PROG.coins);
+          renderDailyBar();
+          const rk = getWarriorRank(PROG.xp);
+          const rl = document.getElementById('mm-rank-lbl'); if (rl) { rl.textContent = rk.name; rl.style.color = rk.col; }
+        }
+      };
+    }
+    bar.querySelectorAll('[data-dclaim]').forEach(b => b.onclick = () => {
+      const amt = claimDailyChallenge(Number(b.dataset.dclaim));
+      if (amt > 0) {
+        sfx.gong();
+        document.getElementById('mm-coins').textContent = String(PROG.coins);
+        renderDailyBar();
+      }
+    });
+  }
+
+  function openChroniclesModal() {
+    if (!chroniclesModal) return;
+    closeAllModals();
+    match.paused = true;
+    const rk = getWarriorRank(PROG.xp);
+    const unlockedCount = (PROG.achievements || []).length;
+    const masteryHtml = EL_ORDER.map(eid => {
+      const el = ELEMENTS[eid];
+      const lv = getElMasteryLevel(eid);
+      const trialOk = PROG.dojoTrialsDone && PROG.dojoTrialsDone.includes(eid);
+      return `<div class="ach-card ${lv >= 5 ? 'unlocked' : ''}">
+        <b style="color:${el.glow}">${el.name.toUpperCase()} · LV.${lv}/10</b>
+        <span>${trialOk ? 'Dojo Trial Mastered' : 'Train in Dojo or Duel to rank up'}</span>
+      </div>`;
+    }).join('');
+    const achHtml = ACHIEVEMENTS.map(a => {
+      const has = (PROG.achievements || []).includes(a.id);
+      return `<div class="ach-card ${has ? 'unlocked' : ''}">
+        <b>${escapeHtml(a.name)}</b>
+        <span>${escapeHtml(a.desc)}</span>
+        <small>${has ? 'UNLOCKED' : `REWARD: +${a.reward} COINS`}</small>
+      </div>`;
+    }).join('');
+    chroniclesModal.innerHTML = `
+      <section class="panel-modal" style="max-width:760px">
+        <div class="panel-head">
+          <div>
+            <h1>WARRIOR CHRONICLES · ${rk.name}</h1>
+            <p>${PROG.xp || 0} XP · ${unlockedCount}/${ACHIEVEMENTS.length} Achievements · Best Tower Wave: ${PROG.endlessBest || 0}</p>
+          </div>
+          <button class="pill" id="ch-close">CLOSE</button>
+        </div>
+        <div style="font-family:var(--font-head);font-size:11px;color:var(--gold-light);margin:4px 0">ACHIEVEMENTS</div>
+        <div class="ach-grid">${achHtml}</div>
+        <div style="font-family:var(--font-head);font-size:11px;color:var(--gold-light);margin:8px 0 4px">ELEMENT MASTERY (LV.1–10)</div>
+        <div class="ach-grid" style="grid-template-columns:repeat(3,minmax(0,1fr));max-height:24vh">${masteryHtml}</div>
+      </section>`;
+    chroniclesModal.classList.remove('hidden');
+    chroniclesModal.querySelector('#ch-close').onclick = () => { closeAllModals(); if (match.inMenu) openMainMenu(); };
+  }
+
   function openMainMenu() {
     clearMemoryStoryTimer();
     if (WIFI && (WIFI.connected || WIFI.hosting || WIFI.scanning)) WIFI.disconnect(true);
@@ -12003,14 +12848,21 @@
     document.getElementById('tut-pill')?.classList.add('hidden');
     document.getElementById('mutator-pill')?.classList.add('hidden');
     document.getElementById('wifi-ping-pill')?.classList.add('hidden');
+    document.getElementById('wifi-rivalry')?.classList.add('hidden');
     mainMenuEl.classList.remove('hidden');
     const elCount = Math.min(12, PROG.cleared.filter(id => id < 12).length);
+    const rk = getWarriorRank(PROG.xp);
+    const rankLbl = document.getElementById('mm-rank-lbl');
+    if (rankLbl) { rankLbl.textContent = rk.name; rankLbl.style.color = rk.col; }
+    const achCnt = document.getElementById('mm-ach-cnt');
+    if (achCnt) achCnt.textContent = `${(PROG.achievements || []).length}/${ACHIEVEMENTS.length}`;
     document.getElementById('mm-rank-sub').textContent = PROG.avatarUnlocked
       ? 'THE FULL AVATAR · ALL 12 ELEMENTS RESTORED'
       : (elCount > 0 ? `THE HOLLOW AVATAR · ${elCount} / 12 RECLAIMED` : 'THE HOLLOW AVATAR');
     document.getElementById('mm-coins').textContent = String(PROG.coins);
     document.getElementById('mm-story-sub').textContent = PROG.cleared.length === 0 ? 'Begin The Hollow Avatar' : `Continue · ${CAMPAIGN_STAGES[getNextStoryStageIdx()].rank}`;
-    document.getElementById('mm-avatar-badge').textContent = PROG.avatarUnlocked ? 'AVATAR STATE & ENDLESS TOWER UNLOCKED' : '';
+    document.getElementById('mm-avatar-badge').textContent = PROG.avatarUnlocked ? 'AVATAR STATE UNLOCKED' : (PROG.cleared.includes(0) ? 'SHADOW TOWER UNLOCKED' : '');
+    renderDailyBar();
     // Keep live ambient sparring behind menu
     resetFighter(p1, true); resetFighter(p2, true);
     p1.x = 560; p2.x = 860;
@@ -12082,24 +12934,24 @@
     }
 
     // Draw seamless pitch-black ink silhouettes routed through silBuf (ZERO puppet joint circles!)
-    const drawStorySil = (cx, by, dir, elObj, glowCol, sc = 1.24, gearId = 'none') => {
+    const drawStorySil = (cx, by, dir, elObj, glowCol, sc = 1.24, gearId = 'none', bossRegalia = '') => {
       const st = (elObj && elObj.stance) ? elObj.stance : ELEMENTS.water.stance;
       const wType = elObj ? elObj.wType : null;
       const coreCol = (elObj && elObj.core) ? elObj.core : '#fff4d6';
       renderStaticSilhouetteToBuf({
         st, elId: elObj ? elObj.id : 'water', dir, sc, wType,
-        primary: elObj ? elObj.primary : null, rim: glowCol, core: coreCol, gearId,
-        glowingEyes: slide.art === 'avatar' || gearId === 'crown'
+        primary: elObj ? elObj.primary : null, rim: glowCol, core: coreCol, gearId, bossRegalia,
+        glowingEyes: slide.art === 'avatar' || gearId === 'crown' || Boolean(bossRegalia)
       });
       // Soft floor reflection on veranda planks
       g.save();
       g.beginPath(); g.rect(0, by, W, H - by); g.clip();
       g.translate(cx, by + 2); g.scale(1, -0.24); g.globalAlpha = 0.2;
-      g.drawImage(silBuf, -240, -330);
+      g.drawImage(silBuf, -300, -450);
       g.restore();
       // Unified outer elemental rim + solid pitch-black silhouette
-      drawTintedRim(g, cx - 240, by - 330, glowCol, 2.4, 0.78);
-      g.drawImage(silBuf, cx - 240, by - 330);
+      drawTintedRim(g, cx - 300, by - 450, glowCol, 2.4, 0.78);
+      g.drawImage(silBuf, cx - 300, by - 450);
     };
 
     if (storyState.kind === 'dialogue') {
@@ -12108,8 +12960,8 @@
       const useAltFoe = Boolean(slide.altFoe && foeEl && foeEl.alt);
       const foeGlow = useAltFoe ? foeEl.alt.glow : accent;
       const foeForDraw = useAltFoe ? { ...foeEl, primary: foeEl.alt.primary, glow: foeEl.alt.glow, core: foeEl.alt.core } : foeEl;
-      drawStorySil(400, GROUND_Y - 12, 1, heroEl, heroEl.glow, 1.24, PROG.equippedGear || 'none');
-      drawStorySil(880, GROUND_Y - 12, -1, foeForDraw, foeGlow, 1.28, slide.gear || 'none');
+      drawStorySil(400, GROUND_Y - 12, 1, heroEl, heroEl.glow, 1.24, PROG.equippedGear || 'none', '');
+      drawStorySil(880, GROUND_Y - 12, -1, foeForDraw, foeGlow, 1.28, slide.gear || 'none', slide.bossRegalia || '');
     } else {
       const heroEl = slide.art === 'hollow' ? null : (ELEMENTS[slide.art] || ELEMENTS.water);
       drawStorySil(W * 0.5, GROUND_Y - 14, 1, heroEl, slide.art === 'hollow' ? '#9e8f7b' : accent, 1.32, slide.art === 'avatar' ? 'crown' : PROG.equippedGear || 'none');
@@ -12156,6 +13008,7 @@
     pauseModal.classList.add('hidden'); rosterModal.classList.add('hidden');
     campaignModal.classList.add('hidden'); armoryModal.classList.add('hidden');
     if (wifiModal) wifiModal.classList.add('hidden');
+    if (chroniclesModal) chroniclesModal.classList.add('hidden');
     if (armoryPreviewRaf) { cancelAnimationFrame(armoryPreviewRaf); armoryPreviewRaf = null; }
     match.paused = false;
     releaseIdleCanvases();
@@ -12246,7 +13099,10 @@
         if (wl) wl.onclick = () => { togglePause(); if (WIFI) WIFI.returnToLobby(true); };
         pauseModal.querySelector('#p-menu').onclick = () => { if (WIFI) WIFI.leaveToMenu(); else openMainMenu(); };
       } else {
-        pauseModal.querySelector('#p-rst').onclick = () => { togglePause(); beginRound(); };
+        pauseModal.querySelector('#p-rst').onclick = () => {
+          closeAllModals();
+          startMatch(p1.el.id, p2.el.id, match.boss, { mode: match.mode, mutator: match.mutator, dailyTrial: match.dailyTrial });
+        };
         pauseModal.querySelector('#p-map').onclick = openCampaign;
         pauseModal.querySelector('#p-arm').onclick = openArmory;
         pauseModal.querySelector('#p-menu').onclick = openMainMenu;
@@ -12309,7 +13165,7 @@
               <div class="ctags">${sel1===id?'<span class="ctag p1">YOU</span>':''}${sel2===id?`<span class="ctag p2" ${p2TagStyle}>${p2TagTxt}</span>`:''}</div>
               <div class="ccrest">${el.svg}</div>
               <div class="cname">${el.name.toUpperCase()}</div>
-              <div class="csub">${el.archetype}</div>
+              <div class="csub">${el.archetype} · LV.${getElMasteryLevel(id)}</div>
             </button>`;
           }).join('')}
         </div>
@@ -12321,8 +13177,8 @@
         <div class="pill-row" style="justify-content:space-between">
           <div class="pill-row">
             ${rosterMode === 'duel' ? `
-              <button class="pill primary" id="r-daily" style="border-color:${dailyMut.col};color:#fff6dc">DAILY TRIAL: ${dailyMut.name} (2× COINS)</button>
-              <button class="pill ${PROG.avatarUnlocked || PROG.sandboxUnlockAll ? '' : ''}" id="r-tower" ${!(PROG.avatarUnlocked || PROG.sandboxUnlockAll) ? 'disabled' : ''}>SHADOW TOWER ${PROG.endlessBest ? `(Best ${PROG.endlessBest})` : ''}</button>` : `<button class="pill primary" id="r-tut">${PROG.dojoLessonDone ? 'REPLAY DOJO LESSON' : 'GUIDED LESSON (+100 COINS)'}</button>`}
+              <button class="pill primary" id="r-daily" style="border-color:${dailyMut.col};color:#fff6dc">DAILY TRIAL: ${dailyMut.name} (1.5× COINS)</button>
+              <button class="pill" id="r-tower" ${!(PROG.cleared.includes(0) || PROG.avatarUnlocked || PROG.sandboxUnlockAll) ? 'disabled title="Clear Realm 1 to unlock Shadow Tower"' : ''}>SHADOW TOWER ${PROG.endlessBest ? `(Best ${PROG.endlessBest})` : (!(PROG.cleared.includes(0) || PROG.avatarUnlocked || PROG.sandboxUnlockAll) ? '(Clear Realm 1)' : '')}</button>` : `<button class="pill primary" id="r-tut">${PROG.dojoLessonDone ? 'REPLAY DOJO LESSON' : 'GUIDED LESSON (+100 COINS)'}</button>`}
             <button class="pill" id="r-theme">Arena: ${THEMES[themeIdx].label}</button>
           </div>
           <div class="pill-row">
@@ -12803,7 +13659,12 @@
     armoryModal.querySelector('#arm-act').onclick = () => {
       if (armoryTab === 'weapons') {
         if (PROG.ownedWeapons.includes(sel.id)) { PROG.equippedWeapon = sel.id; saveProg(); sfx.elemBend(p1.el.id); haptic('light'); }
-        else if (PROG.coins >= sel.cost) { PROG.coins -= sel.cost; PROG.ownedWeapons.push(sel.id); PROG.equippedWeapon = sel.id; saveProg(); sfx.gong(); haptic('medium'); }
+        else if (PROG.coins >= sel.cost) {
+          PROG.coins -= sel.cost; PROG.ownedWeapons.push(sel.id); PROG.equippedWeapon = sel.id;
+          if (PROG.ownedWeapons.length >= 4) unlockAchievement('arsenal_3');
+          if (PROG.ownedWeapons.length >= 13) unlockAchievement('arsenal_all');
+          saveProg(); sfx.gong(); haptic('medium');
+        }
       } else if (armoryTab === 'enchants') {
         if (PROG.ownedEnchants.includes(sel.id)) { PROG.equippedEnchant = sel.id; saveProg(); sfx.bladeClash(); haptic('light'); }
         else if (PROG.coins >= sel.cost) { PROG.coins -= sel.cost; PROG.ownedEnchants.push(sel.id); PROG.equippedEnchant = sel.id; saveProg(); sfx.gong(); sfx.bladeClash(); haptic('medium'); }
@@ -12912,7 +13773,7 @@
       const drawSc = Math.min((cw * 0.90) / boxW, (ch * 0.84) / boxH);
       const footX = cw * (isLong ? 0.40 : 0.46);
       const drawW = silBuf.width * drawSc, drawH = silBuf.height * drawSc;
-      const dx = footX - 240 * drawSc, dy = floorY - 330 * drawSc;
+      const dx = footX - 300 * drawSc, dy = floorY - 450 * drawSc;
 
       // Subtle elemental / enchantment slash arc during tap-to-swing flourish
       if (swingAmt > 0.22) {
@@ -12932,7 +13793,7 @@
       g.beginPath(); g.ellipse(footX, floorY + 2, 46 * drawSc, 6 * drawSc, 0, 0, Math.PI * 2); g.fill();
       g.beginPath(); g.rect(0, floorY, cw, ch - floorY); g.clip();
       g.translate(footX, floorY + 1); g.scale(1, -0.24); g.globalAlpha = 0.22;
-      g.drawImage(silBuf, -240 * drawSc, -330 * drawSc, drawW, drawH);
+      g.drawImage(silBuf, -300 * drawSc, -450 * drawSc, drawW, drawH);
       g.restore();
 
       // Unified crisp outer elemental rim + pitch-black silhouette (NO joint seams!)
@@ -13091,6 +13952,11 @@
       p2Lob: makeDefaultLob('fire'),
       stageBiome: 'eclipse_sanctum',
       toWin: 2,
+      partyMode: 'standard', // 'standard' | 'random' | 'roulette' | 'mirror'
+      sessionW1: 0,
+      sessionW2: 0,
+      streakWho: '',
+      streakCount: 0,
       pendingEvents: [],
       lastNetSnapAt: 0,
       lastPeerRxAt: 0,
@@ -13102,6 +13968,25 @@
       isHostInMatch: () => Boolean(state.connected && state.role === 'host' && state.inMatch && match.mode === 'wifi' && !match.inMenu),
       isClientInMatch: () => Boolean(state.connected && state.role === 'client' && state.inMatch && match.mode === 'wifi' && !match.inMenu)
     };
+    const VALID_PARTY_MODES = new Set(['standard', 'random', 'roulette', 'mirror']);
+    function recordSessionWin(win) {
+      if (win === 'p1') {
+        state.sessionW1++;
+        state.streakCount = (state.streakWho === 'p1') ? state.streakCount + 1 : 1;
+        state.streakWho = 'p1';
+      } else if (win === 'p2') {
+        state.sessionW2++;
+        state.streakCount = (state.streakWho === 'p2') ? state.streakCount + 1 : 1;
+        state.streakWho = 'p2';
+      }
+      lastRivalryKey = '';
+    }
+    function sendRespect() {
+      if (!state.connected || !state.inMatch) return;
+      sendRaw({ t: 'gg', ms: state.matchSeq, who: state.role });
+      pushCallout('RESPECT SENT!', '#fde68a', W * 0.5, 200);
+      sfx.gong();
+    }
 
     function ensureBc() {
       if (nativeReady() || bc || typeof BroadcastChannel === 'undefined') return;
@@ -13182,7 +14067,7 @@
       if (!state.connected || state.inMatch) return;
       const mine = myLob();
       const pkt = { t: 'lob', who: state.role, d: mine };
-      if (state.role === 'host') { pkt.biome = state.stageBiome; pkt.toWin = state.toWin; }
+      if (state.role === 'host') { pkt.biome = state.stageBiome; pkt.toWin = state.toWin; pkt.pm = state.partyMode; }
       sendRaw(pkt);
     }
 
@@ -13213,7 +14098,10 @@
         fp: f.frozenPrisonF, oc: f.octopusF, ocs: f.octopusSwinging ? 1 : 0,
         as: f.airScooterF, fj: f.fireJetF, sw: f.seismicWaveF, gn: f.gauntletsF,
         rf: f.reflectStanceF, ra: f.rockArmorF, ds: f.disarmed ? 1 : 0,
-        in: f.invisible ? 1 : 0, af: f.avatarFlash, sts
+        in: f.invisible ? 1 : 0, af: f.avatarFlash,
+        sb: f.solarBuffF || 0, tb: f.thunderBuffF || 0, bb: f.brazierBuffF || 0,
+        ca: f.castArtIdx || 0, qd: f.quickBendDir || '', at: f.afterTimer || 0,
+        sts
       };
     }
 
@@ -13221,7 +14109,7 @@
       if (!d || typeof d !== 'object') return;
       if (typeof d.el === 'string' && VALID_ELS.has(d.el) && f.el.id !== d.el) f.el = ELEMENTS[d.el];
       const nx = finNum(d.x, f.x, ARENA_L - 40, ARENA_R + 40);
-      const ny = finNum(d.y, f.y, -260, GROUND_Y + 40);
+      const ny = finNum(d.y, f.y, -340, GROUND_Y + 60);
       const nextState = (typeof d.st === 'string' && VALID_F_STATES.has(d.st)) ? d.st : f.state;
       const dx = nx - f.x, dy = ny - f.y;
       if (Math.hypot(dx, dy) > 72 || f.state !== nextState) { f.x = nx; f.y = ny; }
@@ -13261,6 +14149,12 @@
       f.disarmed = Boolean(d.ds);
       f.invisible = Boolean(d.in);
       f.avatarFlash = finInt(d.af, 0, 0, 120);
+      f.solarBuffF = finInt(d.sb, 0, 0, 400);
+      f.thunderBuffF = finInt(d.tb, 0, 0, 400);
+      f.brazierBuffF = finInt(d.bb, 0, 0, 400);
+      f.castArtIdx = finInt(d.ca, 0, 0, 2);
+      f.quickBendDir = safeStr(d.qd, 8, '');
+      f.afterTimer = finInt(d.at, 0, 0, 60);
       const nextSts = {};
       if (d.sts && typeof d.sts === 'object') {
         for (const k of Object.keys(d.sts)) {
@@ -13276,6 +14170,8 @@
       return bendingWaves.slice(0, 24).map(b => ({
         o: b.owner, e: b.el ? b.el.id : 'water', k: b.kind,
         x: Math.round(b.x), y: Math.round(b.y), d: b.dir === -1 ? -1 : 1,
+        vx: Math.round((b.vx || 0) * 10) / 10, vy: Math.round((b.vy || 0) * 10) / 10,
+        dx: b.dropX !== undefined ? Math.round(b.dropX) : null,
         w: Math.round(b.w), h: Math.round(b.h),
         f: b.f, mx: b.max, u: b.ult ? 1 : 0,
         ag: b.age || 0, dl: b.delay || 0,
@@ -13299,6 +14195,8 @@
           kind: safeStr(w.k, 32, 'fire_arc'),
           x: finNum(w.x, W * 0.5, -400, W + 400),
           y: finNum(w.y, GROUND_Y - 80, -400, H + 200),
+          vx: finNum(w.vx, 0, -60, 60),
+          vy: finNum(w.vy, 0, -60, 60),
           dir: w.d === -1 ? -1 : 1,
           w: finNum(w.w, 80, 4, 900),
           h: finNum(w.h, 80, 4, 900),
@@ -13314,6 +14212,7 @@
           lastSlamF: finInt(w.lsf, 0, 0, 11),
           lastSlamX: finNum(w.lsx, 0, 0, W)
         };
+        if (typeof w.dx === 'number' && Number.isFinite(w.dx)) obj.dropX = finNum(w.dx, obj.x, ARENA_L, ARENA_R);
         if (obj.kind === 'octopus_8_swing' || obj.kind === 'ult_arm_swing' || obj.kind === 'sub_metal_wire') {
           obj.tipX = obj.x + obj.dir * 52;
           obj.tipY = obj.y;
@@ -13366,7 +14265,7 @@
         bw: packWaves(),
         hz: hazards.slice(0, 6).map(h => ({ k: VALID_HAZARDS.has(h.kind) ? h.kind : 'lava', x: Math.round(h.x), hw: Math.round(h.hw), f: h.f })),
         rw: rockWalls.slice(0, 4).map(r => ({ x: Math.round(r.x), w: r.w, h: r.h, f: r.f })),
-        dc: decoyClones.slice(0, 4).map(d => ({ o: d.owner === 'p2' ? 'p2' : 'p1', x: Math.round(d.x), fc: d.facing === -1 ? -1 : 1, f: d.f, sw: d.swung ? 1 : 0, sf: d.swingF, wt: d.wType, gr: d.gear, e: d.el ? d.el.id : 'shadow' })),
+        dc: decoyClones.slice(0, 6).map(d => ({ o: d.owner === 'p2' ? 'p2' : 'p1', x: Math.round(d.x), fc: d.facing === -1 ? -1 : 1, f: d.f, sw: d.swung ? 1 : 0, sf: d.swingF, wt: d.wType, gr: d.gear, e: d.el ? d.el.id : 'shadow' })),
         dw: droppedWeapons.slice(0, 4).map(d => ({ x: Math.round(d.x), y: Math.round(d.y), rt: Math.round(d.rot * 100) / 100, wt: d.wType, e: d.el.id, gd: d.grounded ? 1 : 0 })),
         br: braziers.slice(0, 2).map(b => [Math.round(b.x), b.intact ? 1 : 0, b.hitFlash || 0])
       };
@@ -13494,7 +14393,7 @@
         }));
       }
       if (Array.isArray(s.dc)) {
-        decoyClones = s.dc.slice(0, 4).filter(d => d && typeof d === 'object').map(d => ({
+        decoyClones = s.dc.slice(0, 6).filter(d => d && typeof d === 'object').map(d => ({
           owner: d.o === 'p2' ? 'p2' : 'p1',
           x: finNum(d.x, W * 0.5, ARENA_L, ARENA_R),
           y: GROUND_Y,
@@ -13568,19 +14467,26 @@
         match.callouts[i].f--; match.callouts[i].y -= 0.72;
         if (match.callouts[i].f <= 0) match.callouts.splice(i, 1);
       }
-      // Smooth 60Hz between-snapshot motion & trail HP easing (frozen cleanly during network stall)
+      // Smooth 60Hz between-snapshot motion & skeletal frame advance (eliminates sawtooth rubber-banding & 30fps anim lock! W-3)
       [p1, p2].forEach(f => {
         if (!state.stalled && hitstop <= 0 && !f.dizzied && f.frozenPrisonF <= 0) {
-          if (Math.abs(f.vx) > 0.2) f.x = Math.max(ARENA_L, Math.min(ARENA_R, f.x + f.vx * 0.45));
-          if (f.y < GROUND_Y || f.vy < 0) f.y = Math.min(GROUND_Y, f.y + f.vy * 0.45);
-          if (typeof f._netX === 'number') f.x += (f._netX - f.x) * 0.25;
-          if (typeof f._netY === 'number') f.y += (f._netY - f.y) * 0.25;
+          if (Math.abs(f.vx) > 0.2) f.x = Math.max(ARENA_L, Math.min(ARENA_R, f.x + f.vx * 0.5));
+          if (f.y < GROUND_Y || f.vy < 0) f.y = Math.min(GROUND_Y, f.y + f.vy * 0.5);
+          if (f.state !== 'idle' && f.state !== 'ko' && f.state !== 'grabbed') f.sf++;
         }
         if (f.trailHp > f.hp) f.trailHp = Math.max(f.hp, f.trailHp - Math.max(1.2, (f.trailHp - f.hp) * 0.14));
         else f.trailHp = f.hp;
         if (f.flash > 0) f.flash--;
         if (f.avatarFlash > 0) f.avatarFlash--;
       });
+      // Advance projectiles smoothly on odd Client frames using synced vx/vy (W-1)
+      if (!state.stalled && hitstop <= 0) {
+        for (const b of bendingWaves) {
+          if (b.delay > 0) continue;
+          if (b.vx) b.x += b.vx * 0.5;
+          if (b.vy) b.y = Math.min(GROUND_Y, b.y + b.vy * 0.5);
+        }
+      }
       // Mirror Smart Cross-Up overhead indicator trigger on Client phone whenever fighters swap sides!
       if (match.screen === 'fighting' && match.intro <= 0) {
         const curSide = p1.x <= p2.x ? 1 : -1;
@@ -13612,10 +14518,14 @@
       state.p2Lob = { ...sanitizeLoadout(cfg && cfg.p2, state.p2Lob), ready: false };
       state.stageBiome = (cfg && VALID_BIOMES.has(cfg.biome)) ? cfg.biome : state.stageBiome;
       state.toWin = (cfg && (cfg.toWin === 2 || cfg.toWin === 3)) ? cfg.toWin : 2;
+      state.partyMode = (cfg && VALID_PARTY_MODES.has(cfg.pm)) ? cfg.pm : state.partyMode;
+      const rouletteMut = state.partyMode === 'roulette' ? (TOWER_MUTATORS.find(x => x.id === 'roulette') || null) : null;
       startMatch(state.p1Lob.el, state.p2Lob.el, null, {
         mode: 'wifi',
         toWin: state.toWin,
         wifiBiome: state.stageBiome,
+        wifiMode: state.partyMode,
+        mutator: rouletteMut,
         p1Name: state.p1Lob.name,
         p2Name: state.p2Lob.name,
         p1Loadout: { ...state.p1Lob },
@@ -13627,7 +14537,15 @@
     function hostStartDuel() {
       if (!state.connected || state.role !== 'host') return;
       state.matchSeq++;
-      const cfg = { ms: state.matchSeq, p1: { ...state.p1Lob, ready: false }, p2: { ...state.p2Lob, ready: false }, biome: state.stageBiome, toWin: state.toWin };
+      const p1Cfg = { ...state.p1Lob, ready: false };
+      const p2Cfg = { ...state.p2Lob, ready: false };
+      if (state.partyMode === 'random') {
+        p1Cfg.el = EL_ORDER[Math.floor(Math.random() * EL_ORDER.length)];
+        p2Cfg.el = EL_ORDER[Math.floor(Math.random() * EL_ORDER.length)];
+      } else if (state.partyMode === 'mirror') {
+        p2Cfg.el = p1Cfg.el;
+      }
+      const cfg = { ms: state.matchSeq, p1: p1Cfg, p2: p2Cfg, biome: state.stageBiome, toWin: state.toWin, pm: state.partyMode };
       sendRaw({ t: 'go', ...cfg });
       launchMatch(cfg);
     }
@@ -13703,17 +14621,18 @@
       // W-2: Strict sender-role & lobby/match state enforcement!
       if (m.t === 'lob') {
         if (state.inMatch) return;
-        const prevSig = JSON.stringify([state.p1Lob, state.p2Lob, state.stageBiome, state.toWin]);
+        const prevSig = JSON.stringify([state.p1Lob, state.p2Lob, state.stageBiome, state.toWin, state.partyMode]);
         if (state.role === 'client' && m.who === 'host' && m.d && typeof m.d === 'object') {
           state.p1Lob = sanitizeLoadout(m.d, state.p1Lob);
           if (typeof m.biome === 'string' && VALID_BIOMES.has(m.biome)) state.stageBiome = m.biome;
           if (m.toWin === 2 || m.toWin === 3) state.toWin = m.toWin;
+          if (typeof m.pm === 'string' && VALID_PARTY_MODES.has(m.pm)) state.partyMode = m.pm;
         } else if (state.role === 'host' && m.who === 'client' && m.d && typeof m.d === 'object') {
           state.p2Lob = sanitizeLoadout(m.d, state.p2Lob);
         } else {
           return;
         }
-        const nextSig = JSON.stringify([state.p1Lob, state.p2Lob, state.stageBiome, state.toWin]);
+        const nextSig = JSON.stringify([state.p1Lob, state.p2Lob, state.stageBiome, state.toWin, state.partyMode]);
         if (nextSig !== prevSig && wifiModal && !wifiModal.classList.contains('hidden')) renderWifiModal();
         return;
       }
@@ -13732,6 +14651,14 @@
         if (!state.inMatch) return;
         if (m.ms !== undefined && finInt(m.ms, -1, 0, 1e9) < state.matchSeq) return;
         returnToLobby(false);
+        return;
+      }
+
+      if (m.t === 'gg') {
+        if (!state.inMatch) return;
+        const peerNm = m.who === 'host' ? getFighterDisplayName('p1') : getFighterDisplayName('p2');
+        pushCallout(`${peerNm}: RESPECT!`, '#fde68a', W * 0.5, 224);
+        sfx.gong();
         return;
       }
 
@@ -13766,9 +14693,36 @@
         match.winner = win;
         match.p1W = w1; match.p2W = w2;
         match.eclipseFinished = ex;
+        match.p1Dmg = finInt(m.d1, match.p1Dmg || 0, 0, 99999);
+        match.p2Dmg = finInt(m.d2, match.p2Dmg || 0, 0, 99999);
+        match.maxComboP1 = finInt(m.c1, match.maxComboP1 || 0, 0, 99);
+        match.maxComboP2 = finInt(m.c2, match.maxComboP2 || 0, 0, 99);
+        match.p1Parries = finInt(m.pr1, match.p1Parries || 0, 0, 99);
+        match.p2Parries = finInt(m.pr2, match.p2Parries || 0, 0, 99);
+        match.headHitsP1 = finInt(m.hh1, match.headHitsP1 || 0, 0, 99);
+        match.headHitsP2 = finInt(m.hh2, match.headHitsP2 || 0, 0, 99);
+        match.p1Clashes = finInt(m.cl1, match.p1Clashes || 0, 0, 99);
+        match.p2Clashes = finInt(m.cl2, match.p2Clashes || 0, 0, 99);
         match.wifiRematchP1 = false; match.wifiRematchP2 = false;
-        const clientReward = win === 'p2' ? 110 : 55;
-        PROG.coins += clientReward; saveProg();
+        recordSessionWin(win);
+        const fightSec = (performance.now() - (match.matchStartMs || 0)) / 1000;
+        const eligibleCoins = fightSec >= 6;
+        const wifiWinCoins = 50;
+        const clientReward = !eligibleCoins ? 0 : (win === 'p2' ? wifiWinCoins : Math.max(1, Math.round(wifiWinCoins * 0.1)));
+        PROG.coins += clientReward;
+        awardXpAndMastery(p2.el.id, win === 'p2' ? 45 : 15, win === 'p2' ? 35 : 12);
+        if (win === 'p2') {
+          PROG.wifiWins = (PROG.wifiWins || 0) + 1;
+          PROG.totalWins = (PROG.totalWins || 0) + 1;
+          unlockAchievement('first_blood');
+          unlockAchievement('wifi_rival');
+          recordDailyProgress('win', 1);
+        }
+        saveProg();
+        match.lastMatchCardHtml = buildMatchCardHtml({
+          isWifi: true, isWin: win === 'p2', reward: clientReward,
+          lossTenth: eligibleCoins && win !== 'p2', xpGain: win === 'p2' ? 45 : 15, elId: p2.el.id
+        });
         const winName = win === 'draw' ? 'DRAW MATCH' : `${getFighterDisplayName(win)} WINS`;
         showBanner(winName, `${w1} — ${w2}${ex ? ' · EXECUTION' : ''} · WI-FI DUET`, win === 'p1' ? '#ffae34' : '#4be3ff', 99999, false, true);
         haptic('ko', true);
@@ -13786,6 +14740,12 @@
         if (m.a === 'rst') {
           Array.from(p2.held).forEach(b => releaseBtn(p2, b));
           setDir(p2, 0, 0);
+          return;
+        }
+        // Never drop button release ('up') packets under burst caps so P2 held buttons NEVER get stuck! (W-3)
+        if (m.a === 'up') {
+          const btn = m.b === 'punch' ? 'weapon' : m.b;
+          if (typeof btn === 'string' && ALLOWED_NET_BTNS.has(btn)) releaseBtn(p2, btn);
           return;
         }
         if (state.netInputsThisFrame >= MAX_NET_INPUTS_PER_FRAME) return;
@@ -14113,6 +15073,10 @@
       state.matchSeq = 0;
       state.role = '';
       state.peerIp = '';
+      state.sessionW1 = 0;
+      state.sessionW2 = 0;
+      state.streakWho = '';
+      state.streakCount = 0;
       state.pendingKnocks = [];
       state.pendingEvents.length = 0;
     }
@@ -14158,7 +15122,7 @@
       startHost, startScan, connectTo, approveKnock, disconnect, leaveToMenu,
       onAppPause, onAppResume,
       sendLobbySync, sendInput, sendRaw, pushEvent,
-      hostStartDuel, requestRematch, returnToLobby,
+      hostStartDuel, requestRematch, returnToLobby, recordSessionWin, sendRespect,
       onHostStep, stepClientFrame
     };
     window.__ES_WIFI = api;
@@ -14356,16 +15320,16 @@
           <div class="wifi-slot ${isHost ? 'me' : ''} ${st.p1Lob.ready ? 'ready' : ''}">
             <div class="ws-crest" style="--sc:${e1.glow}">${e1.svg}</div>
             <div class="ws-meta">
-              <div class="ws-name">${escapeHtml(st.p1Lob.name)}${isHost ? '<span class="you-tag">YOU</span>' : ''}</div>
+              <div class="ws-name">${st.streakWho === 'p1' && st.streakCount >= 1 ? '<span style="color:#f6c453;margin-right:4px">[CROWN]</span>' : ''}${escapeHtml(st.p1Lob.name)}${isHost ? '<span class="you-tag">YOU</span>' : ''}</div>
               <div class="ws-sub">${e1.name} · ${w1Name}${g1Sub}${st.p1Lob.enchant !== 'none' ? ` · ${en1Name}` : ''}</div>
             </div>
             <span class="ws-rdy ${st.p1Lob.ready ? 'on' : ''}">${st.p1Lob.ready ? 'READY' : 'PICKING'}</span>
           </div>
-          <div class="wifi-vs-mid">VS</div>
+          <div class="wifi-vs-mid">${(st.sessionW1 || st.sessionW2) ? `${st.sessionW1}—${st.sessionW2}` : 'VS'}</div>
           <div class="wifi-slot p2 ${!isHost ? 'me' : ''} ${st.p2Lob.ready ? 'ready' : ''}">
             <div class="ws-crest" style="--sc:${e2Glow}">${e2.svg}</div>
             <div class="ws-meta">
-              <div class="ws-name">${!isHost ? '<span class="you-tag">YOU</span>' : ''}${escapeHtml(st.p2Lob.name)}${e2Alt ? `<span class="alt-clan-tag" style="color:${e2Glow}">ALT · ${escapeHtml(e2Alt.label.toUpperCase())}</span>` : ''}</div>
+              <div class="ws-name">${!isHost ? '<span class="you-tag">YOU</span>' : ''}${st.streakWho === 'p2' && st.streakCount >= 1 ? '<span style="color:#f6c453;margin-right:4px">[CROWN]</span>' : ''}${escapeHtml(st.p2Lob.name)}${e2Alt ? `<span class="alt-clan-tag" style="color:${e2Glow}">ALT · ${escapeHtml(e2Alt.label.toUpperCase())}</span>` : ''}</div>
               <div class="ws-sub">${e2.name} · ${w2Name}${g2Sub}${st.p2Lob.enchant !== 'none' ? ` · ${en2Name}` : ''}</div>
             </div>
             <span class="ws-rdy ${st.p2Lob.ready ? 'on' : ''}">${st.p2Lob.ready ? 'READY' : 'PICKING'}</span>
@@ -14400,6 +15364,15 @@
               ${GEAR_CATALOG.map(gr => `<button class="wchip ${mine.gear === gr.id ? 'on' : ''}" data-wgear="${gr.id}">${gr.ico}${gr.name}</button>`).join('')}
               <button class="wchip ${mine.scrollMastered ? 'on' : ''}" id="w-tog-scroll" style="--wc:#f6ce82">Grandmaster Scroll: ${mine.scrollMastered ? 'ON' : 'OFF'}</button>
               <button class="wchip ${mine.avatarUnlocked ? 'on' : ''}" id="w-tog-av" style="--wc:#7ce8ff">Avatar Shift: ${mine.avatarUnlocked ? 'ON' : 'OFF'}</button>
+            </div>
+          </div>
+          <div class="wifi-row">
+            <span class="wifi-row-lbl">MODE</span>
+            <div class="wifi-chips">
+              ${isHost
+                ? [['standard', 'Standard Duel'], ['random', 'Random Master'], ['roulette', 'Avatar Roulette (15s)'], ['mirror', 'Mirror Match']]
+                    .map(([pid, plbl]) => `<button class="wchip ${st.partyMode === pid ? 'on' : ''}" data-wpm="${pid}">${plbl}</button>`).join('')
+                : `<span class="wchip on" style="cursor:default">Mode: ${escapeHtml((st.partyMode || 'standard').toUpperCase())} (Host Pick)</span>`}
             </div>
           </div>
           <div class="wifi-row">
@@ -14438,6 +15411,7 @@
     if (tScr) tScr.onclick = () => { mine.scrollMastered = !mine.scrollMastered; mine.ready = false; st.infoMsg = ''; sfx.bend(); WIFI.sendLobbySync(); renderWifiModal(); };
     const tAv = wifiModal.querySelector('#w-tog-av');
     if (tAv) tAv.onclick = () => { mine.avatarUnlocked = !mine.avatarUnlocked; mine.ready = false; st.infoMsg = ''; sfx.bend(); WIFI.sendLobbySync(); renderWifiModal(); };
+    wifiModal.querySelectorAll('[data-wpm]').forEach(b => b.onclick = () => { st.partyMode = b.dataset.wpm; st.infoMsg = ''; sfx.bend(); WIFI.sendLobbySync(); renderWifiModal(); });
     wifiModal.querySelectorAll('[data-wstage]').forEach(b => b.onclick = () => { st.stageBiome = b.dataset.wstage; st.infoMsg = ''; sfx.bend(); WIFI.sendLobbySync(); renderWifiModal(); });
     wifiModal.querySelectorAll('[data-wfmt]').forEach(b => b.onclick = () => { st.toWin = Number(b.dataset.wfmt); st.infoMsg = ''; sfx.bend(); WIFI.sendLobbySync(); renderWifiModal(); });
     wifiModal.querySelector('#w-ready').onclick = () => {
@@ -14463,6 +15437,8 @@
   document.getElementById('mm-dojo').onclick = () => { unlockAudio(); openRoster('dojo'); };
   document.getElementById('mm-armory').onclick = () => { unlockAudio(); openArmory(); };
   document.getElementById('mm-settings').onclick = () => { unlockAudio(); match.paused = true; pauseModal.classList.remove('hidden'); renderPause(); };
+  const mmRankPillEl = document.getElementById('mm-rank-pill');
+  if (mmRankPillEl) mmRankPillEl.onclick = () => { unlockAudio(); openChroniclesModal(); };
 
   document.getElementById('btn-pause').onclick = () => { unlockAudio(); togglePause(); };
   document.getElementById('btn-next-boss').onclick = () => {
@@ -14470,11 +15446,13 @@
     if (match.boss && match.boss.isMinion && match.campaignBoutIdx < 5) {
       startCampaignStage(match.campaignStageIdx, match.campaignBoutIdx + 1);
     } else {
-      startCampaignStage(match.campaignStageIdx + 1, 0);
+      startCampaignStage(match.campaignStageIdx + 1, null);
     }
   };
   document.getElementById('btn-open-armory-end').onclick = () => { unlockAudio(); openArmory(); };
   document.getElementById('btn-wifi-lobby-end').onclick = () => { unlockAudio(); if (WIFI) WIFI.returnToLobby(true); };
+  const btnWifiRespectEl = document.getElementById('btn-wifi-respect');
+  if (btnWifiRespectEl) btnWifiRespectEl.onclick = () => { unlockAudio(); if (WIFI) WIFI.sendRespect(); };
   document.getElementById('btn-rematch').onclick = () => {
     unlockAudio();
     if (match.mode === 'wifi' && WIFI) { WIFI.requestRematch(); return; }
@@ -14507,6 +15485,7 @@
   rosterModal.onclick = e => { if (e.target === rosterModal) closeAllModals(); };
   campaignModal.onclick = e => { if (e.target === campaignModal) closeAllModals(); };
   armoryModal.onclick = e => { if (e.target === armoryModal) { closeAllModals(); if (match.inMenu) openMainMenu(); } };
+  if (chroniclesModal) chroniclesModal.onclick = e => { if (e.target === chroniclesModal) { closeAllModals(); if (match.inMenu) openMainMenu(); } };
 
   let lastT = performance.now(), acc = 0, rAcc = 0, curFps = 60;
   function loop(now) {
@@ -14519,11 +15498,14 @@
       const ts = slowMoFrames > 0 ? 0.36 : 1;
       if (slowMoFrames > 0) slowMoFrames = Math.max(0, slowMoFrames - dt * 60);
       acc += dt * ts;
-      while (acc >= 1 / 60) {
+      let steps = 0;
+      while (acc >= 1 / 60 && steps < 3) {
         stepSim();
         if (WIFI && WIFI.isHostInMatch()) WIFI.onHostStep();
         acc -= 1 / 60;
+        steps++;
       }
+      if (acc >= 1 / 60) acc = 0;
     }
     const rInt = settings.fps === 30 ? 1 / 30 : 0; rAcc += dt;
     if (rAcc >= rInt) { rAcc = rInt > 0 ? rAcc % rInt : 0; renderScene(); syncHud(); }
